@@ -9,10 +9,10 @@
 
 (add-to-list 'load-path (file-name-concat user-emacs-directory "lisp"))
 
-;; (require 'my-init-utils)
-;; (require 'my-basic-settings)
-;; (require 'my-init-colorscheme)
-;; (require 'my-init-tty)
+(require 'my-init-utils)
+(require 'my-basic-settings)
+(require 'my-init-colorscheme)
+(require 'my-init-tty)
 
 (defun my/cleanup-gc ()
   "Clean up gc."
