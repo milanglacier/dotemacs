@@ -1,0 +1,6 @@
+.DS_Store
+.tags
+straight/*
+!straight/versions
+eln-cache/*
+.local/*
