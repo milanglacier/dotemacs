@@ -14,7 +14,7 @@
 (defun my/pickup-random-color-theme (themes)
   (let* ((theme (nth (random (length themes)) themes)))
     (load-theme theme t)
-    (when ((string-match-p "doom" (symbol-name theme)))
+    (when (string-match-p "doom" (symbol-name theme))
       (doom-themes-org-config))))
 
 (defvar my/day-to-night-int 23)
