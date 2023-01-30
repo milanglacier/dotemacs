@@ -25,9 +25,10 @@
   (load bootstrap-file nil 'nomessage))
 
 (setq straight-use-package-by-default t)
+(setq use-package-expand-minimally t)
 
 (require 'my-init-utils)
-(require 'my-basic-settings)
+(require 'my-basics)
 (require 'my-init-colorscheme)
 (require 'my-init-tty)
 (require 'my-init-evil)

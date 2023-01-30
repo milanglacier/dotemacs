@@ -1,4 +1,4 @@
-;;; my-basic-settings.el -*- lexical-binding: t; -*-
+;;; my-basics.el -*- lexical-binding: t; -*-
 
 (setq user-full-name "Milan Glacier")
 (setq user-mail-address "me@milanglacier.com")
@@ -35,5 +35,5 @@
 (setq scroll-conservatively 10000)
 (setq auto-window-vscroll nil)
 
-(provide 'my-basic-settings)
-;;; my-init-basic-settings.el ends here
+(provide 'my-basics)
+;;; my-builtins ends here
