@@ -1,4 +1,4 @@
-;;; my/init-colorscheme.el -*- lexical-binding: t; -*-
+;;; my-init-colorscheme.el -*- lexical-binding: t; -*-
 
 (straight-use-package '(doom-themes :host github :repo "doomemacs/themes"))
 (straight-use-package '(spacemacs-theme :host github :repo "nashamri/spacemacs-theme"))
@@ -53,5 +53,5 @@
 
 (set-theme-dynamically)
 
-(provide 'my/init-colorscheme)
-;;; my/init-colorscheme.el ends here
+(provide 'my-init-colorscheme)
+;;; my-init-colorscheme.el ends here
