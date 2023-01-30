@@ -1,7 +1,6 @@
 ;;; my-init-evil.el -*- lexical-binding: t; -*-
 
-(straight-use-package '(goto-chg :host github :repo "emacs-evil/goto-chg"))
-(straight-use-package '(evil :host github :repo "emacs-evil/evil"))
+(straight-use-package 'evil)
 
 (evil-mode 1)
 

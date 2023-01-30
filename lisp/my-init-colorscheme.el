@@ -1,7 +1,7 @@
 ;;; my-init-colorscheme.el -*- lexical-binding: t; -*-
 
-(straight-use-package '(doom-themes :host github :repo "doomemacs/themes"))
-(straight-use-package '(spacemacs-theme :host github :repo "nashamri/spacemacs-theme"))
+(straight-use-package 'doom-themes)
+(straight-use-package 'spacemacs-theme)
 
 (defvar my/day-themes
   '(doom-solarized-light spacemacs-light modus-operandi))
