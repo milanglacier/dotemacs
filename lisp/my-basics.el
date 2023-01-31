@@ -8,6 +8,12 @@
 
 (setq warning-minimum-level :error)
 
+(defconst IS-MAC (eq system-type 'darwin))
+(defconst IS-LINUX (memq system-type '(gnu gnu/linux gnu/kfreebsd berkeley-unix)))
+(defconst IS-WINDOWS (memq system-type '(cygwin windows-nt ms-dos)))
+
+(setq make-backup-files nil)
+
 (set-display-table-slot standard-display-table 'truncation 32)
 
 (defun my/display-truncation-indicator-as-whitespace ()
@@ -25,6 +31,10 @@
 ;; set default font
 (add-to-list 'default-frame-alist
              '(font . "SpaceMono Nerd Font-15"))
+
+;; When some commands ask you to input yes or no,
+;; instead, y or n should be sufficient.
+(setq use-short-answers t)
 
 ;; display line numbers in the left margin of the window.
 (setq display-line-numbers-type t)

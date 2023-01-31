@@ -29,9 +29,11 @@
 
 (require 'my-init-utils)
 (require 'my-basics)
+(require 'my-init-ui)
 (require 'my-init-colorscheme)
 (require 'my-init-tty)
 (require 'my-init-evil)
+(require 'my-init-completion)
 
 (defun my/cleanup-gc ()
   "Clean up gc."
