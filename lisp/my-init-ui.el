@@ -15,7 +15,7 @@
 
 (use-package tab-bar
   :defer t
-
+  :ensure nil
   :init
   (setq tab-bar-show 1)
   (setq tab-bar-close-button-show nil)
@@ -33,26 +33,29 @@
          (interactive)
          (tab-bar-select-tab ,number))))
 
-  (general-create-definer my/leader-tab :prefix "SPC TAB")
+  (general-create-definer my/leader-tab
+    :prefix "SPC TAB"
+    :non-normal-prefix "M-SPC TAB"
+    :prefix-map 'my/tab-map
+    :keymaps 'override
+    :states '(motion insert))
 
   (my/leader-tab
-    :states 'motion
-    :keymaps 'override
-    "n" #'tab-bar-new-tab
-    "c" #'tab-bar-close-tab
-    "o" #'tab-bar-close-other-tabs
-    "]" #'tab-bar-switch-to-next-tab
-    "[" #'tab-bar-switch-to-prev-tab
-    "TAB" #'tab-bar-switch-to-tab
-    "1" (my-tab-bar-go-to-tab-macro 1)
-    "2" (my-tab-bar-go-to-tab-macro 2)
-    "3" (my-tab-bar-go-to-tab-macro 3)
-    "4" (my-tab-bar-go-to-tab-macro 4)
-    "5" (my-tab-bar-go-to-tab-macro 5)
-    "6" (my-tab-bar-go-to-tab-macro 6)
-    "7" (my-tab-bar-go-to-tab-macro 7)
-    "8" (my-tab-bar-go-to-tab-macro 8)
-    "9" (my-tab-bar-go-to-tab-macro 9)))
+   "n" #'tab-bar-new-tab
+   "c" #'tab-bar-close-tab
+   "o" #'tab-bar-close-other-tabs
+   "]" #'tab-bar-switch-to-next-tab
+   "[" #'tab-bar-switch-to-prev-tab
+   "TAB" #'tab-bar-switch-to-tab
+   "1" (my-tab-bar-go-to-tab-macro 1)
+   "2" (my-tab-bar-go-to-tab-macro 2)
+   "3" (my-tab-bar-go-to-tab-macro 3)
+   "4" (my-tab-bar-go-to-tab-macro 4)
+   "5" (my-tab-bar-go-to-tab-macro 5)
+   "6" (my-tab-bar-go-to-tab-macro 6)
+   "7" (my-tab-bar-go-to-tab-macro 7)
+   "8" (my-tab-bar-go-to-tab-macro 8)
+   "9" (my-tab-bar-go-to-tab-macro 9)))
 
 (use-package doom-modeline
   :hook ((after-init . doom-modeline-mode)

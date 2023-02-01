@@ -8,14 +8,15 @@
 ;; and will switch back to it when Emacs is started or resumed. A nil
 ;; `visible-cursor' prevents this.
 (setq visible-cursor nil)
+(blink-cursor-mode -1)
 
-;; Enable the mouse in terminal Emacs
-(general-define-key [mouse-4] #'scroll-down-line
-                    [mouse-5] #'scroll-up-line)
 
 (defun my/tty-setup ()
   (xterm-mouse-mode)
   (evil-terminal-cursor-changer-activate)
+  ;; Enable the mouse in terminal Emacs
+  (general-define-key [mouse-4] #'scroll-down-line
+                      [mouse-5] #'scroll-up-line)
   (xclip-mode 1))
 
 (add-hook 'tty-setup-hook #'my/tty-setup)

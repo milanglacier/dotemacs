@@ -5,8 +5,7 @@
 (straight-use-package 'cape)
 
 (use-package company
-  :hook ((after-init . global-company-mode)
-         (global-company-mode . company-tng-mode))
+  :hook (global-company-mode . company-tng-mode)
 
   :init
   (setq company-minimum-prefix-length 2
@@ -25,9 +24,12 @@
         company-dabbrev-downcase nil
         company-selection-wrap-around t)
 
+  (my/run-hook-once evil-insert-state-entry-hook global-company-mode)
+
   :config
   (add-hook 'company-mode-hook #'evil-normalize-keymaps)
   (evil-make-overriding-map company-mode-map)
+ 
   (unless (display-graphic-p)
     ;; Don't persist company popups when switching back to normal mode.
     ;; `company-box' aborts on mode switch so it doesn't need this.
@@ -45,8 +47,11 @@
 
   (general-define-key :keymaps
                       'company-active-map
-                      "M-i" #'company-complete
-                      "C-e" #'company-abort))
+                      "C-e" #'company-abort)
+  (general-define-key :keymaps
+                      'company-mode-map
+                      "M-i" #'company-complete))
+
 
 (use-package company-box
   :defer t

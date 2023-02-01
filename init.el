@@ -34,6 +34,8 @@
 (require 'my-init-tty)
 (require 'my-init-evil)
 (require 'my-init-completion)
+(require 'my-init-elisp)
+(require 'my-misc)
 
 (defun my/cleanup-gc ()
   "Clean up gc."
