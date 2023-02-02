@@ -24,8 +24,9 @@
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
 
-(setq straight-use-package-by-default t)
-(setq use-package-expand-minimally t)
+(setq use-package-expand-minimally t
+      use-package-always-ensure nil
+      debug-on-error t)
 
 (require 'my-init-utils)
 (require 'my-basics)
@@ -34,8 +35,11 @@
 (require 'my-init-tty)
 (require 'my-init-evil)
 (require 'my-init-completion)
+(require 'my-init-minibuffer)
 (require 'my-init-elisp)
 (require 'my-misc)
+
+(setq debug-on-error nil)
 
 (defun my/cleanup-gc ()
   "Clean up gc."
@@ -48,3 +52,16 @@
 
 (provide 'init)
 ;;; init.el ends here
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(custom-safe-themes
+   '("51c71bb27bdab69b505d9bf71c99864051b37ac3de531d91fdad1598ad247138" default)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )

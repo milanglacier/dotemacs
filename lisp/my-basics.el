@@ -40,6 +40,10 @@
 (setq display-line-numbers-type t)
 (global-display-line-numbers-mode)
 
+(setq whitespace-style '(face tabs tab-mark trailing))
+(global-whitespace-mode)
+(setq-default indent-tabs-mode nil)
+
 ;; smooth scroll
 (setq scroll-step 1)
 (setq scroll-conservatively 10000)

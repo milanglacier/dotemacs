@@ -29,12 +29,12 @@
   :config
   (add-hook 'company-mode-hook #'evil-normalize-keymaps)
   (evil-make-overriding-map company-mode-map)
- 
+
   (unless (display-graphic-p)
     ;; Don't persist company popups when switching back to normal mode.
     ;; `company-box' aborts on mode switch so it doesn't need this.
     (add-hook 'evil-normal-state-entry-hook
-              (defun my-company-abort ()
+              (defun my/company-abort ()
                 (when company-candidates
                   (company-abort)))))
 

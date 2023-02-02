@@ -25,13 +25,15 @@
   (setq tab-bar-format '(tab-bar-format-tabs tab-bar-separator))
 
   :config
-  (defmacro my-tab-bar-go-to-tab-macro (number)
-    (let ((fun
-           (intern (format "my-tab-bar-go-to-tab-%d" number))))
+  (defmacro my/tab-bar-go-to-tab-macro (number)
+    (let ((fun (intern (format "my/tab-bar-go-to-tab-%d" number))))
       `(defun ,fun ()
          ,(format "go to tab %d" number)
          (interactive)
          (tab-bar-select-tab ,number))))
+
+  (my/leader
+   "TAB" '(:ignore t :which-key "Tab"))
 
   (general-create-definer my/leader-tab
     :prefix "SPC TAB"
@@ -47,15 +49,15 @@
    "]" #'tab-bar-switch-to-next-tab
    "[" #'tab-bar-switch-to-prev-tab
    "TAB" #'tab-bar-switch-to-tab
-   "1" (my-tab-bar-go-to-tab-macro 1)
-   "2" (my-tab-bar-go-to-tab-macro 2)
-   "3" (my-tab-bar-go-to-tab-macro 3)
-   "4" (my-tab-bar-go-to-tab-macro 4)
-   "5" (my-tab-bar-go-to-tab-macro 5)
-   "6" (my-tab-bar-go-to-tab-macro 6)
-   "7" (my-tab-bar-go-to-tab-macro 7)
-   "8" (my-tab-bar-go-to-tab-macro 8)
-   "9" (my-tab-bar-go-to-tab-macro 9)))
+   "1" (my/tab-bar-go-to-tab-macro 1)
+   "2" (my/tab-bar-go-to-tab-macro 2)
+   "3" (my/tab-bar-go-to-tab-macro 3)
+   "4" (my/tab-bar-go-to-tab-macro 4)
+   "5" (my/tab-bar-go-to-tab-macro 5)
+   "6" (my/tab-bar-go-to-tab-macro 6)
+   "7" (my/tab-bar-go-to-tab-macro 7)
+   "8" (my/tab-bar-go-to-tab-macro 8)
+   "9" (my/tab-bar-go-to-tab-macro 9)))
 
 (use-package doom-modeline
   :hook ((after-init . doom-modeline-mode)

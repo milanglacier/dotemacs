@@ -1,6 +1,7 @@
 ;;; my-misc.el -*- lexical-binding: t; -*-
 
 (straight-use-package 'ws-butler)
+(straight-use-package 'rainbow-delimiters)
 
 (use-package hideshow
   :ensure nil
@@ -19,9 +20,13 @@
   (setq ws-butler-keep-whitespace-before-point nil))
 
 (use-package elec-pair
+  :ensure nil
   :defer t
   :init
   (my/run-hook-once evil-insert-state-entry-hook electric-pair-mode))
+
+(use-package rainbow-delimiters
+  :hook (prog-mode . rainbow-delimiters-mode))
 
 (provide 'my-misc)
 ;;; my-misc.el ends here

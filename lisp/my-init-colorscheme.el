@@ -4,12 +4,13 @@
 (straight-use-package 'spacemacs-theme)
 
 (defvar my/day-themes
-  '(doom-solarized-light spacemacs-light modus-operandi))
+  '(doom-solarized-light spacemacs-light doom-one-light))
 (defvar my/night-themes
   '(spacemacs-dark doom-one doom-nord-aurora))
 
 (when (display-graphic-p)
-  (add-to-list 'my/night-themes 'modus-vivendi))
+  (add-to-list 'my/night-themes 'modus-vivendi)
+  (add-to-list 'my/day-themes 'modus-operandi))
 
 (defun my/pickup-random-color-theme (themes)
   (let* ((theme (nth (random (length themes)) themes)))

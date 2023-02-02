@@ -4,3 +4,5 @@ straight/*
 !straight/versions
 eln-cache/*
 .local/*
+vimish-fold
+projects
