@@ -5,7 +5,7 @@
 (straight-use-package 'cape)
 
 (use-package company
-  :hook (global-company-mode . company-tng-mode)
+  :defer t
 
   :init
   (setq company-minimum-prefix-length 2
@@ -25,6 +25,7 @@
         company-selection-wrap-around t)
 
   (my/run-hook-once evil-insert-state-entry-hook global-company-mode)
+  (add-hook 'global-company-mode-hook #'company-tng-mode)
 
   :config
   (add-hook 'company-mode-hook #'evil-normalize-keymaps)
