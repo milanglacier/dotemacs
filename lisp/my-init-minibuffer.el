@@ -131,8 +131,8 @@
    [remap list-directory] #'consult-dir)
   (general-define-key
    :keymaps 'vertico-map
-   "C-x C-d " #'consult-dir
-   "C-x C-j" #'consult-dir-jump-file)
+   "C-c C-d " #'consult-dir
+   "C-c C-j" #'consult-dir-jump-file)
 
   :config
   ;; TODO: doomemacs configures docker paths for consult dir
@@ -146,10 +146,14 @@
   (general-define-key
    [remap describe-bindings] #'embark-bindings)
 
+  (setq which-key-use-C-h-commands nil
+        prefix-help-command #'embark-prefix-help-command)
+
   (general-define-key
    :kemaps 'minibuffer-local-map
    "C-;" #'embark-act
-   "C-c C-;" #'embark-export
+   "C-c C-a" #'embark-act
+   "C-c C-e" #'embark-export
    "C-c C-l" #'embark-collet)
 
   (my/leader
