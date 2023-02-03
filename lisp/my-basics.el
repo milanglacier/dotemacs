@@ -15,14 +15,16 @@
 (setq make-backup-files nil)
 
 (set-display-table-slot standard-display-table 'truncation 32)
+(set-display-table-slot standard-display-table 'wrap 32)
 
-(defun my/display-truncation-indicator-as-whitespace ()
+(defun my/display-truncation-and-wrap-indicator-as-whitespace ()
   (when (not (char-table-p buffer-display-table))
     (setq buffer-display-table (make-display-table)))
-  (set-display-table-slot buffer-display-table 'truncation 32))
+  (set-display-table-slot buffer-display-table 'truncation 32)
+  (set-display-table-slot buffer-display-table 'wrap 32))
 
-(add-hook 'prog-mode-hook #'my/display-truncation-indicator-as-whitespace)
-(add-hook 'text-mode-hook #'my/display-truncation-indicator-as-whitespace)
+(add-hook 'prog-mode-hook #'my/display-truncation-and-wrap-indicator-as-whitespace)
+(add-hook 'text-mode-hook #'my/display-truncation-and-wrap-indicator-as-whitespace)
 ;; by default when a long line is truncated, emacs displays
 ;; a "$" sign at the border of window, which is ugly,
 ;; replace "$" with " "
