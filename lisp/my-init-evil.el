@@ -333,7 +333,7 @@
                    diff-mode dired dired-sidebar docker doc-view elisp-refs embark eglot
                    eldoc eshell eww flymake grep help helpful ibuffer imenu macrostep
                    magit-sections magit magic-todos man mu4e mu4e-conversation notmuch
-                   org org-roam osx-dictionary pdf python rg ripgrep tab-bar term vertico
+                   org org-roam osx-dictionary pdf python replace rg ripgrep tab-bar term vertico
                    vterm wdired wgrep which-key xref xwidget)))
 
 (provide 'my-init-evil)

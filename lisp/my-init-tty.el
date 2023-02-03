@@ -10,7 +10,6 @@
 (setq visible-cursor nil)
 (blink-cursor-mode -1)
 
-
 (defun my/tty-setup ()
   (xterm-mouse-mode)
   (evil-terminal-cursor-changer-activate)
