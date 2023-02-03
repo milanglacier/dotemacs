@@ -11,12 +11,12 @@
 (blink-cursor-mode -1)
 
 (defun my/tty-setup ()
-  (xterm-mouse-mode)
-  (evil-terminal-cursor-changer-activate)
-  ;; Enable the mouse in terminal Emacs
-  (general-define-key [mouse-4] #'scroll-down-line
-                      [mouse-5] #'scroll-up-line)
-  (xclip-mode 1))
+    (xterm-mouse-mode)
+    (evil-terminal-cursor-changer-activate)
+    ;; Enable the mouse in terminal Emacs
+    (general-define-key [mouse-4] #'scroll-down-line
+                        [mouse-5] #'scroll-up-line)
+    (xclip-mode 1))
 
 (add-hook 'tty-setup-hook #'my/tty-setup)
 

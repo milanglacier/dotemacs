@@ -8,6 +8,8 @@
 
 (setq warning-minimum-level :error)
 
+(setq initial-major-mode 'fundamental-mode)
+
 (defconst IS-MAC (eq system-type 'darwin))
 (defconst IS-LINUX (memq system-type '(gnu gnu/linux gnu/kfreebsd berkeley-unix)))
 (defconst IS-WINDOWS (memq system-type '(cygwin windows-nt ms-dos)))
@@ -18,10 +20,10 @@
 (set-display-table-slot standard-display-table 'wrap 32)
 
 (defun my/display-truncation-and-wrap-indicator-as-whitespace ()
-  (when (not (char-table-p buffer-display-table))
-    (setq buffer-display-table (make-display-table)))
-  (set-display-table-slot buffer-display-table 'truncation 32)
-  (set-display-table-slot buffer-display-table 'wrap 32))
+    (when (not (char-table-p buffer-display-table))
+        (setq buffer-display-table (make-display-table)))
+    (set-display-table-slot buffer-display-table 'truncation 32)
+    (set-display-table-slot buffer-display-table 'wrap 32))
 
 (add-hook 'prog-mode-hook #'my/display-truncation-and-wrap-indicator-as-whitespace)
 (add-hook 'text-mode-hook #'my/display-truncation-and-wrap-indicator-as-whitespace)

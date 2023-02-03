@@ -16,14 +16,14 @@
 (let ((bootstrap-file
        (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
       (bootstrap-version 6))
-  (unless (file-exists-p bootstrap-file)
-    (with-current-buffer
-        (url-retrieve-synchronously
-         "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
-         'silent 'inhibit-cookies)
-      (goto-char (point-max))
-      (eval-print-last-sexp)))
-  (load bootstrap-file nil 'nomessage))
+    (unless (file-exists-p bootstrap-file)
+        (with-current-buffer
+                (url-retrieve-synchronously
+                 "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
+                 'silent 'inhibit-cookies)
+            (goto-char (point-max))
+            (eval-print-last-sexp)))
+    (load bootstrap-file nil 'nomessage))
 
 (setq use-package-expand-minimally t
       use-package-always-ensure nil
@@ -37,6 +37,7 @@
 (require 'my-init-evil)
 (require 'my-init-completion)
 (require 'my-init-minibuffer)
+(require 'my-init-vcs)
 (require 'my-init-elisp)
 (require 'my-init-org)
 (require 'my-init-langs)
@@ -45,10 +46,10 @@
 (setq debug-on-error nil)
 
 (defun my/cleanup-gc ()
-  "Clean up gc."
-  (setq gc-cons-threshold  67108864) ; 64M
-  (setq gc-cons-percentage 0.1) ; original value
-  (garbage-collect))
+    "Clean up gc."
+    (setq gc-cons-threshold  67108864) ; 64M
+    (setq gc-cons-percentage 0.1) ; original value
+    (garbage-collect))
 
 ;; after started up, reset GC threshold to normal.
 (run-with-idle-timer 4 nil #'my/cleanup-gc)

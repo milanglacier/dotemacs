@@ -10,3 +10,4 @@ recentf
 auto-save-list/*
 history
 custom.el
+transient/*
