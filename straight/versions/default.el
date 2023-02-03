@@ -8,7 +8,7 @@
  ("company-box" . "766546b2668b5ef4eb4abbde632c9acd370c7788")
  ("company-mode" . "d5d06f0539068e741b12a480be3f312e9b6df812")
  ("compat" . "8885b1cd3f5a2833c727b4448583213deb2d1d76")
- ("consult" . "e421843b4634b79b03a7a7e46d45ae387125e2bf")
+ ("consult" . "2e1c45d1bda9b4c9746d2a4f107b9689218d1083")
  ("consult-dir" . "ed8f0874d26f10f5c5b181ab9f2cf4107df8a0eb")
  ("dash.el" . "3df46d7d9fe74f52a661565888e4d31fd760f0df")
  ("doom-modeline" . "6803d0cac89c8d5fd784cc45f52a6450758430e3")
