@@ -76,7 +76,7 @@
     "g" #'consult-ripgrep
     "a" #'embark-act
     "j" #'evil-collection-consult-jump-list
-    "m" #'consult-mark
+    "m" #'evil-collection-consult-mark
     "i" #'consult-imenu
     "I" #'consult-imenu-multi)
 
