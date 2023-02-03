@@ -26,6 +26,29 @@
           (cdr args)))
   (advice-add #'completing-read-multiple :filter-args #'crm-indicator)
 
+  (general-create-definer my/find-map
+    :prefix "SPC f"
+    :non-normal-prefix "M-SPC f"
+    :prefix-map 'my/find-map)
+
+  (my/find-map
+    :keymaps 'override
+    :states 'motion
+    "" '(:ignore t :which-key "find")
+    "f" #'project-find-file
+    "F" #'find-file
+    "d" #'project-dired
+    "o" #'consult-recent-file
+    "r" #'consult-yank-from-kill-ring
+    "b" #'consult-buffer
+    "p" #'project-switch-project
+    "g" #'consult-ripgrep
+    "a" #'embark-act
+    "j" #'evil-collection-consult-jump-list
+    "m" #'evil-collection-consult-mark
+    "i" #'consult-imenu
+    "I" #'consult-imenu-multi)
+
   :config
   (setq vertico-resize nil
         vertico-count 17
@@ -57,28 +80,6 @@
    "C-n" #'next-line-or-history-element
    "ESC" #'abort-recursive-edit
    "C-u" #'evil-delete-back-to-indentation)
-
-  (general-create-definer my/find-map
-    :prefix "SPC f"
-    :non-normal-prefix "M-SPC f"
-    :prefix-map 'my/find-map)
-
-  (my/find-map
-    :keymaps 'override
-    :states 'motion
-    "" '(:ignore t :which-key "find")
-    "f" #'project-find-file
-    "d" #'project-dired
-    "o" #'consult-recent-file
-    "r" #'consult-yank-from-kill-ring
-    "b" #'consult-buffer
-    "p" #'project-switch-project
-    "g" #'consult-ripgrep
-    "a" #'embark-act
-    "j" #'evil-collection-consult-jump-list
-    "m" #'evil-collection-consult-mark
-    "i" #'consult-imenu
-    "I" #'consult-imenu-multi)
 
   )
 
