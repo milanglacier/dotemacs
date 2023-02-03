@@ -183,6 +183,58 @@
     :keymaps 'override
     :states '(motion insert)
     "h" #'evil-ex-nohighlight)
+
+  (general-create-definer my/window-map
+    :prefix "SPC w"
+    :non-normal-prefix "M-SPC w"
+    :prefix-map 'my/window-map)
+
+  (my/window-map
+    :states '(motion insert)
+    :keymaps 'override
+    "w" #'evil-window-next
+    "p" #'evil-window-mru
+    "W" #'evil-window-prev
+    "s" #'evil-window-split
+    "v" #'evil-window-vsplit
+    "h" #'evil-window-left
+    "j" #'evil-window-down
+    "k" #'evil-window-up
+    "l" #'evil-window-right
+    "q" #'evil-quit
+    "o" #'delete-other-windows
+    "=" #'balance-windows
+    "+" #'evil-window-increase-height
+    "-" #'evil-window-decrease-height
+    ":" #'evil-ex
+    "<" #'evil-window-increase-width
+    ">" #'evil-window-increase-width
+    "_" #'evil-window-set-height
+    "|" #'evil-window-set-width
+    "c" #'evil-window-delete
+    "gd" #'xref-find-definitions-other-window
+    "x" #'evil-window-exchange
+    "r" #'evil-window-rotate-downwards
+    "R" #'evil-window-rotate-upwards
+    "H" #'evil-window-move-far-left
+    "J" #'evil-window-move-far-bottom
+    "K" #'evil-window-move-very-top
+    "L" #'evil-window-move-far-right)
+
+  (general-create-definer my/buffer-map
+    :prefix "SPC b"
+    :non-normal-prefix "M-SPC b"
+    :prefix-map 'my/buffer-map)
+
+  (my/buffer-map
+    :states '(motion insert)
+    :keymaps 'override
+    "d" #'evil-delete-buffer
+    "[" #'previous-buffer
+    "]" #'next-buffer
+    "s" #'consult-buffer
+    "i" #'ibuffer)
+
   )
 
 (use-package evil-goggles
