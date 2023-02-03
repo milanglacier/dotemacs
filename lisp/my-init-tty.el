@@ -10,6 +10,12 @@
 (setq visible-cursor nil)
 (blink-cursor-mode -1)
 
+;; to seperate tab from C-i in GUI mode
+;; since C-i and TAB is indistinguishable in GUI mode
+(general-define-key
+ :keymaps 'function-key-map
+ "<tab>" nil)
+
 (defun my/tty-setup ()
   (xterm-mouse-mode)
   (evil-terminal-cursor-changer-activate)

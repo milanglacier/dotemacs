@@ -53,7 +53,8 @@
 (my/toggle-map
   :keymaps 'override
   :states '(motion insert normal)
-  "w" #'visual-line-mode)
+  "v" #'visual-line-mode
+  "t" #'toggle-truncate-lines)
 
 (provide 'my-misc)
 ;;; my-misc.el ends here
