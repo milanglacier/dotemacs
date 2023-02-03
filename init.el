@@ -10,7 +10,7 @@
 (add-to-list 'load-path (file-name-concat user-emacs-directory "lisp"))
 (setq custom-file (file-name-concat user-emacs-directory "custom.el"))
 
-;; bootsrap straight, copied from
+;; bootstrap straight.el, copied from
 ;; URL: `https://github.com/radian-software/straight.el#getting-started'
 (defvar bootstrap-version)
 (let ((bootstrap-file
@@ -38,6 +38,8 @@
 (require 'my-init-completion)
 (require 'my-init-minibuffer)
 (require 'my-init-elisp)
+(require 'my-init-org)
+(require 'my-init-langs)
 (require 'my-misc)
 
 (setq debug-on-error nil)

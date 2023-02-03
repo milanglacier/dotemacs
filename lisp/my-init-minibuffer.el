@@ -154,7 +154,7 @@
    "C-;" #'embark-act
    "C-c C-a" #'embark-act
    "C-c C-e" #'embark-export
-   "C-c C-l" #'embark-collet)
+   "C-c C-l" #'embark-collect)
 
   (my/leader
     :keymaps 'override
