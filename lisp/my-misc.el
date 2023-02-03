@@ -47,12 +47,12 @@
 
 (my/leader
   :keymaps 'override
-  :states '(visual insert motion)
+  :states '(visual insert motion normal)
   "u" #'universal-argument)
 
 (my/toggle-map
   :keymaps 'override
-  :states '(motion insert)
+  :states '(motion insert normal)
   "w" #'visual-line-mode)
 
 (provide 'my-misc)

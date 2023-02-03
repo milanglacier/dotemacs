@@ -19,7 +19,7 @@
   :config
   (general-define-key
    :keymaps 'helpful-mode-map
-   :states 'motion
+   :states '(motion normal)
    "K" (defun my/helpful-lookup-symbl-at-point ()
          (interactive)
          (helpful-symbol (symbol-at-point)))))
@@ -43,13 +43,13 @@
       (helpful-symbol (symbol-at-point))))
 
   (general-define-key
-   :states '(motion visual)
+   :states '(motion visual normal)
    :keymaps 'emacs-lisp-mode-map
    "K" #'my/elisp-loop-up-symbol)
 
   (my/localleader
     :keymaps 'emacs-lisp-mode-map
-    :states '(motion visual insert)
+    :states '(motion visual insert normal)
     "m" #'macrostep-expand
     "e" '(:ignore t :which-key "eval")
     "ee" #'eval-last-sexp

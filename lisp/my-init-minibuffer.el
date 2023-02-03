@@ -33,7 +33,7 @@
 
   (my/find-map
     :keymaps 'override
-    :states 'motion
+    :states '(motion normal)
     "" '(:ignore t :which-key "find")
     "f" #'project-find-file
     "F" #'find-file

@@ -54,12 +54,12 @@
 
   (my/open-map
     :keymaps 'override
-    :states '(motion visual insert)
+    :states '(motion visual insert normal)
     ":" #'evil-command-window-ex)
 
   (my/toggle-map
     :keymaps 'override
-    :states '(motion insert)
+    :states '(motion insert normal)
     "h" #'evil-ex-nohighlight)
 
   (general-create-definer my/window-map
@@ -68,7 +68,7 @@
     :prefix-map 'my/window-map)
 
   (my/window-map
-    :states '(motion insert)
+    :states '(motion insert normal)
     :keymaps 'override
     "w" #'evil-window-next
     "p" #'evil-window-mru
@@ -105,7 +105,7 @@
     :prefix-map 'my/buffer-map)
 
   (my/buffer-map
-    :states '(motion insert)
+    :states '(motion insert normal)
     :keymaps 'override
     "d" #'evil-delete-buffer
     "[" #'previous-buffer
@@ -174,7 +174,7 @@
    "Z" #'evil-snipe-S)
 
   (general-define-key
-   :states 'motion
+   :states '(motion normal)
    [remap evil-jump-backward] #'better-jumper-jump-backward
    [remap evil-jump-forward] #'better-jumper-jump-forward
    "[b" #'previous-buffer
@@ -290,7 +290,7 @@
     :non-normal-prefix "M-SPC j"
     :prefix-map 'my/jump-map)
   (my/jump-map
-   :states '(motion insert)
+   :states '(motion insert normal)
    :keymaps 'override
    "" '(:ignore t :which-key "jump")
    "o" #'better-jumper-jump-backward

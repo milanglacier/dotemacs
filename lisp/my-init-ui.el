@@ -38,7 +38,7 @@
     :prefix-map 'my/tab-map)
 
   (my/tab-map
-   :states '(motion insert)
+   :states '(motion insert normal)
    :keymaps 'override
    "" '(:ignore t :which-key "Tab")
    "n" #'tab-bar-new-tab
