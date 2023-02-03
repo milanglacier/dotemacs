@@ -60,12 +60,11 @@
   )
 
 (use-package doom-modeline
-  :hook ((after-init . doom-modeline-mode)
-         (doom-modeline-mode . size-indication-mode) ; filesize in modeline
-         (doom-modeline-mode . column-number-mode) ; cursor column in modeline
-         )
+  :hook (after-init . doom-modeline-mode)
 
   :init
+  (add-hook 'doom-modeline-mode-hook #'size-indication-mode)
+  (add-hook 'doom-modeline-mode-hook #'column-number-mode)
   (setq doom-modeline-bar-width 3
         doom-modeline-github nil
         doom-modeline-mu4e nil
