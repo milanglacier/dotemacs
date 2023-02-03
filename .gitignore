@@ -6,3 +6,7 @@ eln-cache/*
 .local/*
 vimish-fold
 projects
+recentf
+auto-save-list/*
+history
+custom.el

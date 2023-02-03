@@ -71,8 +71,6 @@
   (global-evil-matchit-mode)
   (evil-collection-init)
 
-  ;; TODO: when wgrep is configured, copy #'+evil-delete from doomemacs.
-
   ;; TODO: doom hacks a lot of advices. However I don't really understand them.
   ;; (Maybe I don't face the situations where I need those advices).  Leave this
   ;; comment for the purpopse of future reminder.  If one day I met those
@@ -170,8 +168,21 @@
   (general-define-key
    :keymaps '(evil-ex-completion-map evil-ex-search-keymap)
    "C-p" #'previous-complete-history-element
-   "C-n" #'next-complete-history-element)
+   "C-n" #'next-complete-history-element
+   "C-k" #'kill-line
+   "C-b" #'backward-char
+   "C-f" #'forward-char
+   "C-a" #'move-beginning-of-line)
 
+  (my/open-map
+    :keymaps 'override
+    :states '(motion visual insert)
+    ":" #'evil-command-window-ex)
+
+  (my/toggle-map
+    :keymaps 'override
+    :states '(motion insert)
+    "h" #'evil-ex-nohighlight)
   )
 
 (use-package evil-goggles
@@ -222,18 +233,17 @@
 (use-package better-jumper
   :defer t
   :config
-  (general-create-definer my/leader-jump
+  (general-create-definer my/jump-map
     :prefix "SPC j"
     :non-normal-prefix "M-SPC j"
-    :states '(motion insert)
-    :prefix-map 'my/jump-map
-    :keymaps 'override)
-
-  (my/leader "j" '(:ignore t :which-key "jump"))
-
-  (my/leader-jump
-    "o" #'better-jumper-jump-backward
-    "i" #'better-jumper-jump-forward))
+    :prefix-map 'my/jump-map)
+  (my/jump-map
+   :states '(motion insert)
+   :keymaps 'override
+   "" '(:ignore t :which-key "jump")
+   "o" #'better-jumper-jump-backward
+   "i" #'better-jumper-jump-forward)
+  )
 
 ;; adopted from
 ;; URL `https://stackoverflow.com/questions/18102004/emacs-evil-mode-how-to-create-a-new-text-object-to-select-words-with-any-non-sp'
@@ -269,7 +279,7 @@
   (setq evil-collection-mode-list
         '(arc-mode bm bookmark consult compilation eldoc daemons debug diff-hl
                    diff-mode dired dired-sidebar docker doc-view elisp-refs embark eglot
-                   eldoc eshell eww flymake grep helpful ibuffer imenu macrostep
+                   eldoc eshell eww flymake grep help helpful ibuffer imenu macrostep
                    magit-sections magit magic-todos man mu4e mu4e-conversation notmuch
                    org org-roam osx-dictionary pdf python rg ripgrep tab-bar term vertico
                    vterm wdired wgrep which-key xref xwidget)))

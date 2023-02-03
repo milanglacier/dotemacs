@@ -50,8 +50,14 @@
                       "C-e" #'company-abort)
   (general-define-key :keymaps
                       'company-mode-map
-                      "M-i" #'company-complete))
+                      "M-i" #'company-complete)
+;; We follow a suggestion by company maintainer u/hvis:
+;; https://www.reddit.com/r/emacs/comments/nichkl/comment/gz1jr3s/
+  (defun my/company-completion-styles (capf-fn &rest args)
+    (let ((completion-styles '(basic partial-completion emacs22)))
+      (apply capf-fn args)))
 
+    (advice-add #'company-capf :around #'my/company-completion-styles))
 
 (use-package company-box
   :defer t

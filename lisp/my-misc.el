@@ -28,5 +28,32 @@
 (use-package rainbow-delimiters
   :hook (prog-mode . rainbow-delimiters-mode))
 
+(use-package savehist
+  :ensure nil
+  :defer t
+  :init
+  (my/run-hook-once pre-command-hook savehist-mode)
+  :config
+  (setq savehist-save-minibuffer-history t
+        savehist-autosave-interval nil))
+
+(use-package recentf
+  :ensure nil
+  :defer t
+  :init
+  (my/run-hook-once pre-command-hook recentf-mode)
+  :config
+  (setq recentf-max-saved-items 200))
+
+(my/leader
+  :keymaps 'override
+  :states '(visual insert motion)
+  "u" #'universal-argument)
+
+(my/toggle-map
+  :keymaps 'override
+  :states '(motion insert)
+  "w" #'visual-line-mode)
+
 (provide 'my-misc)
 ;;; my-misc.el ends here

@@ -32,17 +32,15 @@
          (interactive)
          (tab-bar-select-tab ,number))))
 
-  (my/leader
-   "TAB" '(:ignore t :which-key "Tab"))
-
-  (general-create-definer my/leader-tab
+  (general-create-definer my/tab-map
     :prefix "SPC TAB"
     :non-normal-prefix "M-SPC TAB"
-    :prefix-map 'my/tab-map
-    :keymaps 'override
-    :states '(motion insert))
+    :prefix-map 'my/tab-map)
 
-  (my/leader-tab
+  (my/tab-map
+   :states '(motion insert)
+   :keymaps 'override
+   "" '(:ignore t :which-key "Tab")
    "n" #'tab-bar-new-tab
    "c" #'tab-bar-close-tab
    "o" #'tab-bar-close-other-tabs
@@ -57,7 +55,9 @@
    "6" (my/tab-bar-go-to-tab-macro 6)
    "7" (my/tab-bar-go-to-tab-macro 7)
    "8" (my/tab-bar-go-to-tab-macro 8)
-   "9" (my/tab-bar-go-to-tab-macro 9)))
+   "9" (my/tab-bar-go-to-tab-macro 9))
+
+  )
 
 (use-package doom-modeline
   :hook ((after-init . doom-modeline-mode)

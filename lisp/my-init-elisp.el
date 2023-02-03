@@ -15,7 +15,14 @@
    [remap describe-command] #'helpful-command
    [remap describe-variable] #'helpful-variable
    [remap describe-key] #'helpful-key
-   [remap describe-symbol] #'helpful-symbol))
+   [remap describe-symbol] #'helpful-symbol)
+  :config
+  (general-define-key
+   :keymaps 'helpful-mode-map
+   :states 'motion
+   "K" (defun my/helpful-lookup-symbl-at-point ()
+         (interactive)
+         (helpful-symbol (symbol-at-point)))))
 
 (use-package elisp-demos
   :defer t
@@ -36,13 +43,13 @@
       (helpful-symbol (symbol-at-point))))
 
   (general-define-key
-   :states '(normal visual)
+   :states '(motion visual)
    :keymaps 'emacs-lisp-mode-map
    "K" #'my/elisp-loop-up-symbol)
 
   (my/localleader
-    :kemaps 'emacs-lisp-mode-map
-    :states '(normal visual insert)
+    :keymaps 'emacs-lisp-mode-map
+    :states '(motion visual insert)
     "m" #'macrostep-expand
     "e" '(:ignore t :which-key "eval")
     "ee" #'eval-last-sexp
