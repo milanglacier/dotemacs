@@ -9,15 +9,17 @@
 
   :init
   (setq company-minimum-prefix-length 2
+        company-dabbrev-minimum-length 3
         company-tooltip-limit 14
         company-tooltip-align-annotations t
         company-require-match 'never
+        company-files-exclusions '(".git/" ".DS_Store")
         company-global-modes '(not vterm-mode)
         company-frontends '(company-pseudo-tooltip-frontend
                             ;; always show candidates in overlay tooltip
                             company-echo-metadata-frontend)
-        company-backends '((company-capf :with company-yasnippet
-                            :separate company-dabbrev company-files))
+        company-backends '((company-capf company-files :separate company-dabbrev
+                                         :with company-yasnippet))
         company-auto-commit nil
         company-dabbrev-other-buffers nil
         company-dabbrev-ignore-case t
@@ -52,13 +54,13 @@
   (general-define-key :keymaps
                       'company-mode-map
                       "M-i" #'company-complete)
-;; We follow a suggestion by company maintainer u/hvis:
-;; https://www.reddit.com/r/emacs/comments/nichkl/comment/gz1jr3s/
+  ;; We follow a suggestion by company maintainer u/hvis:
+  ;; https://www.reddit.com/r/emacs/comments/nichkl/comment/gz1jr3s/
   (defun my/company-completion-styles (capf-fn &rest args)
     (let ((completion-styles '(basic partial-completion emacs22)))
       (apply capf-fn args)))
 
-    (advice-add #'company-capf :around #'my/company-completion-styles))
+  (advice-add #'company-capf :around #'my/company-completion-styles))
 
 (use-package company-box
   :defer t
