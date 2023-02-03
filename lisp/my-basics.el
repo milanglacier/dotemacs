@@ -42,10 +42,10 @@
 
 ;; display line numbers in the left margin of the window.
 (setq display-line-numbers-type t)
-(global-display-line-numbers-mode)
+(add-hook 'after-init-hook #'global-display-line-numbers-mode)
 
 (setq whitespace-style '(face tabs tab-mark trailing))
-(global-whitespace-mode)
+(add-hook 'after-init-hook #'global-whitespace-mode)
 (setq-default indent-tabs-mode nil)
 
 ;; smooth scroll

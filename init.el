@@ -7,7 +7,7 @@
 ;; (setq user-init-file (or load-file-name (buffer-file-name)))
 ;; (setq user-emacs-directory (file-name-directory user-init-file))
 
-(add-to-list 'load-path (file-name-concat user-emacs-directory "lisp"))
+(push (file-name-concat user-emacs-directory "lisp") load-path)
 (setq custom-file (file-name-concat user-emacs-directory "custom.el"))
 
 ;; bootstrap straight.el, copied from
