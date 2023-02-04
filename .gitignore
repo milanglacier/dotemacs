@@ -11,3 +11,4 @@ auto-save-list/*
 history
 custom.el
 transient/*
+bookmarks
