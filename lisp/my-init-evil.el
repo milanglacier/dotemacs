@@ -107,6 +107,7 @@
     (my/buffer-map
         :states '(motion insert normal)
         :keymaps 'override
+        "" '(:ignore t :which-key "buffer")
         "d" #'evil-delete-buffer
         "[" #'previous-buffer
         "]" #'next-buffer
