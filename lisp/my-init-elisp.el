@@ -30,7 +30,7 @@
     (advice-add #'describe-function-1 :after #'elisp-demos-advice-describe-function-1)
     (advice-add #'helpful-update :after #'elisp-demos-advice-helpful-update))
 
-;; TODO: I don't know why I can't use `use-package' with 'elisp-mode
+;; NOTE: I don't know why I can't use `use-package' with 'elisp-mode
 (with-eval-after-load 'elisp-mode
 
     (elispfl-mode)

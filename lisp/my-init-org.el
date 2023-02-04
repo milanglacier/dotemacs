@@ -31,27 +31,23 @@ the element of which should match the properties of
 by default it contains `:prepend t',
 `:file' should be a symbol whose value is the file
 `:template' should be a string indicating the template to be filled"
-    (let* (
-           (file (plist-get args :file))
+    (let* ((file (plist-get args :file))
            (type (or (plist-get args :type) 'entry))
            (headings (plist-get args :headings))
            (properties (append (plist-get args :properties)
                                '(:prepend t)))
            (target-head (or (plist-get args :target-head) 'file+olp+datetree))
            (target (append `(,target-head ,file) headings))
-           (template (plist-get args :template))
-           )
+           (template (plist-get args :template)))
         (append `(,letter ,desc ,type)
                 `(,target)
                 `(,template)
                 properties)))
 
 (defun my/org-capture-bubble-tea-template (letter desc headings &rest args)
-    (let* (
-           (template (or (plist-get args :template)
+    (let* ((template (or (plist-get args :template)
                          "* %U %?"))
-           (properties (plist-get args :properties))
-           )
+           (properties (plist-get args :properties)))
         (my/general-org-capture-template letter desc
                                          :headings headings
                                          :properties properties
@@ -247,7 +243,8 @@ by default it contains `:prepend t',
           org-agenda-span 10
           ;; always start on today
           org-agenda-start-on-weekday nil
-          org-agenda-start-day "-3d")
+          org-agenda-start-day "-3d"
+          org-agenda-inhibit-startup t)
     )
 
 (use-package ob
@@ -255,7 +252,8 @@ by default it contains `:prepend t',
     :defer t
     :init
     (setq org-src-preserve-indentation t
-          org-src-tab-acts-natively t
+          org-edit-src-content-indentation 0
+          ;; org-src-tab-acts-natively t
           org-confirm-babel-evaluate nil
           org-link-elisp-confirm-function nil
           ;; Show src buffer in popup, and don't monopolize the frame
