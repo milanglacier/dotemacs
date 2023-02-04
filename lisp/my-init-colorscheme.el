@@ -7,6 +7,8 @@
     '(doom-solarized-light spacemacs-light doom-one-light))
 (defvar my/night-themes
     '(spacemacs-dark doom-one doom-nord-aurora))
+(defvar my/selected-theme nil
+    "selected theme")
 
 (when (display-graphic-p)
     (add-to-list 'my/night-themes 'modus-vivendi)
@@ -14,7 +16,10 @@
 
 (defun my/pickup-random-color-theme (themes)
     (let* ((theme (nth (random (length themes)) themes)))
+        (disable-theme my/selected-theme)
+        (setq my/selected-theme theme)
         (load-theme theme t)
+        (enable-theme theme)
         (when (string-match-p "doom" (symbol-name theme))
             (doom-themes-org-config))))
 
