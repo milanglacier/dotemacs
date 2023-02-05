@@ -17,33 +17,6 @@
 ;; (when IS-MAC
 ;;   (straight-use-package 'org-mac-link))
 
-(defun my/general-org-capture-template (letter desc &rest args)
-    "a wrapper to generate my frequently used `org-capture' template.
-args is a `plist' which accpets following keys:
-`:headings', `:target-head', `:propertis',`:file', `:template', `:type'.
-`:headings' is a list of headings (of type string),
-`:type' is the type of an entry, by default it is `entry',
-`:target-head' is first element of target,
-by default it is `file+olp+datetree',
-`:properties' should be a list,
-the element of which should match the properties of
-`org-capture-templates',
-by default it contains `:prepend t',
-`:file' should be a symbol whose value is the file
-`:template' should be a string indicating the template to be filled"
-    (let* ((file (plist-get args :file))
-           (type (or (plist-get args :type) 'entry))
-           (headings (plist-get args :headings))
-           (properties (append (plist-get args :properties)
-                               '(:prepend t)))
-           (target-head (or (plist-get args :target-head) 'file+olp+datetree))
-           (target (append `(,target-head ,file) headings))
-           (template (plist-get args :template)))
-        (append `(,letter ,desc ,type)
-                `(,target)
-                `(,template)
-                properties)))
-
 (defun my/org-capture-bubble-tea-template (letter desc headings template &rest properties)
     `(,letter ,desc table-line
               (file+olp ,my/org-capture-bubble-tea-live-file
@@ -174,44 +147,34 @@ files in the org-directory to create the org-agenda view"
           my/org-capture-bubble-tea-live-file (file-name-concat "capture" "bubble-tea.org"))
 
     (setq org-capture-templates
-          `(
-            ,(my/general-org-capture-template
-              "t" "Personal todo"
-              :target-head 'file
-              :file my/org-capture-todo-file
-              :template "* TODO %?%^g\nSCHEDULED: %t")
-            ,(my/general-org-capture-template
-              "n" "Personal notes"
-              :target-head 'file :file my/org-capture-notes-file
-              :template "* %u %?\n%i\n%a")
-            ,(my/general-org-capture-template
-              "j" "Applied jobs"
-              :type 'checkitem :file my/org-capture-todo-file
-              :headings '("Applied jobs")
-              :template "- [ ] %?")
-            ,(my/general-org-capture-template
-              "i" "clock in(start a timer)"
-              :target-head 'file :file my/org-capture-todo-file
-              :template "* TODO %?%^g\nSCHEDULED: %t"
-              :properties '(:clock-in t :clock-keep t))
+          `(("t" "Personal todo" entry
+             (file ,my/org-capture-todo-file)
+             "* TODO %?%^g\nSCHEDULED: %t" :prepend t)
+            ("n" "Personal notes" entry
+             (file ,my/org-capture-notes-file)
+             "* %u %?\n%i\n%a" :prepend t)
+            ("j" "Applied jobs" checkitem
+             (file+olp ,my/org-capture-todo-file "Applied jobs")
+             "- [ ] %?")
+            ("i" "clock in(start a timer)" entry
+             (file ,my/org-capture-todo-file)
+             "* TODO %?%^g\nSCHEDULED: %t"
+             :clock-in t :clock-keep t :prepend t)
 
             ("e" "English notes")
-            ,(my/general-org-capture-template
-              "em" "Manually fill"
-              :file my/org-capture-english-note-file
-              :template "* %^{prompt}\n%i\n\n%a\n:explanation:\n%?\n:END:")
-            ,(my/general-org-capture-template
-              "ew" "quick fill with word and sentence under point"
-              :file my/org-capture-english-note-file
-              :template (concat "* %(with-current-buffer (org-capture-get :original-buffer) (current-word))"
-                                "\n%(with-current-buffer (org-capture-get :original-buffer) (thing-at-point 'sentence t))"
-                                "\n\n%a\n:explanation:\n%?\n:END:"))
-            ,(my/general-org-capture-template
-              "er" "quick fill with selected region and sentence under point"
-              :file my/org-capture-english-note-file
-              :template (concat "* %i"
-                                "\n%(with-current-buffer (org-capture-get :original-buffer) (thing-at-point 'sentence t))"
-                                "\n\n%a\n:explanation:\n%?\n:END:"))
+            ("em" "Manually fill" entry
+             (file+olp+datetree ,my/org-capture-english-note-file)
+             "* %^{prompt}\n%i\n\n%a\n:explanation:\n%?\n:END:")
+            ("ew" "quick fill with word and sentence under point" entry
+             (file+olp+datetree ,my/org-capture-english-note-file)
+             ,(concat "* %(with-current-buffer (org-capture-get :original-buffer) (current-word))"
+                      "\n%(with-current-buffer (org-capture-get :original-buffer) (thing-at-point 'sentence t))"
+                      "\n\n%a\n:explanation:\n%?\n:END:"))
+            ("er" "quick fill with selected region and sentence under point" entry
+             (file+olp+datetree ,my/org-capture-english-note-file)
+             ,(concat "* %i"
+                      "\n%(with-current-buffer (org-capture-get :original-buffer) (thing-at-point 'sentence t))"
+                      "\n\n%a\n:explanation:\n%?\n:END:"))
 
             ("b" "bubble tea")
             ,(my/org-capture-bubble-tea-template "bf" "feed food" '("feed food") "|%U|Taste%?|||||")
