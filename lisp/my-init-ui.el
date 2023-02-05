@@ -8,12 +8,11 @@
     "if current window is scratch buffer, then replace this buffer
     with org agenda otherwise open org-agenda with the specified way
     (i.e create a new tab)"
-    (if (equal (buffer-name) "*scratch*")
+    (when (equal (buffer-name) "*scratch*")
             (let ((display-buffer-alist
                    '(("Org Agenda"
                       (display-buffer-same-window)))))
-                (call-interactively #'org-agenda-list))
-        (call-interactively #'org-agenda-list)))
+                (call-interactively #'org-agenda-list))))
 
 (add-hook 'emacs-startup-hook
           (defun my/delayed-startup-screen ()
