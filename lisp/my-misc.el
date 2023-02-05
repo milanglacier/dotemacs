@@ -45,6 +45,12 @@
     :config
     (setq recentf-max-saved-items 200))
 
+(use-package project
+    :defer t
+    :config
+    (add-to-list 'project-switch-commands
+                 '(project-dired "Dired at root")))
+
 (my/leader
     :keymaps 'override
     :states '(visual insert motion normal)
