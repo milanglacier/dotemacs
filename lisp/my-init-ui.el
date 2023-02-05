@@ -4,6 +4,22 @@
 (straight-use-package 'doom-modeline)
 (straight-use-package 'which-key)
 
+(defun my/display-org-agenda-list ()
+    "if current window is scratch buffer, then replace this buffer
+    with org agenda otherwise open org-agenda with the specified way
+    (i.e create a new tab)"
+    (if (equal (buffer-name) "*scratch*")
+            (let ((display-buffer-alist
+                   '(("Org Agenda"
+                      (display-buffer-same-window)))))
+                (call-interactively #'org-agenda-list))
+        (call-interactively #'org-agenda-list)))
+
+(add-hook 'emacs-startup-hook
+          (defun my/delayed-startup-screen ()
+              "`org-agenda-list' is slow, don't run it immediately after startup"
+              (run-with-idle-timer 2 nil #'my/display-org-agenda-list)))
+
 (use-package all-the-icons
     :if (display-graphic-p)
     :commands (all-the-icons-octicon

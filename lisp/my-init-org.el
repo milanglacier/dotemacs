@@ -67,10 +67,13 @@ by default it contains `:prepend t',
         "o" #'org-clock-goto)
 
     (setq org-directory "~/Desktop/orgmode"
+          ;; org-agenda will visit all org files listed
+          ;; in `org-agenda-files' to generate the org-agenda view.
+          ;; avoid too much files inside this directory.
           org-agenda-files `(,org-directory
                              ,@(mapcar
                                 (lambda (x) (file-name-concat org-directory x))
-                                '("misc" "roam" "archive" "capture")))
+                                '("capture")))
           org-archive-location (expand-file-name "%s_archive::" (concat org-directory "/archive"))
           org-id-locations-file (file-name-concat org-directory ".orgids")
           org-id-locations-file-relative t
@@ -246,6 +249,7 @@ by default it contains `:prepend t',
           org-agenda-start-day "-3d"
           org-agenda-inhibit-startup t
           org-agenda-window-setup 'other-tab)
+
     )
 
 (use-package ob
