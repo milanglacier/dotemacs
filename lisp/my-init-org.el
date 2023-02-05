@@ -161,7 +161,7 @@ by default it contains `:prepend t',
     (setq my/org-capture-todo-file (file-name-concat "capture" "todo.org")
           my/org-capture-notes-file (file-name-concat "capture" "notes.org")
           my/org-capture-english-note-file (file-name-concat "capture" "english.org")
-          my/org-capture-bubble-tea-live-file (file-name-concat "capture" "bubble_tea_live.org"))
+          my/org-capture-bubble-tea-live-file (file-name-concat "capture" "bubble-tea.org"))
 
     (setq org-capture-templates
           `(
