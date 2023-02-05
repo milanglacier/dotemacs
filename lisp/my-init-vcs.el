@@ -19,7 +19,9 @@
     :config
     (add-to-list 'display-buffer-alist
                  '("magit:" ;; the main magit dashboard
-                   (display-buffer-in-new-tab)))
+                   ;; don't create new window if there is one magit window
+                   ;; and create new tab if there isn't one magit window.
+                   (display-buffer-reuse-window display-buffer-in-new-tab)))
     (general-define-key
      :states '(normal motion)
      :keymaps 'magit-status-mode-map
