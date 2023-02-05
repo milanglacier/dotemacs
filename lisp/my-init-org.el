@@ -198,6 +198,11 @@ files in the org-directory to create the org-agenda view"
     ;; underlying, modified buffer. This fixes that.
     (add-hook 'org-after-refile-insert-hook #'save-buffer)
 
+    (add-hook 'org-capture-mode-hook
+              ;; completion popup in small screen is annoying
+              (defun my/disable-company()
+                  (company-mode -1)))
+
     )
 
 (use-package org-agenda
