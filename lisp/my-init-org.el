@@ -44,15 +44,28 @@ by default it contains `:prepend t',
                 `(,template)
                 properties)))
 
-(defun my/org-capture-bubble-tea-template (letter desc headings &rest args)
-    (let* ((template (or (plist-get args :template)
-                         "* %U %?"))
-           (properties (plist-get args :properties)))
-        (my/general-org-capture-template letter desc
-                                         :headings headings
-                                         :properties properties
-                                         :file my/org-capture-bubble-tea-live-file
-                                         :template template)))
+(defun my/org-capture-bubble-tea-template (letter desc headings template &rest properties)
+    `(,letter ,desc table-line
+              (file+olp ,my/org-capture-bubble-tea-live-file
+                        ,@headings ,(format-time-string "%Y") ,(format-time-string "%B"))
+              ,template ,@properties))
+
+(defun my/org-agenda-visited-all-directories ()
+    "Org agenda need to visted all files listed in `org-agenda-files'
+to create the view, which is expensive. By default I will only list a
+small portion of files to be searched.  This function searches all the
+files in the org-directory to create the org-agenda view"
+    (interactive)
+    (let* ((default-directory org-directory)
+           (directories-string (shell-command-to-string "find * -type d -print0"))
+           ;; the literal null character will cause git to wrongly
+           ;; consider this file as a binary file. Use the `kbd' to
+           ;; get the internal representation of the null character
+           (directories (split-string directories-string (kbd "^@") nil))
+           (org-agenda-files (mapcar (lambda (x)
+                                         (file-name-concat org-directory x))
+                                     directories)))
+        (call-interactively #'org-agenda)))
 
 (use-package org
     :ensure nil
@@ -63,17 +76,11 @@ by default it contains `:prepend t',
         :states '(normal motion visual insert)
         :keymaps 'override
         "a" #'org-agenda
+        "A" #'my/org-agenda-visited-all-directories
         "c" #'org-capture
         "o" #'org-clock-goto)
 
     (setq org-directory "~/Desktop/orgmode"
-          ;; org-agenda will visit all org files listed
-          ;; in `org-agenda-files' to generate the org-agenda view.
-          ;; avoid too much files inside this directory.
-          org-agenda-files `(,org-directory
-                             ,@(mapcar
-                                (lambda (x) (file-name-concat org-directory x))
-                                '("capture")))
           org-archive-location (expand-file-name "%s_archive::" (concat org-directory "/archive"))
           org-id-locations-file (file-name-concat org-directory ".orgids")
           org-id-locations-file-relative t
@@ -207,20 +214,19 @@ by default it contains `:prepend t',
                                 "\n\n%a\n:explanation:\n%?\n:END:"))
 
             ("b" "bubble tea")
-            ,(my/org-capture-bubble-tea-template "bf" "feed food" '("feed food"))
-            ,(my/org-capture-bubble-tea-template "bw" "feed water" '("feed water"))
-            ,(my/org-capture-bubble-tea-template "bp" "poop" '("poop"))
-            ,(my/org-capture-bubble-tea-template "bP" "play" '("play")
-                                                 :properties '(:clock-in t :clock-keep t))
-            ,(my/org-capture-bubble-tea-template "bu" "urinate(pee)" '("pee"))
-            ,(my/org-capture-bubble-tea-template "be" "eye mucus" '("clean" "eye mucus"))
-            ,(my/org-capture-bubble-tea-template "bE" "ear clean" '("clean" "ear clean"))
-            ,(my/org-capture-bubble-tea-template "bb" "bath" '("clean" "bath"))
-            ,(my/org-capture-bubble-tea-template "bt" "trim coat" '("clean" "trim coat"))
-            ,(my/org-capture-bubble-tea-template "bg" "grooming" '("clean" "grooming"))
-            ,(my/org-capture-bubble-tea-template "bn" "nailing" '("clean" "nailing"))
-            ,(my/org-capture-bubble-tea-template "bB" "brushing teeth" '("clean" "brushing teeth"))
-            ,(my/org-capture-bubble-tea-template "bs" "symptom" '("symptom"))
+            ,(my/org-capture-bubble-tea-template "bf" "feed food" '("feed food") "|%U|Taste%?|||||")
+            ,(my/org-capture-bubble-tea-template "bp" "poop" '("poop") "|%U|Indoor%?|||||")
+            ,(my/org-capture-bubble-tea-template "bP" "play" '("play") "|%U|Street Walk%?|||||"
+                                                 :clock-in t :clock-keep t)
+            ;; TODO: examine the usage of clock-table
+            ,(my/org-capture-bubble-tea-template "be" "eye mucus" '("clean" "eye mucus") "|%U%?||")
+            ,(my/org-capture-bubble-tea-template "bE" "ear clean" '("clean" "ear clean") "|%U%?||")
+            ,(my/org-capture-bubble-tea-template "bb" "bath" '("clean" "bath") "|%U%?||")
+            ,(my/org-capture-bubble-tea-template "bt" "trim coat" '("clean" "trim coat") "|%U%?||")
+            ,(my/org-capture-bubble-tea-template "bg" "grooming" '("clean" "grooming") "|%U%?||")
+            ,(my/org-capture-bubble-tea-template "bn" "nailing" '("clean" "nailing") "|%U%?||")
+            ,(my/org-capture-bubble-tea-template "bB" "brushing teeth" '("clean" "brushing teeth") "|%U%?||")
+            ,(my/org-capture-bubble-tea-template "bs" "symptom" '("symptom") "|%U|Vomit%?|||")
 
             ;; TODO: add doomemacs's project org capture template.
             ))
@@ -249,6 +255,16 @@ by default it contains `:prepend t',
           org-agenda-start-day "-3d"
           org-agenda-inhibit-startup t
           org-agenda-window-setup 'other-tab)
+
+    :config
+
+    ;; org-agenda will visit all org files listed
+    ;; in `org-agenda-files' to generate the org-agenda view.
+    ;; avoid too much files inside this directory.
+    (setq  org-agenda-files `(,org-directory
+                              ,@(mapcar
+                                 (lambda (x) (file-name-concat org-directory x))
+                                 '("capture"))))
 
     )
 
