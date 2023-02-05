@@ -57,6 +57,16 @@
         "8" (my/tab-bar-go-to-tab-macro 8)
         "9" (my/tab-bar-go-to-tab-macro 9))
 
+    (advice-add #'tab-bar-new-tab :around
+                (defun my/set-scratch-directory (old-fun &rest args)
+                    "After creating a new tab, the default buffer to
+be displayed is scratch buffer whose directory is set to where emacs
+is initialized.  Change it to the directory of previous buffer where
+`tab-bar-new-tab' is called."
+                    (let ((current-dir default-directory))
+                        (funcall old-fun args)
+                        (setq-local default-directory current-dir))))
+
     )
 
 (use-package doom-modeline

@@ -244,7 +244,8 @@ by default it contains `:prepend t',
           ;; always start on today
           org-agenda-start-on-weekday nil
           org-agenda-start-day "-3d"
-          org-agenda-inhibit-startup t)
+          org-agenda-inhibit-startup t
+          org-agenda-window-setup 'other-tab)
     )
 
 (use-package ob

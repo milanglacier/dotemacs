@@ -16,6 +16,16 @@
      [remap describe-variable] #'helpful-variable
      [remap describe-key] #'helpful-key
      [remap describe-symbol] #'helpful-symbol)
+
+    (setq helpful-switch-buffer-function
+          (defun my/helpful-display-buffer (buf)
+              "If a helpful buffer window is already opened, should
+use it, don't occupy other window. Make sure it is a side window, such
+that when you want to dwim (pressing q and want to close the help
+window), this window will be completely removed, i.e. the window won't
+be displayed showing other buffer."
+              (pop-to-buffer buf '((display-buffer-reuse-mode-window display-buffer-in-side-window)
+                                   (window-height 0.5)))))
     :config
     (general-define-key
      :keymaps 'helpful-mode-map
@@ -38,8 +48,8 @@
     (setq lisp-body-indent 4)
 
     (defun my/elisp-loop-up-symbol (beg end)
-        "Look up for the symbol under point, if region is active, use the selected region as the symbol"
-        (interactive "r")
+        "Look up for the symbol under point, if region is active, use
+        the selected region as the symbol" (interactive "r")
         (if (use-region-p)
                 (helpful-symbol (intern (buffer-substring beg end)))
             (helpful-symbol (symbol-at-point))))

@@ -36,6 +36,10 @@
 (add-to-list 'default-frame-alist
              '(font . "SpaceMono Nerd Font-15"))
 
+;; unless you have a really wide screen, always prefer
+;; horizontal split (ale `evil-window-split')
+(setq split-width-threshold 300)
+
 ;; When some commands ask you to input yes or no,
 ;; instead, y or n should be sufficient.
 (setq use-short-answers t)
