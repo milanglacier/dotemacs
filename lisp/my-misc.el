@@ -2,6 +2,7 @@
 
 (straight-use-package 'ws-butler)
 (straight-use-package 'rainbow-delimiters)
+(straight-use-package 'vterm)
 
 (use-package hideshow
     :ensure nil
@@ -50,6 +51,45 @@
     :config
     (add-to-list 'project-switch-commands
                  '(project-dired "Dired at root")))
+
+(use-package vterm
+    :defer t
+    :init
+    (defun my/vterm ()
+        "open vterm at project root, if no root is found, open at the default-directory"
+        (interactive)
+        (require 'consult)
+        (let ((default-directory (or (consult--project-root)
+                                     default-directory)))
+            (call-interactively #'vterm)))
+    (my/open-map
+        :keymaps 'override
+        :states '(normal insert motion)
+        "t" #'my/vterm)
+
+    :config
+
+    (add-to-list 'display-buffer-alist
+                 `("\\*vterm\\*"
+                   (display-buffer-in-side-window)
+                   (window-height . 0.4)
+                   (window-width .0.5)
+                   ;; if there are multiple window, prefer the window to the right window
+                   (slot . ,(alist-get 'vterm my/side-window-slots))))
+
+    (general-define-key
+     :keymaps 'vterm-mode-map
+     "C-c <escape>" #'vterm-send-escape)
+
+    (defun my/vterm-setup ()
+        (setq-local confirm-kill-processes nil
+                    hscroll-margin 0)
+
+        (setq vterm-max-scrollback 5000))
+    (add-hook 'vterm-mode-hook #'my/vterm-setup))
+
+(use-package auto-revert
+    :hook (after-init . global-auto-revert-mode))
 
 (my/leader
     :keymaps 'override
