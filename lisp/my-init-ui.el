@@ -5,8 +5,7 @@
 (straight-use-package 'which-key)
 
 (defvar my/side-window-slots
-    '((which-key . 0)
-      (helpful . -1)
+    '((helpful . -1)
       (vterm . 1))
     "The slot for different mode if used as side window,
 this is for configuring `display-buffer-in-side-window',
@@ -117,9 +116,8 @@ is initialized.  Change it to the directory of previous buffer where
 (use-package which-key
     :hook (after-init . which-key-mode)
     :config
-    (setq which-key-idle-delay 0.6
-          which-key-side-window-slot (alist-get 'which-key my/side-window-slots)
-          which-key-allow-imprecise-window-fit t)
+    (setq which-key-idle-delay 1
+          which-key-popup-type 'minibuffer)
     )
 
 (provide 'my-init-ui)
