@@ -40,12 +40,13 @@ if they are side window.")
     :defer t
     :ensure nil
     :init
-    (setq tab-bar-show 1)
-    (setq tab-bar-close-button-show nil)
-    (setq tab-bar-new-tab-choice "*scratch*")
-    (setq tab-bar-tab-hints t)
-    (setq tab-bar-new-button-show nil)
-    (setq tab-bar-format '(tab-bar-format-tabs tab-bar-separator))
+    (setq tab-bar-show 1
+          tab-bar-close-button-show nil
+          tab-bar-new-tab-choice "*scratch*"
+          tab-bar-tab-hints t
+          tab-bar-new-button-show nil
+          tab-bar-format '(tab-bar-format-tabs-groups
+                           tab-bar-separator))
 
     :config
     (defmacro my/tab-bar-go-to-tab-macro (number)
@@ -69,6 +70,12 @@ if they are side window.")
         "o" #'tab-bar-close-other-tabs
         "]" #'tab-bar-switch-to-next-tab
         "[" #'tab-bar-switch-to-prev-tab
+        "{" #'tab-bar-history-back
+        "}" #'tab-bar-history-forward
+        "b" #'tab-bar-move-window-to-tab
+        ;; move current window to a new tab (break current tab)
+        "l" #'tab-bar-move-tab ;; move tab to the right
+        "h" #'tab-bar-move-tab-backward ;; move tab to the left
         "TAB" #'tab-bar-switch-to-tab
         "1" (my/tab-bar-go-to-tab-macro 1)
         "2" (my/tab-bar-go-to-tab-macro 2)
@@ -79,6 +86,8 @@ if they are side window.")
         "7" (my/tab-bar-go-to-tab-macro 7)
         "8" (my/tab-bar-go-to-tab-macro 8)
         "9" (my/tab-bar-go-to-tab-macro 9))
+
+    (add-hook 'after-init-hook 'tab-bar-history-mode)
 
     (advice-add #'tab-bar-new-tab :around
                 (defun my/set-scratch-directory (old-fun &rest args)
