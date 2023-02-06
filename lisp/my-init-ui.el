@@ -80,6 +80,7 @@ if they are side window.")
         ;; move current window to a new tab (break current tab)
         "l" #'tab-bar-move-tab ;; move tab to the right
         "h" #'tab-bar-move-tab-backward ;; move tab to the left
+        "g" #'tab-bar-change-tab-group ;; make group
         "TAB" #'tab-bar-switch-to-tab
         "1" (my/tab-bar-go-to-tab-macro 1)
         "2" (my/tab-bar-go-to-tab-macro 2)
