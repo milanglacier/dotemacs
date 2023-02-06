@@ -4,15 +4,27 @@
 (straight-use-package 'doom-modeline)
 (straight-use-package 'which-key)
 
+(use-package window
+    :defer t
+    :init
+    (defvar my/side-window-slots
+        '((helpful . -1)
+          (vterm . 1))
+        "The slot for different mode if used as side window,
+this is for configuring `display-buffer-in-side-window',
+configuring this would avoid buffer swallows other buffer's window
+if they are side window.")
+    (setq window-combination-resize t))
+
 (defun my/display-org-agenda-list ()
     "if current window is scratch buffer, then replace this buffer
     with org agenda otherwise open org-agenda with the specified way
     (i.e create a new tab)"
     (when (equal (buffer-name) "*scratch*")
-            (let ((display-buffer-alist
-                   '(("Org Agenda"
-                      (display-buffer-same-window)))))
-                (call-interactively #'org-agenda-list))))
+        (let ((display-buffer-alist
+               '(("Org Agenda"
+                  (display-buffer-same-window)))))
+            (call-interactively #'org-agenda-list))))
 
 (add-hook 'emacs-startup-hook
           (defun my/delayed-startup-screen ()
@@ -32,12 +44,13 @@
     :defer t
     :ensure nil
     :init
-    (setq tab-bar-show 1)
-    (setq tab-bar-close-button-show nil)
-    (setq tab-bar-new-tab-choice "*scratch*")
-    (setq tab-bar-tab-hints t)
-    (setq tab-bar-new-button-show nil)
-    (setq tab-bar-format '(tab-bar-format-tabs tab-bar-separator))
+    (setq tab-bar-show 1
+          tab-bar-close-button-show nil
+          tab-bar-new-tab-choice "*scratch*"
+          tab-bar-tab-hints t
+          tab-bar-new-button-show nil
+          tab-bar-format '(tab-bar-format-tabs-groups
+                           tab-bar-separator))
 
     :config
     (defmacro my/tab-bar-go-to-tab-macro (number)
@@ -61,6 +74,12 @@
         "o" #'tab-bar-close-other-tabs
         "]" #'tab-bar-switch-to-next-tab
         "[" #'tab-bar-switch-to-prev-tab
+        "{" #'tab-bar-history-back
+        "}" #'tab-bar-history-forward
+        "b" #'tab-bar-move-window-to-tab
+        ;; move current window to a new tab (break current tab)
+        "l" #'tab-bar-move-tab ;; move tab to the right
+        "h" #'tab-bar-move-tab-backward ;; move tab to the left
         "TAB" #'tab-bar-switch-to-tab
         "1" (my/tab-bar-go-to-tab-macro 1)
         "2" (my/tab-bar-go-to-tab-macro 2)
@@ -71,6 +90,8 @@
         "7" (my/tab-bar-go-to-tab-macro 7)
         "8" (my/tab-bar-go-to-tab-macro 8)
         "9" (my/tab-bar-go-to-tab-macro 9))
+
+    (add-hook 'after-init-hook 'tab-bar-history-mode)
 
     (advice-add #'tab-bar-new-tab :around
                 (defun my/set-scratch-directory (old-fun &rest args)
@@ -107,9 +128,10 @@ is initialized.  Change it to the directory of previous buffer where
 
 (use-package which-key
     :hook (after-init . which-key-mode)
-
     :config
-    (setq which-key-idle-delay 0.4))
+    (setq which-key-idle-delay 1
+          which-key-popup-type 'minibuffer)
+    )
 
 (provide 'my-init-ui)
 ;;; my-init-ui.el ends here
