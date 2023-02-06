@@ -4,13 +4,17 @@
 (straight-use-package 'doom-modeline)
 (straight-use-package 'which-key)
 
-(defvar my/side-window-slots
-    '((helpful . -1)
-      (vterm . 1))
-    "The slot for different mode if used as side window,
+(use-package window
+    :defer t
+    :init
+    (defvar my/side-window-slots
+        '((helpful . -1)
+          (vterm . 1))
+        "The slot for different mode if used as side window,
 this is for configuring `display-buffer-in-side-window',
 configuring this would avoid buffer swallows other buffer's window
 if they are side window.")
+    (setq window-combination-resize t))
 
 (defun my/display-org-agenda-list ()
     "if current window is scratch buffer, then replace this buffer
