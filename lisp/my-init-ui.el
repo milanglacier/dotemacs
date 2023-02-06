@@ -4,15 +4,24 @@
 (straight-use-package 'doom-modeline)
 (straight-use-package 'which-key)
 
+(defvar my/side-window-slots
+    '((which-key . 0)
+      (helpful . -1)
+      (vterm . 1))
+    "The slot for different mode if used as side window,
+this is for configuring `display-buffer-in-side-window',
+configuring this would avoid buffer swallows other buffer's window
+if they are side window.")
+
 (defun my/display-org-agenda-list ()
     "if current window is scratch buffer, then replace this buffer
     with org agenda otherwise open org-agenda with the specified way
     (i.e create a new tab)"
     (when (equal (buffer-name) "*scratch*")
-            (let ((display-buffer-alist
-                   '(("Org Agenda"
-                      (display-buffer-same-window)))))
-                (call-interactively #'org-agenda-list))))
+        (let ((display-buffer-alist
+               '(("Org Agenda"
+                  (display-buffer-same-window)))))
+            (call-interactively #'org-agenda-list))))
 
 (add-hook 'emacs-startup-hook
           (defun my/delayed-startup-screen ()
@@ -107,9 +116,11 @@ is initialized.  Change it to the directory of previous buffer where
 
 (use-package which-key
     :hook (after-init . which-key-mode)
-
     :config
-    (setq which-key-idle-delay 0.4))
+    (setq which-key-idle-delay 0.6
+          which-key-side-window-slot (alist-get 'which-key my/side-window-slots)
+          which-key-allow-imprecise-window-fit t)
+    )
 
 (provide 'my-init-ui)
 ;;; my-init-ui.el ends here

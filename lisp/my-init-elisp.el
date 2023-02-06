@@ -24,8 +24,12 @@ use it, don't occupy other window. Make sure it is a side window, such
 that when you want to dwim (pressing q and want to close the help
 window), this window will be completely removed, i.e. the window won't
 be displayed showing other buffer."
-              (pop-to-buffer buf '((display-buffer-reuse-mode-window display-buffer-in-side-window)
-                                   (window-height 0.5)))))
+              (pop-to-buffer buf `((display-buffer-reuse-mode-window display-buffer-in-side-window)
+                                   (window-height . 0.5)
+                                   (window-width . 0.5)
+                                   ;; if there are multiple side window
+                                   ;; prefer the helpful window to the relatively left position
+                                   (slot . ,(alist-get 'helpful my/side-window-slots))))))
     :config
     (general-define-key
      :keymaps 'helpful-mode-map
