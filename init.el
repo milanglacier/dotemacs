@@ -42,6 +42,7 @@
 (require 'my-init-elisp)
 (require 'my-init-org)
 (require 'my-init-langs)
+(require 'my-init-os)
 (require 'my-misc)
 
 (setq debug-on-error nil)
