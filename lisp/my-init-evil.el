@@ -303,6 +303,7 @@
     (setq evil-vimish-fold-target-modes '(prog-mode conf-mode text-mode)))
 
 (use-package evil-anzu
+    :demand t
     :after anzu)
 
 (use-package better-jumper
