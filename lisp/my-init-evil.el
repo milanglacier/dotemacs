@@ -49,9 +49,6 @@
           evil-undo-system 'undo-redo
           evil-ex-hl-update-delay 0.1)
 
-    ;; at the very start of the hook
-    (add-hook 'after-init-hook #'evil-mode -90)
-
     (my/open-map
         :keymaps 'override
         :states '(motion visual insert normal)
@@ -70,6 +67,7 @@
     (my/window-map
         :states '(motion insert normal)
         :keymaps 'override
+        "" '(:ignore t :which-key "window")
         "w" #'evil-window-next
         "p" #'evil-window-mru
         "W" #'evil-window-prev
@@ -113,35 +111,6 @@
         "]" #'next-buffer
         "s" #'consult-buffer
         "i" #'ibuffer)
-
-    ;; adopted from
-    ;; URL `https://stackoverflow.com/questions/18102004/emacs-evil-mode-how-to-create-a-new-text-object-to-select-words-with-any-non-sp'
-    ;; NOTE: `make-symbol' will create new symbols even with the same name (they are different symbols)
-    (defmacro my/define-and-bind-paren-text-object (key start-regex end-regex)
-        (let ((inner-name (gensym (concat "my-inner-" start-regex "-" end-regex "-text-obj")))
-              (outer-name (gensym (concat "my-outer-" start-regex "-" end-regex "-text-obj"))))
-            `(progn
-                 (evil-define-text-object ,inner-name (count &optional beg end type)
-                     (evil-select-paren ,start-regex ,end-regex beg end type count nil))
-                 (evil-define-text-object ,outer-name (count &optional beg end type)
-                     (evil-select-paren ,start-regex ,end-regex beg end type count t))
-                 (define-key evil-inner-text-objects-map ,key ',inner-name)
-                 (define-key evil-outer-text-objects-map ,key ',outer-name))))
-
-    (defmacro my/define-and-bind-local-paren-text-object (key start-regex end-regex hook)
-        (let ((inner-name (gensym (concat "my-inner-" start-regex "-" end-regex "-text-obj")))
-              (outer-name (gensym (concat "my-outer-" start-regex "-" end-regex "-text-obj")))
-              (lambda-name (gensym (concat "my-lambda-" start-regex "-" end-regex "-text-obj"))))
-            `(add-hook ',hook
-                       (defun ,lambda-name ()
-                           (evil-define-text-object ,inner-name (count &optional beg end type)
-                               (evil-select-paren ,start-regex ,end-regex beg end type count nil))
-                           (evil-define-text-object ,outer-name (count &optional beg end type)
-                               (evil-select-paren ,start-regex ,end-regex beg end type count t))
-                           (define-key evil-operator-state-local-map ,(concat "i" key) ',inner-name)
-                           (define-key evil-operator-state-local-map ,(concat "a" key) ',outer-name)
-                           (define-key evil-visual-state-local-map ,(concat "i" key) ',inner-name)
-                           (define-key evil-visual-state-local-map ,(concat "a" key) ',outer-name)))))
 
     :config
     ;; TODO: lazy load these evil modules
@@ -251,6 +220,35 @@
      "k" #'evil-indent-plus-i-indent-up
      "x" #'evil-outer-xml-attr)
 
+    ;; adopted from
+    ;; URL `https://stackoverflow.com/questions/18102004/emacs-evil-mode-how-to-create-a-new-text-object-to-select-words-with-any-non-sp'
+    ;; NOTE: `make-symbol' will create new symbols even with the same name (they are different symbols)
+    (defmacro my/define-and-bind-paren-text-object (key start-regex end-regex)
+        (let ((inner-name (gensym (concat "my-inner-" start-regex "-" end-regex "-text-obj")))
+              (outer-name (gensym (concat "my-outer-" start-regex "-" end-regex "-text-obj"))))
+            `(progn
+                 (evil-define-text-object ,inner-name (count &optional beg end type)
+                     (evil-select-paren ,start-regex ,end-regex beg end type count nil))
+                 (evil-define-text-object ,outer-name (count &optional beg end type)
+                     (evil-select-paren ,start-regex ,end-regex beg end type count t))
+                 (define-key evil-inner-text-objects-map ,key ',inner-name)
+                 (define-key evil-outer-text-objects-map ,key ',outer-name))))
+
+    (defmacro my/define-and-bind-local-paren-text-object (key start-regex end-regex hook)
+        (let ((inner-name (gensym (concat "my-inner-" start-regex "-" end-regex "-text-obj")))
+              (outer-name (gensym (concat "my-outer-" start-regex "-" end-regex "-text-obj")))
+              (lambda-name (gensym (concat "my-lambda-" start-regex "-" end-regex "-text-obj"))))
+            `(add-hook ',hook
+                       (defun ,lambda-name ()
+                           (evil-define-text-object ,inner-name (count &optional beg end type)
+                               (evil-select-paren ,start-regex ,end-regex beg end type count nil))
+                           (evil-define-text-object ,outer-name (count &optional beg end type)
+                               (evil-select-paren ,start-regex ,end-regex beg end type count t))
+                           (define-key evil-operator-state-local-map ,(concat "i" key) ',inner-name)
+                           (define-key evil-operator-state-local-map ,(concat "a" key) ',outer-name)
+                           (define-key evil-visual-state-local-map ,(concat "i" key) ',inner-name)
+                           (define-key evil-visual-state-local-map ,(concat "a" key) ',outer-name)))))
+
     (my/define-and-bind-paren-text-object "$" "\\$" "\\$")
     (my/define-and-bind-paren-text-object "|" "|" "|")
     (my/define-and-bind-paren-text-object "=" "=" "=")
@@ -337,6 +335,11 @@
                      magit-sections magit magic-todos man mu4e mu4e-conversation notmuch
                      org org-roam osx-dictionary pdf python replace rg ripgrep tab-bar term vertico
                      vterm wdired wgrep which-key xref xwidget)))
+
+;; after all the above settings are set
+;; (some settings are needed to set before those packages are loaded)
+;; load evil-mode
+(evil-mode 1)
 
 (provide 'my-init-evil)
 ;;; my-init-evil.el ends here

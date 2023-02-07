@@ -45,11 +45,20 @@
 (setq use-short-answers t)
 
 ;; display line numbers in the left margin of the window.
-(setq display-line-numbers-type t)
-(add-hook 'after-init-hook #'global-display-line-numbers-mode)
+(use-package display-line-numbers
+    :defer t
+    :init
+    (setq display-line-numbers-type t)
+    (global-display-line-numbers-mode)
+    )
 
-(setq whitespace-style '(face tabs tab-mark trailing))
-(add-hook 'after-init-hook #'global-whitespace-mode)
+(use-package whitespace
+    :defer t
+    :init
+    (setq whitespace-style '(face tabs tab-mark trailing))
+    (global-whitespace-mode)
+    )
+
 (setq-default indent-tabs-mode nil)
 
 ;; smooth scroll

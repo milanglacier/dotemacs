@@ -16,7 +16,10 @@
 
 ;; automatically remove trailing whitespaces
 (use-package ws-butler
-    :hook (after-init . ws-butler-global-mode)
+    :defer t
+    :init
+    (my/run-hook-once pre-command-hook ws-butler-global-mode)
+
     :config
     (setq ws-butler-keep-whitespace-before-point nil))
 
@@ -89,7 +92,9 @@
     (add-hook 'vterm-mode-hook #'my/vterm-setup))
 
 (use-package auto-revert
-    :hook (after-init . global-auto-revert-mode))
+    :defer t
+    :init
+    (my/run-hook-once pre-command-hook global-auto-revert-mode))
 
 (my/leader
     :keymaps 'override

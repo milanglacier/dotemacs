@@ -92,7 +92,7 @@ if they are side window.")
         "8" (my/tab-bar-go-to-tab-macro 8)
         "9" (my/tab-bar-go-to-tab-macro 9))
 
-    (add-hook 'after-init-hook 'tab-bar-history-mode)
+    (my/run-hook-once pre-command-hook tab-bar-history-mode)
 
     (advice-add #'tab-bar-new-tab :around
                 (defun my/set-scratch-directory (old-fun &rest args)
@@ -107,9 +107,11 @@ is initialized.  Change it to the directory of previous buffer where
     )
 
 (use-package doom-modeline
-    :hook (after-init . doom-modeline-mode)
+    :defer t
 
     :init
+    (doom-modeline-mode 1)
+
     (add-hook 'doom-modeline-mode-hook #'size-indication-mode)
     (add-hook 'doom-modeline-mode-hook #'column-number-mode)
     (setq doom-modeline-bar-width 3
@@ -128,7 +130,10 @@ is initialized.  Change it to the directory of previous buffer where
     )
 
 (use-package which-key
-    :hook (after-init . which-key-mode)
+    :defer t
+    :init
+    (my/run-hook-once pre-command-hook which-key-mode)
+
     :config
     (setq which-key-idle-delay 1
           which-key-popup-type 'minibuffer)
