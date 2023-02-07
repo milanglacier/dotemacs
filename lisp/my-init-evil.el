@@ -114,6 +114,35 @@
         "s" #'consult-buffer
         "i" #'ibuffer)
 
+    ;; adopted from
+    ;; URL `https://stackoverflow.com/questions/18102004/emacs-evil-mode-how-to-create-a-new-text-object-to-select-words-with-any-non-sp'
+    ;; NOTE: `make-symbol' will create new symbols even with the same name (they are different symbols)
+    (defmacro my/define-and-bind-paren-text-object (key start-regex end-regex)
+        (let ((inner-name (gensym (concat "my-inner-" start-regex "-" end-regex "-text-obj")))
+              (outer-name (gensym (concat "my-outer-" start-regex "-" end-regex "-text-obj"))))
+            `(progn
+                 (evil-define-text-object ,inner-name (count &optional beg end type)
+                     (evil-select-paren ,start-regex ,end-regex beg end type count nil))
+                 (evil-define-text-object ,outer-name (count &optional beg end type)
+                     (evil-select-paren ,start-regex ,end-regex beg end type count t))
+                 (define-key evil-inner-text-objects-map ,key ',inner-name)
+                 (define-key evil-outer-text-objects-map ,key ',outer-name))))
+
+    (defmacro my/define-and-bind-local-paren-text-object (key start-regex end-regex hook)
+        (let ((inner-name (gensym (concat "my-inner-" start-regex "-" end-regex "-text-obj")))
+              (outer-name (gensym (concat "my-outer-" start-regex "-" end-regex "-text-obj")))
+              (lambda-name (gensym (concat "my-lambda-" start-regex "-" end-regex "-text-obj"))))
+            `(add-hook ',hook
+                       (defun ,lambda-name ()
+                           (evil-define-text-object ,inner-name (count &optional beg end type)
+                               (evil-select-paren ,start-regex ,end-regex beg end type count nil))
+                           (evil-define-text-object ,outer-name (count &optional beg end type)
+                               (evil-select-paren ,start-regex ,end-regex beg end type count t))
+                           (define-key evil-operator-state-local-map ,(concat "i" key) ',inner-name)
+                           (define-key evil-operator-state-local-map ,(concat "a" key) ',outer-name)
+                           (define-key evil-visual-state-local-map ,(concat "i" key) ',inner-name)
+                           (define-key evil-visual-state-local-map ,(concat "a" key) ',outer-name)))))
+
     :config
     ;; TODO: lazy load these evil modules
     ;; (reference from doomemacs)
@@ -298,36 +327,8 @@
         "i" #'better-jumper-jump-forward)
     )
 
-;; adopted from
-;; URL `https://stackoverflow.com/questions/18102004/emacs-evil-mode-how-to-create-a-new-text-object-to-select-words-with-any-non-sp'
-;; NOTE: `make-symbol' will create new symbols even with the same name (they are different symbols)
-(defmacro my/define-and-bind-paren-text-object (key start-regex end-regex)
-    (let ((inner-name (gensym (concat "my-inner-" start-regex "-" end-regex "-text-obj")))
-          (outer-name (gensym (concat "my-outer-" start-regex "-" end-regex "-text-obj"))))
-        `(progn
-             (evil-define-text-object ,inner-name (count &optional beg end type)
-                 (evil-select-paren ,start-regex ,end-regex beg end type count nil))
-             (evil-define-text-object ,outer-name (count &optional beg end type)
-                 (evil-select-paren ,start-regex ,end-regex beg end type count t))
-             (define-key evil-inner-text-objects-map ,key ',inner-name)
-             (define-key evil-outer-text-objects-map ,key ',outer-name))))
-
-(defmacro my/define-and-bind-local-paren-text-object (key start-regex end-regex hook)
-    (let ((inner-name (gensym (concat "my-inner-" start-regex "-" end-regex "-text-obj")))
-          (outer-name (gensym (concat "my-outer-" start-regex "-" end-regex "-text-obj")))
-          (lambda-name (gensym (concat "my-lambda-" start-regex "-" end-regex "-text-obj"))))
-        `(add-hook ',hook
-                   (defun ,lambda-name ()
-                       (evil-define-text-object ,inner-name (count &optional beg end type)
-                           (evil-select-paren ,start-regex ,end-regex beg end type count nil))
-                       (evil-define-text-object ,outer-name (count &optional beg end type)
-                           (evil-select-paren ,start-regex ,end-regex beg end type count t))
-                       (define-key evil-operator-state-local-map ,(concat "i" key) ',inner-name)
-                       (define-key evil-operator-state-local-map ,(concat "a" key) ',outer-name)
-                       (define-key evil-visual-state-local-map ,(concat "i" key) ',inner-name)
-                       (define-key evil-visual-state-local-map ,(concat "a" key) ',outer-name)))))
-
 (use-package evil-collection
+    :defer t
     :init
     (setq evil-collection-mode-list
           '(arc-mode bm bookmark consult compilation eldoc daemons debug diff-hl
