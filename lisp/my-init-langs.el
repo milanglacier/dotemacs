@@ -115,6 +115,32 @@
     (add-hook 'ess-r-mode-hook (defun my/set-tab-width-4 ()
                                    (setq-local tab-width 4)))
 
+    ;; TODO: look up ESS manual section #3.5
+    ;; for configuring displaying R related buffer.
+    )
+
+(use-package xref
+    :defer t
+    :init
+
+    (defmacro my/xref-move-in-original-src-macro (func)
+        "There can only be one xref buffer. That is, if you find
+references of other symbol the previous one will be overwritten. The
+official `xref-next-line' `xref-next-group' only allows you to move
+the location in the src buffer when your point is in the xref buffer
+window. This macro creates funcs that allow you to move current window
+to next xref location."
+        (let ((xref-move-func (intern (format "my/%s" func)))
+              (xref-move-func-desc (format "Effectively calling %s in the src window." func)))
+            `(cl-defun ,xref-move-func ()
+                 ,xref-move-func-desc
+                 (interactive)
+                 (dolist (buf (buffer-list))
+                     (with-current-buffer buf
+                         (when (equal "*xref*" (buffer-name))
+                             (funcall ',func)
+                             (cl-return-from ,xref-move-func)))))))
+
     )
 
 (use-package eglot
@@ -140,7 +166,43 @@
              (setq-local completion-at-point-functions
                          (delq #'my/eglot-citre-capf completion-at-point-functions)))))
 
+    (general-create-definer my/lsp-map
+        :prefix "SPC l"
+        :non-normal-prefix "M-SPC l"
+        :prefix-map 'my/lsp-map)
+    (my/lsp-map
+        :keymaps 'eglot-mode-map
+        :states '(normal insert motion visual)
+        "" '(:ignore t :which-key "lsp")
+        "f" #'eglot-format
+        "s" #'consult-eglot-symbols
+        "a" #'eglot-code-actions
+        "e" #'consult-flymake
+        "n" #'eglot-rename)
+
+    (general-define-key
+     :keymaps 'eglot-mode-map
+     :states '(normal motion)
+     "] d" #'flymake-goto-next-error
+     "[ d" #'flymake-goto-prev-error
+     ;; jump to next/prev location containing the references.
+     "[ r" (my/xref-move-in-original-src-macro xref-prev-line)
+     "] r" (my/xref-move-in-original-src-macro xref-next-line)
+     ;; jump to next/prev file containing the references.
+     "[ R" (my/xref-move-in-original-src-macro xref-prev-group)
+     "] R" (my/xref-move-in-original-src-macro xref-next-group)
+     "K" #'eldoc-doc-buffer
+     "gd" #'xref-find-definitions
+     "gr" #'xref-find-references)
     )
+
+(use-package consult-eglot
+    :defer t
+    :init
+    (my/find-map
+        :keymaps 'eglot-mode-map
+        :states '(normal visual insert motion)
+        "l" #'consult-eglot-symbols))
 
 (provide 'my-init-langs)
 ;;; my-init-langs.el ends here
