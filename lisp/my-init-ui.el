@@ -5,7 +5,6 @@
 (straight-use-package 'which-key)
 
 (use-package window
-    :defer t
     :init
     (defvar my/side-window-slots
         '((helpful . -1)
@@ -41,8 +40,6 @@ if they are side window.")
                all-the-icons-alltheicon))
 
 (use-package tab-bar
-    :defer t
-    :ensure nil
     :init
     (setq tab-bar-show 1
           tab-bar-close-button-show nil
@@ -80,6 +77,7 @@ if they are side window.")
         ;; move current window to a new tab (break current tab)
         "l" #'tab-bar-move-tab ;; move tab to the right
         "h" #'tab-bar-move-tab-backward ;; move tab to the left
+        "g" #'tab-bar-change-tab-group ;; make group
         "TAB" #'tab-bar-switch-to-tab
         "1" (my/tab-bar-go-to-tab-macro 1)
         "2" (my/tab-bar-go-to-tab-macro 2)
@@ -91,7 +89,7 @@ if they are side window.")
         "8" (my/tab-bar-go-to-tab-macro 8)
         "9" (my/tab-bar-go-to-tab-macro 9))
 
-    (add-hook 'after-init-hook 'tab-bar-history-mode)
+    (my/run-hook-once pre-command-hook tab-bar-history-mode)
 
     (advice-add #'tab-bar-new-tab :around
                 (defun my/set-scratch-directory (old-fun &rest args)
@@ -106,12 +104,11 @@ is initialized.  Change it to the directory of previous buffer where
     )
 
 (use-package doom-modeline
-    :hook (after-init . doom-modeline-mode)
-
     :init
     (add-hook 'doom-modeline-mode-hook #'size-indication-mode)
     (add-hook 'doom-modeline-mode-hook #'column-number-mode)
-    (setq doom-modeline-bar-width 3
+    (setq doom-modeline-bar-width 1
+          doom-modeline-modal-icon nil
           doom-modeline-github nil
           doom-modeline-mu4e nil
           doom-modeline-persp-name nil
@@ -124,10 +121,13 @@ is initialized.  Change it to the directory of previous buffer where
           doom-modeline-default-eol-type (cond (IS-MAC 2)
                                                (IS-WINDOWS 1)
                                                (0)))
-    )
+
+    (doom-modeline-mode 1))
 
 (use-package which-key
-    :hook (after-init . which-key-mode)
+    :init
+    (my/run-hook-once pre-command-hook which-key-mode)
+
     :config
     (setq which-key-idle-delay 1
           which-key-popup-type 'minibuffer)

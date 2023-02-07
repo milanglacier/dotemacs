@@ -13,7 +13,6 @@
 (straight-use-package 'all-the-icons-completion)
 
 (use-package vertico
-    :defer t
     :init
     (my/run-hook-once pre-command-hook vertico-mode)
 
@@ -84,6 +83,7 @@
     )
 
 (use-package orderless
+    :demand t
     :config
     (setq completion-styles '(orderless basic)
           completion-category-overrides '((file (styles basic partial-completion)))))
@@ -96,7 +96,6 @@
             (add-hook 'marginalia-mode-hook #'all-the-icons-completion-marginalia-setup)))
 
 (use-package consult
-    :defer t
     :init
     (general-define-key
      [remap apropos] #'consult-apropos
@@ -125,7 +124,6 @@
     )
 
 (use-package consult-dir
-    :defer t
     :init
     (general-define-key
      [remap list-directory] #'consult-dir)
@@ -141,7 +139,6 @@
     (add-to-list 'consult-dir-sources 'consult-dir--source-tramp-ssh t))
 
 (use-package embark
-    :defer t
     :init
     (general-define-key
      [remap describe-bindings] #'embark-bindings)

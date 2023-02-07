@@ -19,7 +19,6 @@
         (disable-theme my/selected-theme)
         (setq my/selected-theme theme)
         (load-theme theme t)
-        (enable-theme theme)
         (when (string-match-p "doom" (symbol-name theme))
             (doom-themes-org-config))))
 

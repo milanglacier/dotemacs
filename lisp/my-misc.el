@@ -5,24 +5,21 @@
 (straight-use-package 'vterm)
 
 (use-package hideshow
-    :ensure nil
     :hook (prog-mode . hs-minor-mode))
 
 (use-package eldoc
-    :ensure nil
-    :defer t
     :init
     (setq eldoc-echo-area-use-multiline-p nil))
 
 ;; automatically remove trailing whitespaces
 (use-package ws-butler
-    :hook (after-init . ws-butler-global-mode)
+    :init
+    (my/run-hook-once pre-command-hook ws-butler-global-mode)
+
     :config
     (setq ws-butler-keep-whitespace-before-point nil))
 
 (use-package elec-pair
-    :ensure nil
-    :defer t
     :init
     (my/run-hook-once evil-insert-state-entry-hook electric-pair-mode))
 
@@ -30,8 +27,6 @@
     :hook (prog-mode . rainbow-delimiters-mode))
 
 (use-package savehist
-    :ensure nil
-    :defer t
     :init
     (my/run-hook-once pre-command-hook savehist-mode)
     :config
@@ -39,21 +34,17 @@
           savehist-autosave-interval nil))
 
 (use-package recentf
-    :ensure nil
-    :defer t
     :init
     (my/run-hook-once pre-command-hook recentf-mode)
     :config
     (setq recentf-max-saved-items 200))
 
 (use-package project
-    :defer t
     :config
     (add-to-list 'project-switch-commands
                  '(project-dired "Dired at root")))
 
 (use-package vterm
-    :defer t
     :init
     (defun my/vterm ()
         "open vterm at project root, if no root is found, open at the default-directory"
@@ -89,7 +80,8 @@
     (add-hook 'vterm-mode-hook #'my/vterm-setup))
 
 (use-package auto-revert
-    :hook (after-init . global-auto-revert-mode))
+    :init
+    (my/run-hook-once pre-command-hook global-auto-revert-mode))
 
 (my/leader
     :keymaps 'override

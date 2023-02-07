@@ -1,5 +1,6 @@
 ;;; my-init-org.el -*- lexical-binding: t; -*-
 
+(straight-use-package '(org :type built-in))
 (straight-use-package 'evil-org)
 ;; (straight-use-package 'org-contrib)
 ;; (straight-use-package 'htmlize)
@@ -16,6 +17,14 @@
 
 ;; (when IS-MAC
 ;;   (straight-use-package 'org-mac-link))
+
+(defun my/load-org-extensions-idly ()
+    "Some important variables from other org extensions are not autoloaded.
+You may feel annoying if you want to use them but find a void variable.
+(e.g. you want to call `org-open-at-point' on a timestamp)"
+    (let ((org-packages '(ob org-capture org-agenda)))
+        (dolist (pkg org-packages)
+            (require pkg))))
 
 (defun my/org-capture-bubble-tea-template (letter desc headings template &rest properties)
     `(,letter ,desc table-line
@@ -41,8 +50,6 @@ files in the org-directory to create the org-agenda view"
         (call-interactively #'org-agenda)))
 
 (use-package org
-    :ensure nil
-    :defer t
     :init
 
     (my/open-map
@@ -62,6 +69,7 @@ files in the org-directory to create the org-agenda view"
           org-indirect-buffer-display 'current-window
           org-tags-column 0 ;; don't indent tags, put tags directly behind the heading
           org-M-RET-may-split-line nil
+          org-return-follows-link t
           org-insert-heading-respect-content t
           org-startup-indented t
           org-enforce-todo-dependencies t
@@ -121,12 +129,15 @@ files in the org-directory to create the org-agenda view"
      :states 'normal
      :keymaps 'org-mode-map
      "TAB" #'org-cycle
+     "RET" #'evil-org-return
+     ;; RET is overridden by `er/expand-region'
      [remap imenu] #'consult-org-heading
      [remap consult-imenu] #'consult-org-heading)
 
     (my/localleader
         :states '(normal insert)
         :keymaps 'org-mode-map
+        "RET" #'er/expand-region
         "t" #'org-todo
         "x" #'org-toggle-checkbox
         "c" '(:ignore t :which-key "clock")
@@ -134,11 +145,11 @@ files in the org-directory to create the org-agenda view"
         "ci" #'org-clock-in
         "cc" #'org-clock-cancel)
 
+    (run-with-idle-timer 2 nil #'my/load-org-extensions-idly)
+
     )
 
 (use-package org-capture
-    :ensure nil
-    :defer t
 
     :config
     (setq my/org-capture-todo-file (file-name-concat "capture" "todo.org")
@@ -206,8 +217,6 @@ files in the org-directory to create the org-agenda view"
     )
 
 (use-package org-agenda
-    :ensure nil
-    :defer t
 
     :init
     ;; Different colors for different priority levels
@@ -237,8 +246,6 @@ files in the org-directory to create the org-agenda view"
     )
 
 (use-package ob
-    :ensure nil
-    :defer t
     :init
     (setq org-src-preserve-indentation t
           org-edit-src-content-indentation 0
@@ -246,7 +253,20 @@ files in the org-directory to create the org-agenda view"
           org-confirm-babel-evaluate nil
           org-link-elisp-confirm-function nil
           ;; Show src buffer in popup, and don't monopolize the frame
-          org-src-window-setup 'other-window))
+          org-src-window-setup 'other-window)
+
+    :config
+    (add-to-list 'org-src-lang-modes '("r" . R))
+    (org-babel-do-load-languages 'org-babel-load-languages
+                                 '((latex . t)
+                                   (R . t)
+                                   (emacs-lisp . t)
+                                   (shell . t)
+                                   (python . t)))
+
+    (defalias #'org-babel-execute:r #'org-babel-execute:R)
+
+    )
 
 (use-package evil-org
     :hook (org-mode . evil-org-mode)
@@ -259,6 +279,7 @@ files in the org-directory to create the org-agenda view"
     (evil-org-set-key-theme))
 
 (use-package evil-org-agenda
+    :demand t
     :after org-agenda
     :config
     (evil-org-agenda-set-keys))

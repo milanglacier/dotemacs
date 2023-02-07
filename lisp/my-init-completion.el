@@ -5,7 +5,6 @@
 (straight-use-package 'cape)
 
 (use-package company
-    :defer t
 
     :init
     (setq company-minimum-prefix-length 2
@@ -63,7 +62,6 @@
     (advice-add #'company-capf :around #'my/company-completion-styles))
 
 (use-package company-box
-    :defer t
 
     :config
     (setq company-box-max-candidates 50

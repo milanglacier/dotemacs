@@ -27,6 +27,7 @@
 
 (setq use-package-expand-minimally t
       use-package-always-ensure nil
+      use-package-always-defer t
       debug-on-error t)
 
 (require 'my-init-utils)
@@ -41,6 +42,7 @@
 (require 'my-init-elisp)
 (require 'my-init-org)
 (require 'my-init-langs)
+(require 'my-init-os)
 (require 'my-misc)
 
 (setq debug-on-error nil)

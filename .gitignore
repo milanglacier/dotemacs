@@ -12,3 +12,4 @@ history
 custom.el
 transient/*
 bookmarks
+tramp
