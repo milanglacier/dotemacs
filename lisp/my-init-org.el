@@ -71,6 +71,7 @@ files in the org-directory to create the org-agenda view"
           org-indirect-buffer-display 'current-window
           org-tags-column 0 ;; don't indent tags, put tags directly behind the heading
           org-M-RET-may-split-line nil
+          org-return-follows-link t
           org-insert-heading-respect-content t
           org-startup-indented t
           org-enforce-todo-dependencies t
@@ -130,12 +131,15 @@ files in the org-directory to create the org-agenda view"
      :states 'normal
      :keymaps 'org-mode-map
      "TAB" #'org-cycle
+     "RET" #'evil-org-return
+     ;; RET is overridden by `er/expand-region'
      [remap imenu] #'consult-org-heading
      [remap consult-imenu] #'consult-org-heading)
 
     (my/localleader
         :states '(normal insert)
         :keymaps 'org-mode-map
+        "RET" #'er/expand-region
         "t" #'org-todo
         "x" #'org-toggle-checkbox
         "c" '(:ignore t :which-key "clock")
