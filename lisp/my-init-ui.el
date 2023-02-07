@@ -104,13 +104,11 @@ is initialized.  Change it to the directory of previous buffer where
     )
 
 (use-package doom-modeline
-
     :init
-    (doom-modeline-mode 1)
-
     (add-hook 'doom-modeline-mode-hook #'size-indication-mode)
     (add-hook 'doom-modeline-mode-hook #'column-number-mode)
-    (setq doom-modeline-bar-width 3
+    (setq doom-modeline-bar-width 1
+          doom-modeline-modal-icon nil
           doom-modeline-github nil
           doom-modeline-mu4e nil
           doom-modeline-persp-name nil
@@ -123,7 +121,8 @@ is initialized.  Change it to the directory of previous buffer where
           doom-modeline-default-eol-type (cond (IS-MAC 2)
                                                (IS-WINDOWS 1)
                                                (0)))
-    )
+
+    (doom-modeline-mode 1))
 
 (use-package which-key
     :init
