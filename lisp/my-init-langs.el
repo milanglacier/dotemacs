@@ -12,7 +12,6 @@
 (straight-use-package 'json-mode)
 
 (use-package citre
-    :defer t
     :init
     (require 'citre-config)
     (setq citre-tags-completion-case-sensitive nil)
@@ -67,7 +66,6 @@
     )
 
 (use-package ess
-    :defer t
     :init
     (setq comint-scroll-to-bottom-on-input t
           comint-scroll-to-bottom-on-output t
@@ -120,7 +118,6 @@
     )
 
 (use-package xref
-    :defer t
     :init
 
     (defmacro my/xref-move-in-original-src-macro (func)
@@ -144,7 +141,6 @@ to next xref location."
     )
 
 (use-package eglot
-    :defer t
     :init
     (setq eglot-stay-out-of '("company"))
 
@@ -197,7 +193,6 @@ to next xref location."
     )
 
 (use-package consult-eglot
-    :defer t
     :init
     (my/find-map
         :keymaps 'eglot-mode-map

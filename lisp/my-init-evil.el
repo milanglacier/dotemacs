@@ -23,7 +23,6 @@
 (straight-use-package 'evil-matchit)
 
 (use-package evil
-    :defer t
     :init
     (setq evil-want-C-i-jump t
           evil-want-C-u-delete nil
@@ -266,7 +265,6 @@
     )
 
 (use-package evil-goggles
-    :defer t
     :init
     (setq evil-goggles-duration 0.5
           evil-goggles-pulse nil
@@ -274,7 +272,6 @@
           evil-goggles-enable-change nil))
 
 (use-package evil-escape
-    :defer t
     :init
     (setq evil-escape-key-sequence "jk"))
 
@@ -293,7 +290,6 @@
      [remap comment-line] #'evilnc-comment-or-uncomment-lines))
 
 (use-package evil-snipe
-    :defer t
     :init
     (setq evil-snipe-smart-case t
           evil-snipe-scope 'buffer
@@ -303,7 +299,6 @@
     )
 
 (use-package evil-vimish-fold
-    :defer t
     :init
     (setq evil-vimish-fold-target-modes '(prog-mode conf-mode text-mode)))
 
@@ -311,7 +306,6 @@
     :after anzu)
 
 (use-package better-jumper
-    :defer t
     :config
     (general-create-definer my/jump-map
         :prefix "SPC j"
@@ -326,7 +320,6 @@
     )
 
 (use-package evil-collection
-    :defer t
     :init
     (setq evil-collection-mode-list
           '(arc-mode bm bookmark consult compilation eldoc daemons debug diff-hl

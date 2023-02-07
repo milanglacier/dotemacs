@@ -5,7 +5,6 @@
 (straight-use-package 'which-key)
 
 (use-package window
-    :defer t
     :init
     (defvar my/side-window-slots
         '((helpful . -1)
@@ -41,8 +40,6 @@ if they are side window.")
                all-the-icons-alltheicon))
 
 (use-package tab-bar
-    :defer t
-    :ensure nil
     :init
     (setq tab-bar-show 1
           tab-bar-close-button-show nil
@@ -107,7 +104,6 @@ is initialized.  Change it to the directory of previous buffer where
     )
 
 (use-package doom-modeline
-    :defer t
 
     :init
     (doom-modeline-mode 1)
@@ -130,7 +126,6 @@ is initialized.  Change it to the directory of previous buffer where
     )
 
 (use-package which-key
-    :defer t
     :init
     (my/run-hook-once pre-command-hook which-key-mode)
 

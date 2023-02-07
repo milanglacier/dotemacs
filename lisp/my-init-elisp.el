@@ -8,7 +8,6 @@
 ;; fontification for elisp
 
 (use-package helpful
-    :defer t
     :init
     (general-define-key
      [remap describe-function] #'helpful-callable
@@ -39,7 +38,6 @@ be displayed showing other buffer."
              (helpful-symbol (symbol-at-point)))))
 
 (use-package elisp-demos
-    :defer t
     :init
     (advice-add #'describe-function-1 :after #'elisp-demos-advice-describe-function-1)
     (advice-add #'helpful-update :after #'elisp-demos-advice-helpful-update))

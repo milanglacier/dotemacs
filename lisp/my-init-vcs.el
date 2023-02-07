@@ -8,7 +8,6 @@
     :prefix-map 'my/git-map)
 
 (use-package magit
-    :defer t
     :init
     (my/git-map
         :states '(normal insert visual insert)

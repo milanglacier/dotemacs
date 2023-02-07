@@ -27,6 +27,7 @@
 
 (setq use-package-expand-minimally t
       use-package-always-ensure nil
+      use-package-always-defer t
       debug-on-error t)
 
 (require 'my-init-utils)

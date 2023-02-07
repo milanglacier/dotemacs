@@ -50,8 +50,6 @@ files in the org-directory to create the org-agenda view"
         (call-interactively #'org-agenda)))
 
 (use-package org
-    :ensure nil
-    :defer t
     :init
 
     (my/open-map
@@ -152,8 +150,6 @@ files in the org-directory to create the org-agenda view"
     )
 
 (use-package org-capture
-    :ensure nil
-    :defer t
 
     :config
     (setq my/org-capture-todo-file (file-name-concat "capture" "todo.org")
@@ -216,8 +212,6 @@ files in the org-directory to create the org-agenda view"
     )
 
 (use-package org-agenda
-    :ensure nil
-    :defer t
 
     :init
     ;; Different colors for different priority levels
@@ -247,8 +241,6 @@ files in the org-directory to create the org-agenda view"
     )
 
 (use-package ob
-    :ensure nil
-    :defer t
     :init
     (setq org-src-preserve-indentation t
           org-edit-src-content-indentation 0
@@ -282,6 +274,7 @@ files in the org-directory to create the org-agenda view"
     (evil-org-set-key-theme))
 
 (use-package evil-org-agenda
+    :demand t
     :after org-agenda
     :config
     (evil-org-agenda-set-keys))
