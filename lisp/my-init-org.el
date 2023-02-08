@@ -203,7 +203,6 @@ files in the org-directory to create the org-agenda view"
             ,(my/org-capture-bubble-tea-template "bp" "poop" '("poop") "|%U|Indoor%?|||||")
             ,(my/org-capture-bubble-tea-template "bP" "play" '("play") "|%U|Street Walk%?|||||"
                                                  :clock-in t :clock-keep t)
-            ;; TODO: examine the usage of clock-table
             ,(my/org-capture-bubble-tea-template "be" "eye mucus" '("clean" "eye mucus") "|%U%?||")
             ,(my/org-capture-bubble-tea-template "bE" "ear clean" '("clean" "ear clean") "|%U%?||")
             ,(my/org-capture-bubble-tea-template "bb" "bath" '("clean" "bath") "|%U%?||")
@@ -274,7 +273,14 @@ when clocking out, use this function to automatically update the table."
     :init
     (setq org-src-preserve-indentation t
           org-edit-src-content-indentation 0
-          ;; org-src-tab-acts-natively t
+          org-src-tab-acts-natively t
+          ;; evil conflicts with this , so this setting has no
+          ;; effect.
+
+          ;; TODO: if set `evil-want-C-i-jump' to nil, then
+          ;; `org-src-tab-acts-natively' works as expected.  However I
+          ;; find that if set `evil-want-C-i-jump' to nil then make
+          ;; `better-jumper-mode' becomes incompatible with evil.
           org-confirm-babel-evaluate nil
           org-link-elisp-confirm-function nil
           ;; Show src buffer in popup, and don't monopolize the frame
