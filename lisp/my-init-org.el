@@ -95,7 +95,7 @@ files in the org-directory to create the org-agenda view"
           org-priority-faces '((?A . error)
                                (?B . warning)
                                (?C . success))
-          org-startup-indented t
+          org-startup-indented nil ;; should left more space for small screen.
           org-tags-column 0
           org-use-sub-superscripts '{}
           ;; `showeverything' is org's default, but it doesn't respect
@@ -162,6 +162,12 @@ files in the org-directory to create the org-agenda view"
     )
 
 (use-package org-capture
+    :init
+    ;; mobile screen is too small
+    (add-to-list 'display-buffer-alist
+                 '("CAPTURE-"
+                   (display-buffer-in-new-tab)))
+
     :config
     (setq my/org-capture-todo-file (file-name-concat "capture" "todo.org")
           my/org-capture-notes-file (file-name-concat "capture" "notes.org")
@@ -221,10 +227,6 @@ files in the org-directory to create the org-agenda view"
     ;; underlying, modified buffer. This fixes that.
     (add-hook 'org-after-refile-insert-hook #'save-buffer)
 
-    (add-hook 'org-capture-mode-hook
-              ;; completion popup in small screen is annoying
-              (defun my/disable-company()
-                  (company-mode -1)))
     (defun my/org-bubble-tea-get-end-of-play-time (start)
         "After clocking in to record the start time of playing with bubble tea,
 when clocking out, use this function to automatically update the table."
@@ -242,6 +244,12 @@ when clocking out, use this function to automatically update the table."
                   ;; the point of the start by 1.
                   (end-of-end-time (re-search-forward "\\]" nil t)))
                 (buffer-substring-no-properties start-of-end-time end-of-end-time))))
+
+    (add-hook 'org-capture-mode-hook
+              ;; completion popup in small screen is annoying
+              (defun my/disable-company()
+                  (company-mode -1)))
+
     )
 
 (use-package org-agenda
