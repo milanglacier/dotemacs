@@ -250,6 +250,11 @@ when clocking out, use this function to automatically update the table."
               (defun my/disable-company()
                   (company-mode -1)))
 
+    (add-hook 'org-capture-mode-hook
+              ;; completion popup in small screen is annoying
+              (defun my/truncate-lines()
+                  (toggle-truncate-lines)))
+
     )
 
 (use-package org-agenda
