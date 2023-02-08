@@ -26,7 +26,7 @@
           company-selection-wrap-around t)
 
     (my/run-hook-once evil-insert-state-entry-hook global-company-mode)
-    (add-hook 'global-company-mode-hook #'company-tng-mode)
+    (my/run-hook-once evil-insert-state-entry-hook company-tng-mode)
 
     :config
     (add-hook 'company-mode-hook #'evil-normalize-keymaps)
