@@ -25,10 +25,12 @@
 (use-package evil
     :init
     (setq evil-want-C-i-jump t
-          evil-want-C-u-delete nil
           evil-want-C-u-scroll nil
           evil-want-Y-yank-to-eol t
           evil-want-C-u-delete t
+          ;; in insert mode use C-o C-u instead or M-SPC u instead
+          evil-want-C-h-delete t
+          ;; In insert mode use M-SPC u instead
           evil-want-C-w-delete t
           evil-want-keybinding nil
           evil-want-abbrev-expand-on-insert-exit t
