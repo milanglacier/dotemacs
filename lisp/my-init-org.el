@@ -225,7 +225,8 @@ files in the org-directory to create the org-agenda view"
         "After clocking in to record the start time of playing with bubble tea,
 when clocking out, use this function to automatically update the table."
         (save-excursion
-            (goto-char (org-find-olp `(,(buffer-name) "play" "2023" "February")))
+            (goto-char (org-find-olp
+                        `(,(buffer-name) "play" ,(format-time-string "%Y") ,(format-time-string "%B"))))
             (re-search-forward (replace-regexp-in-string "[][]" "" start)
                                ;; [ and ] are regex reserved identifers,
                                ;; need to escape them.
