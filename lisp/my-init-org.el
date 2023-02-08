@@ -30,7 +30,19 @@ You may feel annoying if you want to use them but find a void variable.
     `(,letter ,desc table-line
               (file+olp ,my/org-capture-bubble-tea-live-file
                         ,@headings ,(format-time-string "%Y") ,(format-time-string "%B"))
-              ,template ,@properties))
+              ,template ,@properties :unnarrowed t))
+;; HACK: here without `:unnarrowed t', the org-capture will
+;; automatically insert a new line after the table. That is, if you
+;; use the org-capture to create `table-line' entries a lot, your file
+;; will get more and more blank lines, which makes your file
+;; unreadable.  Plus, if you have your table with `#+TBLFM', then this
+;; new line inserted by org capture breaks your table structure such
+;; that all of your fields that are calculated by the formula becomes
+;; unreachable. Because there should be new line before a `#+TBLFM'
+;; and the table itself.
+
+;; TODO: I don't find a way to disable this behavior yet. Ask for the
+;; mailing-list.
 
 (defun my/org-agenda-visited-all-directories ()
     "Org agenda need to visted all files listed in `org-agenda-files'
@@ -150,7 +162,6 @@ files in the org-directory to create the org-agenda view"
     )
 
 (use-package org-capture
-
     :config
     (setq my/org-capture-todo-file (file-name-concat "capture" "todo.org")
           my/org-capture-notes-file (file-name-concat "capture" "notes.org")
@@ -204,10 +215,28 @@ files in the org-directory to create the org-agenda view"
 
             ;; TODO: add doomemacs's project org capture template.
             ))
+
     (org-capture-put :kill-buffer t) ;; kill org capture buffer by default
     ;; when refiling from org-capture, Emacs prompts to kill the
     ;; underlying, modified buffer. This fixes that.
     (add-hook 'org-after-refile-insert-hook #'save-buffer)
+
+    (defun my/org-bubble-tea-get-end-of-play-time (start)
+        "After clocking in to record the start time of playing with bubble tea,
+when clocking out, use this function to automatically update the table."
+        (save-excursion
+            (goto-char (org-find-olp `(,(buffer-name) "play" "2023" "February")))
+            (re-search-forward (replace-regexp-in-string "[][]" "" start)
+                               ;; [ and ] are regex reserved identifers,
+                               ;; need to escape them.
+                               nil
+                               t)
+            (let ((start-of-end-time (1- (re-search-forward "\\[" nil t)))
+                  ;; when use `buffer-substring-no-properties', the point
+                  ;; is left exclusive but right inclusive, so need to subtract
+                  ;; the point of the start by 1.
+                  (end-of-end-time (re-search-forward "\\]" nil t)))
+                (buffer-substring-no-properties start-of-end-time end-of-end-time))))
 
     )
 
@@ -259,6 +288,9 @@ files in the org-directory to create the org-agenda view"
                                    (shell . t)
                                    (python . t)))
 
+    ;; HACK: when you want to use org-babel to execute a code block,
+    ;; it seems that it uses the language identifer associate with
+    ;; this block to query the `org-babel-execute:xxx' function.
     (defalias #'org-babel-execute:r #'org-babel-execute:R)
 
     )
@@ -280,4 +312,4 @@ files in the org-directory to create the org-agenda view"
     (evil-org-agenda-set-keys))
 
 (provide 'my-init-org)
-;;; my/init-ui.el ends here
+;;; my-init-org.el ends here
