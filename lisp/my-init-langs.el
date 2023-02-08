@@ -118,7 +118,7 @@
     )
 
 (use-package xref
-    :init
+    :config
 
     (defmacro my/xref-move-in-original-src-macro (func)
         "There can only be one xref buffer. That is, if you find
@@ -129,14 +129,11 @@ window. This macro creates funcs that allow you to move current window
 to next xref location."
         (let ((xref-move-func (intern (format "my/%s" func)))
               (xref-move-func-desc (format "Effectively calling %s in the src window." func)))
-            `(cl-defun ,xref-move-func ()
+            `(defun ,xref-move-func ()
                  ,xref-move-func-desc
                  (interactive)
-                 (dolist (buf (buffer-list))
-                     (with-current-buffer buf
-                         (when (equal "*xref*" (buffer-name))
-                             (funcall ',func)
-                             (cl-return-from ,xref-move-func)))))))
+                 (with-current-buffer "*xref*"
+                     (funcall ',func)))))
 
     )
 

@@ -175,8 +175,6 @@
      :states '(motion normal)
      [remap evil-jump-backward] #'better-jumper-jump-backward
      [remap evil-jump-forward] #'better-jumper-jump-forward
-     "[b" #'previous-buffer
-     "]b" #'next-buffer
      "]a" #'evil-forward-arg
      "[a" #'evil-backward-arg)
 
