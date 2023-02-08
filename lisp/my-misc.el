@@ -87,6 +87,7 @@
     :keymaps 'override
     :states '(visual insert motion normal)
     "u" #'universal-argument
+    "-" #'negative-argument
     "h" '(:keymap help-map :which-key "help"))
 
 (my/toggle-map
