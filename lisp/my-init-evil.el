@@ -22,7 +22,77 @@
 (straight-use-package 'evil-collection)
 (straight-use-package 'evil-matchit)
 
+(use-package evil-goggles
+    :init
+    (setq evil-goggles-duration 0.5
+          evil-goggles-pulse nil
+          evil-goggles-enable-delete nil
+          evil-goggles-enable-change nil))
+
+(use-package evil-escape
+    :init
+    (setq evil-escape-key-sequence "jk"))
+
+(use-package evil-embrace
+    :commands (embrace-add-pair embrace-add-pair-regexp)
+    :hook ((LaTeX-mode . embrace-LaTeX-mode-hook)
+           (org-mode . embrace-org-mode-hook)
+           (emacs-lisp-mode . embrace-emacs-lisp-mode-hook)))
+
+(use-package evil-nerd-commenter
+    :commands (evilnc-comment-operator
+               evilnc-inner-comment
+               evilnc-outer-commenter)
+    :config
+    (general-define-key
+     [remap comment-line] #'evilnc-comment-or-uncomment-lines))
+
+(use-package evil-snipe
+    :init
+    (setq evil-snipe-smart-case t
+          evil-snipe-scope 'buffer
+          evil-snipe-use-vim-sneak-bindings t
+          evil-snipe-repeat-keys nil
+          evil-snipe-char-fold t)
+    )
+
+(use-package evil-vimish-fold
+    :init
+    (setq evil-vimish-fold-target-modes '(prog-mode conf-mode text-mode)))
+
+(use-package evil-anzu
+    :demand t
+    :after anzu)
+
+(use-package better-jumper
+    :config
+    (general-create-definer my/jump-map
+        :prefix "SPC j"
+        :non-normal-prefix "M-SPC j"
+        :prefix-map 'my/jump-map)
+    (my/jump-map
+        :states '(motion insert normal)
+        :keymaps 'override
+        "" '(:ignore t :which-key "jump")
+        "o" #'better-jumper-jump-backward
+        "i" #'better-jumper-jump-forward)
+    )
+
+(use-package evil-collection
+    :init
+    (setq evil-collection-mode-list
+          '(arc-mode bm bookmark consult comint compilation eldoc
+                     daemons debug diff-hl diff-mode dired
+                     dired-sidebar docker doc-view elisp-refs embark
+                     eldoc eshell eww flymake grep help helpful
+                     ibuffer imenu macrostep magit-sections magit
+                     magic-todos man mu4e mu4e-conversation notmuch
+                     org org-roam osx-dictionary pdf python replace rg
+                     ripgrep tab-bar term vertico vterm wdired wgrep
+                     which-key xref xwidget)))
+
 (use-package evil
+    :demand t
     :init
     (setq evil-want-C-i-jump t
           evil-want-C-u-scroll nil
@@ -50,72 +120,10 @@
           evil-undo-system 'undo-redo
           evil-ex-hl-update-delay 0.1)
 
-    (my/open-map
-        :keymaps 'override
-        :states '(motion visual insert normal)
-        ":" #'evil-command-window-ex)
-
-    (my/toggle-map
-        :keymaps 'override
-        :states '(motion insert normal)
-        "h" #'evil-ex-nohighlight)
-
-    (general-create-definer my/window-map
-        :prefix "SPC w"
-        :non-normal-prefix "M-SPC w"
-        :prefix-map 'my/window-map)
-
-    (my/window-map
-        :states '(motion insert normal)
-        :keymaps 'override
-        "" '(:ignore t :which-key "window")
-        "w" #'evil-window-next
-        "p" #'evil-window-mru
-        "W" #'evil-window-prev
-        "s" #'evil-window-split
-        "v" #'evil-window-vsplit
-        "h" #'evil-window-left
-        "j" #'evil-window-down
-        "k" #'evil-window-up
-        "l" #'evil-window-right
-        "q" #'evil-quit
-        "o" #'delete-other-windows
-        "=" #'balance-windows
-        "+" #'evil-window-increase-height
-        "-" #'evil-window-decrease-height
-        ":" #'evil-ex
-        "<" #'evil-window-increase-width
-        ">" #'evil-window-increase-width
-        "_" #'evil-window-set-height
-        "|" #'evil-window-set-width
-        "c" #'evil-window-delete
-        "gd" #'xref-find-definitions-other-window
-        "x" #'evil-window-exchange
-        "r" #'evil-window-rotate-downwards
-        "R" #'evil-window-rotate-upwards
-        "H" #'evil-window-move-far-left
-        "J" #'evil-window-move-far-bottom
-        "K" #'evil-window-move-very-top
-        "L" #'evil-window-move-far-right)
-
-    (general-create-definer my/buffer-map
-        :prefix "SPC b"
-        :non-normal-prefix "M-SPC b"
-        :prefix-map 'my/buffer-map)
-
-    (my/buffer-map
-        :states '(motion insert normal)
-        :keymaps 'override
-        "" '(:ignore t :which-key "buffer")
-        "d" #'evil-delete-buffer
-        "[" #'previous-buffer
-        "]" #'next-buffer
-        "s" #'consult-buffer
-        "i" #'ibuffer)
-
     :config
     ;; TODO: lazy load these evil modules
     ;; (reference from doomemacs)
+    (evil-mode 1)
     (evil-select-search-module 'evil-search-module 'evil-search)
     (evil-goggles-mode)
     (evil-escape-mode)
@@ -205,81 +213,70 @@
      "C-f" #'forward-char
      "C-a" #'move-beginning-of-line)
 
-    )
+    (my/open-map
+        :keymaps 'override
+        :states '(motion visual insert normal)
+        ":" #'evil-command-window-ex)
 
-(use-package evil-goggles
-    :init
-    (setq evil-goggles-duration 0.5
-          evil-goggles-pulse nil
-          evil-goggles-enable-delete nil
-          evil-goggles-enable-change nil))
+    (my/toggle-map
+        :keymaps 'override
+        :states '(motion insert normal)
+        "h" #'evil-ex-nohighlight)
 
-(use-package evil-escape
-    :init
-    (setq evil-escape-key-sequence "jk"))
+    (general-create-definer my/window-map
+        :prefix "SPC w"
+        :non-normal-prefix "M-SPC w"
+        :prefix-map 'my/window-map)
 
-(use-package evil-embrace
-    :commands (embrace-add-pair embrace-add-pair-regexp)
-    :hook ((LaTeX-mode . embrace-LaTeX-mode-hook)
-           (org-mode . embrace-org-mode-hook)
-           (emacs-lisp-mode . embrace-emacs-lisp-mode-hook)))
-
-(use-package evil-nerd-commenter
-    :commands (evilnc-comment-operator
-               evilnc-inner-comment
-               evilnc-outer-commenter)
-    :config
-    (general-define-key
-     [remap comment-line] #'evilnc-comment-or-uncomment-lines))
-
-(use-package evil-snipe
-    :init
-    (setq evil-snipe-smart-case t
-          evil-snipe-scope 'buffer
-          evil-snipe-use-vim-sneak-bindings t
-          evil-snipe-repeat-keys nil
-          evil-snipe-char-fold t)
-    )
-
-(use-package evil-vimish-fold
-    :init
-    (setq evil-vimish-fold-target-modes '(prog-mode conf-mode text-mode)))
-
-(use-package evil-anzu
-    :demand t
-    :after anzu)
-
-(use-package better-jumper
-    :config
-    (general-create-definer my/jump-map
-        :prefix "SPC j"
-        :non-normal-prefix "M-SPC j"
-        :prefix-map 'my/jump-map)
-    (my/jump-map
+    (my/window-map
         :states '(motion insert normal)
         :keymaps 'override
-        "" '(:ignore t :which-key "jump")
-        "o" #'better-jumper-jump-backward
-        "i" #'better-jumper-jump-forward)
+        "" '(:ignore t :which-key "window")
+        "w" #'evil-window-next
+        "p" #'evil-window-mru
+        "W" #'evil-window-prev
+        "s" #'evil-window-split
+        "v" #'evil-window-vsplit
+        "h" #'evil-window-left
+        "j" #'evil-window-down
+        "k" #'evil-window-up
+        "l" #'evil-window-right
+        "q" #'evil-quit
+        "o" #'delete-other-windows
+        "=" #'balance-windows
+        "+" #'evil-window-increase-height
+        "-" #'evil-window-decrease-height
+        ":" #'evil-ex
+        "<" #'evil-window-increase-width
+        ">" #'evil-window-increase-width
+        "_" #'evil-window-set-height
+        "|" #'evil-window-set-width
+        "c" #'evil-window-delete
+        "gd" #'xref-find-definitions-other-window
+        "x" #'evil-window-exchange
+        "r" #'evil-window-rotate-downwards
+        "R" #'evil-window-rotate-upwards
+        "H" #'evil-window-move-far-left
+        "J" #'evil-window-move-far-bottom
+        "K" #'evil-window-move-very-top
+        "L" #'evil-window-move-far-right)
+
+    (general-create-definer my/buffer-map
+        :prefix "SPC b"
+        :non-normal-prefix "M-SPC b"
+        :prefix-map 'my/buffer-map)
+
+    (my/buffer-map
+        :states '(motion insert normal)
+        :keymaps 'override
+        "" '(:ignore t :which-key "buffer")
+        "d" #'evil-delete-buffer
+        "[" #'previous-buffer
+        "]" #'next-buffer
+        "s" #'consult-buffer
+        "i" #'ibuffer)
+
     )
-
-(use-package evil-collection
-    :init
-    (setq evil-collection-mode-list
-          '(arc-mode bm bookmark consult comint compilation eldoc
-                     daemons debug diff-hl diff-mode dired
-                     dired-sidebar docker doc-view elisp-refs embark
-                     eldoc eshell eww flymake grep help helpful
-                     ibuffer imenu macrostep magit-sections magit
-                     magic-todos man mu4e mu4e-conversation notmuch
-                     org org-roam osx-dictionary pdf python replace rg
-                     ripgrep tab-bar term vertico vterm wdired wgrep
-                     which-key xref xwidget)))
-
-;; after all the above settings are set
-;; (some settings are needed to set before those packages are loaded)
-;; load evil-mode
-(evil-mode 1)
 
 (provide 'my-init-evil)
 ;;; my-init-evil.el ends here

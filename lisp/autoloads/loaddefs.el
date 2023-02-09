@@ -1,4 +1,15 @@
+;;; loaddefs.el --- automatically extracted autoloads  -*- lexical-binding: t -*-
 ;;
+;;; Code:
+
+
+;;;### (autoloads nil "my-basics-autoloads" "my-basics-autoloads.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from my-basics-autoloads.el
+
+(autoload 'my/display-truncation-and-wrap-indicator-as-whitespace "my-basics-autoloads" nil nil nil)
+
+;;;***
 
 ;;;### (autoloads nil "my-completion-autoloads" "my-completion-autoloads.el"
 ;;;;;;  (0 0 0 0))
@@ -48,7 +59,7 @@ Look up for the symbol under point, if region is active, use
 
 
 \(fn ORIGIN-FN &rest ARGS)" nil nil)
- (autoload #'my/evil-apply-macro-line-by-line "my-evil-autoloads" "Apply macro to each line" t)
+ (autoload #'my/evil-apply-macro-line-by-line "my-evil-autoloads" nil t)
 
 (autoload 'my/define-and-bind-paren-text-object "my-evil-autoloads" "\
 
@@ -226,10 +237,11 @@ a wrapper to run a func on a hook only once
 
 ;;;***
 
-;;;### (autoloads nil "my-basics-autoloads" "my-basics-autoloads.el"
-;;;;;;  (0 0 0 0))
-;;; Generated autoloads from my-basics-autoloads.el
-
-(autoload 'my/display-truncation-and-wrap-indicator-as-whitespace "my-basics-autoloads" nil nil nil)
-
-;;;***
+(provide 'loaddefs)
+;; Local Variables:
+;; version-control: never
+;; no-byte-compile: t
+;; no-update-autoloads: t
+;; coding: utf-8
+;; End:
+;;; loaddefs.el ends here
