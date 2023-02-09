@@ -1,11 +1,12 @@
 ;;; my-evil-autoloads.el -*- lexical-binding: t; -*-
 
+(message "load evil autoloads")
 ;;;###autoload
 (defun my/save-excursion-before-indenting (origin-fn &rest args)
     (save-excursion (apply origin-fn args)))
 
 ;; copied from doomemacs
-;;;###autoload (autoload #'my/evil-apply-macro-line-by-line "my-evil-autoloads" "Apply macro to each line" t)
+;;;###autoload (autoload #'my/evil-apply-macro-line-by-line "my-evil-autoloads" nil t)
 (evil-define-operator my/evil-apply-macro-line-by-line (beg end)
     "Apply macro to each line."
     :move-point nil
