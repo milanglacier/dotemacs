@@ -125,6 +125,15 @@
                  '("CAPTURE-"
                    (display-buffer-in-new-tab)))
 
+    (add-hook 'org-capture-mode-hook
+              ;; completion popup in small screen is annoying
+              (defun my/disable-company ()
+                  (company-mode -1)))
+
+    (add-hook 'org-capture-mode-hook
+              ;; completion popup in small screen is annoying
+              (defun my/disable-truncate-lines ()
+                  (toggle-truncate-lines 1)))
     :config
     (setq my/org-capture-todo-file (file-name-concat "capture" "todo.org")
           my/org-capture-notes-file (file-name-concat "capture" "notes.org")
@@ -182,14 +191,6 @@
     ;; when refiling from org-capture, Emacs prompts to kill the
     ;; underlying, modified buffer. This fixes that.
     (add-hook 'org-after-refile-insert-hook #'save-buffer)
-    (add-hook 'org-capture-mode-hook
-              ;; completion popup in small screen is annoying
-              (defun my/disable-company()
-                  (company-mode -1)))
-
-    (add-hook 'org-capture-mode-hook
-              ;; completion popup in small screen is annoying
-              #'toggle-truncate-lines)
     )
 
 (use-package org-agenda
