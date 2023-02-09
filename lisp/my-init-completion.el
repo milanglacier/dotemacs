@@ -18,7 +18,7 @@
                               ;; always show candidates in overlay tooltip
                               company-echo-metadata-frontend)
           company-backends '((company-files company-capf :separate company-dabbrev
-                                           :with company-yasnippet))
+                                            :with company-yasnippet))
           company-auto-commit nil
           company-dabbrev-other-buffers nil
           company-dabbrev-ignore-case t
@@ -35,10 +35,7 @@
     (unless (display-graphic-p)
         ;; Don't persist company popups when switching back to normal mode.
         ;; `company-box' aborts on mode switch so it doesn't need this.
-        (add-hook 'evil-normal-state-entry-hook
-                  (defun my/company-abort ()
-                      (when company-candidates
-                          (company-abort)))))
+        (add-hook 'evil-normal-state-entry-hook #'my/company-abort))
 
     (with-eval-after-load 'company-files
         ;; Fix `company-files' completion for org file:* links
@@ -53,11 +50,6 @@
     (general-define-key :keymaps
                         'company-mode-map
                         "M-i" #'company-complete)
-    ;; We follow a suggestion by company maintainer u/hvis:
-    ;; https://www.reddit.com/r/emacs/comments/nichkl/comment/gz1jr3s/
-    (defun my/company-completion-styles (capf-fn &rest args)
-        (let ((completion-styles '(basic partial-completion emacs22)))
-            (apply capf-fn args)))
 
     (advice-add #'company-capf :around #'my/company-completion-styles))
 

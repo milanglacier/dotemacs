@@ -59,28 +59,15 @@
             (ess-fl-keyword:= . t)
             (ess-R-fl-keyword:F&T . t)))
 
-    (evil-define-operator my/send-region-to-ess (beg end)
-        "This operator sends the region (either motion or text objects) to ess REPL"
-        ;; t means don't echo the region in the ess REPL buffer
-        (ess-eval-region beg end t))
-
     (my/localleader
         :keymaps 'ess-mode-map
         :states '(normal visual motion insert)
         "s" #'my/send-region-to-ess)
 
-    (defun my/ess-set-company-backend ()
-        (setq-local company-backends
-                    '((company-capf company-files
-                                    company-R-library company-R-args company-R-objects
-                                    :separate company-dabbrev
-                                    :with company-yasnippet))))
-
     (add-hook 'ess-r-mode-hook #'my/ess-set-company-backend)
     (add-hook 'ess-r-mode-hook #'my/eglot-do-not-use-imenu)
     (add-hook 'ess-r-mode-hook #'eglot-ensure)
-    (add-hook 'ess-r-mode-hook (defun my/set-tab-width-4 ()
-                                   (setq-local tab-width 4)))
+    (add-hook 'ess-r-mode-hook #'my/ess-set-tab-width-4)
 
     )
 
@@ -92,9 +79,6 @@
 
     :config
     (add-to-list 'python-mode-hook #'eglot-ensure)
-
-    (evil-define-operator my/send-region-to-python (beg end)
-        (python-shell-send-region beg end t))
 
     (my/localleader
         :keymaps 'python-mode-map
@@ -116,15 +100,7 @@
 
 (use-package polymode-core
     :config
-    (add-hook 'polymode-switch-buffer-hook
-              (defun my/poly-mode-disable-flymake (old-buf new-buf)
-                  "poly-mode are duplicated buffers with exactly the
-same buffer content, when you are on `prog-mode' then your code linter
-will be perplexed by those non-code content. So disable flymake in
-poly-mode."
-                  (with-current-buffer new-buf
-                      (when flymake-mode
-                          (flymake-mode -1))))))
+    (add-hook 'polymode-switch-buffer-hook #'my/poly-mode-disable-flymake))
 
 (use-package quarto-mode
     :commands poly-quarto-mode)

@@ -20,12 +20,6 @@
 (set-display-table-slot standard-display-table 'truncation 32)
 (set-display-table-slot standard-display-table 'wrap 32)
 
-(defun my/display-truncation-and-wrap-indicator-as-whitespace ()
-    (when (not (char-table-p buffer-display-table))
-        (setq buffer-display-table (make-display-table)))
-    (set-display-table-slot buffer-display-table 'truncation 32)
-    (set-display-table-slot buffer-display-table 'wrap 32))
-
 (add-hook 'prog-mode-hook #'my/display-truncation-and-wrap-indicator-as-whitespace)
 (add-hook 'text-mode-hook #'my/display-truncation-and-wrap-indicator-as-whitespace)
 ;; by default when a long line is truncated, emacs displays
@@ -66,4 +60,4 @@
 (setq auto-window-vscroll nil)
 
 (provide 'my-basics)
-;;; my-builtins ends here
+;;; my-basics ends here

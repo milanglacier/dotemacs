@@ -3,8 +3,6 @@
 (straight-use-package 'use-package)
 (straight-use-package 'general)
 
-(setq use-package-expand-minimally t)
-
 (general-create-definer my/leader
     ;; :prefix my-leader
     :prefix "SPC"
@@ -29,15 +27,6 @@
     :prefix "SPC t"
     :non-normal-prefix "M-SPC t"
     :prefix-map 'my/toggle-map)
-
-(defmacro my/run-hook-once (hook func &rest args)
-    "a wrapper to run a func on a hook only once"
-    (let ((func-once (gensym (concat "my/" (symbol-name func)
-                                     "-" "at-" (symbol-name hook) "-" "once"))))
-        `(add-hook ',hook
-                   (defun ,func-once ()
-                       (funcall ',func)
-                       (remove-hook ',hook ',func-once)) ,@args)))
 
 (provide 'my-init-utils)
 ;;; my-init-utils.el ends here

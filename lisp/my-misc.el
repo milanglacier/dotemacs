@@ -42,17 +42,11 @@
 
 (use-package vterm
     :init
-    (defun my/vterm ()
-        "open vterm at project root, if no root is found, open at the default-directory"
-        (interactive)
-        (require 'consult)
-        (let ((default-directory (or (consult--project-root)
-                                     default-directory)))
-            (call-interactively #'vterm)))
     (my/open-map
         :keymaps 'override
         :states '(normal insert motion)
         "t" #'my/vterm)
+    (add-hook 'vter-mode-hook #'my/vterm-setup)
 
     :config
 
@@ -68,12 +62,7 @@
      :keymaps 'vterm-mode-map
      "C-c <escape>" #'vterm-send-escape)
 
-    (defun my/vterm-setup ()
-        (setq-local confirm-kill-processes nil
-                    hscroll-margin 0)
-
-        (setq vterm-max-scrollback 5000))
-    (add-hook 'vterm-mode-hook #'my/vterm-setup))
+    )
 
 (use-package auto-revert
     :init

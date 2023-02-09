@@ -7,7 +7,15 @@
 ;; (setq user-init-file (or load-file-name (buffer-file-name)))
 ;; (setq user-emacs-directory (file-name-directory user-init-file))
 
-(push (file-name-concat user-emacs-directory "lisp") load-path)
+(defvar my/config-dir (file-name-concat user-emacs-directory "lisp")
+    "the directory of my configuration.")
+(defvar my/autoloads-dir (file-name-concat my/config-dir "autoloads")
+    "the directory of my autoloded functions.")
+(defvar my/autoloads-file (file-name-concat my/autoloads-dir "loaddefs.el")
+    "the directory of my autoloded functions.")
+
+(push my/config-dir load-path)
+(push my/autoloads-dir load-path)
 (setq custom-file (file-name-concat user-emacs-directory "custom.el"))
 
 ;; bootstrap straight.el, copied from
@@ -30,6 +38,17 @@
       use-package-always-defer t
       debug-on-error t)
 
+(defun my/update-all-autoloads ()
+    (interactive)
+    (when (not (file-exists-p my/autoloads-file))
+        (with-current-buffer (find-file-noselect
+                              my/autoloads-file)
+            (insert ";;")
+            (save-buffer)))
+    (make-directory-autoloads my/autoloads-dir my/autoloads-file))
+
+(load (expand-file-name "loaddefs.el" my/autoloads-dir) nil t)
+
 (require 'my-init-utils)
 (require 'my-basics)
 (require 'my-init-ui)
@@ -48,14 +67,13 @@
 
 (setq debug-on-error nil)
 
-(defun my/cleanup-gc ()
-    "Clean up gc."
-    (setq gc-cons-threshold  67108864) ; 64M
-    (setq gc-cons-percentage 0.1) ; original value
-    (garbage-collect))
-
 ;; after started up, reset GC threshold to normal.
-(run-with-idle-timer 4 nil #'my/cleanup-gc)
+(run-with-idle-timer 4 nil
+                     (lambda ()
+                         "Clean up gc."
+                         (setq gc-cons-threshold  67108864) ; 64M
+                         (setq gc-cons-percentage 0.1) ; original value
+                         (garbage-collect)))
 
 (provide 'init)
 ;;; init.el ends here

@@ -16,15 +16,6 @@
     :init
     (my/run-hook-once pre-command-hook vertico-mode)
 
-    (defun crm-indicator (args)
-        (cons (format "[CRM%s] %s"
-                      (replace-regexp-in-string
-                       "\\`\\[.*?]\\*\\|\\[.*?]\\*\\'" ""
-                       crm-separator)
-                      (car args))
-              (cdr args)))
-    (advice-add #'completing-read-multiple :filter-args #'crm-indicator)
-
     (general-create-definer my/find-map
         :prefix "SPC f"
         :non-normal-prefix "M-SPC f"
@@ -49,15 +40,13 @@
         "I" #'consult-imenu-multi)
 
     :config
+    (advice-add #'completing-read-multiple :filter-args #'crm-indicator)
+
     (setq vertico-resize nil
           vertico-count 17
           vertico-cycle t)
-    (setq-default completion-in-region-function
-                  (lambda (&rest args)
-                      (apply (if vertico-mode
-                                     #'consult-completion-in-region
-                                 #'completion--in-region)
-                             args)))
+
+    (setq-default completion-in-region-function #'my/completion-in-region)
 
     ;; Cleans up path when moving directories with shadowed paths syntax, e.g.
     ;; cleans ~/foo/bar/// to /, and ~/foo/bar/~/ to ~/.
@@ -167,20 +156,6 @@
     :commands (wgrep-change-to-wgrep-mode wgrep-setup)
     :config
     (setq wgrep-auto-save-buffer t)
-
-    ;; copied from doomemacs
-    (evil-define-operator my/evil-delete-in-wgrep (beg end type register yank-handler)
-        "A wrapper around `evil-delete' for `wgrep' buffers that will invoke
-`wgrep-mark-deletion' on lines you try to delete."
-        (interactive "<R><x><y>")
-        (condition-case _ex
-                (evil-delete beg end type register yank-handler)
-            ('text-read-only
-             (evil-apply-on-block
-              (lambda (beg _)
-                  (goto-char beg)
-                  (call-interactively #'wgrep-mark-deletion))
-              beg (1- end) nil))))
 
     (general-define-key
      :keymaps 'wgrep-mode-map
