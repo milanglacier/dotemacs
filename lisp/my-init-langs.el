@@ -117,6 +117,41 @@
     ;; for configuring displaying R related buffer.
     )
 
+(use-package python
+    :init
+    (defvar my/python-enable-ipython t
+        "use ipython as the embedded REPL.")
+
+    :config
+    (add-to-list 'python-mode-hook #'eglot-ensure)
+
+    (evil-define-operator my/send-region-to-python (beg end)
+        (python-shell-send-region beg end t))
+
+    (my/localleader
+        :keymaps 'python-mode-map
+        :states '(normal visual insert motion)
+        "s" #'my/send-region-to-python)
+
+    (when my/python-enable-ipython
+        (setq python-shell-interpreter "ipython3")
+        (setq python-shell-interpreter-args "--i --simple-prompt --no-color-info")))
+
+(use-package polymode-core
+    :config
+    (add-hook 'polymode-switch-buffer-hook
+              (defun my/poly-mode-disable-flymake (old-buf new-buf)
+                  "poly-mode are duplicated buffers with exactly the
+same buffer content, when you are on `prog-mode' then the your code
+linter will be perplexed by those prose content. So disable flymake in
+poly-mode."
+                  (with-current-buffer new-buf
+                      (when flymake-mode
+                          (flymake-mode -1))))))
+
+(use-package quarto-mode
+    :commands poly-quarto-mode)
+
 (use-package xref
     :config
 
@@ -164,14 +199,14 @@ to next xref location."
         :non-normal-prefix "M-SPC l"
         :prefix-map 'my/lsp-map)
     (my/lsp-map
-        :keymaps 'eglot-mode-map
-        :states '(normal insert motion visual)
-        "" '(:ignore t :which-key "lsp")
-        "f" #'eglot-format
-        "s" #'consult-eglot-symbols
-        "a" #'eglot-code-actions
-        "e" #'consult-flymake
-        "n" #'eglot-rename)
+     :keymaps 'eglot-mode-map
+     :states '(normal insert motion visual)
+     "" '(:ignore t :which-key "lsp")
+     "f" #'eglot-format
+     "s" #'consult-eglot-symbols
+     "a" #'eglot-code-actions
+     "e" #'consult-flymake
+     "n" #'eglot-rename)
 
     (general-define-key
      :keymaps 'eglot-mode-map
