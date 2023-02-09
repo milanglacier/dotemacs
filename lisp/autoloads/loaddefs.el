@@ -1,0 +1,235 @@
+;;
+
+;;;### (autoloads nil "my-completion-autoloads" "my-completion-autoloads.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from my-completion-autoloads.el
+
+(autoload 'my/company-abort "my-completion-autoloads" nil nil nil)
+
+(autoload 'my/company-completion-styles "my-completion-autoloads" "\
+
+
+\(fn CAPF-FN &rest ARGS)" nil nil)
+
+;;;***
+
+;;;### (autoloads nil "my-elisp-autoloads" "my-elisp-autoloads.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from my-elisp-autoloads.el
+
+(autoload 'my/helpful-display-buffer "my-elisp-autoloads" "\
+If a helpful buffer window is already opened, should
+use it, don't occupy other window. Make sure it is a side window, such
+that when you want to dwim (pressing q and want to close the help
+window), this window will be completely removed, i.e. the window won't
+be displayed showing other buffer.
+
+\(fn BUF)" nil nil)
+
+(autoload 'my/helpful-lookup-symbl-at-point "my-elisp-autoloads" nil t nil)
+
+(autoload 'my/elisp-loop-up-symbol "my-elisp-autoloads" "\
+Look up for the symbol under point, if region is active, use
+        the selected region as the symbol
+
+\(fn BEG END)" t nil)
+
+(autoload 'my/elisp-setup "my-elisp-autoloads" nil nil nil)
+
+(register-definition-prefixes "my-elisp-autoloads" '("my/emacs-lisp-outline-level"))
+
+;;;***
+
+;;;### (autoloads nil "my-evil-autoloads" "my-evil-autoloads.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from my-evil-autoloads.el
+
+(autoload 'my/save-excursion-before-indenting "my-evil-autoloads" "\
+
+
+\(fn ORIGIN-FN &rest ARGS)" nil nil)
+ (autoload #'my/evil-apply-macro-line-by-line "my-evil-autoloads" "Apply macro to each line" t)
+
+(autoload 'my/define-and-bind-paren-text-object "my-evil-autoloads" "\
+
+
+\(fn KEY START-REGEX END-REGEX)" nil t)
+
+(autoload 'my/define-and-bind-local-paren-text-object "my-evil-autoloads" "\
+
+
+\(fn KEY START-REGEX END-REGEX HOOK)" nil t)
+
+;;;***
+
+;;;### (autoloads nil "my-langs-autoloads" "my-langs-autoloads.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from my-langs-autoloads.el
+
+(autoload 'my/ess-set-company-backend "my-langs-autoloads" nil nil nil)
+
+(autoload 'my/ess-set-tab-width-4 "my-langs-autoloads" nil nil nil)
+ (autoload #'my/send-region-to-ess "my-langs-autoloads" nil t)
+ (autoload #'my/send-region-to-python "my-langs-autoloads" nil t)
+
+(autoload 'my/poly-mode-disable-flymake "my-langs-autoloads" "\
+poly-mode are duplicated buffers with exactly the
+same buffer content, when you are on `prog-mode' then your code linter
+will be perplexed by those non-code content. So disable flymake in
+poly-mode.
+
+\(fn OLD-BUF NEW-BUF)" nil nil)
+
+;;;***
+
+;;;### (autoloads nil "my-langtools-autoloads" "my-langtools-autoloads.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from my-langtools-autoloads.el
+
+(autoload 'my/do-not-use-citre-imenu "my-langtools-autoloads" nil nil nil)
+
+(autoload 'my/do-not-use-citre-xref "my-langtools-autoloads" nil nil nil)
+
+(autoload 'my/do-not-use-citre-capf "my-langtools-autoloads" nil nil nil)
+
+(autoload 'my/toggle-citre-eglot-capf "my-langtools-autoloads" nil nil nil)
+
+(autoload 'my/eglot-do-not-use-imenu "my-langtools-autoloads" nil nil nil)
+
+(autoload 'my/eldoc-buffer-dwim "my-langtools-autoloads" "\
+When eldoc buffer window is not opened, display the eldoc
+window. Pressing `my/eldoc-buffer-dwim-key' again within a short
+period (1s currently as hard coded) will move your focus on the eldoc
+window. If the shorter period has gone, calling this command will
+close the eldoc window. Currently this dwim hack is only effective in
+`eglot-mode-map' as it is hardcoded." t nil)
+
+(autoload 'my/xref-move-in-original-src-macro "my-langtools-autoloads" "\
+There can only be one xref buffer. That is, if you find
+references of other symbol the previous one will be overwritten. The
+official `xref-next-line' `xref-next-group' only allows you to move
+the location in the src buffer when your point is in the xref buffer
+window. This macro creates funcs that allow you to move current window
+to next xref location.
+
+\(fn FUNC)" nil t)
+
+(register-definition-prefixes "my-langtools-autoloads" '("my/eldoc-"))
+
+;;;***
+
+;;;### (autoloads nil "my-minibuffer-autoloads" "my-minibuffer-autoloads.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from my-minibuffer-autoloads.el
+
+(autoload 'crm-indicator "my-minibuffer-autoloads" "\
+
+
+\(fn ARGS)" nil nil)
+
+(autoload 'my/completion-in-region "my-minibuffer-autoloads" "\
+
+
+\(fn &rest ARGS)" nil nil)
+ (autoload #'my/evil-delete-in-wgrep "my-minibuffer-autoloads" nil t)
+
+;;;***
+
+;;;### (autoloads nil "my-misc-autoloads" "my-misc-autoloads.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from my-misc-autoloads.el
+
+(autoload 'my/vterm "my-misc-autoloads" "\
+open vterm at project root, if no root is found, open at the default-directory" t nil)
+
+(autoload 'my/vterm-setup "my-misc-autoloads" nil nil nil)
+
+;;;***
+
+;;;### (autoloads nil "my-org-autoloads" "my-org-autoloads.el" (0
+;;;;;;  0 0 0))
+;;; Generated autoloads from my-org-autoloads.el
+
+(autoload 'my/load-org-extensions-idly "my-org-autoloads" "\
+Some important variables from other org extensions are not autoloaded.
+You may feel annoying if you want to use them but find a void variable.
+\(e.g. you want to call `org-open-at-point' on a timestamp)" nil nil)
+
+(autoload 'my/org-capture-bubble-tea-template "my-org-autoloads" "\
+
+
+\(fn LETTER DESC HEADINGS TEMPLATE &rest PROPERTIES)" nil nil)
+
+(autoload 'my/org-agenda-visited-all-directories "my-org-autoloads" "\
+Org agenda need to visted all files listed in `org-agenda-files'
+to create the view, which is expensive. By default I will only list a
+small portion of files to be searched.  This function searches all the
+files in the org-directory to create the org-agenda view" t nil)
+
+(autoload 'my/org-bubble-tea-get-end-of-play-time "my-org-autoloads" "\
+After clocking in to record the start time of playing with bubble tea,
+when clocking out, use this function to automatically update the table.
+
+\(fn START)" nil nil)
+
+;;;***
+
+;;;### (autoloads nil "my-os-autoloads" "my-os-autoloads.el" (0 0
+;;;;;;  0 0))
+;;; Generated autoloads from my-os-autoloads.el
+
+(autoload 'my/macos-cmd-w "my-os-autoloads" "\
+If there is only one tab, close emacs, otherwise close one tab" t nil)
+
+;;;***
+
+;;;### (autoloads nil "my-tty-autoloads" "my-tty-autoloads.el" (0
+;;;;;;  0 0 0))
+;;; Generated autoloads from my-tty-autoloads.el
+
+(autoload 'my/tty-setup "my-tty-autoloads" nil nil nil)
+
+;;;***
+
+;;;### (autoloads nil "my-ui-autoloads" "my-ui-autoloads.el" (0 0
+;;;;;;  0 0))
+;;; Generated autoloads from my-ui-autoloads.el
+
+(autoload 'my/delayed-startup-screen "my-ui-autoloads" "\
+`org-agenda-list' is slow, don't run it immediately after startup" nil nil)
+
+(autoload 'my/tab-bar-go-to-tab-macro "my-ui-autoloads" "\
+
+
+\(fn NUMBER)" nil t)
+
+(autoload 'my/set-scratch-directory "my-ui-autoloads" "\
+After creating a new tab, the default buffer to be displayed is
+scratch buffer whose directory is set to where emacs is initialized.
+Change it to the directory of previous buffer where `tab-bar-new-tab'
+is called.
+
+\(fn OLD-FUN &rest ARGS)" nil nil)
+
+(register-definition-prefixes "my-ui-autoloads" '("my/display-org-agenda-list"))
+
+;;;***
+
+;;;### (autoloads nil "my-utils-autoloads" "my-utils-autoloads.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from my-utils-autoloads.el
+
+(autoload 'my/run-hook-once "my-utils-autoloads" "\
+a wrapper to run a func on a hook only once
+
+\(fn HOOK FUNC &rest ARGS)" nil t)
+
+;;;***
+
+;;;### (autoloads nil "my-basics-autoloads" "my-basics-autoloads.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from my-basics-autoloads.el
+
+(autoload 'my/display-truncation-and-wrap-indicator-as-whitespace "my-basics-autoloads" nil nil nil)
+
+;;;***
