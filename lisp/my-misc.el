@@ -7,10 +7,6 @@
 (use-package hideshow
     :hook (prog-mode . hs-minor-mode))
 
-(use-package eldoc
-    :init
-    (setq eldoc-echo-area-use-multiline-p nil))
-
 ;; automatically remove trailing whitespaces
 (use-package ws-butler
     :init

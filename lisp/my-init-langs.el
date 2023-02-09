@@ -172,6 +172,59 @@ to next xref location."
 
     )
 
+(use-package eldoc
+    :init
+    (setq eldoc-echo-area-use-multiline-p nil)
+    (defvar-local my/eldoc-buffer-dwim-key "K"
+        "The key to enable dwim behavior on displaying eldoc buffer")
+
+    (defun my/eldoc-buffer-dwim ()
+        "When eldoc buffer window is not opened, display the eldoc
+window. Pressing `my/eldoc-buffer-dwim-key' again within a short
+period (1s currently as hard coded) will move your focus on the eldoc
+window. If the shorter period has gone, calling this command will
+close the eldoc window. Currently this dwim hack is only effective in
+`eglot-mode-map' as it is hardcoded."
+        (interactive)
+        (if-let ((eldoc-win (get-buffer-window "*eldoc*")))
+                (delete-window eldoc-win)
+            (progn
+                (eldoc-doc-buffer)
+                (my/eldoc-dwim-hack))))
+
+    :config
+    (add-to-list 'display-buffer-alist
+                 `("\\*eldoc\\*"
+                   (display-buffer-reuse-window display-buffer-in-side-window)
+                   (window-width . 0.5)
+                   (window-height . 0.5)
+                   (slot . ,(alist-get 'eldoc my/side-window-slots))))
+
+    (defun my/eldoc-dwim-hack ()
+        "bind `my/eldoc-buffer-dwim-key' locally to a command that
+will switch to the eldoc buffer, and unbind the key after a short
+period (1s as hard coded.)"
+        (general-define-key
+         :keymaps 'eglot-mode-map
+         :states '(normal motion)
+         my/eldoc-buffer-dwim-key #'my/eldoc-focus)
+
+        (run-with-idle-timer 1 nil #'my/eldoc-locally-unbind))
+
+    (defun my/eldoc-locally-unbind ()
+        (general-define-key
+         :states '(normal motion)
+         :keymaps 'eglot-mode-map
+         my/eldoc-buffer-dwim-key #'my/eldoc-buffer-dwim))
+
+    (defun my/eldoc-focus ()
+        "focus on the eldoc window"
+        (interactive)
+        (when (get-buffer-window "*eldoc*")
+            (select-window (get-buffer-window "*eldoc*"))))
+
+    )
+
 (use-package eglot
     :init
     (setq eglot-stay-out-of '("company"))
