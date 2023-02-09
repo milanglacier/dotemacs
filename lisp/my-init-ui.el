@@ -7,8 +7,13 @@
 (use-package window
     :init
     (defvar my/side-window-slots
-        '((helpful . -1)
-          (vterm . 1))
+        '((helpful . 1)
+          (vterm . -1)
+          (eldoc . 1)
+          (python . -1)
+          (R . -1)
+          (Rhelp . 1)
+          (Rdired . -1))
         "The slot for different mode if used as side window,
 this is for configuring `display-buffer-in-side-window',
 configuring this would avoid buffer swallows other buffer's window

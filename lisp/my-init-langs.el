@@ -42,10 +42,12 @@
      :states '(normal motion visual)
      "C-w ]" #'citre-peek)
 
-    (my/window-map
-        :keymaps 'citre-mode-map
-        :states '(normal visual insert motion)
-        "]" #'citre-peek)
+    (general-define-key
+     :prefix "SPC w"
+     :non-normal-prefix "M-SPC w"
+     :keymaps 'citre-mode-map
+     :states '(normal visual insert motion)
+     "]" #'citre-peek)
 
     (general-define-key
      :keymaps 'citre-peek-keymap
@@ -75,6 +77,32 @@
           ess-use-flymake nil)
 
     :config
+    (add-to-list 'display-buffer-alist
+                 `("^\\*R:"
+                   (display-buffer-reuse-window display-buffer-in-side-window)
+                   (window-width . 0.5)
+                   (window-height . 0.5)
+                   (side . bottom)
+                   (slot . ,(alist-get 'R my/side-window-slots))))
+
+    (add-to-list 'display-buffer-alist
+                 `("^\\*R Dired"
+                   (display-buffer-reuse-window display-buffer-in-side-window)
+                   (window-width . 0.5)
+                   (window-height . 0.5)
+                   (side . right)
+                   (slot . ,(alist-get 'Rdired my/side-window-slots))))
+
+    (add-to-list 'display-buffer-alist
+                 `("^\\*help\\[R\\]"
+                   (display-buffer-reuse-window display-buffer-in-side-window)
+                   (window-width . 0.5)
+                   (window-height . 0.5)
+                   (side . bottom)
+                   (slot . ,(alist-get 'Rhelp my/side-window-slots))))
+
+    (evil-set-initial-state 'ess-r-help-mode 'normal)
+
     (my/define-and-bind-local-paren-text-object " c" "# %%" "# %%" ess-r-mode-hook)
     (setq ess-R-font-lock-keywords
           '((ess-R-fl-keyword:keywords . t)
@@ -121,6 +149,7 @@
     :init
     (defvar my/python-enable-ipython t
         "use ipython as the embedded REPL.")
+    (setq python-indent-offset 4)
 
     :config
     (add-to-list 'python-mode-hook #'eglot-ensure)
@@ -135,7 +164,16 @@
 
     (when my/python-enable-ipython
         (setq python-shell-interpreter "ipython3")
-        (setq python-shell-interpreter-args "--i --simple-prompt --no-color-info")))
+        (setq python-shell-interpreter-args "--i --simple-prompt --no-color-info"))
+
+    (add-to-list 'display-buffer-alist
+                 `("\\*[pP]ython\\*"
+                   (display-buffer-reuse-window display-buffer-in-side-window)
+                   (window-width . 0.5)
+                   (window-height . 0.5)
+                   (side . bottom)
+                   (slot . ,(alist-get 'python my/side-window-slots))))
+    )
 
 (use-package polymode-core
     :config
@@ -154,7 +192,6 @@ poly-mode."
 
 (use-package xref
     :config
-
     (defmacro my/xref-move-in-original-src-macro (func)
         "There can only be one xref buffer. That is, if you find
 references of other symbol the previous one will be overwritten. The
@@ -247,19 +284,29 @@ period (1s as hard coded.)"
              (setq-local completion-at-point-functions
                          (delq #'my/eglot-citre-capf completion-at-point-functions)))))
 
+    ;; NOTE: THIS IS REALLY IMPORTANT!
+    ;; when you are registered evil keymaps for a minor mode keymap
+    ;; you MUST call this func to automatically activate them
+    ;; otherwise, you have to make a state transistion to make them
+    ;; become effective.
+    (add-hook 'eglot-managed-mode-hook #'evil-normalize-keymaps)
+
     (general-create-definer my/lsp-map
         :prefix "SPC l"
         :non-normal-prefix "M-SPC l"
         :prefix-map 'my/lsp-map)
+
     (my/lsp-map
-     :keymaps 'eglot-mode-map
-     :states '(normal insert motion visual)
-     "" '(:ignore t :which-key "lsp")
-     "f" #'eglot-format
-     "s" #'consult-eglot-symbols
-     "a" #'eglot-code-actions
-     "e" #'consult-flymake
-     "n" #'eglot-rename)
+        :keymaps 'eglot-mode-map
+        :states '(normal insert motion visual)
+        "" '(:ignore t :which-key "lsp")
+        "f" #'eglot-format
+        "s" #'consult-eglot-symbols
+        "a" #'eglot-code-actions
+        "e" #'consult-flymake
+        "n" #'eglot-rename
+        "[" #'xref-go-back
+        "]" #'xref-go-forward)
 
     (general-define-key
      :keymaps 'eglot-mode-map
@@ -272,17 +319,11 @@ period (1s as hard coded.)"
      ;; jump to next/prev file containing the references.
      "[ R" (my/xref-move-in-original-src-macro xref-prev-group)
      "] R" (my/xref-move-in-original-src-macro xref-next-group)
-     "K" #'eldoc-doc-buffer
+     "K" #'my/eldoc-buffer-dwim
      "gd" #'xref-find-definitions
      "gr" #'xref-find-references)
-    )
 
-(use-package consult-eglot
-    :init
-    (my/find-map
-        :keymaps 'eglot-mode-map
-        :states '(normal visual insert motion)
-        "l" #'consult-eglot-symbols))
+    )
 
 (provide 'my-init-langs)
 ;;; my-init-langs.el ends here
