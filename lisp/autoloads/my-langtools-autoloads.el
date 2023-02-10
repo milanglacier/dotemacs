@@ -24,7 +24,7 @@
 
 ;;;###autoload
 (defun my/eglot-do-not-use-imenu ()
-    (add-to-list 'eglot-stay-out-of "imenu"))
+    (setq-local eglot-stay-out-of `("imenu" ,@eglot-stay-out-of)))
 
 ;;;###autoload
 (defun my/eldoc-buffer-dwim ()
@@ -63,7 +63,6 @@ period (1s as hard coded.)"
     (interactive)
     (when (get-buffer-window "*eldoc*")
         (select-window (get-buffer-window "*eldoc*"))))
-
 
 ;;;###autoload
 (defmacro my/xref-move-in-original-src-macro (func)
