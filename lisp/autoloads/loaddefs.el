@@ -253,6 +253,11 @@ a wrapper to run a func on a hook only once
 
 \(fn HOOK FUNC &rest ARGS)" nil t)
 
+(autoload 'my/advise-at-once "my-utils-autoloads" "\
+a wrapper to advise a func only once
+
+\(fn FUNC ADVICE WHERE &rest PROPS)" nil t)
+
 ;;;***
 
 (provide 'loaddefs)
