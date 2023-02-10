@@ -32,6 +32,7 @@
     :config
     (add-hook 'company-mode-hook #'evil-normalize-keymaps)
     (evil-make-overriding-map company-mode-map)
+    (evil-make-overriding-map company-active-map)
 
     (unless (display-graphic-p)
         ;; Don't persist company popups when switching back to normal mode.
@@ -45,21 +46,18 @@
     (when (display-graphic-p)
         (add-hook 'company-mode-hook #'company-box-mode))
 
-    (general-define-key :keymaps
-                        'company-active-map
-                        "C-e" #'company-abort
-                        ;; select current candidates and close company popup
-                        "RET" #'company-complete-selection
-                        ;; company-tng-mode conflicts with yasnippet
-                        ;; with TAB key this is a workaround to use
-                        ;; C-y to expand yasnippet template when
-                        ;; company popup is active
-                        "C-y" #'company-complete-selection)
+    (general-define-key
+     :keymaps 'company-active-map
+     "C-e" #'company-abort
+     ;; use C-y to enter yasnippet expansion
+     ;; without input of additional character.
+     "C-y" #'company-complete-selection)
 
-    (general-define-key :keymaps
-                        'company-mode-map
-                        ;; manually invoke the completion
-                        "M-i" #'company-complete)
+    (general-define-key
+     :keymaps
+     'company-mode-map
+     ;; manually invoke the completion
+     "M-i" #'company-complete)
 
     (advice-add #'company-capf :around #'my/company-completion-styles)
 
