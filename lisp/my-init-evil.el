@@ -42,7 +42,7 @@
 
 (use-package evil-nerd-commenter
     :commands (evilnc-comment-operator
-               evilnc-inner-comment
+               evilnc-inner-commenter
                evilnc-outer-commenter)
     :config
     (general-define-key
@@ -196,7 +196,7 @@
      :keymaps 'in
      ;; TODO: configure emacs-lisp mode to use space as args delimiter.
      "a" #'evil-inner-arg
-     "#" #'evilnc-inner-comment
+     "#" #'evilnc-inner-commenter
      "i" #'evil-indent-plus-i-indent
      "j" #'evil-indent-plus-i-indent-up-down
      "k" #'evil-indent-plus-i-indent-up
@@ -205,7 +205,7 @@
     (general-define-key
      :keymaps 'out
      "a" #'evil-outer-arg
-     "#" #'evilnc-outer-comment
+     "#" #'evilnc-outer-commenter
      "i" #'evil-indent-plus-i-indent
      "j" #'evil-indent-plus-i-indent-up-down
      "k" #'evil-indent-plus-i-indent-up
