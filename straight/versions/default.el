@@ -87,5 +87,6 @@
  ("with-editor" . "391e76a256aeec6b9e4cbd733088f30c677d965b")
  ("ws-butler" . "e3a38d93e01014cd47bf5af4924459bd145fd7c4")
  ("xclip" . "a1ac607f75a250dddf49866918bb493884451130")
- ("xref" . "5ed9f0aa7cb0bc558b48a62f03568b929ac4a270"))
+ ("xref" . "5ed9f0aa7cb0bc558b48a62f03568b929ac4a270")
+ ("yasnippet" . "5cbdbf0d2015540c59ed8ee0fcf4788effdf75b6"))
 :gamma
