@@ -40,6 +40,7 @@
  ("evil-lion" . "a55eb647422342f6b1cf867f797b060b3645d9d8")
  ("evil-matchit" . "ec3dd819983b2d824142efddd46ef29b46a7c454")
  ("evil-nerd-commenter" . "8c0f23d46a3927b9f83c1c2c4590be53d0b740db")
+ ("evil-numbers" . "7a1b62afc12da2b582bf84d722e7b10ca8b97065")
  ("evil-org-mode" . "b1f309726b1326e1a103742524ec331789f2bf94")
  ("evil-snipe" . "c07788c35cf8cd8e652a494322fdc0643e30a89f")
  ("evil-surround" . "f273821f575ace519066fb106ee45a5b8577475f")
