@@ -123,9 +123,11 @@
     ;; NOTE: `evil-mode' must be enabled here.  otherwise those
     ;; autoloaded function will try to load `my-evil-autoloads' before
     ;; evil is loaded, which results in error since I used macros from
-    ;; `evil' there. I don't know why.  However if enable `evil-mode'
-    ;; at here, then those autoloaded functions will try to load
-    ;; `my-evil-autoloads' after evil has been loaded.
+    ;; `evil' there. The reason may be that `eval-after-load' form
+    ;; needs to evaluate macros before the execution. And I defined an
+    ;; autoloaded macro in my autoload files, which results in my
+    ;; autoload files being loaded which contains an
+    ;; `evil-define-operator` command from evil.
     (evil-mode 1)
 
     :config
