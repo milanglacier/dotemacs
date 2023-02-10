@@ -41,8 +41,6 @@ if they are side window.")
           tab-bar-format '(tab-bar-format-tabs-groups
                            tab-bar-separator))
 
-    :config
-
     (general-create-definer my/tab-map
         :prefix "SPC TAB"
         :non-normal-prefix "M-SPC TAB"
