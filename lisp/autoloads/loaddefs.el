@@ -3,6 +3,22 @@
 ;;; Code:
 
 
+;;;### (autoloads nil "my-apps-autoloads" "my-apps-autoloads.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from my-apps-autoloads.el
+
+(autoload 'my/open-html-with-xwidget "my-apps-autoloads" "\
+open local file (html) using xwidget,
+prefix with C-u to open the url with a new xwidget session
+
+\(fn URL NEW-SESSION)" t nil)
+ (autoload #'my/google-search-eww "my-apps-autoloads" nil t)
+ (autoload #'my/google-search-eww "my-apps-autoloads" nil t)
+
+(register-definition-prefixes "my-apps-autoloads" '("my/google-search-wrapper"))
+
+;;;***
+
 ;;;### (autoloads nil "my-basics-autoloads" "my-basics-autoloads.el"
 ;;;;;;  (0 0 0 0))
 ;;; Generated autoloads from my-basics-autoloads.el
@@ -182,6 +198,14 @@ After clocking in to record the start time of playing with bubble tea,
 when clocking out, use this function to automatically update the table.
 
 \(fn START)" nil nil)
+
+(autoload 'my/org-toggle-org-emphasis-markers "my-org-autoloads" "\
+toggle emphasis markers" t nil)
+
+(autoload 'my/org-toggle-org-drawer "my-org-autoloads" "\
+toggle hide drawer. This function is effective only after org 9.6." t nil)
+
+(register-definition-prefixes "my-org-autoloads" '("my/toggle-org-settings-wrapper"))
 
 ;;;***
 

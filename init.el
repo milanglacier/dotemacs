@@ -53,7 +53,6 @@
 (require 'my-basics)
 (require 'my-init-ui)
 (require 'my-init-colorscheme)
-(require 'my-init-tty)
 (require 'my-init-evil)
 (require 'my-init-completion)
 (require 'my-init-minibuffer)
@@ -63,6 +62,7 @@
 (require 'my-init-langs)
 (require 'my-init-langtools)
 (require 'my-init-os)
+(require 'my-init-apps)
 (require 'my-misc)
 
 (setq debug-on-error nil)
