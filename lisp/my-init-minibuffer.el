@@ -148,9 +148,7 @@
         "a" #'embark-act)
 
     :config
-    (require 'consult)
-    ;; useful when use embark-export that exports to a grep-mode buffer
-    (evil-set-initial-state 'grep-mode 'normal))
+    (require 'consult))
 
 (use-package wgrep
     :commands (wgrep-change-to-wgrep-mode wgrep-setup)

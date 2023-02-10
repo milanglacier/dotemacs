@@ -82,7 +82,7 @@
 (use-package evil-collection
     :init
     (setq evil-collection-mode-list
-          '(arc-mode bm bookmark consult comint compilation eldoc
+          '(arc-mode bm bookmark consult comint compile eldoc
                      daemons debug diff-hl diff-mode dired
                      dired-sidebar docker doc-view elisp-refs embark
                      eldoc eshell eww flymake grep help helpful
