@@ -192,13 +192,7 @@ when clocking out, use this function to automatically update the table.
 (autoload 'my/macos-cmd-w "my-os-autoloads" "\
 If there is only one tab, close emacs, otherwise close one tab" t nil)
 
-;;;***
-
-;;;### (autoloads nil "my-tty-autoloads" "my-tty-autoloads.el" (0
-;;;;;;  0 0 0))
-;;; Generated autoloads from my-tty-autoloads.el
-
-(autoload 'my/tty-setup "my-tty-autoloads" nil nil nil)
+(autoload 'my/tty-setup "my-os-autoloads" nil nil nil)
 
 ;;;***
 
