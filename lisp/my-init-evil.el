@@ -18,6 +18,7 @@
 (straight-use-package 'evil-lion)
 (straight-use-package 'evil-vimish-fold)
 (straight-use-package 'evil-indent-plus)
+(straight-use-package 'evil-numbers)
 (straight-use-package 'expand-region)
 (straight-use-package 'evil-collection)
 (straight-use-package 'evil-matchit)
@@ -175,6 +176,10 @@
      "C-w gd" #'xref-find-definitions-other-window
      "ga" #'evil-lion-left
      "gA" #'evil-lion-right
+     "C-a" #'evil-numbers/inc-at-pt
+     "C-q" #'evil-numbers/dec-at-pt ;; C-x is so important in emacs
+     "g C-a" #'evil-numbers/inc-at-pt-incremental
+     "g C-x" #'evil-numbers/dec-at-pt-incremental
      "RET" #'er/expand-region
      "gs" #'evil-replace-with-register
      "g@" #'my/evil-apply-macro-line-by-line)
