@@ -92,7 +92,6 @@
                      which-key xref xwidget)))
 
 (use-package evil
-    :demand t
     :init
     (setq evil-want-C-i-jump t
           evil-want-C-u-scroll nil
@@ -120,10 +119,18 @@
           evil-undo-system 'undo-redo
           evil-ex-hl-update-delay 0.1)
 
+    ;; NOTE: `evil-mode' must be enabled here.  otherwise those
+    ;; autoloaded function will try to load `my-evil-autoloads' before
+    ;; evil is loaded, which results in error since I used macros from
+    ;; `evil' there. I don't know why.  However if enable `evil-mode'
+    ;; at here, then those autoloaded functions will try to load
+    ;; `my-evil-autoloads' after evil has been loaded.
+    (evil-mode 1)
+
     :config
     ;; TODO: lazy load these evil modules
     ;; (reference from doomemacs)
-    (evil-mode 1)
+
     (evil-select-search-module 'evil-search-module 'evil-search)
     (evil-goggles-mode)
     (evil-escape-mode)
