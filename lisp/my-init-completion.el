@@ -4,6 +4,8 @@
 (straight-use-package 'company-box)
 (straight-use-package 'cape)
 
+(straight-use-package 'yasnippet)
+
 (use-package company
 
     :init
@@ -17,8 +19,7 @@
           company-frontends '(company-pseudo-tooltip-frontend
                               ;; always show candidates in overlay tooltip
                               company-echo-metadata-frontend)
-          company-backends '((company-files company-capf :separate company-dabbrev
-                                            :with company-yasnippet))
+          company-backends '((company-files company-yasnippet company-capf :separate company-dabbrev))
           company-auto-commit nil
           company-dabbrev-other-buffers nil
           company-dabbrev-ignore-case t
@@ -46,19 +47,34 @@
 
     (general-define-key :keymaps
                         'company-active-map
-                        "C-e" #'company-abort)
+                        "C-e" #'company-abort
+                        ;; select current candidates and close company popup
+                        "RET" #'company-complete-selection
+                        ;; company-tng-mode conflicts with yasnippet
+                        ;; with TAB key this is a workaround to use
+                        ;; C-y to expand yasnippet template when
+                        ;; company popup is active
+                        "C-y" #'company-complete-selection)
+
     (general-define-key :keymaps
                         'company-mode-map
+                        ;; manually invoke the completion
                         "M-i" #'company-complete)
 
-    (advice-add #'company-capf :around #'my/company-completion-styles))
+    (advice-add #'company-capf :around #'my/company-completion-styles)
+
+    (yas-global-mode)
+    )
 
 (use-package company-box
-
     :config
     (setq company-box-max-candidates 50
           company-frontends '(company-tng-frontend company-box-frontend)
           company-box-icons-alist 'company-box-icons-all-the-icons))
+
+(use-package yasnippet
+    :init
+    (setq yas-verbosity 2))
 
 (provide 'my-init-completion)
 ;;; my-init-completion.el ends here
