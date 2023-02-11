@@ -271,7 +271,7 @@
         "r" #'evil-window-rotate-downwards
         "R" #'evil-window-rotate-upwards
         "H" #'evil-window-move-far-left
-        "J" #'evil-window-move-far-bottom
+        "J" #'evil-window-move-very-bottom
         "K" #'evil-window-move-very-top
         "L" #'evil-window-move-far-right)
 
