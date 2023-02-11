@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: autoload
+# key: autoload
+# --
+;;;###autoload $0(autoload #'${1:`(save-excursion (re-search-forward "my/") (current-word))`} "${2:`(replace-regexp-in-string "\\.el.*$" "" (buffer-name))`}" nil t$3)
