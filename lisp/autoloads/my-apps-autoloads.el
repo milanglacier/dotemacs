@@ -44,5 +44,31 @@ If region is active, use the region as keyword of initial input, otherwise use `
     "Search google keywords by `xwidget-webkit-browse-url'.
 If region is active, use the region as keyword of initial input, otherwise use `current-word'.")
 
+(defun my/refresh-xwidget-after-eval-python (&rest _)
+    (run-with-idle-timer 3 nil #'xwidget-webkit-reload))
+
+;;;###autoload
+(define-minor-mode my/refresh-xwidget-after-eval-python-mode
+    "After evaluating a python command, typically like
+`python-shell-send-defun', `python-shell-send-region', refreshing the
+xwidget browser. This is useful for interactive usage with web stuffs
+like plotly."
+    :global t
+
+    (if my/refresh-xwidget-after-eval-python-mode
+            (progn
+                (advice-add #'python-shell-send-statement
+                            :after
+                            #'my/refresh-xwidget-after-eval-python)
+                (advice-add #'python-shell-send-region
+                            :after
+                            #'my/refresh-xwidget-after-eval-python))
+        (progn
+            (advice-remove #'python-shell-send-statement
+                           #'my/refresh-xwidget-after-eval-python)
+            (advice-remove #'python-shell-send-region
+                           #'my/refresh-xwidget-after-eval-python)))
+    )
+
 (provide 'my-apps-autoloads)
 ;;; my-apps-autoloads.el ends here

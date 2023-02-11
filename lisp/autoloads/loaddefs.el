@@ -15,7 +15,41 @@ prefix with C-u to open the url with a new xwidget session
  (autoload #'my/google-search-eww "my-apps-autoloads" nil t)
  (autoload #'my/google-search-eww "my-apps-autoloads" nil t)
 
-(register-definition-prefixes "my-apps-autoloads" '("my/google-search-wrapper"))
+(defvar my/refresh-xwidget-after-eval-python-mode nil "\
+Non-nil if My/Refresh-Xwidget-After-Eval-Python mode is enabled.
+See the `my/refresh-xwidget-after-eval-python-mode' command
+for a description of this minor mode.
+Setting this variable directly does not take effect;
+either customize it (see the info node `Easy Customization')
+or call the function `my/refresh-xwidget-after-eval-python-mode'.")
+
+(custom-autoload 'my/refresh-xwidget-after-eval-python-mode "my-apps-autoloads" nil)
+
+(autoload 'my/refresh-xwidget-after-eval-python-mode "my-apps-autoloads" "\
+After evaluating a python command, typically like
+`python-shell-send-defun', `python-shell-send-region', refreshing the
+xwidget browser. This is useful for interactive usage with web stuffs
+like plotly.
+
+This is a minor mode.  If called interactively, toggle the
+`My/Refresh-Xwidget-After-Eval-Python mode' mode.  If the prefix
+argument is positive, enable the mode, and if it is zero or
+negative, disable the mode.
+
+If called from Lisp, toggle the mode if ARG is `toggle'.  Enable
+the mode if ARG is nil, omitted, or is a positive number.
+Disable the mode if ARG is a negative number.
+
+To check whether the minor mode is enabled in the current buffer,
+evaluate `(default-value
+\\='my/refresh-xwidget-after-eval-python-mode)'.
+
+The mode's hook is called both when the mode is enabled and when
+it is disabled.
+
+\(fn &optional ARG)" t nil)
+
+(register-definition-prefixes "my-apps-autoloads" '("my/"))
 
 ;;;***
 
