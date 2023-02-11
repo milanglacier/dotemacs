@@ -49,6 +49,40 @@ it is disabled.
 
 \(fn &optional ARG)" t nil)
 
+(defvar my/xwidget-side-window-mode nil "\
+Non-nil if My/Xwidget-Side-Window mode is enabled.
+See the `my/xwidget-side-window-mode' command
+for a description of this minor mode.
+Setting this variable directly does not take effect;
+either customize it (see the info node `Easy Customization')
+or call the function `my/xwidget-side-window-mode'.")
+
+(custom-autoload 'my/xwidget-side-window-mode "my-apps-autoloads" nil)
+
+(autoload 'my/xwidget-side-window-mode "my-apps-autoloads" "\
+`xwidget-webkit-browse-url' doesn't respect
+`display-buffer-alist'.  This minor mode advises
+`xwidget-webkit-browse-url' to make it respect such. This is helpful
+for interactive plotting usage with python/R where you typically want
+xwdiget to display plots at the side window.
+
+This is a minor mode.  If called interactively, toggle the
+`My/Xwidget-Side-Window mode' mode.  If the prefix argument is
+positive, enable the mode, and if it is zero or negative, disable
+the mode.
+
+If called from Lisp, toggle the mode if ARG is `toggle'.  Enable
+the mode if ARG is nil, omitted, or is a positive number.
+Disable the mode if ARG is a negative number.
+
+To check whether the minor mode is enabled in the current buffer,
+evaluate `(default-value \\='my/xwidget-side-window-mode)'.
+
+The mode's hook is called both when the mode is enabled and when
+it is disabled.
+
+\(fn &optional ARG)" t nil)
+
 (register-definition-prefixes "my-apps-autoloads" '("my/"))
 
 ;;;***

@@ -13,8 +13,21 @@
           (python . -1)
           (R . -1)
           (Rhelp . 1)
-          (Rdired . -1))
+          (Rdired . -1)
+          (xwidget-plot . -1))
         "The slot for different mode if used as side window,
+this is for configuring `display-buffer-in-side-window',
+configuring this would avoid buffer swallows other buffer's window
+if they are side window.")
+    (defvar my/side-window-sides
+        '((helpful . bottom)
+          (vterm . bottom)
+          (eldoc . bottom)
+          (python . bottom)
+          (R . bottom)
+          (Rhelp . bottom)
+          (xwidget-plot . right))
+        "The side different mode if used as side window,
 this is for configuring `display-buffer-in-side-window',
 configuring this would avoid buffer swallows other buffer's window
 if they are side window.")

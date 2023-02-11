@@ -70,5 +70,39 @@ like plotly."
                            #'my/refresh-xwidget-after-eval-python)))
     )
 
+(defun my/switch-to-buffer-obey-display-actions (old-fun &rest args)
+    (let ((switch-to-buffer-obey-display-actions t))
+        (apply old-fun args)))
+
+(defvar my/xwidget-side-window-display
+    `("\\*xwidget"
+      (display-buffer-in-side-window display-buffer-reuse-window))
+    "the display action used for xwidget when use it as a side window.")
+
+;;;###autoload
+(define-minor-mode my/xwidget-side-window-mode
+    "`xwidget-webkit-browse-url' doesn't respect
+`display-buffer-alist'.  This minor mode advises
+`xwidget-webkit-browse-url' to make it respect such. This is helpful
+for interactive plotting usage with python/R where you typically want
+xwdiget to display plots at the side window."
+    :global t
+
+    (unless (featurep 'xwidget)
+        (error "this mode requires xwidget!"))
+
+    (require 'xwidget)
+
+    (if my/xwidget-side-window-mode
+            (progn
+                (add-to-list 'display-buffer-alist my/xwidget-side-window-display)
+                (advice-add #'xwidget-webkit-new-session :around #'my/switch-to-buffer-obey-display-actions)
+                (advice-add #'xwidget-webkit-goto-url :around #'my/switch-to-buffer-obey-display-actions))
+        (progn
+            (setq display-buffer-alist (remove my/xwidget-side-window-display display-buffer-alist))
+            (advice-remove #'xwidget-webkit-new-session #'my/switch-to-buffer-obey-display-actions)
+            (advice-remove #'xwidget-webkit-goto-url #'my/switch-to-buffer-obey-display-actions)))
+    )
+
 (provide 'my-apps-autoloads)
 ;;; my-apps-autoloads.el ends here
