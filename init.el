@@ -47,7 +47,7 @@
             (save-buffer)))
     (make-directory-autoloads my/autoloads-dir my/autoloads-file))
 
-(load (expand-file-name "loaddefs.el" my/autoloads-dir) nil t)
+(load my/autoloads-file nil t)
 
 (require 'my-init-utils)
 (require 'my-basics)
