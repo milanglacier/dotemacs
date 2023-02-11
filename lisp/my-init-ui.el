@@ -7,7 +7,7 @@
 (use-package window
     :init
     (defvar my/side-window-slots
-        '((helpful . 1)
+        '((helpful . 1) ;; 0 is the default
           (vterm . -1)
           (eldoc . 1)
           (python . -1)
@@ -20,12 +20,13 @@ this is for configuring `display-buffer-in-side-window',
 configuring this would avoid buffer swallows other buffer's window
 if they are side window.")
     (defvar my/side-window-sides
-        '((helpful . bottom)
+        '((helpful . bottom) ;;bottom is the default
           (vterm . bottom)
           (eldoc . bottom)
           (python . bottom)
           (R . bottom)
           (Rhelp . bottom)
+          (Rdired . right)
           (xwidget-plot . right))
         "The side different mode if used as side window,
 this is for configuring `display-buffer-in-side-window',

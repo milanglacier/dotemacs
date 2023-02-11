@@ -23,7 +23,6 @@
                    (display-buffer-reuse-window display-buffer-in-side-window)
                    (window-width . 0.5)
                    (window-height . 0.5)
-                   (side . bottom)
                    (slot . ,(alist-get 'R my/side-window-slots))))
 
     (add-to-list 'display-buffer-alist
@@ -31,7 +30,7 @@
                    (display-buffer-reuse-window display-buffer-in-side-window)
                    (window-width . 0.5)
                    (window-height . 0.5)
-                   (side . right)
+                   (side . ,(alist-get 'Rdired my/side-window-sides))
                    (slot . ,(alist-get 'Rdired my/side-window-slots))))
 
     (add-to-list 'display-buffer-alist
@@ -39,7 +38,6 @@
                    (display-buffer-reuse-window display-buffer-in-side-window)
                    (window-width . 0.5)
                    (window-height . 0.5)
-                   (side . bottom)
                    (slot . ,(alist-get 'Rhelp my/side-window-slots))))
 
     (evil-set-initial-state 'ess-r-help-mode 'normal)
