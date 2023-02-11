@@ -1,0 +1,16 @@
+# -*- mode: snippet -*-
+# name: r plot
+# key: rp
+# expand-env: ((yas-indent-line 'fixed) (yas-wrap-around-region 'nil))
+# --
+\`\`\`{r}
+#| label: fig-figure
+#| fig-cap: 'caption of figure'
+#| fig-align: 'center'
+#| fig-width: 6
+#| fig-height: 3
+#| fig-format: 'jpeg'
+#| fig-dpi: 300
+#| out-width: '100%'
+$0
+\`\`\`
