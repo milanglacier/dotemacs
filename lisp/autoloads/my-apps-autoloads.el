@@ -88,10 +88,8 @@ for interactive plotting usage with python/R where you typically want
 xwdiget to display plots at the side window."
     :global t
 
-    (unless (featurep 'xwidget)
+    (unless (require 'xwidget nil t)
         (error "this mode requires xwidget!"))
-
-    (require 'xwidget)
 
     (if my/xwidget-side-window-mode
             (progn
