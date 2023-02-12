@@ -1,6 +1,15 @@
 ;;; my-utils-autoloads.el -*- lexical-binding: t; -*-
 
 ;;;###autoload
+(defun my/update-all-autoloads ()
+    (interactive)
+    (when (not (file-exists-p my/autoloads-file))
+        (with-current-buffer (find-file-noselect
+                              my/autoloads-file)
+            (save-buffer)))
+    (make-directory-autoloads my/autoloads-dir my/autoloads-file))
+
+;;;###autoload
 (defmacro my/run-hook-once (hook func &rest args)
     "a wrapper to run a func on a hook only once"
     (let ((func-once (gensym (concat "my/" (symbol-name func)

@@ -323,6 +323,8 @@ is called.
 ;;;;;;  (0 0 0 0))
 ;;; Generated autoloads from my-utils-autoloads.el
 
+(autoload 'my/update-all-autoloads "my-utils-autoloads" nil t nil)
+
 (autoload 'my/run-hook-once "my-utils-autoloads" "\
 a wrapper to run a func on a hook only once
 

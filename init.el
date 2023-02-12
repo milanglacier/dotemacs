@@ -4,9 +4,6 @@
 (setq gc-cons-percentage 0.6)
 (setq gc-cons-threshold most-positive-fixnum)
 
-;; (setq user-init-file (or load-file-name (buffer-file-name)))
-;; (setq user-emacs-directory (file-name-directory user-init-file))
-
 (defvar my/config-dir (file-name-concat user-emacs-directory "lisp")
     "the directory of my configuration.")
 (defvar my/autoloads-dir (file-name-concat my/config-dir "autoloads")
@@ -37,15 +34,6 @@
       use-package-always-ensure nil
       use-package-always-defer t
       debug-on-error t)
-
-(defun my/update-all-autoloads ()
-    (interactive)
-    (when (not (file-exists-p my/autoloads-file))
-        (with-current-buffer (find-file-noselect
-                              my/autoloads-file)
-            (insert ";;")
-            (save-buffer)))
-    (make-directory-autoloads my/autoloads-dir my/autoloads-file))
 
 (load my/autoloads-file nil t)
 
