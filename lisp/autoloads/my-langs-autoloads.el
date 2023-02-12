@@ -52,5 +52,13 @@ ask to creat it."
         (call-interactively #'my/open-html-with-xwidget))
     )
 
+;;;###autoload
+(defun my/run-python ()
+    "Run python in project root that is dedicated to current buffer."
+    (interactive)
+    (let ((default-directory (or (consult--project-root)
+                                 default-directory)))
+        (run-python nil t 4)))
+
 (provide 'my-langs-autoloads)
 ;;; my-init-langs.el ends here

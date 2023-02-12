@@ -61,6 +61,8 @@
         :keymaps 'ess-mode-map
         :states '(normal visual motion insert)
         "s" #'my/send-region-to-ess
+        "r" '(:ignore t :which-key "repl")
+        "rs" #'run-ess-r
         "v" '(:ignore t :which-key "view")
         "vh" #'my/ess-toggle-view-httpgd)
 
@@ -68,6 +70,7 @@
     (add-hook 'ess-r-mode-hook #'my/eglot-do-not-use-imenu)
     (add-hook 'ess-r-mode-hook #'eglot-ensure)
     (add-hook 'ess-r-mode-hook #'my/ess-set-tab-width-4)
+    (add-hook 'ess-r-mode-hook #'my/xwidget-side-window-mode)
 
     )
 
@@ -84,6 +87,8 @@
         :keymaps 'python-mode-map
         :states '(normal visual insert motion)
         "s" #'my/send-region-to-python
+        "r" '(:ignore t :which-key "REPL")
+        "rs" #'my/run-python
         "v" '(:ignore t :which-key "view")
         "vh" #'my/python-toggle-view-local-html)
 
@@ -98,6 +103,10 @@
                    (window-height . 0.5)
                    (side . bottom)
                    (slot . ,(alist-get 'python my/side-window-slots))))
+
+    (add-hook 'python-mode-hook #'my/xwidget-side-window-mode)
+    (add-hook 'python-mode-hook #'my/refresh-xwidget-after-eval-python-mode)
+
     )
 
 (use-package polymode-core

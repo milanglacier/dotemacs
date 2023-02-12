@@ -180,6 +180,9 @@ Display the local html buffer if not displayed. If local html
 buffer is displayed, close the window. If no local html buffer exists,
 ask to creat it." t nil)
 
+(autoload 'my/run-python "my-langs-autoloads" "\
+Run python in project root that is dedicated to current buffer." t nil)
+
 (register-definition-prefixes "my-langs-autoloads" '("my/"))
 
 ;;;***
@@ -334,10 +337,6 @@ a wrapper to run a func on a hook only once
 a wrapper to advise a func only once
 
 \(fn FUNC ADVICE WHERE &rest PROPS)" nil t)
-
-;;;***
-
-;;;### (autoloads nil nil ("loaddefs.el") (0 0 0 0))
 
 ;;;***
 
