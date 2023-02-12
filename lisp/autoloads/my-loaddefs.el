@@ -1,4 +1,4 @@
-;;; loaddefs.el --- automatically extracted autoloads  -*- lexical-binding: t -*-
+;;; my-loaddefs.el --- automatically extracted autoloads  -*- lexical-binding: t -*-
 ;;
 ;;; Code:
 
@@ -337,11 +337,15 @@ a wrapper to advise a func only once
 
 ;;;***
 
-(provide 'loaddefs)
+;;;### (autoloads nil nil ("loaddefs.el") (0 0 0 0))
+
+;;;***
+
+(provide 'my-loaddefs)
 ;; Local Variables:
 ;; version-control: never
 ;; no-byte-compile: t
 ;; no-update-autoloads: t
 ;; coding: utf-8
 ;; End:
-;;; loaddefs.el ends here
+;;; my-loaddefs.el ends here

@@ -8,7 +8,7 @@
     "the directory of my configuration.")
 (defvar my/autoloads-dir (file-name-concat my/config-dir "autoloads")
     "the directory of my autoloded functions.")
-(defvar my/autoloads-file (file-name-concat my/autoloads-dir "loaddefs.el")
+(defvar my/autoloads-file (file-name-concat my/autoloads-dir "my-loaddefs.el")
     "the directory of my autoloded functions.")
 
 (push my/config-dir load-path)
@@ -35,7 +35,7 @@
       use-package-always-defer t
       debug-on-error t)
 
-(load my/autoloads-file nil t)
+(require 'my-loaddefs)
 
 (require 'my-init-utils)
 (require 'my-basics)
