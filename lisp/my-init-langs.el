@@ -60,7 +60,9 @@
     (my/localleader
         :keymaps 'ess-mode-map
         :states '(normal visual motion insert)
-        "s" #'my/send-region-to-ess)
+        "s" #'my/send-region-to-ess
+        "v" '(:ignore t :which-key "view")
+        "vh" #'my/ess-toggle-view-httpgd)
 
     (add-hook 'ess-r-mode-hook #'my/ess-set-company-backend)
     (add-hook 'ess-r-mode-hook #'my/eglot-do-not-use-imenu)
@@ -81,7 +83,9 @@
     (my/localleader
         :keymaps 'python-mode-map
         :states '(normal visual insert motion)
-        "s" #'my/send-region-to-python)
+        "s" #'my/send-region-to-python
+        "v" '(:ignore t :which-key "view")
+        "vh" #'my/python-toggle-view-local-html)
 
     (when my/python-enable-ipython
         (setq python-shell-interpreter "ipython3")

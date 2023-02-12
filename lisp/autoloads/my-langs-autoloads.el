@@ -31,5 +31,26 @@ poly-mode."
         (when flymake-mode
             (flymake-mode -1))))
 
+(defvar my/ess-httpgd-xwidget-buffer-name "*xwidget webkit: R Plot *"
+    "the xwidget buffer name when it is displaying the httpgd
+session.")
+
+(defvar my/python-local-html-xwidget-buffer-name "*xwidget webkit:  *"
+    "the xwidget buffer name when it is displaying the local html file
+session.")
+
+;;;###autoload
+(defun my/python-toggle-view-local-html ()
+    "Display the local html buffer if not displayed. If local html
+buffer is displayed, close the window. If no local html buffer exists,
+ask to creat it."
+    (interactive)
+    (if-let ((local-html-buf (get-buffer my/python-local-html-xwidget-buffer-name)))
+            (if-let ((local-html-win (get-buffer-window local-html-buf)))
+                    (delete-window local-html-win)
+                (display-buffer local-html-buf))
+        (call-interactively #'my/open-html-with-xwidget))
+    )
+
 (provide 'my-langs-autoloads)
 ;;; my-init-langs.el ends here

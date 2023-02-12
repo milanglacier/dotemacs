@@ -175,6 +175,13 @@ poly-mode.
 
 \(fn OLD-BUF NEW-BUF)" nil nil)
 
+(autoload 'my/python-toggle-view-local-html "my-langs-autoloads" "\
+Display the local html buffer if not displayed. If local html
+buffer is displayed, close the window. If no local html buffer exists,
+ask to creat it." t nil)
+
+(register-definition-prefixes "my-langs-autoloads" '("my/"))
+
 ;;;***
 
 ;;;### (autoloads nil "my-langtools-autoloads" "my-langtools-autoloads.el"
