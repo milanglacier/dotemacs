@@ -16,5 +16,11 @@
 
     (setq vterm-max-scrollback 5000))
 
+;;;###autoload
+(defun my/ibuffer-vc-setup ()
+    (ibuffer-vc-set-filter-groups-by-vc-root)
+    (unless (eq ibuffer-sorting-mode 'alphabetic)
+        (ibuffer-do-sort-by-alphabetic)))
+
 (provide 'my-misc-autoloads)
 ;;; my-misc-autoloads.el ends here

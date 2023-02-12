@@ -254,6 +254,8 @@ open vterm at project root, if no root is found, open at the default-directory" 
 
 (autoload 'my/vterm-setup "my-misc-autoloads" nil nil nil)
 
+(autoload 'my/ibuffer-vc-setup "my-misc-autoloads" nil nil nil)
+
 ;;;***
 
 ;;;### (autoloads nil "my-org-autoloads" "my-org-autoloads.el" (0

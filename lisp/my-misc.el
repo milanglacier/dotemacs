@@ -3,6 +3,7 @@
 (straight-use-package 'ws-butler)
 (straight-use-package 'rainbow-delimiters)
 (straight-use-package 'vterm)
+(straight-use-package 'ibuffer-vc)
 
 (use-package hideshow
     :hook (prog-mode . hs-minor-mode))
@@ -67,6 +68,10 @@
 (use-package auto-revert
     :init
     (my/run-hook-once pre-command-hook global-auto-revert-mode))
+
+(use-package ibuffer
+    :init
+    (add-hook 'ibuffer-hook #'my/ibuffer-vc-setup))
 
 (my/leader
     :keymaps 'override
