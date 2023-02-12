@@ -92,7 +92,7 @@
         (setq python-shell-interpreter-args "--i --simple-prompt --no-color-info"))
 
     (add-to-list 'display-buffer-alist
-                 `("\\*[pP]ython\\*"
+                 `("^\\*[pP]ython"
                    (display-buffer-reuse-window display-buffer-in-side-window)
                    (window-width . 0.5)
                    (window-height . 0.5)
