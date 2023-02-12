@@ -28,7 +28,7 @@
     (add-to-list 'display-buffer-alist
                  `("^\\*R Dired"
                    (display-buffer-reuse-window display-buffer-in-side-window)
-                   (window-width . 0.5)
+                   (window-width . 0.33)
                    (window-height . 0.5)
                    (side . ,(alist-get 'Rdired my/side-window-sides))
                    (slot . ,(alist-get 'Rdired my/side-window-slots))))

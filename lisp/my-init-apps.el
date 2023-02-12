@@ -10,7 +10,7 @@
     (setq my/xwidget-side-window-display
           `("\\*xwidget"
             (display-buffer-in-side-window display-buffer-reuse-window)
-            (window-width . 0.5)
+            (window-width . 0.33)
             (window-height . 0.5)
             (side . ,(alist-get 'xwidget-plot my/side-window-sides))
             (slot . ,(alist-get 'xwidget-plot my/side-window-slots))))
