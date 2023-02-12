@@ -58,6 +58,7 @@
  ("goto-chg" . "278cd3e6d5107693aa2bb33189ca503f22f227d0")
  ("helpful" . "94c25337b2de2f9da60914a7c0c6cca9584c0231")
  ("highlight-quoted" . "24103478158cd19fbcfb4339a3f1fa1f054f1469")
+ ("ibuffer-vc" . "9204001d1c5ca39409485c1574fd315b0e137a92")
  ("json-mode" . "eedb4560034f795a7950fa07016bd4347c368873")
  ("json-snatcher" . "b28d1c0670636da6db508d03872d96ffddbc10f2")
  ("jsonrpc" . "b1f1ebf3e41d01aedb069e98f0909468b347d4e7")
