@@ -290,7 +290,8 @@
         "s" #'consult-buffer
         "i" #'ibuffer
         "SPC" #'display-buffer
-        "s" #'display-buffer)
+        "s" #'switch-to-buffer
+        "o" #'display-buffer)
 
     )
 
