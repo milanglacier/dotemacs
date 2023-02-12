@@ -288,7 +288,9 @@
         "[" #'previous-buffer
         "]" #'next-buffer
         "s" #'consult-buffer
-        "i" #'ibuffer)
+        "i" #'ibuffer
+        "SPC" #'display-buffer
+        "s" #'display-buffer)
 
     )
 
