@@ -40,10 +40,23 @@ session.")
 session.")
 
 ;;;###autoload
+(defun my/ess-toggle-view-httpgd ()
+    "Display the httpgd buffer if not displayed. If the buffer is
+displayed, close the window. If no httpgd buffer exists, ask to create
+it."
+    (interactive)
+    (if-let ((httpgd-buf (get-buffer my/ess-httpgd-xwidget-buffer-name)))
+            (if-let ((httpgd-win (get-buffer-window httpgd-win)))
+                    (delete-window httpgd-win)
+                (display-buffer httpgd-buf))
+        (call-interactively #'xwidget-webkit-browse-url))
+    )
+
+;;;###autoload
 (defun my/python-toggle-view-local-html ()
     "Display the local html buffer if not displayed. If local html
 buffer is displayed, close the window. If no local html buffer exists,
-ask to creat it."
+ask to create it."
     (interactive)
     (if-let ((local-html-buf (get-buffer my/python-local-html-xwidget-buffer-name)))
             (if-let ((local-html-win (get-buffer-window local-html-buf)))

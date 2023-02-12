@@ -175,10 +175,15 @@ poly-mode.
 
 \(fn OLD-BUF NEW-BUF)" nil nil)
 
+(autoload 'my/ess-toggle-view-httpgd "my-langs-autoloads" "\
+Display the httpgd buffer if not displayed. If the buffer is
+displayed, close the window. If no httpgd buffer exists, ask to create
+it." t nil)
+
 (autoload 'my/python-toggle-view-local-html "my-langs-autoloads" "\
 Display the local html buffer if not displayed. If local html
 buffer is displayed, close the window. If no local html buffer exists,
-ask to creat it." t nil)
+ask to create it." t nil)
 
 (autoload 'my/run-python "my-langs-autoloads" "\
 Run python in project root that is dedicated to current buffer." t nil)

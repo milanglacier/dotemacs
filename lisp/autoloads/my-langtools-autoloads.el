@@ -26,6 +26,9 @@
 (defun my/eglot-do-not-use-imenu ()
     (setq-local eglot-stay-out-of `("imenu" ,@eglot-stay-out-of)))
 
+(defvar my/eldoc-buffer-dwim-key "K"
+    "The key to enable dwim behavior on displaying eldoc buffer")
+
 ;;;###autoload
 (defun my/eldoc-buffer-dwim ()
     "When eldoc buffer window is not opened, display the eldoc
