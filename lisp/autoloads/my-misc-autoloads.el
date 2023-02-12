@@ -5,9 +5,15 @@
     "open vterm at project root, if no root is found, open at the default-directory"
     (interactive)
     (require 'consult)
-    (let ((default-directory (or (consult--project-root)
-                                 default-directory)))
+    (let ((default-directory (my/project-root-or-default-dir)))
         (call-interactively #'vterm)))
+
+;;;###autoload
+(defun my/project-root-or-default-dir ()
+    "If a project root is found, return it. Otherwise return `default-directory'."
+    (if-let ((proj (project-current)))
+            (project-root proj)
+        default-directory))
 
 ;;;###autoload
 (defun my/vterm-setup ()

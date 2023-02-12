@@ -69,8 +69,7 @@ ask to create it."
 (defun my/run-python ()
     "Run python in project root that is dedicated to current buffer."
     (interactive)
-    (let ((default-directory (or (consult--project-root)
-                                 default-directory)))
+    (let ((default-directory (my/project-root-or-default-dir)))
         (run-python nil t 4)))
 
 (provide 'my-langs-autoloads)

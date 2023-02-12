@@ -252,6 +252,9 @@ to next xref location.
 (autoload 'my/vterm "my-misc-autoloads" "\
 open vterm at project root, if no root is found, open at the default-directory" t nil)
 
+(autoload 'my/project-root-or-default-dir "my-misc-autoloads" "\
+If a project root is found, return it. Otherwise return `default-directory'." nil nil)
+
 (autoload 'my/vterm-setup "my-misc-autoloads" nil nil nil)
 
 (autoload 'my/ibuffer-vc-setup "my-misc-autoloads" nil nil nil)
