@@ -27,7 +27,7 @@
         "" '(:ignore t :which-key "find")
         "f" #'project-find-file
         "F" #'find-file
-        "d" #'project-dired
+        "D" #'project-dired
         "o" #'consult-recent-file
         "r" #'consult-yank-from-kill-ring
         "b" #'consult-buffer

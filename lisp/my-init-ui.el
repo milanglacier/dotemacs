@@ -14,7 +14,8 @@
           (R . -1)
           (Rhelp . 1)
           (Rdired . -1)
-          (xwidget-plot . -1))
+          (xwidget-plot . -1)
+          (dired-sidebar . -1))
         "The slot for different mode if used as side window,
 this is for configuring `display-buffer-in-side-window',
 configuring this would avoid buffer swallows other buffer's window
@@ -27,7 +28,8 @@ if they are side window.")
           (R . bottom)
           (Rhelp . bottom)
           (Rdired . right)
-          (xwidget-plot . right))
+          (xwidget-plot . right)
+          (dired-sidebar . left))
         "The side different mode if used as side window,
 this is for configuring `display-buffer-in-side-window',
 configuring this would avoid buffer swallows other buffer's window
