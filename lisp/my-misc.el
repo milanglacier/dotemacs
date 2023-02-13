@@ -101,24 +101,25 @@
     :config
     (add-hook 'dired-mode-hook #'my/display-truncation-and-wrap-indicator-as-whitespace)
 
-    ;; copied from doomemacs
-    (let ((args '("-ahl" "-v" "--group-directories-first")))
-        (when IS-MAC
-            ;; Use GNU ls as `gls' from `coreutils' if available. Add `(setq
-            ;; dired-use-ls-dired nil)' to your config to suppress the Dired warning
-            ;; when not using GNU ls.
-            (if-let (gls (executable-find "gls"))
-                    (setq insert-directory-program gls)
-                ;; NOTE: BSD ls doesn't support -v or
-                ;; --group-directories-first. On remote server, -v or
-                ;; --group-directories-first may not supported
-                ;; (e.g. BSD server). You may need to use
-                ;; `file-remote-p' and `dired-mode-hook' to modify
-                ;; `dired-actual-switches' on the fly.  But since I
-                ;; never have a change to work with BSD server I don't
-                ;; want to additionally configure for it.
-                (setq args '("-ahl"))))
-        (setq dired-listing-switches (string-join args " ")))
+    ;; adapted from doomemacs
+    (if IS-MAC
+            (if (executable-find "gls")
+                    ;; Use GNU ls as `gls' from `coreutils' if available. Add `(setq
+                    ;; dired-use-ls-dired nil)' to your config to suppress the Dired warning
+                    ;; when not using GNU ls.
+                    (progn
+                        (setq insert-directory-program "gls")
+                        (setq dired-listing-switches "-ahl -v --group-directories-first"))
+                (setq dired-listing-switches "-ahl"))
+        (setq dired-listing-switches "-ahl -v --group-directories-first"))
+    ;; NOTE: BSD ls doesn't support -v or
+    ;; --group-directories-first. On remote server, -v or
+    ;; --group-directories-first may not supported
+    ;; (e.g. BSD server). You may need to use
+    ;; `file-remote-p' and `dired-mode-hook' to modify
+    ;; `dired-actual-switches' on the fly.  But since I
+    ;; never have a change to work with BSD server I don't
+    ;; want to additionally configure for it.
 
     ;; unbind SPC otherwise I cannot bind localleader key.
     (general-define-key
