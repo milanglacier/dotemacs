@@ -2,11 +2,11 @@
 
 ;;;###autoload
 (defun my/helpful-display-buffer (buf)
-    "If a helpful buffer window is already opened, should
-use it, don't occupy other window. Make sure it is a side window, such
-that when you want to dwim (pressing q and want to close the help
-window), this window will be completely removed, i.e. the window won't
-be displayed showing other buffer."
+    "If a helpful buffer window is already opened, should use it,
+don't occupy other window. Make sure it is a side window, such that
+when you press q and want to close the help window), this window will
+be completely removed, i.e. the window won't be displayed showing
+other buffer."
     (pop-to-buffer buf `((display-buffer-reuse-mode-window display-buffer-in-side-window)
                          (window-height . 0.5)
                          (window-width . 0.5)

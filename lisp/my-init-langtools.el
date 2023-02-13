@@ -55,8 +55,7 @@
 
 (use-package eldoc
     :init
-    (setq eldoc-echo-area-use-multiline-p nil
-          my/eldoc-buffer-dwim-key "K")
+    (setq eldoc-echo-area-use-multiline-p nil)
 
     :config
     (add-to-list 'display-buffer-alist

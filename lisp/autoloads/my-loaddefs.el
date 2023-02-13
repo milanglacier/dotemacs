@@ -113,11 +113,11 @@ it is disabled.
 ;;; Generated autoloads from my-elisp-autoloads.el
 
 (autoload 'my/helpful-display-buffer "my-elisp-autoloads" "\
-If a helpful buffer window is already opened, should
-use it, don't occupy other window. Make sure it is a side window, such
-that when you want to dwim (pressing q and want to close the help
-window), this window will be completely removed, i.e. the window won't
-be displayed showing other buffer.
+If a helpful buffer window is already opened, should use it,
+don't occupy other window. Make sure it is a side window, such that
+when you press q and want to close the help window), this window will
+be completely removed, i.e. the window won't be displayed showing
+other buffer.
 
 \(fn BUF)" nil nil)
 
@@ -205,14 +205,7 @@ Run python in project root that is dedicated to current buffer." t nil)
 (autoload 'my/toggle-citre-eglot-capf "my-langtools-autoloads" nil nil nil)
 
 (autoload 'my/eglot-do-not-use-imenu "my-langtools-autoloads" nil nil nil)
-
-(autoload 'my/eldoc-buffer-dwim "my-langtools-autoloads" "\
-When eldoc buffer window is not opened, display the eldoc
-window. Pressing `my/eldoc-buffer-dwim-key' again within a short
-period (1s currently as hard coded) will move your focus on the eldoc
-window. If the shorter period has gone, calling this command will
-close the eldoc window. Currently this dwim hack is only effective in
-`eglot-mode-map' as it is hardcoded." t nil)
+ (autoload #'my/eldoc-buffer-dwim "my-langtools-autoloads" nil t)
 
 (autoload 'my/xref-move-in-original-src-macro "my-langtools-autoloads" "\
 There can only be one xref buffer. That is, if you find
