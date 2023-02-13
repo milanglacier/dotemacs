@@ -69,7 +69,7 @@
     :init
     (my/run-hook-once pre-command-hook global-auto-revert-mode))
 
-(use-package ibuffer
+(use-package ibuffer-vc
     :init
     (add-hook 'ibuffer-hook #'my/ibuffer-vc-setup))
 
