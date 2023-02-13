@@ -38,7 +38,7 @@ prefix with C-u to open the url with a new xwidget session"
     "Search google keywords by `eww'.
 If region is active, use the region as keyword of initial input, otherwise use `current-word'.")
 
-;;;###autoload (autoload #'my/google-search-eww "my-apps-autoloads" nil t)
+;;;###autoload (autoload #'my/google-search-xwidget "my-apps-autoloads" nil t)
 (defalias #'my/google-search-xwidget
     (my/google-search-wrapper #'xwidget-webkit-browse-url)
     "Search google keywords by `xwidget-webkit-browse-url'.

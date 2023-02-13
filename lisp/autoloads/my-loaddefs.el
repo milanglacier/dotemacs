@@ -13,7 +13,7 @@ prefix with C-u to open the url with a new xwidget session
 
 \(fn URL NEW-SESSION)" t nil)
  (autoload #'my/google-search-eww "my-apps-autoloads" nil t)
- (autoload #'my/google-search-eww "my-apps-autoloads" nil t)
+ (autoload #'my/google-search-xwidget "my-apps-autoloads" nil t)
 
 (defvar my/refresh-xwidget-after-eval-python-mode nil "\
 Non-nil if My/Refresh-Xwidget-After-Eval-Python mode is enabled.
