@@ -66,7 +66,7 @@
      "C-k" #'kill-line
      "C-p" #'previous-line-or-history-element
      "C-n" #'next-line-or-history-element
-     "ESC" #'abort-recursive-edit
+     "<escape>" #'abort-recursive-edit
      "C-u" #'evil-delete-back-to-indentation)
 
     )
