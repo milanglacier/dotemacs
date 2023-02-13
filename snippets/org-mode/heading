@@ -1,6 +1,0 @@
-# -*- mode: snippet -*-
-# name: heading
-# key: heading
-# --
-#+title: $1
-#+author: ${2:`user-full-name`}
