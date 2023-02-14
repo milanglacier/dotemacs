@@ -222,6 +222,11 @@ eglot requires the buffer to be a file to be able to attach to
 the lsp. Thus the indirect buffer created by `edit-indirect' needs to
 be associated with a real file." nil nil)
 
+(autoload 'my/org-babel-lsp-setup "my-langtools-autoloads" "\
+Support LANG in org source code block.
+
+\(fn LANG)" nil t)
+
 (register-definition-prefixes "my-langtools-autoloads" '("my/eldoc-"))
 
 ;;;***

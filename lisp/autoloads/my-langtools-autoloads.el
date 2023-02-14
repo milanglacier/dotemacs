@@ -79,8 +79,27 @@ to next xref location."
     "eglot requires the buffer to be a file to be able to attach to
 the lsp. Thus the indirect buffer created by `edit-indirect' needs to
 be associated with a real file."
-    (setq-local buffer-file-name (file-name-concat default-directory "markdown-src-tmp"))
+    (setq-local buffer-file-name (file-name-concat default-directory "markdown-src.tmp"))
     (eglot-ensure))
+
+;;; copied from Centaur Emacs
+;;;###autoload
+(defmacro my/org-babel-lsp-setup (lang)
+    "Support LANG in org source code block."
+    (let* ((edit-pre (intern (format "org-babel-edit-prep:%s" lang)))
+           (my-setup (intern (format "my/lsp-setup-for--%s" (symbol-name edit-pre)))))
+        `(progn
+             (defun ,my-setup (info)
+                 (setq buffer-file-name
+                       (or (->> info caddr (alist-get :file))
+                           (file-name-concat default-directory "org-babel-src.tmp")))
+                 (eglot-ensure))
+
+             (if (fboundp ',edit-pre)
+                     (advice-add ',edit-pre :after ',my-setup)
+                 (progn
+                     (defun ,edit-pre (info)
+                         (,my-setup info)))))))
 
 (provide 'my-langtools-autoloads)
 ;;; my-langtools-autoloads.el ends here

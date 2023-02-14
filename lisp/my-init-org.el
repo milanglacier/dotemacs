@@ -222,10 +222,14 @@
           org-confirm-babel-evaluate nil
           org-link-elisp-confirm-function nil
           ;; Show src buffer in popup, and don't monopolize the frame
-          org-src-window-setup 'other-window)
+          org-src-window-setup 'plain)
 
     :config
     (add-to-list 'org-src-lang-modes '("r" . R))
+    (add-to-list 'display-buffer-alist
+                 '("\\*Org Src"
+                   (display-buffer-at-bottom)
+                   (window-height . 0.8)))
     (org-babel-do-load-languages 'org-babel-load-languages
                                  '((latex . t)
                                    (R . t)
@@ -237,6 +241,8 @@
     ;; it seems that it uses the language identifer associate with
     ;; this block to query the `org-babel-execute:xxx' function.
     (defalias #'org-babel-execute:r #'org-babel-execute:R)
+    (my/org-babel-lsp-setup "R")
+    (my/org-babel-lsp-setup "python")
 
     )
 
