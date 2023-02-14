@@ -38,6 +38,8 @@
 
     (setq lisp-body-indent 4)
 
+    (setq lisp-indent-function #'my/lisp-indent-function)
+
     (general-define-key
      :states '(motion visual normal)
      :keymaps 'emacs-lisp-mode-map
