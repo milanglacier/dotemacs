@@ -9,7 +9,7 @@
 (use-package company
 
     :init
-    (setq company-minimum-prefix-length 2
+    (setq company-minimum-prefix-length 0
           company-dabbrev-minimum-length 3
           company-tooltip-limit 14
           company-tooltip-align-annotations t
