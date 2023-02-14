@@ -28,7 +28,7 @@
 
 (defun my/eldoc-buffer-dwim-fallback ()
     "When eldoc buffer window is not opened, display the eldoc
-window. Pressing `my/eldoc-buffer-dwim-key' again within a short
+window. Pressing \\[my/eldoc-buffer-dwim] again within a short
 period (1s currently as hard coded) will move your focus on the eldoc
 window. If the shorter period has gone, calling this command will
 close the eldoc window."
