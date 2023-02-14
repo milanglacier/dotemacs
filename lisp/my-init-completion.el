@@ -19,7 +19,7 @@
           company-frontends '(company-pseudo-tooltip-frontend
                               ;; always show candidates in overlay tooltip
                               company-echo-metadata-frontend)
-          company-backends '((company-files company-yasnippet company-capf :separate company-dabbrev))
+          company-backends '((company-files company-yasnippet company-capf :separate company-dabbrev-code))
           company-auto-commit nil
           company-dabbrev-other-buffers nil
           company-dabbrev-ignore-case t

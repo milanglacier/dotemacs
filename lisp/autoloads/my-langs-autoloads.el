@@ -5,7 +5,7 @@
     (setq-local company-backends
                 '((company-capf company-files
                                 company-R-library company-R-args company-R-objects
-                                :separate company-dabbrev
+                                :separate company-dabbrev-code
                                 :with company-yasnippet))))
 ;;;###autoload
 (defun my/ess-set-tab-width-4 ()
