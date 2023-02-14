@@ -45,7 +45,8 @@ If region is active, use the region as keyword of initial input, otherwise use `
 If region is active, use the region as keyword of initial input, otherwise use `current-word'.")
 
 (defun my/refresh-xwidget-after-eval-python (&rest _)
-    (run-with-idle-timer 3 nil #'xwidget-webkit-reload))
+    (when (xwidget-webkit-last-session)
+        (run-with-idle-timer 3 nil #'xwidget-webkit-reload)))
 
 ;;;###autoload
 (define-minor-mode my/refresh-xwidget-after-eval-python-mode
