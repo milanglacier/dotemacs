@@ -2,11 +2,12 @@
 
 ;; ess
 (straight-use-package 'ess)
-(straight-use-package 'poly-R)
-(straight-use-package 'quarto-mode)
 
 ;; json
 (straight-use-package 'json-mode)
+
+;; markdown
+(straight-use-package 'markdown-mode)
 
 (use-package ess
     :init
@@ -22,14 +23,14 @@
                  `("^\\*R:"
                    (display-buffer-reuse-window display-buffer-in-side-window)
                    (window-width . 0.5)
-                   (window-height . 0.5)
+                   (window-height . 0.4)
                    (slot . ,(alist-get 'R my/side-window-slots))))
 
     (add-to-list 'display-buffer-alist
                  `("^\\*R Dired"
                    (display-buffer-reuse-window display-buffer-in-side-window)
                    (window-width . 0.33)
-                   (window-height . 0.5)
+                   (window-height . 0.4)
                    (side . ,(alist-get 'Rdired my/side-window-sides))
                    (slot . ,(alist-get 'Rdired my/side-window-slots))))
 
@@ -37,7 +38,7 @@
                  `("^\\*help\\[R\\]"
                    (display-buffer-reuse-window display-buffer-in-side-window)
                    (window-width . 0.5)
-                   (window-height . 0.5)
+                   (window-height . 0.4)
                    (slot . ,(alist-get 'Rhelp my/side-window-slots))))
 
     (evil-set-initial-state 'ess-r-help-mode 'normal)
@@ -101,7 +102,7 @@
                  `("^\\*[pP]ython"
                    (display-buffer-reuse-window display-buffer-in-side-window)
                    (window-width . 0.5)
-                   (window-height . 0.5)
+                   (window-height . 0.4)
                    (side . bottom)
                    (slot . ,(alist-get 'python my/side-window-slots))))
 
@@ -111,12 +112,11 @@
 
     )
 
-(use-package polymode-core
-    :config
-    (add-hook 'polymode-switch-buffer-hook #'my/poly-mode-disable-flymake))
-
-(use-package quarto-mode
-    :commands poly-quarto-mode)
+(use-package markdown-mode
+    :mode (("\\.[Rr]md\\'" . markdown-mode)
+           ("\\.qmd\\'" . markdown-mode))
+    :init
+    (setq markdown-fontify-code-blocks-natively t))
 
 (provide 'my-init-langs)
 ;;; my-init-langs.el ends here

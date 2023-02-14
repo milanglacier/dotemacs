@@ -82,13 +82,13 @@
 (use-package evil-collection
     :init
     (setq evil-collection-mode-list
-          '(arc-mode bm bookmark consult comint compile eldoc
-                     daemons debug diff-hl diff-mode dired
-                     dired-sidebar docker doc-view elisp-refs embark
-                     eldoc eshell eww flymake grep help helpful
-                     ibuffer imenu macrostep magit-sections magit
-                     magic-todos man mu4e mu4e-conversation notmuch
-                     org org-roam osx-dictionary pdf python replace rg
+          '(arc-mode bm bookmark consult comint compile eldoc daemons
+                     debug diff-hl diff-mode dired dired-sidebar
+                     docker doc-view elisp-refs embark eldoc eshell
+                     eww flymake grep help helpful ibuffer imenu
+                     macrostep magit-sections magit magic-todos man
+                     markdown-mode mu4e mu4e-conversation notmuch org
+                     org-roam osx-dictionary pdf python replace rg
                      ripgrep tab-bar term vertico vterm wdired wgrep
                      which-key xref xwidget)))
 

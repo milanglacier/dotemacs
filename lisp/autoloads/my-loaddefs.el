@@ -217,6 +217,11 @@ to next xref location.
 
 \(fn FUNC)" nil t)
 
+(autoload 'my/markdown-src-lsp-setup "my-langtools-autoloads" "\
+eglot requires the buffer to be a file to be able to attach to
+the lsp. Thus the indirect buffer created by `edit-indirect' needs to
+be associated with a real file." nil nil)
+
 (register-definition-prefixes "my-langtools-autoloads" '("my/eldoc-"))
 
 ;;;***

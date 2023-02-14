@@ -74,5 +74,13 @@ to next xref location."
              (with-current-buffer "*xref*"
                  (funcall ',func)))))
 
+;;;###autoload
+(defun my/markdown-src-lsp-setup()
+    "eglot requires the buffer to be a file to be able to attach to
+the lsp. Thus the indirect buffer created by `edit-indirect' needs to
+be associated with a real file."
+    (setq-local buffer-file-name (file-name-concat default-directory "markdown-src-tmp"))
+    (eglot-ensure))
+
 (provide 'my-langtools-autoloads)
 ;;; my-langtools-autoloads.el ends here
