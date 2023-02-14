@@ -3,10 +3,9 @@
 ;;;###autoload
 (defun my/ess-set-company-backend ()
     (setq-local company-backends
-                '((company-capf company-files
-                                company-R-library company-R-args company-R-objects
-                                :separate company-dabbrev-code
-                                :with company-yasnippet))))
+                '((company-files company-yasnippet company-capf
+                                 company-R-args company-R-objects
+                                 :separate company-dabbrev-code))))
 ;;;###autoload
 (defun my/ess-set-tab-width-4 ()
     (setq-local tab-width 4))
