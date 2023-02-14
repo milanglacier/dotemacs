@@ -55,6 +55,9 @@ xwidget browser. This is useful for interactive usage with web stuffs
 like plotly."
     :global t
 
+    (unless (require 'xwidget nil t)
+        (error "this mode requires xwidget!"))
+
     (if my/refresh-xwidget-after-eval-python-mode
             (progn
                 (advice-add #'python-shell-send-statement
