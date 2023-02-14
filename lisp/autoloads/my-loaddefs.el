@@ -186,7 +186,16 @@ buffer is displayed, close the window. If no local html buffer exists,
 ask to create it." t nil)
 
 (autoload 'my/run-python "my-langs-autoloads" "\
-Run python in project root that is dedicated to current buffer." t nil)
+Run python in project root that is dedicated to current buffer.
+With an prefix \\[universal-argument], make this python session global
+\(not dedicated to any buffer).
+
+\(fn DEDICATED)" t nil)
+
+(autoload 'my/markdown-run-repl "my-langs-autoloads" "\
+Run the REPL depending on the context (i.e. the language of the
+code block)" t nil)
+ (autoload #'my/markdown-send-region "my-langs-autoloads" nil t)
 
 (register-definition-prefixes "my-langs-autoloads" '("my/"))
 

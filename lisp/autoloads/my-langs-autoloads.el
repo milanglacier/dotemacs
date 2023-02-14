@@ -66,11 +66,34 @@ ask to create it."
     )
 
 ;;;###autoload
-(defun my/run-python ()
-    "Run python in project root that is dedicated to current buffer."
-    (interactive)
+(defun my/run-python (dedicated)
+    "Run python in project root that is dedicated to current buffer.
+With an prefix \\[universal-argument], make this python session global
+(not dedicated to any buffer)."
+    (interactive "P")
     (let ((default-directory (my/project-root-or-default-dir)))
-        (run-python nil t 4)))
+        (run-python nil (not dedicated) 4)))
+
+;;;###autoload
+(defun my/markdown-run-repl ()
+    "Run the REPL depending on the context (i.e. the language of the
+code block)"
+    (interactive)
+    (pcase (markdown-code-block-lang)
+        ("r" (call-interactively #'run-ess-r))
+        ("R" (call-interactively #'run-ess-r))
+        ("python" (call-interactively #'my/run-python))
+        (x "No associated REPL found!")))
+
+;;;###autoload (autoload #'my/markdown-send-region "my-langs-autoloads" nil t)
+(evil-define-operator my/markdown-send-region (beg end)
+    "Send region to the REPL depending on the context (i.e. the
+language of the code block)"
+    (pcase (markdown-code-block-lang)
+        ("r" (my/send-region-to-ess beg end))
+        ("R" (my/send-region-to-ess beg end))
+        ("python" (my/send-region-to-python beg end))
+        (x "No associated REPL found!")))
 
 (provide 'my-langs-autoloads)
 ;;; my-init-langs.el ends here

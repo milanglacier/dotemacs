@@ -116,7 +116,23 @@
     :mode (("\\.[Rr]md\\'" . markdown-mode)
            ("\\.qmd\\'" . markdown-mode))
     :init
-    (setq markdown-fontify-code-blocks-natively t))
+    (setq markdown-fontify-code-blocks-natively t)
+
+    :config
+
+    (general-define-key
+     :states '(normal insert motion visual)
+     :keymaps 'markdown-mode-map
+     "TAB" #'markdown-cycle)
+
+    (my/localleader
+        :states '(normal insert visual motion)
+        :keymaps 'markdown-mode-map
+        "r" '(:ignore t :which-key "repl")
+        "rs" #'my/markdown-run-repl
+        "s" #'my/markdown-send-region)
+
+    )
 
 (provide 'my-init-langs)
 ;;; my-init-langs.el ends here
