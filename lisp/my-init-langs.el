@@ -70,7 +70,8 @@
     (add-hook 'ess-r-mode-hook #'my/eglot-do-not-use-imenu)
     (add-hook 'ess-r-mode-hook #'eglot-ensure)
     (add-hook 'ess-r-mode-hook #'my/ess-set-tab-width-4)
-    (add-hook 'ess-r-mode-hook #'my/xwidget-side-window-mode)
+    (when (display-graphic-p)
+        (add-hook 'ess-r-mode-hook #'my/xwidget-side-window-mode))
 
     )
 
@@ -104,8 +105,9 @@
                    (side . bottom)
                    (slot . ,(alist-get 'python my/side-window-slots))))
 
-    (add-hook 'python-mode-hook #'my/xwidget-side-window-mode)
-    (add-hook 'python-mode-hook #'my/refresh-xwidget-after-eval-python-mode)
+    (when (display-graphic-p)
+        (add-hook 'python-mode-hook #'my/xwidget-side-window-mode)
+        (add-hook 'python-mode-hook #'my/refresh-xwidget-after-eval-python-mode))
 
     )
 
