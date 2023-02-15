@@ -1,0 +1,15 @@
+# -*- mode: snippet -*-
+# name: python plot
+# key: pyp
+# --
+\`\`\`{python}
+#| label: fig-figure
+#| fig-cap: 'caption of figure'
+#| fig-align: 'center'
+#| fig-width: 6
+#| fig-height: 3
+#| fig-format: 'jpeg'
+#| fig-dpi: 300
+#| out-width: '100%'
+$0
+\`\`\`

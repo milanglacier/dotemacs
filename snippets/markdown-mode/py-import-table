@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: import table library
+# key: pyimptbl
+# --
+from IPython.display import Markdown
+from tabulate import tabulate

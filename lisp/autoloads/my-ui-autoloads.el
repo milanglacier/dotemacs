@@ -30,7 +30,7 @@ scratch buffer whose directory is set to where emacs is initialized.
 Change it to the directory of previous buffer where `tab-bar-new-tab'
 is called."
     (let ((current-dir default-directory))
-        (funcall old-fun args)
+        (apply old-fun args)
         (setq-local default-directory current-dir)))
 
 (provide 'my-ui-autoloads)

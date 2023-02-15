@@ -12,4 +12,5 @@ history
 custom.el
 transient/*
 bookmarks
+url/*
 tramp

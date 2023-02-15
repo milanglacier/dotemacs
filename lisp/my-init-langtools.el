@@ -3,6 +3,7 @@
 (straight-use-package 'citre)
 (straight-use-package 'eglot)
 (straight-use-package 'consult-eglot)
+(straight-use-package 'edit-indirect)
 
 (use-package citre
     :init
@@ -14,6 +15,7 @@
     (add-hook 'emacs-lisp-mode-hook #'my/do-not-use-citre-xref)
     (add-hook 'org-mode-hook #'my/do-not-use-citre-imenu)
     (add-hook 'org-mode-hook #'my/do-not-use-citre-capf)
+    (add-hook 'markdown-mode-hook #'my/do-not-use-citre-imenu)
 
     :config
 
@@ -56,15 +58,13 @@
 (use-package eldoc
     :init
     (setq eldoc-echo-area-use-multiline-p nil)
-    (defvar-local my/eldoc-buffer-dwim-key "K"
-        "The key to enable dwim behavior on displaying eldoc buffer")
 
     :config
     (add-to-list 'display-buffer-alist
                  `("\\*eldoc\\*"
                    (display-buffer-reuse-window display-buffer-in-side-window)
                    (window-width . 0.5)
-                   (window-height . 0.5)
+                   (window-height . 0.4)
                    (slot . ,(alist-get 'eldoc my/side-window-slots))))
 
     )
@@ -72,6 +72,9 @@
 (use-package eglot
     :init
     (setq eglot-stay-out-of '("company"))
+    (setq eglot-workspace-configuration
+          '(:pyright (:useLibraryCodeForTypes t :openFilesOnly :json-false)
+            :r (:lsp (:diagnostics :json-false))))
 
     :config
     (add-to-list 'eglot-server-programs
@@ -120,6 +123,14 @@
      "gr" #'xref-find-references)
 
     )
+
+(use-package edit-indiret
+    :init
+    (add-hook 'edit-indirect-after-creation-hook #'my/markdown-src-lsp-setup)
+    (add-to-list 'display-buffer-alist
+                 '("\\*edit-indirect"
+                   (display-buffer-at-bottom)
+                   (window-height . 0.8))))
 
 (provide 'my-init-langtools)
 ;;; my-init-langtools.el ends here

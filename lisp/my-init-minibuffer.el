@@ -27,7 +27,7 @@
         "" '(:ignore t :which-key "find")
         "f" #'project-find-file
         "F" #'find-file
-        "d" #'project-dired
+        "D" #'project-dired
         "o" #'consult-recent-file
         "r" #'consult-yank-from-kill-ring
         "b" #'consult-buffer
@@ -66,7 +66,7 @@
      "C-k" #'kill-line
      "C-p" #'previous-line-or-history-element
      "C-n" #'next-line-or-history-element
-     "ESC" #'abort-recursive-edit
+     "<escape>" #'abort-recursive-edit
      "C-u" #'evil-delete-back-to-indentation)
 
     )
@@ -148,9 +148,7 @@
         "a" #'embark-act)
 
     :config
-    (require 'consult)
-    ;; useful when use embark-export that exports to a grep-mode buffer
-    (evil-set-initial-state 'grep-mode 'normal))
+    (require 'consult))
 
 (use-package wgrep
     :commands (wgrep-change-to-wgrep-mode wgrep-setup)

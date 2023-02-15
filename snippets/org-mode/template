@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: template
+# key: template
+# --
+#+title: ${1:`(replace-regexp-in-string "[-_]\\|\\.org" " " (buffer-name))`}
+#+author: ${2:`user-full-name`}
+
+$0

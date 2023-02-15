@@ -4,10 +4,12 @@
 (straight-use-package 'company-box)
 (straight-use-package 'cape)
 
+(straight-use-package 'yasnippet)
+
 (use-package company
 
     :init
-    (setq company-minimum-prefix-length 2
+    (setq company-minimum-prefix-length 0
           company-dabbrev-minimum-length 3
           company-tooltip-limit 14
           company-tooltip-align-annotations t
@@ -17,8 +19,7 @@
           company-frontends '(company-pseudo-tooltip-frontend
                               ;; always show candidates in overlay tooltip
                               company-echo-metadata-frontend)
-          company-backends '((company-files company-capf :separate company-dabbrev
-                                            :with company-yasnippet))
+          company-backends '((company-files company-yasnippet company-capf :separate company-dabbrev-code))
           company-auto-commit nil
           company-dabbrev-other-buffers nil
           company-dabbrev-ignore-case t
@@ -31,6 +32,7 @@
     :config
     (add-hook 'company-mode-hook #'evil-normalize-keymaps)
     (evil-make-overriding-map company-mode-map)
+    (evil-make-overriding-map company-active-map)
 
     (unless (display-graphic-p)
         ;; Don't persist company popups when switching back to normal mode.
@@ -44,21 +46,33 @@
     (when (display-graphic-p)
         (add-hook 'company-mode-hook #'company-box-mode))
 
-    (general-define-key :keymaps
-                        'company-active-map
-                        "C-e" #'company-abort)
-    (general-define-key :keymaps
-                        'company-mode-map
-                        "M-i" #'company-complete)
+    (general-define-key
+     :keymaps 'company-active-map
+     "C-e" #'company-abort
+     ;; use C-y to enter yasnippet expansion
+     ;; without input of additional character.
+     "C-y" #'company-complete-selection)
 
-    (advice-add #'company-capf :around #'my/company-completion-styles))
+    (general-define-key
+     :keymaps
+     'company-mode-map
+     ;; manually invoke the completion
+     "M-i" #'company-complete)
+
+    (advice-add #'company-capf :around #'my/company-completion-styles)
+
+    (yas-global-mode)
+    )
 
 (use-package company-box
-
     :config
     (setq company-box-max-candidates 50
           company-frontends '(company-tng-frontend company-box-frontend)
           company-box-icons-alist 'company-box-icons-all-the-icons))
+
+(use-package yasnippet
+    :init
+    (setq yas-verbosity 2))
 
 (provide 'my-init-completion)
 ;;; my-init-completion.el ends here

@@ -65,5 +65,21 @@ when clocking out, use this function to automatically update the table."
               (end-of-end-time (re-search-forward "\\]" nil t)))
             (buffer-substring-no-properties start-of-end-time end-of-end-time))))
 
+(defun my/toggle-org-settings-wrapper (org-marker)
+    (set org-marker (not (eval org-marker)))
+    (org-mode))
+
+;;;###autoload
+(defun my/org-toggle-org-emphasis-markers ()
+    "toggle emphasis markers"
+    (interactive)
+    (my/toggle-org-settings-wrapper 'org-hide-emphasis-markers))
+
+;;;###autoload
+(defun my/org-toggle-org-drawer ()
+    "toggle hide drawer. This function is effective only after org 9.6."
+    (interactive)
+    (my/toggle-org-settings-wrapper 'org-cycle-hide-drawer-startup))
+
 (provide 'my-org-autoloads)
 ;;; my-org-autoloads.el ends here

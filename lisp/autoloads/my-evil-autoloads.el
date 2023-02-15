@@ -1,6 +1,5 @@
 ;;; my-evil-autoloads.el -*- lexical-binding: t; -*-
 
-(message "load evil autoloads")
 ;;;###autoload
 (defun my/save-excursion-before-indenting (origin-fn &rest args)
     (save-excursion (apply origin-fn args)))

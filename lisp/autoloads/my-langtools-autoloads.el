@@ -24,46 +24,39 @@
 
 ;;;###autoload
 (defun my/eglot-do-not-use-imenu ()
-    (add-to-list 'eglot-stay-out-of "imenu"))
+    (setq-local eglot-stay-out-of `("imenu" ,@eglot-stay-out-of)))
 
-;;;###autoload
-(defun my/eldoc-buffer-dwim ()
+(defun my/eldoc-buffer-dwim-fallback ()
     "When eldoc buffer window is not opened, display the eldoc
-window. Pressing `my/eldoc-buffer-dwim-key' again within a short
+window. Pressing \\[my/eldoc-buffer-dwim] again within a short
 period (1s currently as hard coded) will move your focus on the eldoc
 window. If the shorter period has gone, calling this command will
-close the eldoc window. Currently this dwim hack is only effective in
-`eglot-mode-map' as it is hardcoded."
+close the eldoc window."
     (interactive)
     (if-let ((eldoc-win (get-buffer-window "*eldoc*")))
             (delete-window eldoc-win)
         (progn
             (eldoc-doc-buffer)
-            (my/eldoc-dwim-hack))))
+            (my/eldoc-dwim-hack)))
+    )
+
+;;;###autoload (autoload #'my/eldoc-buffer-dwim "my-langtools-autoloads" nil t)
+(defalias #'my/eldoc-buffer-dwim #'my/eldoc-buffer-dwim-fallback)
 
 (defun my/eldoc-dwim-hack ()
-    "bind `my/eldoc-buffer-dwim-key' locally to a command that
-will switch to the eldoc buffer, and unbind the key after a short
-period (1s as hard coded.)"
-    (general-define-key
-     :keymaps 'eglot-mode-map
-     :states '(normal motion)
-     my/eldoc-buffer-dwim-key #'my/eldoc-focus)
+    "Alias `my/eldoc-buffer-dwim' to `my/eldoc-focus'. And after the
+period, revert the action."
+    (defalias #'my/eldoc-buffer-dwim #'my/eldoc-focus)
+    (run-with-idle-timer 1 nil #'my/eldoc-dwim-revert))
 
-    (run-with-idle-timer 1 nil #'my/eldoc-locally-unbind))
-
-(defun my/eldoc-locally-unbind ()
-    (general-define-key
-     :states '(normal motion)
-     :keymaps 'eglot-mode-map
-     my/eldoc-buffer-dwim-key #'my/eldoc-buffer-dwim))
+(defun my/eldoc-dwim-revert ()
+    (defalias #'my/eldoc-buffer-dwim #'my/eldoc-buffer-dwim-fallback))
 
 (defun my/eldoc-focus ()
     "focus on the eldoc window"
     (interactive)
     (when (get-buffer-window "*eldoc*")
         (select-window (get-buffer-window "*eldoc*"))))
-
 
 ;;;###autoload
 (defmacro my/xref-move-in-original-src-macro (func)
@@ -80,6 +73,33 @@ to next xref location."
              (interactive)
              (with-current-buffer "*xref*"
                  (funcall ',func)))))
+
+;;;###autoload
+(defun my/markdown-src-lsp-setup()
+    "eglot requires the buffer to be a file to be able to attach to
+the lsp. Thus the indirect buffer created by `edit-indirect' needs to
+be associated with a real file."
+    (setq-local buffer-file-name (file-name-concat default-directory "markdown-src.tmp"))
+    (eglot-ensure))
+
+;;; copied from Centaur Emacs
+;;;###autoload
+(defmacro my/org-babel-lsp-setup (lang)
+    "Support LANG in org source code block."
+    (let* ((edit-pre (intern (format "org-babel-edit-prep:%s" lang)))
+           (my-setup (intern (format "my/lsp-setup-for--%s" (symbol-name edit-pre)))))
+        `(progn
+             (defun ,my-setup (info)
+                 (setq buffer-file-name
+                       (or (->> info caddr (alist-get :file))
+                           (file-name-concat default-directory "org-babel-src.tmp")))
+                 (eglot-ensure))
+
+             (if (fboundp ',edit-pre)
+                     (advice-add ',edit-pre :after ',my-setup)
+                 (progn
+                     (defun ,edit-pre (info)
+                         (,my-setup info)))))))
 
 (provide 'my-langtools-autoloads)
 ;;; my-langtools-autoloads.el ends here

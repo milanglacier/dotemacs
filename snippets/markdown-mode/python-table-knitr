@@ -1,0 +1,11 @@
+# -*- mode: snippet -*-
+# name: python table using knitr
+# key: pytblkr
+# --
+\`\`\`{python}
+#| label: tbl-table
+#| tbl-cap: 'caption of table'
+#| output: asis
+$0
+print(${1:df}.to_markdown(index=False))
+\`\`\`

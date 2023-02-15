@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: snippet
+# key: snippet
+# --
+# -*- mode: snippet -*-
+# name: $1
+# key: $2
+# --
+$0

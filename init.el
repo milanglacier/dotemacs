@@ -4,14 +4,11 @@
 (setq gc-cons-percentage 0.6)
 (setq gc-cons-threshold most-positive-fixnum)
 
-;; (setq user-init-file (or load-file-name (buffer-file-name)))
-;; (setq user-emacs-directory (file-name-directory user-init-file))
-
 (defvar my/config-dir (file-name-concat user-emacs-directory "lisp")
     "the directory of my configuration.")
 (defvar my/autoloads-dir (file-name-concat my/config-dir "autoloads")
     "the directory of my autoloded functions.")
-(defvar my/autoloads-file (file-name-concat my/autoloads-dir "loaddefs.el")
+(defvar my/autoloads-file (file-name-concat my/autoloads-dir "my-loaddefs.el")
     "the directory of my autoloded functions.")
 
 (push my/config-dir load-path)
@@ -38,22 +35,12 @@
       use-package-always-defer t
       debug-on-error t)
 
-(defun my/update-all-autoloads ()
-    (interactive)
-    (when (not (file-exists-p my/autoloads-file))
-        (with-current-buffer (find-file-noselect
-                              my/autoloads-file)
-            (insert ";;")
-            (save-buffer)))
-    (make-directory-autoloads my/autoloads-dir my/autoloads-file))
-
-(load (expand-file-name "loaddefs.el" my/autoloads-dir) nil t)
+(require 'my-loaddefs)
 
 (require 'my-init-utils)
 (require 'my-basics)
 (require 'my-init-ui)
 (require 'my-init-colorscheme)
-(require 'my-init-tty)
 (require 'my-init-evil)
 (require 'my-init-completion)
 (require 'my-init-minibuffer)
@@ -63,6 +50,7 @@
 (require 'my-init-langs)
 (require 'my-init-langtools)
 (require 'my-init-os)
+(require 'my-init-apps)
 (require 'my-misc)
 
 (setq debug-on-error nil)

@@ -18,6 +18,7 @@
 (straight-use-package 'evil-lion)
 (straight-use-package 'evil-vimish-fold)
 (straight-use-package 'evil-indent-plus)
+(straight-use-package 'evil-numbers)
 (straight-use-package 'expand-region)
 (straight-use-package 'evil-collection)
 (straight-use-package 'evil-matchit)
@@ -41,7 +42,7 @@
 
 (use-package evil-nerd-commenter
     :commands (evilnc-comment-operator
-               evilnc-inner-comment
+               evilnc-inner-commenter
                evilnc-outer-commenter)
     :config
     (general-define-key
@@ -81,18 +82,17 @@
 (use-package evil-collection
     :init
     (setq evil-collection-mode-list
-          '(arc-mode bm bookmark consult comint compilation eldoc
-                     daemons debug diff-hl diff-mode dired
-                     dired-sidebar docker doc-view elisp-refs embark
-                     eldoc eshell eww flymake grep help helpful
-                     ibuffer imenu macrostep magit-sections magit
-                     magic-todos man mu4e mu4e-conversation notmuch
-                     org org-roam osx-dictionary pdf python replace rg
+          '(arc-mode bm bookmark consult comint compile eldoc daemons
+                     debug diff-hl diff-mode dired dired-sidebar
+                     docker doc-view elisp-refs embark eldoc eshell
+                     eww flymake grep help helpful ibuffer imenu
+                     macrostep magit-sections magit magic-todos man
+                     markdown-mode mu4e mu4e-conversation notmuch org
+                     org-roam osx-dictionary pdf python replace rg
                      ripgrep tab-bar term vertico vterm wdired wgrep
                      which-key xref xwidget)))
 
 (use-package evil
-    :demand t
     :init
     (setq evil-want-C-i-jump t
           evil-want-C-u-scroll nil
@@ -120,10 +120,20 @@
           evil-undo-system 'undo-redo
           evil-ex-hl-update-delay 0.1)
 
+    ;; NOTE: `evil-mode' must be enabled here.  otherwise those
+    ;; autoloaded function will try to load `my-evil-autoloads' before
+    ;; evil is loaded, which results in error since I used macros from
+    ;; `evil' there. The reason may be that `eval-after-load' form
+    ;; needs to evaluate macros before the execution. And I defined an
+    ;; autoloaded macro in my autoload files, which results in my
+    ;; autoload files being loaded which contains an
+    ;; `evil-define-operator` command from evil.
+    (evil-mode 1)
+
     :config
     ;; TODO: lazy load these evil modules
     ;; (reference from doomemacs)
-    (evil-mode 1)
+
     (evil-select-search-module 'evil-search-module 'evil-search)
     (evil-goggles-mode)
     (evil-escape-mode)
@@ -168,6 +178,10 @@
      "C-w gd" #'xref-find-definitions-other-window
      "ga" #'evil-lion-left
      "gA" #'evil-lion-right
+     "C-a" #'evil-numbers/inc-at-pt
+     "C-q" #'evil-numbers/dec-at-pt ;; C-x is so important in emacs
+     "g C-a" #'evil-numbers/inc-at-pt-incremental
+     "g C-x" #'evil-numbers/dec-at-pt-incremental
      "RET" #'er/expand-region
      "gs" #'evil-replace-with-register
      "g@" #'my/evil-apply-macro-line-by-line)
@@ -184,7 +198,7 @@
      :keymaps 'in
      ;; TODO: configure emacs-lisp mode to use space as args delimiter.
      "a" #'evil-inner-arg
-     "#" #'evilnc-inner-comment
+     "#" #'evilnc-inner-commenter
      "i" #'evil-indent-plus-i-indent
      "j" #'evil-indent-plus-i-indent-up-down
      "k" #'evil-indent-plus-i-indent-up
@@ -193,7 +207,7 @@
     (general-define-key
      :keymaps 'out
      "a" #'evil-outer-arg
-     "#" #'evilnc-outer-comment
+     "#" #'evilnc-outer-commenter
      "i" #'evil-indent-plus-i-indent
      "j" #'evil-indent-plus-i-indent-up-down
      "k" #'evil-indent-plus-i-indent-up
@@ -257,7 +271,7 @@
         "r" #'evil-window-rotate-downwards
         "R" #'evil-window-rotate-upwards
         "H" #'evil-window-move-far-left
-        "J" #'evil-window-move-far-bottom
+        "J" #'evil-window-move-very-bottom
         "K" #'evil-window-move-very-top
         "L" #'evil-window-move-far-right)
 
@@ -274,7 +288,10 @@
         "[" #'previous-buffer
         "]" #'next-buffer
         "s" #'consult-buffer
-        "i" #'ibuffer)
+        "i" #'ibuffer
+        "SPC" #'display-buffer
+        "s" #'switch-to-buffer
+        "o" #'display-buffer)
 
     )
 

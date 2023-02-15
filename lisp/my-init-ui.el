@@ -7,14 +7,30 @@
 (use-package window
     :init
     (defvar my/side-window-slots
-        '((helpful . 1)
+        '((helpful . 1) ;; 0 is the default
           (vterm . -1)
           (eldoc . 1)
           (python . -1)
           (R . -1)
           (Rhelp . 1)
-          (Rdired . -1))
+          (Rdired . -1)
+          (xwidget-plot . -1)
+          (dired-sidebar . -1))
         "The slot for different mode if used as side window,
+this is for configuring `display-buffer-in-side-window',
+configuring this would avoid buffer swallows other buffer's window
+if they are side window.")
+    (defvar my/side-window-sides
+        '((helpful . bottom) ;;bottom is the default
+          (vterm . bottom)
+          (eldoc . bottom)
+          (python . bottom)
+          (R . bottom)
+          (Rhelp . bottom)
+          (Rdired . right)
+          (xwidget-plot . right)
+          (dired-sidebar . left))
+        "The side different mode if used as side window,
 this is for configuring `display-buffer-in-side-window',
 configuring this would avoid buffer swallows other buffer's window
 if they are side window.")
@@ -40,8 +56,6 @@ if they are side window.")
           tab-bar-new-button-show nil
           tab-bar-format '(tab-bar-format-tabs-groups
                            tab-bar-separator))
-
-    :config
 
     (general-create-definer my/tab-map
         :prefix "SPC TAB"

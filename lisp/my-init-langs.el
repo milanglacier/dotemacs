@@ -2,11 +2,12 @@
 
 ;; ess
 (straight-use-package 'ess)
-(straight-use-package 'poly-R)
-(straight-use-package 'quarto-mode)
 
 ;; json
 (straight-use-package 'json-mode)
+
+;; markdown
+(straight-use-package 'markdown-mode)
 
 (use-package ess
     :init
@@ -22,24 +23,22 @@
                  `("^\\*R:"
                    (display-buffer-reuse-window display-buffer-in-side-window)
                    (window-width . 0.5)
-                   (window-height . 0.5)
-                   (side . bottom)
+                   (window-height . 0.4)
                    (slot . ,(alist-get 'R my/side-window-slots))))
 
     (add-to-list 'display-buffer-alist
                  `("^\\*R Dired"
                    (display-buffer-reuse-window display-buffer-in-side-window)
-                   (window-width . 0.5)
-                   (window-height . 0.5)
-                   (side . right)
+                   (window-width . 0.33)
+                   (window-height . 0.4)
+                   (side . ,(alist-get 'Rdired my/side-window-sides))
                    (slot . ,(alist-get 'Rdired my/side-window-slots))))
 
     (add-to-list 'display-buffer-alist
                  `("^\\*help\\[R\\]"
                    (display-buffer-reuse-window display-buffer-in-side-window)
                    (window-width . 0.5)
-                   (window-height . 0.5)
-                   (side . bottom)
+                   (window-height . 0.4)
                    (slot . ,(alist-get 'Rhelp my/side-window-slots))))
 
     (evil-set-initial-state 'ess-r-help-mode 'normal)
@@ -62,12 +61,18 @@
     (my/localleader
         :keymaps 'ess-mode-map
         :states '(normal visual motion insert)
-        "s" #'my/send-region-to-ess)
+        "s" #'my/send-region-to-ess
+        "r" '(:ignore t :which-key "repl")
+        "rs" #'run-ess-r
+        "v" '(:ignore t :which-key "view")
+        "vh" #'my/ess-toggle-view-httpgd)
 
     (add-hook 'ess-r-mode-hook #'my/ess-set-company-backend)
     (add-hook 'ess-r-mode-hook #'my/eglot-do-not-use-imenu)
     (add-hook 'ess-r-mode-hook #'eglot-ensure)
     (add-hook 'ess-r-mode-hook #'my/ess-set-tab-width-4)
+    (when (display-graphic-p)
+        (add-hook 'ess-r-mode-hook #'my/xwidget-side-window-mode))
 
     )
 
@@ -83,27 +88,51 @@
     (my/localleader
         :keymaps 'python-mode-map
         :states '(normal visual insert motion)
-        "s" #'my/send-region-to-python)
+        "s" #'my/send-region-to-python
+        "r" '(:ignore t :which-key "REPL")
+        "rs" #'my/run-python
+        "v" '(:ignore t :which-key "view")
+        "vh" #'my/python-toggle-view-local-html)
 
     (when my/python-enable-ipython
         (setq python-shell-interpreter "ipython3")
         (setq python-shell-interpreter-args "--i --simple-prompt --no-color-info"))
 
     (add-to-list 'display-buffer-alist
-                 `("\\*[pP]ython\\*"
+                 `("^\\*[pP]ython"
                    (display-buffer-reuse-window display-buffer-in-side-window)
                    (window-width . 0.5)
-                   (window-height . 0.5)
+                   (window-height . 0.4)
                    (side . bottom)
                    (slot . ,(alist-get 'python my/side-window-slots))))
+
+    (when (display-graphic-p)
+        (add-hook 'python-mode-hook #'my/xwidget-side-window-mode)
+        (add-hook 'python-mode-hook #'my/refresh-xwidget-after-eval-python-mode))
+
     )
 
-(use-package polymode-core
-    :config
-    (add-hook 'polymode-switch-buffer-hook #'my/poly-mode-disable-flymake))
+(use-package markdown-mode
+    :mode (("\\.[Rr]md\\'" . markdown-mode)
+           ("\\.qmd\\'" . markdown-mode))
+    :init
+    (setq markdown-fontify-code-blocks-natively t)
 
-(use-package quarto-mode
-    :commands poly-quarto-mode)
+    :config
+
+    (general-define-key
+     :states '(normal insert motion visual)
+     :keymaps 'markdown-mode-map
+     "TAB" #'markdown-cycle)
+
+    (my/localleader
+        :states '(normal insert visual motion)
+        :keymaps 'markdown-mode-map
+        "r" '(:ignore t :which-key "repl")
+        "rs" #'my/markdown-run-repl
+        "s" #'my/markdown-send-region)
+
+    )
 
 (provide 'my-init-langs)
 ;;; my-init-langs.el ends here
