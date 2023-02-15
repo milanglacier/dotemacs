@@ -14,8 +14,11 @@
 (defconst IS-LINUX (memq system-type '(gnu gnu/linux gnu/kfreebsd berkeley-unix)))
 (defconst IS-WINDOWS (memq system-type '(cygwin windows-nt ms-dos)))
 
+;; try to disable the auto backup behavior
+;; as much as possible
 (setq make-backup-files nil
-      create-lockfiles nil)
+      create-lockfiles nil
+      auto-save-default nil)
 
 (set-display-table-slot standard-display-table 'truncation 32)
 (set-display-table-slot standard-display-table 'wrap 32)
