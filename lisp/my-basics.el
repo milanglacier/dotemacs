@@ -29,7 +29,7 @@
 
 ;; set default font
 (add-to-list 'default-frame-alist
-             '(font . "SpaceMono Nerd Font-15"))
+             '(font . "Monego Nerd Font Fix-15"))
 
 ;; unless you have a really wide screen, always prefer
 ;; horizontal split (ale `evil-window-split')
