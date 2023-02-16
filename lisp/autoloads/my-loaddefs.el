@@ -301,6 +301,8 @@ If a project root is found, return it. Otherwise return `default-directory'." ni
 ;;;;;;  0 0 0))
 ;;; Generated autoloads from my-org-autoloads.el
 
+(autoload 'my/turn-off-evil-vimish "my-org-autoloads" nil nil nil)
+
 (autoload 'my/load-org-extensions-idly "my-org-autoloads" "\
 Some important variables from other org extensions are not autoloaded.
 You may feel annoying if you want to use them but find a void variable.
@@ -322,6 +324,23 @@ After clocking in to record the start time of playing with bubble tea,
 when clocking out, use this function to automatically update the table.
 
 \(fn START)" nil nil)
+
+(autoload 'my/exclude-org-agenda-buffers-from-recentf "my-org-autoloads" "\
+Prevent `org-agenda' buffers from polluting recentf list.
+
+\(fn OLD-FN &rest ARGS)" nil nil)
+
+(autoload 'my/reload-org-agenda-buffers "my-org-autoloads" "\
+`org-agenda' creates incomplete `org-mode' buffers to boost its startup speed. Reload those buffers
+after `org-agenda' has finalized." nil nil)
+
+(autoload 'my/org-indent-maybe-h "my-org-autoloads" "\
+Indent the current item (header or item), if possible.
+Made for `org-tab-first-hook' in evil-mode." t nil)
+
+(autoload 'my/org-yas-expand-maybe-h "my-org-autoloads" "\
+Expand a yasnippet snippet, if trigger exists at point or region is active.
+Made for `org-tab-first-hook'." nil nil)
 
 (autoload 'my/org-toggle-org-emphasis-markers "my-org-autoloads" "\
 toggle emphasis markers" t nil)
