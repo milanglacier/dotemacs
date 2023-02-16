@@ -1,6 +1,6 @@
 # -*- mode: snippet -*-
 # name: image
-# key: <im
+# key: imagefile
 # --
 #+caption: ${1:caption of the image}
 [[file:${2:image_path}]]$0
