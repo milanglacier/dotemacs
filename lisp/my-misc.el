@@ -121,11 +121,9 @@
     ;; never have a change to work with BSD server I don't
     ;; want to additionally configure for it.
 
-    ;; unbind SPC otherwise I cannot bind localleader key.
     (general-define-key
      :states '(normal insert motion visual)
      :keymaps 'dired-mode-map
-     "SPC" nil
      "TAB" #'dired-subtree-toggle)
 
     (my/localleader

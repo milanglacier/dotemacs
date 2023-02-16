@@ -90,7 +90,10 @@
                      markdown-mode mu4e mu4e-conversation notmuch org
                      org-roam osx-dictionary pdf python replace rg
                      ripgrep tab-bar term vertico vterm wdired wgrep
-                     which-key xref xwidget)))
+                     which-key xref xwidget)
+          evil-collection-key-blacklist '("SPC")))
+;; I used SPC SPC as my local leader key. So SPC shouldn't be occupied
+;; even in local mode map.
 
 (use-package evil
     :init
