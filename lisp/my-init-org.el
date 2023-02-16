@@ -321,6 +321,19 @@
     (add-hook 'org-after-refile-insert-hook #'save-buffer)
     )
 
+(use-package evil-org-agenda
+    :demand t
+    :after org-agenda
+    :config
+    (evil-org-agenda-set-keys)
+    ;; `evil-org-agenda-set=keys' binds SPC which occupies my local
+    ;; leader key.  Bind SPC to nil before loading my own org-agenda
+    ;; keymap.
+    (general-define-key
+     :states '(motion)
+     :keymaps 'org-agenda-mode-map
+     "SPC" nil))
+
 (use-package org-agenda
 
     :init
@@ -383,13 +396,8 @@
     (setq org-src-preserve-indentation t
           org-edit-src-content-indentation 0
           org-src-tab-acts-natively t
-          ;; evil conflicts with this , so this setting has no
-          ;; effect.
-
-          ;; TODO: if set `evil-want-C-i-jump' to nil, then
-          ;; `org-src-tab-acts-natively' works as expected.  However I
-          ;; find that if set `evil-want-C-i-jump' to nil then make
-          ;; `better-jumper-mode' becomes incompatible with evil.
+          ;; The confliction of `evil-want-C-i-jump' and `org-mode' is
+          ;; fixed by the hack of `my/org-indent-maybe-h'
           org-confirm-babel-evaluate nil
           org-link-elisp-confirm-function nil
           ;; Show src buffer in popup, and don't monopolize the frame
@@ -470,14 +478,7 @@
     (add-hook 'org-capture-mode-hook #'evil-insert-state)
 
     :config
-    (add-hook 'evil-org-mode-hook #'evil-normalize-keymaps)
     (evil-org-set-key-theme))
-
-(use-package evil-org-agenda
-    :demand t
-    :after org-agenda
-    :config
-    (evil-org-agenda-set-keys))
 
 ;; make org fontification works similar to vim's conceal.
 ;; moving point over concealed text reveals its content.
