@@ -3,21 +3,8 @@
 (straight-use-package '(org :type built-in))
 (straight-use-package 'evil-org)
 (straight-use-package 'org-appear)
-;; (straight-use-package 'org-contrib)
-;; (straight-use-package 'htmlize)
-;; (straight-use-package 'jupyter)
-;; (straight-use-package 'org-cliplink)
-;; (straight-use-package 'orgit)
-;; (straight-use-package 'ob-async)
-;; (straight-use-package 'org-re-reveal)
-;; (straight-use-package 'org-pdftools)
-;; (straight-use-package 'org-cliplink)
-;; (straight-use-package 'toc-org)
-;; (straight-use-package 'ox-clip)
-;; (straight-use-package 'avy)
-
-;; (when IS-MAC
-;;   (straight-use-package 'org-mac-link))
+(straight-use-package 'jupyter)
+(straight-use-package 'org-re-reveal)
 
 (use-package org
     :init
@@ -414,7 +401,8 @@
                                    (R . t)
                                    (emacs-lisp . t)
                                    (shell . t)
-                                   (python . t)))
+                                   (python . t)
+                                   (jupyter . t)))
 
     ;; HACK: when you want to use org-babel to execute a code block,
     ;; it seems that it uses the language identifer associate with
@@ -470,7 +458,10 @@
 
     :config
     (add-to-list 'org-export-backends 'md)
-    (add-to-list 'org-export-backends 'beamer))
+    (add-to-list 'org-export-backends 'beamer)
+    (add-to-list 'org-export-backends 're-reveal)
+    (delete 'odt org-export-backends))
+
 
 (use-package evil-org
     :hook (org-mode . evil-org-mode)
@@ -491,6 +482,19 @@
 
     (when (display-graphic-p)
         (setq org-appear-autosubmarkers t)))
+
+(use-package ob-jupyter
+    :config
+    (delq :text/html jupyter-org-mime-types))
+
+(use-package org-re-reveal
+    :init
+    (setq org-re-reveal-root
+          (concat "file://" (file-name-concat
+                             (expand-file-name org-directory)
+                             "assets"
+                             "reveal.js"))
+          org-re-reveal-revealjs-version "4"))
 
 (provide 'my-init-org)
 ;;; my-init-org.el ends here

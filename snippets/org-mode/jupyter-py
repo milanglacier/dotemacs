@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: jupyter python
+# key: jupyterPy
+# --
+#+begin_src jupyter-python :session ${1:py} :async yes$2
+$0
+#+end_src
