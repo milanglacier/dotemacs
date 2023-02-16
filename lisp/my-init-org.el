@@ -64,6 +64,8 @@
                                (?C . success))
           org-startup-indented t
           org-tags-column 0
+          ;; Resume when clocking into task with open clock
+          org-clock-in-resume t
           org-use-sub-superscripts '{}
           ;; `showeverything' is org's default, but it doesn't respect
           ;; `org-hide-block-startup' (#+startup: hideblocks), archive trees,
@@ -77,7 +79,7 @@
           org-todo-keywords '((sequence "TODO(t)" "STRT(s)" "WAIT(w)" "HOLD(h)"
                                         "|" "DONE(d)" "KILL(k)"))
           ;; don't load those org modules that I never use
-          org-modules '(ol-doi ol-w3m ol-bbdb ol-bibtex ol-info ol-eww))
+          org-modules '(ol-doi ol-bbdb ol-bibtex ol-info ol-eww))
 
     ;; copied from doomemacs
     (setq org-refile-targets
@@ -214,14 +216,12 @@
         "gx" #'org-capture-goto-last-stored
 
         "l" '(:ignore t :which-key "link")
-        "lc" #'org-cliplink ;; TODO: require org-cliplink
         "li" #'org-id-store-link
         "ll" #'org-insert-link
         "lL" #'org-insert-all-links
         "ls" #'org-store-link
         "lS" #'org-insert-last-stored-link
         "lt" #'org-toggle-link-display
-        "lg" #'org-mac-link-get-link ;; TODO: require org-mac-link
 
         "p" '(:ignore t :which-key "priority")
         "pd" #'org-priority-down
@@ -383,7 +383,7 @@
         "pp" #'org-agenda-priority
         "pu" #'org-agenda-priority-up
 
-        "T" #'org-agenda-set-tags
+        "q" #'org-agenda-set-tags
         "r" #'org-agenda-refile
         "t" #'org-agenda-todo
 
@@ -469,7 +469,8 @@
           org-latex-prefer-user-labels t)
 
     :config
-    (add-to-list 'org-export-backends 'md))
+    (add-to-list 'org-export-backends 'md)
+    (add-to-list 'org-export-backends 'beamer))
 
 (use-package evil-org
     :hook (org-mode . evil-org-mode)
