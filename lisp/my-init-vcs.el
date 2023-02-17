@@ -2,6 +2,7 @@
 
 (straight-use-package 'magit)
 (straight-use-package 'git-gutter)
+(straight-use-package 'hl-todo)
 
 (general-create-definer my/git-map
     :prefix "SPC g"
@@ -14,14 +15,17 @@
         :states '(normal insert visual insert)
         :keymaps 'override
         "" '(:ignore t :which-key "git")
-        "g" #'magit)
+        "g" #'magit
+        "a" #'magit-file-dispatch
+        "A" #'magit-dispatch)
 
     (setq magit-diff-refine-hunk t ; show granular diffs in selected hunk.
           ;; Don't autosave repo buffers. This is too magical, and
           ;; saving can trigger a bunch of unwanted side-effects, like
           ;; save hooks and formatters. Trust the user to know what
           ;; they're doing.
-          magit-save-repository-buffers nil)
+          magit-save-repository-buffers nil
+          magit-define-global-key-bindings nil)
 
     :config
     (add-to-list 'display-buffer-alist
@@ -60,6 +64,12 @@
                    (display-buffer-below-selected)
                    (window-height . 0.3)))
     )
+
+(use-package hl-todo
+    :hook ((prog-mode . hl-todo-mode)
+           (conf-mode . hl-todo-mode))
+    :init
+    (setq hl-todo-highlight-punctuation ":"))
 
 (provide 'my-init-vcs)
 ;;; my-init-vcs.el ends here
