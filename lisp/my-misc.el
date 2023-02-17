@@ -6,8 +6,7 @@
 (straight-use-package 'ibuffer-vc)
 
 ;; dired
-(straight-use-package 'dired-subtree)
-(straight-use-package '(dired-sidebar :type git :host github :repo "milanglacier/dired-sidebar"))
+(straight-use-package 'dired-sidebar)
 (straight-use-package 'dired-rsync)
 (straight-use-package 'diredfl)
 (straight-use-package 'all-the-icons-dired)
