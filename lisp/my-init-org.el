@@ -416,6 +416,8 @@
     (defalias #'org-babel-execute:r #'org-babel-execute:R)
     (my/org-babel-lsp-setup "R")
     (my/org-babel-lsp-setup "python")
+    (my/org-babel-lsp-setup "jupyter-R")
+    (my/org-babel-lsp-setup "jupyter-python")
 
     ;; TODO: update `org-babel-python-command' in accordance to `python-shell-interpreter'
     ;; and `python-shell-interpreter-args'
