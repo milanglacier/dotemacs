@@ -69,7 +69,12 @@
     :hook ((prog-mode . hl-todo-mode)
            (conf-mode . hl-todo-mode))
     :init
-    (setq hl-todo-highlight-punctuation ":"))
+    (setq hl-todo-highlight-punctuation ":")
+    (my/git-map
+        :states '(normal insert visual insert)
+        :keymaps 'override
+        "t" #'my/project-todos)
+    )
 
 (provide 'my-init-vcs)
 ;;; my-init-vcs.el ends here

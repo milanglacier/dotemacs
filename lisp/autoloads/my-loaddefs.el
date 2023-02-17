@@ -401,6 +401,15 @@ a wrapper to advise a func only once
 
 ;;;***
 
+;;;### (autoloads nil "my-vcs-autoloads" "my-vcs-autoloads.el" (0
+;;;;;;  0 0 0))
+;;; Generated autoloads from my-vcs-autoloads.el
+
+(autoload 'my/project-todos "my-vcs-autoloads" "\
+Find `hl-todo--regex' items in project using `consult-ripgrep'" t nil)
+
+;;;***
+
 (provide 'my-loaddefs)
 ;; Local Variables:
 ;; version-control: never
