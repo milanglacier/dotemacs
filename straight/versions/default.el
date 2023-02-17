@@ -65,6 +65,7 @@
  ("flymake" . "480ab33e649fe841b83caafc0a2be2a112879796")
  ("frame-local" . "7ee1106c3bcd4022f48421f8cb1ef4f995da816e")
  ("general.el" . "9651024e7f40a8ac5c3f31f8675d3ebe2b667344")
+ ("git-gutter" . "1451e3149865b88de2402ce4296ee5608fadc5b2")
  ("gnu-elpa-mirror" . "3350028f721bec8076b332a7d50ae8fa488834a6")
  ("goto-chg" . "278cd3e6d5107693aa2bb33189ca503f22f227d0")
  ("helpful" . "94c25337b2de2f9da60914a7c0c6cca9584c0231")
