@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: jupyter R
+# key: jupyterR
+# --
+#+begin_src jupyter-R :session ${1:R} :async yes$2
+$0
+#+end_src

@@ -1,11 +1,15 @@
 ;;; my-org-autoloads.el -*- lexical-binding: t; -*-
 
 ;;;###autoload
+(defun my/turn-off-evil-vimish ()
+    (evil-vimish-fold-mode -1))
+
+;;;###autoload
 (defun my/load-org-extensions-idly ()
     "Some important variables from other org extensions are not autoloaded.
 You may feel annoying if you want to use them but find a void variable.
 (e.g. you want to call `org-open-at-point' on a timestamp)"
-    (let ((org-packages '(ob org-capture org-agenda)))
+    (let ((org-packages '(org-capture org-agenda)))
         (dolist (pkg org-packages)
             (require pkg))))
 
@@ -64,6 +68,84 @@ when clocking out, use this function to automatically update the table."
               ;; the point of the start by 1.
               (end-of-end-time (re-search-forward "\\]" nil t)))
             (buffer-substring-no-properties start-of-end-time end-of-end-time))))
+
+;;;###autoload
+(defun my/exclude-org-agenda-buffers-from-recentf (old-fn &rest args)
+    "Prevent `org-agenda' buffers from polluting recentf list."
+    (let ((recentf-exclude '("\\.org\\'")))
+        (apply old-fn args)))
+
+;;;###autoload
+(defun my/reload-org-agenda-buffers ()
+    "`org-agenda' creates incomplete `org-mode' buffers to boost its startup speed. Reload those buffers
+after `org-agenda' has finalized."
+    (run-with-idle-timer
+     4 nil
+     (lambda ()
+         (dolist (buf org-agenda-new-buffers)
+             (when (buffer-live-p buf)
+                 (with-current-buffer buf
+                     (org-mode)))))))
+
+;; Copied and simplified from doomemacs
+;;;###autoload
+(defun my/org-indent-maybe-h ()
+    "Indent the current item (header or item), if possible.
+Made for `org-tab-first-hook' in evil-mode."
+    (interactive)
+    (cond ((not (evil-insert-state-p))
+           nil)
+          ((or (org-inside-LaTeX-fragment-p)
+               (org-inside-latex-macro-p))
+           nil)
+          ((org-at-item-p)
+           (if (eq this-command 'org-shifttab)
+                   (org-outdent-item-tree)
+               (org-indent-item-tree))
+           t)
+          ((org-at-heading-p)
+           (ignore-errors
+               (if (eq this-command 'org-shifttab)
+                       (org-promote)
+                   (org-demote)))
+           t)
+          ((org-in-src-block-p t)
+           (save-window-excursion
+               (org-babel-do-in-edit-buffer
+                (call-interactively #'indent-for-tab-command)))
+           t)
+          ((and (save-excursion
+                    (skip-chars-backward " \t")
+                    (bolp))
+                (org-in-subtree-not-table-p))
+           (call-interactively #'tab-to-tab-stop)
+           t)))
+
+;; Copied and simplified from doomemacs
+;;;###autoload
+(defun my/org-yas-expand-maybe-h ()
+    "Expand a yasnippet snippet, if trigger exists at point or region is active.
+Made for `org-tab-first-hook'."
+    (let ((major-mode (cond ((org-in-src-block-p t)
+                             (org-src-get-lang-mode
+                              (org-element-property :language (org-element-at-point))))
+                            ((org-inside-LaTeX-fragment-p)
+                             'latex-mode)
+                            (major-mode)))
+          (org-src-tab-acts-natively nil)
+          ;; causes breakages
+          ;; Smart indentation doesn't work with yasnippet, and painfully slow
+          ;; in the few cases where it does.
+          (yas-indent-line 'fixed))
+        (cond ((and (or (evil-insert-state-p)
+                        (evil-emacs-state-p))
+                    (gethash major-mode yas--tables)
+                    (yas--templates-for-key-at-point))
+               (yas-expand)
+               t)
+              ((use-region-p)
+               (yas-insert-snippet)
+               t))))
 
 (defun my/toggle-org-settings-wrapper (org-marker)
     (set org-marker (not (eval org-marker)))

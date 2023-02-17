@@ -1,5 +1,5 @@
 # -*- mode: snippet -*-
 # name: link
-# key: <li
+# key: link
 # --
 [[${1:link}][${2:description}]]

@@ -96,7 +96,7 @@
 
     (when my/python-enable-ipython
         (setq python-shell-interpreter "ipython3")
-        (setq python-shell-interpreter-args "--i --simple-prompt --no-color-info"))
+        (setq python-shell-interpreter-args "-i --simple-prompt --no-color-info"))
 
     (add-to-list 'display-buffer-alist
                  `("^\\*[pP]ython"

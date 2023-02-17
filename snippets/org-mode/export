@@ -1,6 +1,6 @@
 # -*- mode: snippet -*-
 # name: export
-# key: <ex
+# key: export
 # --
 #+begin_export ${1:type}
 $0
