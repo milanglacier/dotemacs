@@ -18,7 +18,7 @@
  ("dired-git-info" . "9461476a28a5fec0784260f6e318237c662c3430")
  ("dired-hacks" . "da34f8843987ab7c7868fbc1ae5bd0816f68ad88")
  ("dired-rsync" . "c4f484bff94ed2ddfe0fa45f1e695a1637e1a35a")
- ("dired-sidebar" . "8441e6feea4eb212ee85b049002a5a4f398932d9")
+ ("dired-sidebar" . "5569d3b53585f5413cf87a694650d0fd6e040803")
  ("diredfl" . "94bd99eeced6d52a5a7b9db3745239feafd633e2")
  ("doom-modeline" . "6803d0cac89c8d5fd784cc45f52a6450758430e3")
  ("edit-indirect" . "f80f63822ffae78de38dbe72cacaeb1aaa96c732")
