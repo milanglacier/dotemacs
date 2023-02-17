@@ -191,14 +191,6 @@ Lisp function does not specify a special indentation.
  (autoload #'my/send-region-to-ess "my-langs-autoloads" nil t)
  (autoload #'my/send-region-to-python "my-langs-autoloads" nil t)
 
-(autoload 'my/poly-mode-disable-flymake "my-langs-autoloads" "\
-poly-mode are duplicated buffers with exactly the
-same buffer content, when you are on `prog-mode' then your code linter
-will be perplexed by those non-code content. So disable flymake in
-poly-mode.
-
-\(fn OLD-BUF NEW-BUF)" nil nil)
-
 (autoload 'my/ess-toggle-view-httpgd "my-langs-autoloads" "\
 Display the httpgd buffer if not displayed. If the buffer is
 displayed, close the window. If no httpgd buffer exists, ask to create

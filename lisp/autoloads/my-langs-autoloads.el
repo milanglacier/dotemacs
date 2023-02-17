@@ -20,16 +20,6 @@
 (evil-define-operator my/send-region-to-python (beg end)
     (python-shell-send-region beg end t))
 
-;;;###autoload
-(defun my/poly-mode-disable-flymake (old-buf new-buf)
-    "poly-mode are duplicated buffers with exactly the
-same buffer content, when you are on `prog-mode' then your code linter
-will be perplexed by those non-code content. So disable flymake in
-poly-mode."
-    (with-current-buffer new-buf
-        (when flymake-mode
-            (flymake-mode -1))))
-
 (defvar my/ess-httpgd-xwidget-buffer-name "*xwidget webkit: R Plot *"
     "the xwidget buffer name when it is displaying the httpgd
 session.")
