@@ -91,7 +91,8 @@
                      org-roam osx-dictionary pdf python replace rg
                      ripgrep tab-bar term vertico vterm wdired wgrep
                      which-key xref xwidget)
-          evil-collection-key-blacklist '("SPC")))
+          evil-collection-key-blacklist '("SPC")
+          evil-collection-want-unimpaired-p nil))
 ;; I used SPC SPC as my local leader key. So SPC shouldn't be occupied
 ;; even in local mode map.
 
@@ -171,7 +172,16 @@
      [remap evil-jump-backward] #'better-jumper-jump-backward
      [remap evil-jump-forward] #'better-jumper-jump-forward
      "]a" #'evil-forward-arg
-     "[a" #'evil-backward-arg)
+     "[a" #'evil-backward-arg
+     ;; compilation is similiar to vim's quickfix list.
+     "]q" #'compilation-next-error
+     "[q" #'compilation-previous-error
+     "[Q" #'compilation-previous-file
+     "]Q" #'compilation-next-file
+     "[b" #'evil-prev-buffer
+     "]b" #'evil-next-buffer
+     "[n" #'my/previous-SCM-conflict-marker
+     "]n" #'my/next-SCM-conflict-marker)
 
     (general-define-key
      :states '(normal visual)

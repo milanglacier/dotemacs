@@ -178,6 +178,10 @@ Lisp function does not specify a special indentation.
 
 
 \(fn KEY START-REGEX END-REGEX HOOK)" nil t)
+ (autoload #'my/previous-SCM-conflict-marker "my-evil-autoloads" nil t)
+ (autoload #'my/next-SCM-conflict-marker "my-evil-autoloads" nil t)
+
+(register-definition-prefixes "my-evil-autoloads" '("my/SCM-conflict-marker"))
 
 ;;;***
 
