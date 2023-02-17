@@ -2,7 +2,7 @@
 # name: lexical-binding
 # key: lex
 # --
-;;; ${1:`(buffer-name)`}.el -*- lexical-binding: t; -*-
-
+;;; ${1:`(replace-regexp-in-string "\\.el$" "" (buffer-name))`}.el -*- lexical-binding: t; -*-
+$0
 (provide '$1)
 ;;; $1.el ends here
