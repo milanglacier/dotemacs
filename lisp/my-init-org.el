@@ -376,6 +376,12 @@
 
         )
 
+    (general-define-key
+     :keymaps 'org-agenda-mode-map
+     :states '(normal visual motion)
+     "gt" #'tab-bar-switch-to-next-tab
+     "gT" #'tab-bar-switch-to-prev-tab)
+
     )
 
 (use-package ob
