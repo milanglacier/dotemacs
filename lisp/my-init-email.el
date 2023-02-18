@@ -33,7 +33,6 @@
           mu4e-change-filenames-when-moving t
           mu4e-sent-messages-behavior 'delete
           ;; outlook automatically save the sent messages, should directly delete it
-          mu4e-headers-include-related nil
           mu4e-compose-format-flowed t
           mu4e-hide-index-messages t
           mu4e-completing-read-function #'completing-read
