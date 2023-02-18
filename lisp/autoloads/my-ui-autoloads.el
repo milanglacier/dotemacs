@@ -33,5 +33,13 @@ is called."
         (apply old-fun args)
         (setq-local default-directory current-dir)))
 
+;; Use variable width font faces in current buffer
+;;;###autoload
+(defun my/buffer-face-mode-variable ()
+    "Set font to a variable width (proportional) fonts in current buffer"
+    (interactive)
+    (setq buffer-face-mode-face '(:family "Bookerly" :height 150 :width semi-condensed))
+    (buffer-face-mode))
+
 (provide 'my-ui-autoloads)
 ;;; my-ui-autoloads ends here

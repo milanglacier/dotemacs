@@ -386,6 +386,9 @@ is called.
 
 \(fn OLD-FUN &rest ARGS)" nil nil)
 
+(autoload 'my/buffer-face-mode-variable "my-ui-autoloads" "\
+Set font to a variable width (proportional) fonts in current buffer" t nil)
+
 (register-definition-prefixes "my-ui-autoloads" '("my/display-org-agenda-list"))
 
 ;;;***

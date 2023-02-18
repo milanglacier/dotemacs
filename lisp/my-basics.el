@@ -34,6 +34,8 @@
 (add-to-list 'default-frame-alist
              '(font . "Monego Nerd Font Fix-15"))
 
+(set-face-attribute 'variable-pitch nil :family "Bookerly" :height 160)
+
 ;; unless you have a really wide screen, always prefer
 ;; horizontal split (ale `evil-window-split')
 (setq split-width-threshold 300)
