@@ -61,7 +61,7 @@
             ("patch applying (git apply)" . mu4e-action-git-apply-patch))
 
           mu4e-headers-fields '((:human-date . 12)
-                                (:flags . 6) ; 3 icon flags
+                                (:flags . 6)
                                 (:from-or-to . 25)
                                 (:subject))
 
@@ -107,7 +107,6 @@
     (general-define-key :keymaps 'shr-map "a" nil)
     (general-define-key :keymaps 'shr-image-map "a" nil)
 
-
     )
 
 (use-package org-msg
@@ -125,14 +124,7 @@
           org-msg-attached-file-reference
           "see[ \t\n]\\(?:the[ \t\n]\\)?\\(?:\\w+[ \t\n]\\)\\{0,3\\}\\(?:attached\\|enclosed\\)\\|\
 (\\(?:attached\\|enclosed\\))\\|\
-\\(?:attached\\|enclosed\\)[ \t\n]\\(?:for\\|is\\)[ \t\n]")
-
-    :config
-    (general-define-key
-     :keymaps 'org-msg-edit-mode-map
-     "TAB" #'org-msg-tab) ; only <tab> bound by default
-
-    )
+\\(?:attached\\|enclosed\\)[ \t\n]\\(?:for\\|is\\)[ \t\n]"))
 
 (provide 'my-init-email)
 ;;; my-init-email.el.el ends here
