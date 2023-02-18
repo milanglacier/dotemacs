@@ -132,26 +132,10 @@ Look up for the symbol under point, if region is active, use
 (autoload 'my/elisp-setup "my-elisp-autoloads" nil nil nil)
 
 (autoload 'my/lisp-indent-function "my-elisp-autoloads" "\
-This function is the normal value of the variable `lisp-indent-function'.
-The function `calculate-lisp-indent' calls this to determine
-if the arguments of a Lisp function call should be indented specially.
-INDENT-POINT is the position at which the line being indented begins.
-Point is located at the point to indent under (for default indentation);
-STATE is the `parse-partial-sexp' state for that position.
-If the current line is in a call to a Lisp function that has a non-nil
-property `lisp-indent-function' (or the deprecated `lisp-indent-hook'),
-it specifies how to indent.  The property value can be:
-* `defun', meaning indent `defun'-style
-  (this is also the case if there is no property and the function
-  has a name that begins with \"def\", and three or more arguments);
-* an integer N, meaning indent the first N arguments specially
-  (like ordinary function arguments), and then indent any further
-  arguments like a body;
-* a function to call that returns the indentation (or nil).
-  `lisp-indent-function' calls this function with the same two arguments
-  that it itself received.
-This function returns either the indentation to use, or nil if the
-Lisp function does not specify a special indentation.
+A replacement for `lisp-indent-function'.
+
+Indents plists more sensibly. Adapted from
+https://emacs.stackexchange.com/questions/10230/how-to-indent-keywords-aligned
 
 \(fn INDENT-POINT STATE)" nil nil)
 
