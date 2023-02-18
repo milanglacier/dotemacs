@@ -143,6 +143,29 @@ https://emacs.stackexchange.com/questions/10230/how-to-indent-keywords-aligned
 
 ;;;***
 
+;;;### (autoloads nil "my-email-autoloads" "my-email-autoloads.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from my-email-autoloads.el
+
+(autoload 'my/mu4e-enter-func "my-email-autoloads" "\
+
+
+\(fn USE-ORG-MSG-MODE &optional ADDITIONAL-FUNC)" nil nil)
+
+(autoload 'my/mu4e-leave-func "my-email-autoloads" "\
+
+
+\(fn &optional ADDITIONAL-FUNC)" nil nil)
+
+(autoload 'my/mu4e-match-func "my-email-autoloads" "\
+
+
+\(fn PREFIX)" nil nil)
+
+(autoload 'my/mu4e-set-mail-line-wrap "my-email-autoloads" nil nil nil)
+
+;;;***
+
 ;;;### (autoloads nil "my-evil-autoloads" "my-evil-autoloads.el"
 ;;;;;;  (0 0 0 0))
 ;;; Generated autoloads from my-evil-autoloads.el
