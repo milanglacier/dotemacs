@@ -29,16 +29,15 @@
     (advice-add #'describe-function-1 :after #'elisp-demos-advice-describe-function-1)
     (advice-add #'helpful-update :after #'elisp-demos-advice-helpful-update))
 
-;; NOTE: I don't know why I can't use `use-package' with 'elisp-mode
-(with-eval-after-load 'elisp-mode
+(use-package elisp-mode
+    :init
+    (add-hook 'emacs-lisp-mode-hook #'my/elisp-setup)
 
+    :config
     (my/define-and-bind-local-paren-text-object "`" "`" "'" emacs-lisp-mode-hook)
-
     (elispfl-mode)
-
-    (setq lisp-body-indent 4)
-
-    (setq lisp-indent-function #'my/lisp-indent-function)
+    (setq lisp-body-indent 4
+          lisp-indent-function #'my/lisp-indent-function)
 
     (general-define-key
      :states '(motion visual normal)
@@ -55,7 +54,6 @@
         "eb" #'eval-buffer
         "er" #'eval-region))
 
-(add-hook 'emacs-lisp-mode-hook #'my/elisp-setup)
 
 (provide 'my-init-elisp)
 ;; my-init-elisp.el ends here

@@ -62,5 +62,32 @@
                        (define-key evil-visual-state-local-map ,(concat "i" key) ',inner-name)
                        (define-key evil-visual-state-local-map ,(concat "a" key) ',outer-name)))))
 
+;;;referenced from evil-collection-unimpaired.
+(defconst my/SCM-conflict-marker "^\\(@@@ .* @@@\\|[<=>]\\{7\\}\\)"
+    "A regexp to match SCM conflict marker.")
+
+;;;referenced from evil-collection-unimpaired.
+;;;###autoload (autoload #'my/previous-SCM-conflict-marker "my-evil-autoloads" nil t)
+(evil-define-motion my/previous-SCM-conflict-marker (count)
+    "Go to the previous SCM conflict marker or diff/patch hunk."
+    :jump t
+    (my/next-SCM-conflict-marker (- (or count 1))))
+
+;;;referenced from evil-collection-unimpaired.
+;;;###autoload (autoload #'my/next-SCM-conflict-marker "my-evil-autoloads" nil t)
+(evil-define-motion my/next-SCM-conflict-marker (count)
+    "Go to the next SCM conflict marker or diff/patch hunk."
+    :jump t
+    (evil-motion-loop (dir (or count 1))
+        (cond
+         ((> dir 0)
+          (forward-line 1)
+          (when (not (search-forward-regexp my/SCM-conflict-marker nil t))
+              (forward-line -1))
+          (move-beginning-of-line nil))
+         (t
+          (search-backward-regexp my/SCM-conflict-marker nil t)
+          (move-beginning-of-line nil)))))
+
 (provide 'my-evil-autoloads)
 ;;; my-evil-autoloads ends here

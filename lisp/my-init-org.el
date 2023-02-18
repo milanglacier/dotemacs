@@ -391,6 +391,12 @@
 
         )
 
+    (general-define-key
+     :keymaps 'org-agenda-mode-map
+     :states '(normal visual motion)
+     "gt" #'tab-bar-switch-to-next-tab
+     "gT" #'tab-bar-switch-to-prev-tab)
+
     )
 
 (use-package ob
@@ -425,6 +431,8 @@
     (defalias #'org-babel-execute:r #'org-babel-execute:R)
     (my/org-babel-lsp-setup "R")
     (my/org-babel-lsp-setup "python")
+    (my/org-babel-lsp-setup "jupyter-R")
+    (my/org-babel-lsp-setup "jupyter-python")
 
     ;; TODO: update `org-babel-python-command' in accordance to `python-shell-interpreter'
     ;; and `python-shell-interpreter-args'
