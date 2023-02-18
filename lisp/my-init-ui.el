@@ -4,6 +4,36 @@
 (straight-use-package 'doom-modeline)
 (straight-use-package 'which-key)
 
+(set-display-table-slot standard-display-table 'truncation 32)
+(set-display-table-slot standard-display-table 'wrap 32)
+
+(add-hook 'prog-mode-hook #'my/display-truncation-and-wrap-indicator-as-whitespace)
+(add-hook 'text-mode-hook #'my/display-truncation-and-wrap-indicator-as-whitespace)
+;; by default when a long line is truncated, emacs displays
+;; a "$" sign at the border of window, which is ugly,
+;; replace "$" with " "
+;; see discussion here: URL `https://emacs.stackexchange.com/questions/54817/remove-dollar-sign-at-beginning-of-line'
+
+;; set default font
+(add-to-list 'default-frame-alist
+             '(font . "Monego Nerd Font Fix-15"))
+
+;; Set font for text that should be displayed more like prose.
+(set-face-attribute 'variable-pitch nil :family "Bookerly" :height 160)
+
+;; display line numbers in the left margin of the window.
+(use-package display-line-numbers
+    :init
+    (setq display-line-numbers-type t)
+    (global-display-line-numbers-mode)
+    )
+
+(use-package whitespace
+    :init
+    (setq whitespace-style '(face tabs tab-mark trailing))
+    (global-whitespace-mode)
+    )
+
 (use-package window
     :init
     (defvar my/side-window-slots
@@ -34,7 +64,10 @@ if they are side window.")
 this is for configuring `display-buffer-in-side-window',
 configuring this would avoid buffer swallows other buffer's window
 if they are side window.")
-    (setq window-combination-resize t))
+    (setq window-combination-resize t
+          ;; unless you have a really wide screen, always prefer
+          ;; horizontal split (ale `evil-window-split')
+          split-width-threshold 300))
 
 (add-hook 'emacs-startup-hook #'my/delayed-startup-screen)
 

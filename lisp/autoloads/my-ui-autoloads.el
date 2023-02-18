@@ -1,5 +1,12 @@
 ;;; my-ui-autoloads.el -*- lexical-binding: t; -*-
 
+;;;###autoload
+(defun my/display-truncation-and-wrap-indicator-as-whitespace ()
+    (when (not (char-table-p buffer-display-table))
+        (setq buffer-display-table (make-display-table)))
+    (set-display-table-slot buffer-display-table 'truncation 32)
+    (set-display-table-slot buffer-display-table 'wrap 32))
+
 (defun my/display-org-agenda-list ()
     "if current window is scratch buffer, then replace this buffer
 with org agenda otherwise open org-agenda with the specified way

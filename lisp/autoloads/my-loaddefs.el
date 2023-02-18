@@ -87,14 +87,6 @@ it is disabled.
 
 ;;;***
 
-;;;### (autoloads nil "my-basics-autoloads" "my-basics-autoloads.el"
-;;;;;;  (0 0 0 0))
-;;; Generated autoloads from my-basics-autoloads.el
-
-(autoload 'my/display-truncation-and-wrap-indicator-as-whitespace "my-basics-autoloads" nil nil nil)
-
-;;;***
-
 ;;;### (autoloads nil "my-completion-autoloads" "my-completion-autoloads.el"
 ;;;;;;  (0 0 0 0))
 ;;; Generated autoloads from my-completion-autoloads.el
@@ -376,6 +368,8 @@ If there is only one tab, close emacs, otherwise close one tab" t nil)
 ;;;;;;  0 0))
 ;;; Generated autoloads from my-ui-autoloads.el
 
+(autoload 'my/display-truncation-and-wrap-indicator-as-whitespace "my-ui-autoloads" nil nil nil)
+
 (autoload 'my/delayed-startup-screen "my-ui-autoloads" "\
 `org-agenda-list' is slow, don't run it immediately after startup" nil nil)
 
@@ -423,6 +417,10 @@ a wrapper to advise a func only once
 
 (autoload 'my/project-todos "my-vcs-autoloads" "\
 Find `hl-todo--regex' items in project using `consult-ripgrep'" t nil)
+
+;;;***
+
+;;;### (autoloads nil nil ("my-basics-autoloads.el") (0 0 0 0))
 
 ;;;***
 
