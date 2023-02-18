@@ -164,6 +164,12 @@ https://emacs.stackexchange.com/questions/10230/how-to-indent-keywords-aligned
 
 (autoload 'my/mu4e-set-mail-line-wrap "my-email-autoloads" nil nil nil)
 
+(autoload 'my/mu4e-open-link-via-eww "my-email-autoloads" "\
+If point is on a link, open this link via `eww'. Otherwise open
+this email via `eww'
+
+\(fn MSG &optional ARG)" nil nil)
+
 ;;;***
 
 ;;;### (autoloads nil "my-evil-autoloads" "my-evil-autoloads.el"

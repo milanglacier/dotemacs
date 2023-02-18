@@ -56,6 +56,7 @@
           '(("capture message" . mu4e-action-capture-message)
             ("view in browser" . mu4e-action-view-in-browser)
             ("xview in xwidget" . mu4e-action-view-in-xwidget)
+            ("eview in eww" . my/mu4e-open-link-via-eww)
             ("show this thread" . mu4e-action-show-thread)
             ("mailbox patch apply (git am)" . mu4e-action-git-apply-mbox)
             ("patch applying (git apply)" . mu4e-action-git-apply-patch))
