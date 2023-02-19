@@ -75,14 +75,13 @@ like plotly."
     )
 
 (defvar my/xwidget-side-window-display
-    `("\\*xwidget"
+    '("\\*xwidget"
       (display-buffer-in-side-window display-buffer-reuse-window))
     "the display action used for xwidget when use it as a side window.")
 
 (defvar my/xwidget-force-display-action
     '(display-buffer-same-window)
     "the display action used for `my/xwidget-force-display-mode'")
-
 
 (defun my/switch-to-buffer-obey-display-actions (old-fun &rest args)
     (let ((switch-to-buffer-obey-display-actions t))
