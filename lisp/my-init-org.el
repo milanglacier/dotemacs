@@ -484,6 +484,12 @@
     (add-to-list 'org-export-backends 're-reveal)
     (delete 'odt org-export-backends))
 
+;; FIXME: I don't know why on Debian I have this issue
+;; On macOS I do't need to manually require org-indent
+;; and it just works.
+(use-package org-indent
+    :after org
+    :demand t)
 
 (use-package evil-org
     :hook (org-mode . evil-org-mode)
