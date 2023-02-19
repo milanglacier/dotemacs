@@ -174,10 +174,8 @@
      "]a" #'evil-forward-arg
      "[a" #'evil-backward-arg
      ;; compilation is similiar to vim's quickfix list.
-     "]q" #'compilation-next-error
-     "[q" #'compilation-previous-error
-     "[Q" #'compilation-previous-file
-     "]Q" #'compilation-next-file
+     "]q" #'next-error
+     "[q" #'previous-error
      "[b" #'evil-prev-buffer
      "]b" #'evil-next-buffer
      "[n" #'my/previous-SCM-conflict-marker

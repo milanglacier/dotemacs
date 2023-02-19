@@ -63,7 +63,6 @@
                    (display-buffer-in-side-window)
                    (window-height . 0.4)
                    (window-width .0.5)
-                   ;; if there are multiple window, prefer the window to the right window
                    (slot . ,(alist-get 'vterm my/side-window-slots))))
 
     (general-define-key
