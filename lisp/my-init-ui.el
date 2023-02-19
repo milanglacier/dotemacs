@@ -66,7 +66,7 @@ configuring this would avoid buffer swallows other buffer's window
 if they are side window.")
     (setq window-combination-resize t
           ;; unless you have a really wide screen, always prefer
-          ;; horizontal split (ale `evil-window-split')
+          ;; horizontal split (ale `split-window-below')
           split-width-threshold 300))
 
 (add-hook 'emacs-startup-hook #'my/delayed-startup-screen)

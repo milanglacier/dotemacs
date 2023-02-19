@@ -83,6 +83,40 @@ it is disabled.
 
 \(fn &optional ARG)" t nil)
 
+(defvar my/xwidget-force-display-mode nil "\
+Non-nil if My/Xwidget-Force-Display mode is enabled.
+See the `my/xwidget-force-display-mode' command
+for a description of this minor mode.
+Setting this variable directly does not take effect;
+either customize it (see the info node `Easy Customization')
+or call the function `my/xwidget-force-display-mode'.")
+
+(custom-autoload 'my/xwidget-force-display-mode "my-apps-autoloads" nil)
+
+(autoload 'my/xwidget-force-display-mode "my-apps-autoloads" "\
+`xwidget-webkit-browse-url' won't display its buffer in current
+frame when the xwidget session exists and no window is displaying that
+session.  This minor mode advises `xwidget-webkit-browse-url' to
+ensure such behavior. This is helpful for viewing web contents with
+`mu4e', `notmuch', and `elfeed'
+
+This is a minor mode.  If called interactively, toggle the
+`My/Xwidget-Force-Display mode' mode.  If the prefix argument is
+positive, enable the mode, and if it is zero or negative, disable
+the mode.
+
+If called from Lisp, toggle the mode if ARG is `toggle'.  Enable
+the mode if ARG is nil, omitted, or is a positive number.
+Disable the mode if ARG is a negative number.
+
+To check whether the minor mode is enabled in the current buffer,
+evaluate `(default-value \\='my/xwidget-force-display-mode)'.
+
+The mode's hook is called both when the mode is enabled and when
+it is disabled.
+
+\(fn &optional ARG)" t nil)
+
 (register-definition-prefixes "my-apps-autoloads" '("my/"))
 
 ;;;***

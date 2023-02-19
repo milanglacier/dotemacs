@@ -74,14 +74,24 @@ like plotly."
                            #'my/refresh-xwidget-after-eval-python)))
     )
 
-(defun my/switch-to-buffer-obey-display-actions (old-fun &rest args)
-    (let ((switch-to-buffer-obey-display-actions t))
-        (apply old-fun args)))
-
 (defvar my/xwidget-side-window-display
     `("\\*xwidget"
       (display-buffer-in-side-window display-buffer-reuse-window))
     "the display action used for xwidget when use it as a side window.")
+
+(defvar my/xwidget-force-display-action
+    '(display-buffer-same-window)
+    "the display action used for `my/xwidget-force-display-mode'")
+
+
+(defun my/switch-to-buffer-obey-display-actions (old-fun &rest args)
+    (let ((switch-to-buffer-obey-display-actions t))
+        (apply old-fun args)))
+
+(defun my/xwidget-force-display (&rest args)
+    (if-let ((session (xwidget-webkit-current-session)))
+            (display-buffer (xwidget-buffer session)
+                            my/xwidget-force-display-action)))
 
 ;;;###autoload
 (define-minor-mode my/xwidget-side-window-mode
@@ -104,6 +114,25 @@ xwdiget to display plots at the side window."
             (setq display-buffer-alist (remove my/xwidget-side-window-display display-buffer-alist))
             (advice-remove #'xwidget-webkit-new-session #'my/switch-to-buffer-obey-display-actions)
             (advice-remove #'xwidget-webkit-goto-url #'my/switch-to-buffer-obey-display-actions)))
+    )
+
+;;;###autoload
+(define-minor-mode my/xwidget-force-display-mode
+    "`xwidget-webkit-browse-url' won't display its buffer in current
+frame when the xwidget session exists and no window is displaying that
+session.  This minor mode advises `xwidget-webkit-browse-url' to
+ensure such behavior. This is helpful for viewing web contents with
+`mu4e', `notmuch', and `elfeed'"
+    :global t
+
+    (unless (require 'xwidget nil t)
+        (error "this mode requires xwidget!"))
+
+    (if my/xwidget-force-display-mode
+            (progn
+                (advice-add #'xwidget-webkit-goto-url :after #'my/xwidget-force-display))
+        (progn
+            (advice-remove #'xwidget-webkit-goto-url #'my/xwidget-force-display)))
     )
 
 (provide 'my-apps-autoloads)
