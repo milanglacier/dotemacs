@@ -66,12 +66,12 @@
                                 (:from-or-to . 25)
                                 (:subject))
 
-          mu4e-headers-thread-single-orphan-prefix '("─>" . "─▶")
-          mu4e-headers-thread-orphan-prefix        '("┬>" . "┬▶ ")
+          mu4e-headers-thread-single-orphan-prefix '("─▶ " . "─>")
+          mu4e-headers-thread-orphan-prefix        '("┬▶ " . "┬>")
           mu4e-headers-thread-connection-prefix    '("│ " . "│ ")
-          mu4e-headers-thread-first-child-prefix   '("├>" . "├▶")
-          mu4e-headers-thread-child-prefix         '("├>" . "├▶")
-          mu4e-headers-thread-last-child-prefix    '("└>" . "╰▶")
+          mu4e-headers-thread-first-child-prefix   '("├▶ " . "├>")
+          mu4e-headers-thread-child-prefix         '("├▶ " . "├>")
+          mu4e-headers-thread-last-child-prefix    '("╰▶ " . "└>")
 
           mu4e-bookmarks
           '((:name "Unread messages w/o news and gmail"
