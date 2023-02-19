@@ -1,5 +1,12 @@
 ;;; my-ui-autoloads.el -*- lexical-binding: t; -*-
 
+;;;###autoload
+(defun my/display-truncation-and-wrap-indicator-as-whitespace ()
+    (when (not (char-table-p buffer-display-table))
+        (setq buffer-display-table (make-display-table)))
+    (set-display-table-slot buffer-display-table 'truncation 32)
+    (set-display-table-slot buffer-display-table 'wrap 32))
+
 (defun my/display-org-agenda-list ()
     "if current window is scratch buffer, then replace this buffer
 with org agenda otherwise open org-agenda with the specified way
@@ -32,6 +39,14 @@ is called."
     (let ((current-dir default-directory))
         (apply old-fun args)
         (setq-local default-directory current-dir)))
+
+;; Use variable width font faces in current buffer
+;;;###autoload
+(defun my/buffer-face-mode-variable ()
+    "Set font to a variable width (proportional) fonts in current buffer"
+    (interactive)
+    (setq buffer-face-mode-face '(:family "Bookerly" :height 150 :width semi-condensed))
+    (buffer-face-mode))
 
 (provide 'my-ui-autoloads)
 ;;; my-ui-autoloads ends here

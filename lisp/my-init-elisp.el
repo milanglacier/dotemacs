@@ -7,6 +7,9 @@
 (straight-use-package '(elispfl :host github :repo "cireu/elispfl"))
 ;; fontification for elisp
 
+;; TODO: configure `lispy' and `lispyville' to work better with
+;; parenthesis
+
 (use-package helpful
     :init
     (general-define-key
@@ -53,7 +56,6 @@
         "ef" #'eval-defun
         "eb" #'eval-buffer
         "er" #'eval-region))
-
 
 (provide 'my-init-elisp)
 ;; my-init-elisp.el ends here

@@ -79,10 +79,9 @@
           org-refile-use-outline-path 'file
           org-outline-path-complete-in-steps nil)
 
-    (with-no-warnings
-        (custom-declare-face 'my/org-todo-active  '((t (:inherit (bold font-lock-constant-face org-todo)))) "")
-        (custom-declare-face 'my/org-todo-onhold  '((t (:inherit (bold warning org-todo)))) "")
-        (custom-declare-face 'my/org-todo-cancel  '((t (:inherit (bold error org-todo)))) ""))
+    (defface my/org-todo-active '((t (:inherit (bold font-lock-constant-face org-todo)))) "")
+    (defface my/org-todo-onhold '((t (:inherit (bold warning org-todo)))) "")
+    (defface my/org-todo-cancel '((t (:inherit (bold error org-todo)))) "")
 
     (setq org-todo-keyword-faces '(("STRT" . my/org-todo-active)
                                    ("WAIT" . my/org-todo-onhold)

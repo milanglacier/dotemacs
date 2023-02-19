@@ -83,6 +83,7 @@
  ("nongnu-elpa" . "85c7a060c6174bf544f0ff8fe2480aaa1f70ed46")
  ("orderless" . "d09aab37951b25627b96660f429eaec969d16d8a")
  ("org-appear" . "eb9f9db40aa529fe4b977235d86494b115281d17")
+ ("org-msg" . "7b1dfb96d558f6e5626e96d4f4a5150d55cb7eb2")
  ("org-re-reveal" . "91cdd82c47b86990b5eb41fe34446a042194cc83")
  ("project" . "e086bdc7c515f8bfc22598d473ba888ba7683f0c")
  ("rainbow-delimiters" . "a32b39bdfe6c61c322c37226d66e1b6d4f107ed0")

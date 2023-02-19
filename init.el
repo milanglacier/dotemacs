@@ -51,6 +51,7 @@
 (require 'my-init-langtools)
 (require 'my-init-os)
 (require 'my-init-apps)
+(require 'my-init-email)
 (require 'my-misc)
 
 (setq debug-on-error nil)

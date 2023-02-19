@@ -83,15 +83,41 @@ it is disabled.
 
 \(fn &optional ARG)" t nil)
 
+(defvar my/xwidget-force-display-mode nil "\
+Non-nil if My/Xwidget-Force-Display mode is enabled.
+See the `my/xwidget-force-display-mode' command
+for a description of this minor mode.
+Setting this variable directly does not take effect;
+either customize it (see the info node `Easy Customization')
+or call the function `my/xwidget-force-display-mode'.")
+
+(custom-autoload 'my/xwidget-force-display-mode "my-apps-autoloads" nil)
+
+(autoload 'my/xwidget-force-display-mode "my-apps-autoloads" "\
+`xwidget-webkit-browse-url' won't display its buffer in current
+frame when the xwidget session exists and no window is displaying that
+session.  This minor mode advises `xwidget-webkit-browse-url' to
+ensure such behavior. This is helpful for viewing web contents with
+`mu4e', `notmuch', and `elfeed'
+
+This is a minor mode.  If called interactively, toggle the
+`My/Xwidget-Force-Display mode' mode.  If the prefix argument is
+positive, enable the mode, and if it is zero or negative, disable
+the mode.
+
+If called from Lisp, toggle the mode if ARG is `toggle'.  Enable
+the mode if ARG is nil, omitted, or is a positive number.
+Disable the mode if ARG is a negative number.
+
+To check whether the minor mode is enabled in the current buffer,
+evaluate `(default-value \\='my/xwidget-force-display-mode)'.
+
+The mode's hook is called both when the mode is enabled and when
+it is disabled.
+
+\(fn &optional ARG)" t nil)
+
 (register-definition-prefixes "my-apps-autoloads" '("my/"))
-
-;;;***
-
-;;;### (autoloads nil "my-basics-autoloads" "my-basics-autoloads.el"
-;;;;;;  (0 0 0 0))
-;;; Generated autoloads from my-basics-autoloads.el
-
-(autoload 'my/display-truncation-and-wrap-indicator-as-whitespace "my-basics-autoloads" nil nil nil)
 
 ;;;***
 
@@ -140,6 +166,35 @@ https://emacs.stackexchange.com/questions/10230/how-to-indent-keywords-aligned
 \(fn INDENT-POINT STATE)" nil nil)
 
 (register-definition-prefixes "my-elisp-autoloads" '("my/emacs-lisp-outline-level"))
+
+;;;***
+
+;;;### (autoloads nil "my-email-autoloads" "my-email-autoloads.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from my-email-autoloads.el
+
+(autoload 'my/mu4e-enter-func "my-email-autoloads" "\
+
+
+\(fn USE-ORG-MSG-MODE &optional ADDITIONAL-FUNC)" nil nil)
+
+(autoload 'my/mu4e-leave-func "my-email-autoloads" "\
+
+
+\(fn &optional ADDITIONAL-FUNC)" nil nil)
+
+(autoload 'my/mu4e-match-func "my-email-autoloads" "\
+
+
+\(fn PREFIX)" nil nil)
+
+(autoload 'my/mu4e-set-mail-line-wrap "my-email-autoloads" nil nil nil)
+
+(autoload 'my/mu4e-open-link-via-eww "my-email-autoloads" "\
+If point is on a link, open this link via `eww'. Otherwise open
+this email via `eww'
+
+\(fn MSG &optional ARG)" nil nil)
 
 ;;;***
 
@@ -347,6 +402,8 @@ If there is only one tab, close emacs, otherwise close one tab" t nil)
 ;;;;;;  0 0))
 ;;; Generated autoloads from my-ui-autoloads.el
 
+(autoload 'my/display-truncation-and-wrap-indicator-as-whitespace "my-ui-autoloads" nil nil nil)
+
 (autoload 'my/delayed-startup-screen "my-ui-autoloads" "\
 `org-agenda-list' is slow, don't run it immediately after startup" nil nil)
 
@@ -362,6 +419,9 @@ Change it to the directory of previous buffer where `tab-bar-new-tab'
 is called.
 
 \(fn OLD-FUN &rest ARGS)" nil nil)
+
+(autoload 'my/buffer-face-mode-variable "my-ui-autoloads" "\
+Set font to a variable width (proportional) fonts in current buffer" t nil)
 
 (register-definition-prefixes "my-ui-autoloads" '("my/display-org-agenda-list"))
 
@@ -391,6 +451,10 @@ a wrapper to advise a func only once
 
 (autoload 'my/project-todos "my-vcs-autoloads" "\
 Find `hl-todo--regex' items in project using `consult-ripgrep'" t nil)
+
+;;;***
+
+;;;### (autoloads nil nil ("my-basics-autoloads.el") (0 0 0 0))
 
 ;;;***
 
