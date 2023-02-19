@@ -20,6 +20,10 @@
       create-lockfiles nil
       auto-save-default nil)
 
+;; don't need to input yes or no
+;; y or n is sufficient.
+(setq use-short-answers t)
+
 ;; Press "TAB" key should not insert \t.
 (setq-default indent-tabs-mode nil)
 
