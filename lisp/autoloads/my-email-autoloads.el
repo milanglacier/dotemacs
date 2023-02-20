@@ -21,11 +21,6 @@
             (string-prefix-p prefix (mu4e-message-field msg :maildir) t))))
 
 ;;;###autoload
-(defun my/mu4e-set-mail-line-wrap ()
-    (setq-local fill-column 72
-                fill-flowed-encode-column 72))
-
-;;;###autoload
 (defun my/mu4e-open-link-via-eww (msg &optional arg)
     "If point is on a link, open this link via `eww'. Otherwise open
 this email via `eww'"

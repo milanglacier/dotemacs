@@ -1,17 +1,5 @@
 ;;; my-langtools-autoloads.el -*- lexical-binding: t; -*-
 
-;;;###autoload
-(defun my/do-not-use-citre-imenu ()
-    (setq-local citre-enable-imenu-integration nil))
-
-;;;###autoload
-(defun my/do-not-use-citre-xref ()
-    (setq-local citre-enable-xref-integration nil))
-
-;;;###autoload
-(defun my/do-not-use-citre-capf ()
-    (setq-local citre-enable-capf-integration nil))
-
 (defalias #'my/eglot-citre-capf
     (cape-super-capf #'eglot-completion-at-point #'citre-completion-at-point))
 
@@ -21,10 +9,6 @@
             (add-to-list 'completion-at-point-functions #'my/eglot-citre-capf)
         (setq-local completion-at-point-functions
                     (delq #'my/eglot-citre-capf completion-at-point-functions))))
-
-;;;###autoload
-(defun my/eglot-do-not-use-imenu ()
-    (setq-local eglot-stay-out-of `("imenu" ,@eglot-stay-out-of)))
 
 (defun my/eldoc-buffer-dwim-fallback ()
     "When eldoc buffer window is not opened, display the eldoc

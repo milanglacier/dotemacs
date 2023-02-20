@@ -30,5 +30,60 @@
                          (funcall #',advice)
                          (advice-remove #',func #',advice-once)) ,@props)))
 
+;;;###autoload
+(defmacro my/turn-off-mode (mode)
+    "Create a function to turn off MODE. Useful for attaching on some
+hooks that will turn off MODE locally."
+    (let ((func (intern (concat "my/turn-off-"
+                                (symbol-name mode)))))
+        `(if (fboundp #',func)
+                 #',func
+             (defun ,func ()
+                 (,mode -1)))))
+
+;;;###autoload
+(defmacro my/setq-locally (var val)
+    "Create a function to set VAR to VAL locally. Useful for attaching
+on some hooks that will change the variable locally.
+
+Use `my/setq-locally' when you want to set VAR to a simple VAL in many
+modes.  Use `my/setq-on-hook' when you want to set VAR to a complex
+VAL in very few modes.  Why don't I just directly use `(add-hook
+'foo-hook (lambda () (FORM)))'?  Because when you try to
+\\[describe-variable] `foo-hook RET', you will find those lambda
+function will be unreadable. And using a named function in a hook
+makes those variable displayed much more nicely.  This is very helpful
+for debugging purpose if you want to examine a hook value."
+    (let ((func (intern (concat "my/set-"
+                                (symbol-name var)
+                                "-to-"
+                                (prin1-to-string val)
+                                "-locally"))))
+        `(if (fboundp #',func)
+                 #',func
+             (defun ,func ()
+                 (setq-local ,var ,val)))))
+
+;;;###autoload
+(defmacro my/setq-on-hook (hook var val)
+    "Create a function to set VAR to VAL on a HOOK.
+
+Use `my/setq-locally' when you want to set VAR to a simple VAL in many
+modes.  Use `my/setq-on-hook' when you want to set VAR to a complex
+VAL in only one mode.  Why don't I just directly use `(add-hook
+'foo-hook (lambda () (FORM)))'?  Because when you try to
+\\[describe-variable] `foo-hook RET', you will find those lambda
+function will be unreadable. And using a named function in a hook
+makes those variable displayed much more nicely.  This is very helpful
+for debugging purpose if you want to examine a hook value."
+    (let ((func (intern (concat "my/set-"
+                                (symbol-name var)
+                                "-on-"
+                                (symbol-name hook)))))
+        `(add-hook ',hook (if (fboundp #',func)
+                                  #',func
+                              (defun ,func ()
+                                  (setq-local ,var ,val))))))
+
 (provide 'my-utils-autoloads)
 ;;; my-utils-autoloads ends here

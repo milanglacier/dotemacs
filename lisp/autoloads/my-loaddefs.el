@@ -188,8 +188,6 @@ https://emacs.stackexchange.com/questions/10230/how-to-indent-keywords-aligned
 
 \(fn PREFIX)" nil nil)
 
-(autoload 'my/mu4e-set-mail-line-wrap "my-email-autoloads" nil nil nil)
-
 (autoload 'my/mu4e-open-link-via-eww "my-email-autoloads" "\
 If point is on a link, open this link via `eww'. Otherwise open
 this email via `eww'
@@ -227,10 +225,6 @@ this email via `eww'
 ;;;### (autoloads nil "my-langs-autoloads" "my-langs-autoloads.el"
 ;;;;;;  (0 0 0 0))
 ;;; Generated autoloads from my-langs-autoloads.el
-
-(autoload 'my/ess-set-company-backend "my-langs-autoloads" nil nil nil)
-
-(autoload 'my/ess-set-tab-width-4 "my-langs-autoloads" nil nil nil)
  (autoload #'my/send-region-to-ess "my-langs-autoloads" nil t)
  (autoload #'my/send-region-to-python "my-langs-autoloads" nil t)
 
@@ -264,15 +258,7 @@ code block)" t nil)
 ;;;;;;  (0 0 0 0))
 ;;; Generated autoloads from my-langtools-autoloads.el
 
-(autoload 'my/do-not-use-citre-imenu "my-langtools-autoloads" nil nil nil)
-
-(autoload 'my/do-not-use-citre-xref "my-langtools-autoloads" nil nil nil)
-
-(autoload 'my/do-not-use-citre-capf "my-langtools-autoloads" nil nil nil)
-
 (autoload 'my/toggle-citre-eglot-capf "my-langtools-autoloads" nil nil nil)
-
-(autoload 'my/eglot-do-not-use-imenu "my-langtools-autoloads" nil nil nil)
  (autoload #'my/eldoc-buffer-dwim "my-langtools-autoloads" nil t)
 
 (autoload 'my/xref-move-in-original-src-macro "my-langtools-autoloads" "\
@@ -326,8 +312,6 @@ open vterm at project root, if no root is found, open at the default-directory" 
 (autoload 'my/project-root-or-default-dir "my-misc-autoloads" "\
 If a project root is found, return it. Otherwise return `default-directory'." nil nil)
 
-(autoload 'my/vterm-setup "my-misc-autoloads" nil nil nil)
-
 (autoload 'my/ibuffer-vc-setup "my-misc-autoloads" nil nil nil)
 
 ;;;***
@@ -335,8 +319,6 @@ If a project root is found, return it. Otherwise return `default-directory'." ni
 ;;;### (autoloads nil "my-org-autoloads" "my-org-autoloads.el" (0
 ;;;;;;  0 0 0))
 ;;; Generated autoloads from my-org-autoloads.el
-
-(autoload 'my/turn-off-evil-vimish "my-org-autoloads" nil nil nil)
 
 (autoload 'my/load-org-extensions-idly "my-org-autoloads" "\
 Some important variables from other org extensions are not autoloaded.
@@ -442,6 +424,41 @@ a wrapper to run a func on a hook only once
 a wrapper to advise a func only once
 
 \(fn FUNC ADVICE WHERE &rest PROPS)" nil t)
+
+(autoload 'my/turn-off-mode "my-utils-autoloads" "\
+Create a function to turn off MODE. Useful for attaching on some
+hooks that will turn off MODE locally.
+
+\(fn MODE)" nil t)
+
+(autoload 'my/setq-locally "my-utils-autoloads" "\
+Create a function to set VAR to VAL locally. Useful for attaching
+on some hooks that will change the variable locally.
+
+Use `my/setq-locally' when you want to set VAR to a simple VAL in many
+modes.  Use `my/setq-on-hook' when you want to set VAR to a complex
+VAL in very few modes.  Why don't I just directly use `(add-hook
+'foo-hook (lambda () (FORM)))'?  Because when you try to
+\\[describe-variable] `foo-hook RET', you will find those lambda
+function will be unreadable. And using a named function in a hook
+makes those variable displayed much more nicely.  This is very helpful
+for debugging purpose if you want to examine a hook value.
+
+\(fn VAR VAL)" nil t)
+
+(autoload 'my/setq-on-hook "my-utils-autoloads" "\
+Create a function to set VAR to VAL on a HOOK.
+
+Use `my/setq-locally' when you want to set VAR to a simple VAL in many
+modes.  Use `my/setq-on-hook' when you want to set VAR to a complex
+VAL in only one mode.  Why don't I just directly use `(add-hook
+'foo-hook (lambda () (FORM)))'?  Because when you try to
+\\[describe-variable] `foo-hook RET', you will find those lambda
+function will be unreadable. And using a named function in a hook
+makes those variable displayed much more nicely.  This is very helpful
+for debugging purpose if you want to examine a hook value.
+
+\(fn HOOK VAR VAL)" nil t)
 
 ;;;***
 

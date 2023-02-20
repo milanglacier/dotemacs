@@ -36,8 +36,8 @@
 ;; NOTE: `make-symbol' will create new symbols even with the same name (they are different symbols)
 ;;;###autoload
 (defmacro my/define-and-bind-paren-text-object (key start-regex end-regex)
-    (let ((inner-name (gensym (concat "my-inner-" start-regex "-" end-regex "-text-obj")))
-          (outer-name (gensym (concat "my-outer-" start-regex "-" end-regex "-text-obj"))))
+    (let ((inner-name (gensym (concat "my/inner-" start-regex "-" end-regex "-text-obj")))
+          (outer-name (gensym (concat "my/outer-" start-regex "-" end-regex "-text-obj"))))
         `(progn
              (evil-define-text-object ,inner-name (count &optional beg end type)
                  (evil-select-paren ,start-regex ,end-regex beg end type count nil))
@@ -48,9 +48,9 @@
 
 ;;;###autoload
 (defmacro my/define-and-bind-local-paren-text-object (key start-regex end-regex hook)
-    (let ((inner-name (gensym (concat "my-inner-" start-regex "-" end-regex "-text-obj")))
-          (outer-name (gensym (concat "my-outer-" start-regex "-" end-regex "-text-obj")))
-          (lambda-name (gensym (concat "my-lambda-" start-regex "-" end-regex "-text-obj"))))
+    (let ((inner-name (gensym (concat "my/inner-" start-regex "-" end-regex "-text-obj")))
+          (outer-name (gensym (concat "my/outer-" start-regex "-" end-regex "-text-obj")))
+          (lambda-name (gensym (concat "my/lambda-" start-regex "-" end-regex "-text-obj"))))
         `(add-hook ',hook
                    (defun ,lambda-name ()
                        (evil-define-text-object ,inner-name (count &optional beg end type)

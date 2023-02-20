@@ -16,13 +16,6 @@
         default-directory))
 
 ;;;###autoload
-(defun my/vterm-setup ()
-    (setq-local confirm-kill-processes nil
-                hscroll-margin 0)
-
-    (setq vterm-max-scrollback 5000))
-
-;;;###autoload
 (defun my/ibuffer-vc-setup ()
     (ibuffer-vc-set-filter-groups-by-vc-root)
     (unless (eq ibuffer-sorting-mode 'alphabetic)
