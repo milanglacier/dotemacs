@@ -225,8 +225,6 @@ this email via `eww'
 ;;;### (autoloads nil "my-langs-autoloads" "my-langs-autoloads.el"
 ;;;;;;  (0 0 0 0))
 ;;; Generated autoloads from my-langs-autoloads.el
-
-(autoload 'my/ess-set-company-backend "my-langs-autoloads" nil nil nil)
  (autoload #'my/send-region-to-ess "my-langs-autoloads" nil t)
  (autoload #'my/send-region-to-python "my-langs-autoloads" nil t)
 
@@ -437,7 +435,30 @@ hooks that will turn off MODE locally.
 Create a function to set VAR to VAL locally. Useful for attaching
 on some hooks that will change the variable locally.
 
+Use `my/setq-locally' when you want to set VAR to a simple VAL in many
+modes.  Use `my/setq-on-hook' when you want to set VAR to a complex
+VAL in very few modes.  Why don't I just directly use `(add-hook
+'foo-hook (lambda () (FORM)))'?  Because when you try to
+\\[describe-variable] `foo-hook RET', you will find those lambda
+function will be unreadable. And using a named function in a hook
+makes those variable displayed much more nicely.  This is very helpful
+for debugging purpose if you want to examine a hook value.
+
 \(fn VAR VAL)" nil t)
+
+(autoload 'my/setq-on-hook "my-utils-autoloads" "\
+Create a function to set VAR to VAL on a HOOK.
+
+Use `my/setq-locally' when you want to set VAR to a simple VAL in many
+modes.  Use `my/setq-on-hook' when you want to set VAR to a complex
+VAL in only one mode.  Why don't I just directly use `(add-hook
+'foo-hook (lambda () (FORM)))'?  Because when you try to
+\\[describe-variable] `foo-hook RET', you will find those lambda
+function will be unreadable. And using a named function in a hook
+makes those variable displayed much more nicely.  This is very helpful
+for debugging purpose if you want to examine a hook value.
+
+\(fn HOOK VAR VAL)" nil t)
 
 ;;;***
 

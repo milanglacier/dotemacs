@@ -1,12 +1,5 @@
 ;;; my-langs-autoloads.el -*- lexical-binding: t; -*-
 
-;;;###autoload
-(defun my/ess-set-company-backend ()
-    (setq-local company-backends
-                '((company-files company-yasnippet company-capf
-                                 company-R-args company-R-objects
-                                 :separate company-dabbrev-code))))
-
 ;;;###autoload (autoload #'my/send-region-to-ess "my-langs-autoloads" nil t)
 (evil-define-operator my/send-region-to-ess (beg end)
     "This operator sends the region (either motion or text objects) to ess REPL"

@@ -67,7 +67,11 @@
         "v" '(:ignore t :which-key "view")
         "vh" #'my/ess-toggle-view-httpgd)
 
-    (add-hook 'ess-r-mode-hook #'my/ess-set-company-backend)
+    (my/setq-on-hook ess-r-mode-hook company-backends
+                     '((company-files company-yasnippet company-capf
+                                      company-R-args company-R-objects
+                                      :separate company-dabbrev-code)))
+
     (add-hook 'ess-r-mode-hook (my/setq-locally eglot-stay-out-of '(company imenu)))
     (add-hook 'ess-r-mode-hook #'eglot-ensure)
     (add-hook 'ess-r-mode-hook (my/setq-locally tab-width 4))
