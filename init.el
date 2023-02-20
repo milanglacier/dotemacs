@@ -15,6 +15,12 @@
 (push my/autoloads-dir load-path)
 (setq custom-file (file-name-concat user-emacs-directory "custom.el"))
 
+(setq use-package-expand-minimally t
+      use-package-always-ensure nil
+      use-package-always-defer t
+      straight-check-for-modifications nil
+      debug-on-error t)
+
 ;; bootstrap straight.el, copied from
 ;; URL: `https://github.com/radian-software/straight.el#getting-started'
 (defvar bootstrap-version)
@@ -29,11 +35,6 @@
             (goto-char (point-max))
             (eval-print-last-sexp)))
     (load bootstrap-file nil 'nomessage))
-
-(setq use-package-expand-minimally t
-      use-package-always-ensure nil
-      use-package-always-defer t
-      debug-on-error t)
 
 (require 'my-loaddefs)
 
