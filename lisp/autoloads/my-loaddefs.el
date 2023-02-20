@@ -437,12 +437,12 @@ on some hooks that will change the variable locally.
 
 Use `my/setq-locally' when you want to set VAR to a simple VAL in many
 modes.  Use `my/setq-on-hook' when you want to set VAR to a complex
-VAL in very few modes.  Why don't I just directly use `(add-hook
+VAL in only one mode.  Why don't I just directly use `(add-hook
 'foo-hook (lambda () (FORM)))'?  Because when you try to
 \\[describe-variable] `foo-hook RET', you will find those lambda
-function will be unreadable. And using a named function in a hook
-makes those variable displayed much more nicely.  This is very helpful
-for debugging purpose if you want to examine a hook value.
+functions unreadable. And using a named function in a hook makes the
+hook described much more nicely.  This is very helpful for debugging
+purpose if you want to examine a hook value.
 
 \(fn VAR VAL)" nil t)
 
@@ -454,9 +454,9 @@ modes.  Use `my/setq-on-hook' when you want to set VAR to a complex
 VAL in only one mode.  Why don't I just directly use `(add-hook
 'foo-hook (lambda () (FORM)))'?  Because when you try to
 \\[describe-variable] `foo-hook RET', you will find those lambda
-function will be unreadable. And using a named function in a hook
-makes those variable displayed much more nicely.  This is very helpful
-for debugging purpose if you want to examine a hook value.
+functions unreadable. And using a named function in a hook makes the
+hook described much more nicely.  This is very helpful for debugging
+purpose if you want to examine a hook value.
 
 \(fn HOOK VAR VAL)" nil t)
 

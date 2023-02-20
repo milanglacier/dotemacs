@@ -47,8 +47,36 @@
     (add-hook 'mu4e-main-mode-hook (my/turn-off-mode display-line-numbers-mode))
     (add-hook 'mu4e-view-mode-hook (my/turn-off-mode display-line-numbers-mode))
 
-    ;; for personal privacy, I hide my email account settings
-    ;; in the following file which is a symlinked file.
+    ;; To keep personal privacy, I hide my email account settings in
+    ;; the `my-mail-accounts.el' which is a symlinked file.  This file
+    ;; looks like:
+
+    ;; (setq mu4e-contexts
+    ;;       `(,(make-mu4e-context
+    ;;           :name "account 1"
+    ;;           :enter-func (my/mu4e-enter-func 1) ;; compose html email
+    ;;           :leave-func (my/mu4e-leave-func)
+    ;;           :match-func (my/mu4e-match-func "/my-mail-1")
+    ;;           :vars '((mu4e-sent-folder . "/my-mail-1/Sent")
+    ;;                   (mu4e-drafts-folder . "/my-mail-1/Drafts")
+    ;;                   (mu4e-trash-folder . "/my-mail-1/Deleted")
+    ;;                   (mu4e-refile-folder . "/my-mail-1/Archive")
+    ;;                   (user-full-name . "my name 1")
+    ;;                   (user-mail-address . "my account 1")
+    ;;                   (smtpmail-smtp-user . "my account 1")))
+    ;;         ,(make-mu4e-context
+    ;;           :name "account 2"
+    ;;           :enter-func (my/mu4e-enter-func -1) ;; compose plain text email
+    ;;           :leave-func (my/mu4e-leave-func)
+    ;;           :match-func (my/mu4e-match-func "/my-mail-2")
+    ;;           :vars '((mu4e-sent-folder . "/my-mail-2/Sent Mail")
+    ;;                   (mu4e-drafts-folder . "/my-mail-2/Drafts")
+    ;;                   (mu4e-trash-folder . "/my-mail-2/Trash")
+    ;;                   (mu4e-refile-folder . "/my-mail-2/My-Archive")
+    ;;                   (user-full-name . "my name 2")
+    ;;                   (user-mail-address . "my mail 2")
+    ;;                   (smtpmail-smtp-user . "my mail 2")))))
+
     (require 'my-mail-accounts)
 
     ;; NOTE: it seems that when you delete a message for gmail,
