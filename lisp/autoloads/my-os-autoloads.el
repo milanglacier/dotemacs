@@ -18,11 +18,14 @@
     (setq visible-cursor nil)
     (blink-cursor-mode -1)
 
+    ;; Enable the mouse in terminal Emacs
     (xterm-mouse-mode)
     (evil-terminal-cursor-changer-activate)
-    ;; Enable the mouse in terminal Emacs
+    ;; the following keys correspond to touchpad gestures.
     (general-define-key [mouse-4] #'scroll-down-line
-                        [mouse-5] #'scroll-up-line)
+                        [mouse-6] #'scroll-down-line
+                        [mouse-5] #'scroll-up-line
+                        [mouse-7] #'scroll-up-line)
     (menu-bar-mode -1)
     ;; BUG: in tty while menu-bar is not displayed, however it is
     ;; still there, that is, when you try to use mouse to click the
