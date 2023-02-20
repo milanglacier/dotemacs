@@ -188,8 +188,6 @@ https://emacs.stackexchange.com/questions/10230/how-to-indent-keywords-aligned
 
 \(fn PREFIX)" nil nil)
 
-(autoload 'my/mu4e-set-mail-line-wrap "my-email-autoloads" nil nil nil)
-
 (autoload 'my/mu4e-open-link-via-eww "my-email-autoloads" "\
 If point is on a link, open this link via `eww'. Otherwise open
 this email via `eww'
@@ -317,8 +315,6 @@ open vterm at project root, if no root is found, open at the default-directory" 
 
 (autoload 'my/project-root-or-default-dir "my-misc-autoloads" "\
 If a project root is found, return it. Otherwise return `default-directory'." nil nil)
-
-(autoload 'my/vterm-setup "my-misc-autoloads" nil nil nil)
 
 (autoload 'my/ibuffer-vc-setup "my-misc-autoloads" nil nil nil)
 

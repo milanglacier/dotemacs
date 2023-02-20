@@ -21,6 +21,7 @@
           message-send-mail-function #'message-send-mail-with-sendmail
           message-kill-buffer-on-exit t ; close after sending
           smtpmail-stream-type 'starttls
+          fill-flowed-encode-column 72
 
           mail-user-agent 'mu4e-user-agent
           message-mail-user-agent 'mu4e-user-agent
@@ -41,7 +42,10 @@
 
     :config
 
-    (add-hook 'mu4e-compose-mode-hook #'my/mu4e-set-mail-line-wrap)
+    (add-hook 'mu4e-compose-mode-hook (my/setq-locally fill-column 72))
+    (add-hook 'mu4e-headers-mode-hook (my/turn-off-mode display-line-numbers-mode))
+    (add-hook 'mu4e-main-mode-hook (my/turn-off-mode display-line-numbers-mode))
+    (add-hook 'mu4e-view-mode-hook (my/turn-off-mode display-line-numbers-mode))
 
     ;; for personal privacy, I hide my email account settings
     ;; in the following file which is a symlinked file.
