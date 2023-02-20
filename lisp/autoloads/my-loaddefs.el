@@ -261,8 +261,6 @@ code block)" t nil)
 ;;; Generated autoloads from my-langtools-autoloads.el
 
 (autoload 'my/toggle-citre-eglot-capf "my-langtools-autoloads" nil nil nil)
-
-(autoload 'my/eglot-do-not-use-imenu "my-langtools-autoloads" nil nil nil)
  (autoload #'my/eldoc-buffer-dwim "my-langtools-autoloads" nil t)
 
 (autoload 'my/xref-move-in-original-src-macro "my-langtools-autoloads" "\

@@ -68,7 +68,7 @@
         "vh" #'my/ess-toggle-view-httpgd)
 
     (add-hook 'ess-r-mode-hook #'my/ess-set-company-backend)
-    (add-hook 'ess-r-mode-hook #'my/eglot-do-not-use-imenu)
+    (add-hook 'ess-r-mode-hook (my/setq-locally eglot-stay-out-of '(company imenu)))
     (add-hook 'ess-r-mode-hook #'eglot-ensure)
     (add-hook 'ess-r-mode-hook (my/setq-locally tab-width 4))
     (when (display-graphic-p)

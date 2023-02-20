@@ -10,10 +10,6 @@
         (setq-local completion-at-point-functions
                     (delq #'my/eglot-citre-capf completion-at-point-functions))))
 
-;;;###autoload
-(defun my/eglot-do-not-use-imenu ()
-    (setq-local eglot-stay-out-of `("imenu" ,@eglot-stay-out-of)))
-
 (defun my/eldoc-buffer-dwim-fallback ()
     "When eldoc buffer window is not opened, display the eldoc
 window. Pressing \\[my/eldoc-buffer-dwim] again within a short

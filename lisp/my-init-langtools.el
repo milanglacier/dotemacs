@@ -71,7 +71,7 @@
 
 (use-package eglot
     :init
-    (setq eglot-stay-out-of '("company")
+    (setq eglot-stay-out-of '(company)
           eglot-workspace-configuration
           '(:pyright (:useLibraryCodeForTypes t :openFilesOnly :json-false)
             :r (:lsp (:diagnostics :json-false)))
