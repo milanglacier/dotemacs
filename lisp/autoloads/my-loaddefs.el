@@ -229,8 +229,6 @@ this email via `eww'
 ;;; Generated autoloads from my-langs-autoloads.el
 
 (autoload 'my/ess-set-company-backend "my-langs-autoloads" nil nil nil)
-
-(autoload 'my/ess-set-tab-width-4 "my-langs-autoloads" nil nil nil)
  (autoload #'my/send-region-to-ess "my-langs-autoloads" nil t)
  (autoload #'my/send-region-to-python "my-langs-autoloads" nil t)
 
@@ -263,12 +261,6 @@ code block)" t nil)
 ;;;### (autoloads nil "my-langtools-autoloads" "my-langtools-autoloads.el"
 ;;;;;;  (0 0 0 0))
 ;;; Generated autoloads from my-langtools-autoloads.el
-
-(autoload 'my/do-not-use-citre-imenu "my-langtools-autoloads" nil nil nil)
-
-(autoload 'my/do-not-use-citre-xref "my-langtools-autoloads" nil nil nil)
-
-(autoload 'my/do-not-use-citre-capf "my-langtools-autoloads" nil nil nil)
 
 (autoload 'my/toggle-citre-eglot-capf "my-langtools-autoloads" nil nil nil)
 
@@ -335,8 +327,6 @@ If a project root is found, return it. Otherwise return `default-directory'." ni
 ;;;### (autoloads nil "my-org-autoloads" "my-org-autoloads.el" (0
 ;;;;;;  0 0 0))
 ;;; Generated autoloads from my-org-autoloads.el
-
-(autoload 'my/turn-off-evil-vimish "my-org-autoloads" nil nil nil)
 
 (autoload 'my/load-org-extensions-idly "my-org-autoloads" "\
 Some important variables from other org extensions are not autoloaded.
@@ -442,6 +432,18 @@ a wrapper to run a func on a hook only once
 a wrapper to advise a func only once
 
 \(fn FUNC ADVICE WHERE &rest PROPS)" nil t)
+
+(autoload 'my/turn-off-mode "my-utils-autoloads" "\
+Create a function to turn off MODE. Useful for attaching on some
+hooks that will turn off MODE locally.
+
+\(fn MODE)" nil t)
+
+(autoload 'my/setq-locally "my-utils-autoloads" "\
+Create a function to set VAR to VAL locally. Useful for attaching
+on some hooks that will change the variable locally.
+
+\(fn VAR VAL)" nil t)
 
 ;;;***
 

@@ -6,9 +6,6 @@
                 '((company-files company-yasnippet company-capf
                                  company-R-args company-R-objects
                                  :separate company-dabbrev-code))))
-;;;###autoload
-(defun my/ess-set-tab-width-4 ()
-    (setq-local tab-width 4))
 
 ;;;###autoload (autoload #'my/send-region-to-ess "my-langs-autoloads" nil t)
 (evil-define-operator my/send-region-to-ess (beg end)

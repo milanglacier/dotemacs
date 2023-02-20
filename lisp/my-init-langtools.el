@@ -10,12 +10,12 @@
     (require 'citre-config)
     (setq citre-tags-completion-case-sensitive nil)
 
-    (add-hook 'emacs-lisp-mode-hook #'my/do-not-use-citre-imenu)
-    (add-hook 'emacs-lisp-mode-hook #'my/do-not-use-citre-capf)
-    (add-hook 'emacs-lisp-mode-hook #'my/do-not-use-citre-xref)
-    (add-hook 'org-mode-hook #'my/do-not-use-citre-imenu)
-    (add-hook 'org-mode-hook #'my/do-not-use-citre-capf)
-    (add-hook 'markdown-mode-hook #'my/do-not-use-citre-imenu)
+    (add-hook 'emacs-lisp-mode-hook (my/setq-locally citre-enable-imenu-integration nil))
+    (add-hook 'emacs-lisp-mode-hook (my/setq-locally citre-enable-capf-integration nil))
+    (add-hook 'emacs-lisp-mode-hook (my/setq-locally citre-enable-xref-integration nil))
+    (add-hook 'org-mode-hook (my/setq-locally citre-enable-imenu-integration nil))
+    (add-hook 'org-mode-hook (my/setq-locally citre-enable-capf-integration nil))
+    (add-hook 'markdown-mode-hook (my/setq-locally citre-enable-imenu-integration nil))
 
     :config
 

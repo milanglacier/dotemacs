@@ -92,7 +92,7 @@
     (evil-set-initial-state 'org-agenda-mode 'motion)
     (add-to-list 'org-file-apps '(remote . emacs))
     ;; turn off evil-vimish, use org builtin fold
-    (add-hook 'org-mode-hook #'my/turn-off-evil-vimish)
+    (add-hook 'org-mode-hook (my/turn-off-mode evil-vimish-fold-mode))
     (add-hook 'org-tab-first-hook #'my/org-indent-maybe-h)
     (add-hook 'org-tab-first-hook #'my/org-yas-expand-maybe-h)
 

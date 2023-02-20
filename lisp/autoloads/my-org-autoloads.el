@@ -1,10 +1,6 @@
 ;;; my-org-autoloads.el -*- lexical-binding: t; -*-
 
 ;;;###autoload
-(defun my/turn-off-evil-vimish ()
-    (evil-vimish-fold-mode -1))
-
-;;;###autoload
 (defun my/load-org-extensions-idly ()
     "Some important variables from other org extensions are not autoloaded.
 You may feel annoying if you want to use them but find a void variable.

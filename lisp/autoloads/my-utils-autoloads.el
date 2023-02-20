@@ -30,5 +30,30 @@
                          (funcall #',advice)
                          (advice-remove #',func #',advice-once)) ,@props)))
 
+;;;###autoload
+(defmacro my/turn-off-mode (mode)
+    "Create a function to turn off MODE. Useful for attaching on some
+hooks that will turn off MODE locally."
+    (let ((func (intern (concat "my/turn-off-"
+                                (symbol-name mode)))))
+        `(if (fboundp #',func)
+                 #',func
+             (defun ,func ()
+                 (,mode -1)))))
+
+;;;###autoload
+(defmacro my/setq-locally (var val)
+    "Create a function to set VAR to VAL locally. Useful for attaching
+on some hooks that will change the variable locally."
+    (let ((func (intern (concat "my/set-"
+                                (symbol-name var)
+                                "-to-"
+                                (prin1-to-string val)
+                                "-locally"))))
+        `(if (fboundp #',func)
+                 #',func
+             (defun ,func ()
+                 (setq-local ,var ,val)))))
+
 (provide 'my-utils-autoloads)
 ;;; my-utils-autoloads ends here

@@ -1,17 +1,5 @@
 ;;; my-langtools-autoloads.el -*- lexical-binding: t; -*-
 
-;;;###autoload
-(defun my/do-not-use-citre-imenu ()
-    (setq-local citre-enable-imenu-integration nil))
-
-;;;###autoload
-(defun my/do-not-use-citre-xref ()
-    (setq-local citre-enable-xref-integration nil))
-
-;;;###autoload
-(defun my/do-not-use-citre-capf ()
-    (setq-local citre-enable-capf-integration nil))
-
 (defalias #'my/eglot-citre-capf
     (cape-super-capf #'eglot-completion-at-point #'citre-completion-at-point))
 
