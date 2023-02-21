@@ -5,6 +5,7 @@
 (straight-use-package 'org-appear)
 (straight-use-package 'jupyter)
 (straight-use-package 'org-re-reveal)
+(straight-use-package 'ox-clip)
 
 (use-package org
     :init
@@ -240,6 +241,9 @@
         "sA" #'org-archive-subtree
         "sN" #'widen
         "sS" #'org-sort
+
+        "y" #'ox-clip-formatted-copy
+        ;; TODO: implement a vim conformant operator.
 
         )
 

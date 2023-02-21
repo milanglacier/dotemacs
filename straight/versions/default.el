@@ -85,6 +85,7 @@
  ("org-appear" . "eb9f9db40aa529fe4b977235d86494b115281d17")
  ("org-msg" . "7b1dfb96d558f6e5626e96d4f4a5150d55cb7eb2")
  ("org-re-reveal" . "91cdd82c47b86990b5eb41fe34446a042194cc83")
+ ("ox-clip" . "ff117cf3c619eef12eccc0ccbfa3f11adb73ea68")
  ("project" . "e086bdc7c515f8bfc22598d473ba888ba7683f0c")
  ("rainbow-delimiters" . "a32b39bdfe6c61c322c37226d66e1b6d4f107ed0")
  ("s.el" . "e957dcb0677da18b2bb60ad867db5df5c35b5616")
