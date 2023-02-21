@@ -85,16 +85,23 @@
           '(arc-mode bm bookmark consult comint compile eldoc daemons
                      debug diff-hl diff-mode dired dired-sidebar
                      docker doc-view elisp-refs embark eldoc eshell
-                     eww flymake grep help helpful ibuffer imenu
-                     macrostep magit-sections magit magic-todos man
-                     markdown-mode mu4e mu4e-conversation notmuch org
-                     org-roam osx-dictionary pdf python replace rg
+                     eww elfeed flymake grep help helpful ibuffer
+                     imenu macrostep magit-sections magit magic-todos
+                     man markdown-mode mu4e mu4e-conversation notmuch
+                     org org-roam osx-dictionary pdf python replace rg
                      ripgrep tab-bar term vertico vterm wdired wgrep
                      which-key xref xwidget)
-          evil-collection-key-blacklist '("SPC" "gj" "gk")
+          evil-collection-key-blacklist '("SPC" "gj" "gk" "gt" "gT")
           evil-collection-want-unimpaired-p nil))
 ;; I used SPC SPC as my local leader key. So SPC shouldn't be occupied
-;; even in local mode map.
+;; even in local mode map. "gj" and "gk" move between visual lines,
+;; and are fundamentally different with "j" and "k" in vim philosophy.
+;; Because "j" and "k" are linewise motions while "gj" and "gk" are
+;; charwise motions. (see `evil-define-operator' for more details).
+;; Thus "gj" and "gk" should never be overwritten.  I am a heavy user
+;; of `tab-bar-mde' because I use laptop with a smaller screen.
+;; Switching between tabs are my most frequently used commands. Thus
+;; "gt" and "gT" should also never be overwritten.
 
 (use-package evil
     :init

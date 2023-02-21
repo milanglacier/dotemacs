@@ -117,6 +117,27 @@ it is disabled.
 
 \(fn &optional ARG)" t nil)
 
+(autoload 'my:elfeed-delete-window-after-kill-buffer "my-apps-autoloads" "\
+
+
+\(fn &rest ARGS)" nil nil)
+
+(autoload 'my:elfeed-open-entry-via-xwidget "my-apps-autoloads" "\
+if point is under a url, then open this url via `xwidget',
+otherwise open the current visited elfeed entry via `xwidget'.  If
+with a prefix \\[universal-argument] create a new `xwidget' session
+otherwise use the existed one
+
+\(fn &optional NEW-SESSION)" t nil)
+
+(autoload 'my:elfeed-open-entry-via-eww "my-apps-autoloads" "\
+if point is under a url, then open this url via `eww',
+otherwise open the current visited elfeed entry via `eww'.  If
+with a prefix \\[universal-argument] create a new `eww' session
+otherwise use the existed one
+
+\(fn &optional NEW-SESSION)" t nil)
+
 (register-definition-prefixes "my-apps-autoloads" '("my/"))
 
 ;;;***
