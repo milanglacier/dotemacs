@@ -25,7 +25,13 @@
 
 (use-package elec-pair
     :init
-    (my/run-hook-once evil-insert-state-entry-hook electric-pair-mode))
+    (my/run-hook-once evil-insert-state-entry-hook electric-pair-mode)
+
+    :config
+    ;; more conservative on whether should also insert ) when typing
+    ;; (, for example, prevent from inserting ) when point is on a
+    ;; word.
+    (setq electric-pair-inhibit-predicate #'electric-pair-conservative-inhibit))
 
 (use-package rainbow-delimiters
     :hook (prog-mode . rainbow-delimiters-mode))
