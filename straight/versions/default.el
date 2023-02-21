@@ -25,6 +25,8 @@
  ("eglot" . "e501275e06952889056268dabe08ccd0dbaf23e5")
  ("el-get" . "bc4299031e634b514eceb472b6b02432c2bb86ba")
  ("eldoc" . "5b9fd6faa9a65409064207c29954edd8ad45dcda")
+ ("elfeed" . "162d7d545ed41c27967d108c04aa31f5a61c8e16")
+ ("elfeed-org" . "3242ec0519800a58f20480c8a6e3b3337d137084")
  ("elisp-demos" . "792be709c82101aea0585ece7429e2fdded74494")
  ("elisp-refs" . "af73739084637c8ebadad337a8fe58ff4f1d2ec1")
  ("elispfl" . "707a93c60839af77cd4ad66418824559ab741bec")
