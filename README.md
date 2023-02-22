@@ -1,14 +1,14 @@
 
 # Table of Contents
 
-1.  [Features](#orgddd9904)
-2.  [Notes](#org892d3ab)
-    1.  [Startup speed](#org8bdc512)
-    2.  [Naming conventions (WIP)](#org9ec5f4f)
+1.  [Features](#orgb95c575)
+2.  [Notes](#org233992c)
+    1.  [Startup speed](#org1826ea8)
+    2.  [Naming conventions (WIP)](#org21af8f2)
 
 
 
-<a id="orgddd9904"></a>
+<a id="orgb95c575"></a>
 
 # Features
 
@@ -17,7 +17,7 @@
     TTY starts in 0.3s on Mac M1 and 0.8s on a VPS with 1 core CPU and
     1GB RAM. The GUI starts in 0.45s on Mac M1. You can even `export
       EDITOR="emacs -nw"` and feel no perceptible startup difference
-    comparing to vim! (See [2.1](#org8bdc512) for additional details.)
+    comparing to vim! (See [2.1](#org1826ea8) for additional details.)
 
 -   **Robust**
     
@@ -30,13 +30,30 @@
     TTY is not compromised, while GUI features, including `xwidget`, are
     also well-configured.
 
+-   **Feature rich**
+    
+    A blazingly fast startup speed doesn&rsquo;t mean it is a lite and minimal
+    configuration.  Instead it is &ldquo;heavy&rdquo; and feature rich, including:
+    
+    -   A modern minibuffer completion experience powered by `vertico+consult+orderless+embark+marginalia` family bucket.
+    
+    -   Modal editing ecosystem in everywhere powered by `evil` and many other extensions.
+    
+    -   Leader key and localleader key centered keybinding scheme powered by `general`.
+    
+    -   In-buffer autocompletion frontend based on `company`.
+    
+    -   Code completion and navigation based on `eglot` (lsp) and `citre` (ctags).
+    
+    -   Integration with `eglot` and `org-babel` or `markdown-mode` that takes literate programming to the next level.
 
-<a id="org892d3ab"></a>
+
+<a id="org233992c"></a>
 
 # Notes
 
 
-<a id="org8bdc512"></a>
+<a id="org1826ea8"></a>
 
 ## Startup speed
 
@@ -45,13 +62,13 @@ Startup speed is measured using `(emacs-init-time)`.
 However note that this metric may fool you.  If you load some packages
 in `emacs-startup-hook` or `after-init-hook`, then `(emacs-init-time)`
 cannot properly measure your real startup time. Packages loaded at
-`emacs-start-hook` and `after-init-hook` are actually not lazy loaded,
-they are loaded during your startup anyway. Using those hooks only
-fools `(emacs-init-time)` and contributes nothing to the startup
-time. This configuration tries to be honest and truly lazy loads.
+`emacs-start-hook` and `after-init-hook` are actually not lazy loaded;
+they are loaded during your startup anyway. Using these hooks only
+skews `(emacs-init-time)` and does not accurately reflect startup
+time. This configuration is honest and truly lazy loads packages.
 
 
-<a id="org9ec5f4f"></a>
+<a id="org21af8f2"></a>
 
 ## Naming conventions (WIP)
 
@@ -61,10 +78,10 @@ time. This configuration tries to be honest and truly lazy loads.
 
 -   A symbol prefixed with `my%` indicates it is a macro.
 
--   A symbol prefixed with `my~` indicates it is a mode.
+-   A symbol prefixed with `my~` indicates it is a mode or an interactive command.
     
-    (or variables/functions bounded by that mode. e.g. `my~foo-mode` or
-    `my~foor-mode-hook`).
+    (This also means that the derivative variables defined by a mode are
+    also prefixed with `my~`, e.g. `my~foo-mode-hook`).
 
 -   A symbol prefixed with `my*` indicates it is generated via closure or macro.
 
