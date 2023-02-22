@@ -450,6 +450,9 @@ it is disabled.
 
 \(fn &optional ARG)" t nil)
 
+(autoload 'my~refresh-verses "my-ui-autoloads" "\
+refresh verses in the scratch buffer" t nil)
+
 (register-definition-prefixes "my-ui-autoloads" '("my$" "my:"))
 
 ;;;***

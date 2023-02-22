@@ -113,5 +113,14 @@ whitespaces to be prepended when centering the verses.")
     (setq initial-scratch-message (my:generate-initial-messages))
     (add-hook 'emacs-startup-hook #'my:verses-add-font-lock))
 
+;;;###autoload
+(defun my~refresh-verses ()
+    "refresh verses in the scratch buffer"
+    (interactive)
+    (with-current-buffer "*scratch*"
+        (erase-buffer)
+        (insert (my:generate-initial-messages))
+        (my:verses-add-font-lock)))
+
 (provide 'my-ui-autoloads)
 ;;; my-ui-autoloads ends here
