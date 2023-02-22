@@ -26,50 +26,54 @@ is called."
         (setq-local default-directory current-dir)))
 
 (defvar my$header-verses
-    '("Bright star, would I were steadfast as thee art!
- John Keats"
-      "For clattering parrots to launch their fleet at sunrise
-For April to ignite the African violet
- Derek Walcott"
-      "In these poinsettia meadows of her tides,—
-Adagios of islands, O my Prodigal,
-Complete the dark confessions her veins spell.
- Hart Crane"
-      "帝子降兮北渚，目眇眇兮愁予，
-袅袅兮秋风，洞庭波兮木叶下。
- 《湘夫人》"
-      "美人迈兮音尘阙，隔千里兮共明月。
-临风叹兮将焉歇，川路长兮不可越！
- 《月赋》"
-      "浴兰汤兮沐芳，华采衣兮若英。
-灵连蜷兮既留，烂昭昭兮未央。
-蹇将憺兮寿宫，与日月兮齐光。
- 《云中君》")
+    '(("Bright star, would I were steadfast as thee art!"
+       " John Keats")
+      ("For clattering parrots to launch their fleet at sunrise"
+       "For April to ignite the African violet"
+       " Derek Walcott")
+      ("In these poinsettia meadows of her tides,—"
+       "Adagios of islands, O my Prodigal,"
+       "Complete the dark confessions her veins spell."
+       " Hart Crane")
+      ("帝子降兮北渚，目眇眇兮愁予，"
+       "袅袅兮秋风，洞庭波兮木叶下。"
+       " 《湘夫人》")
+      ("美人迈兮音尘阙，隔千里兮共明月。"
+       "临风叹兮将焉歇，川路长兮不可越！"
+       " 《月赋》")
+      ("浴兰汤兮沐芳，华采衣兮若英。"
+       "灵连蜷兮既留，烂昭昭兮未央。"
+       "蹇将憺兮寿宫，与日月兮齐光。"
+       " 《云中君》"))
     "the verses displayed on the top of `initial-scratch-message'")
 
 (defvar my$foot-verses
-    '("Whispers antiphonal in the azure swing...
- Hart Crane"
-      "In the drumming world that dampens your tired eyes
-Behind two clouding lenses, sunrise, sunset,
-The quiet ravage of diabetes.
- Derek Walcott"
-      "What words
-Can strangle this deaf moonlight? For we
-Are overtaken.
- Hart Crane"
-      "搴汀洲兮杜若，将以遗兮远者。
-时不可兮骤得，聊逍遥兮容与！
- 《湘夫人》"
-      "月既没兮露欲晞，岁方晏兮无与归。
-佳期可以还，微霜沾人衣。
- 《月赋》"
-      "雷填填兮雨冥冥，猨啾啾兮狖夜鸣。
-风飒飒兮木萧萧，思公子兮徒离忧。
- 《山鬼》")
+    '(("Whispers antiphonal in the azure swing..."
+       " Hart Crane")
+      ("In the drumming world that dampens your tired eyes"
+       "Behind two clouding lenses, sunrise, sunset,"
+       "The quiet ravage of diabetes."
+       " Derek Walcott")
+      ("What words"
+       "Can strangle this deaf moonlight? For we"
+       "Are overtaken."
+       " Hart Crane")
+      ("搴汀洲兮杜若，将以遗兮远者。"
+       "时不可兮骤得，聊逍遥兮容与！"
+       " 《湘夫人》")
+      ("月既没兮露欲晞，岁方晏兮无与归。"
+       "佳期可以还，微霜沾人衣。"
+       " 《月赋》")
+      ("雷填填兮雨冥冥，猨啾啾兮狖夜鸣。"
+       "风飒飒兮木萧萧，思公子兮徒离忧。"
+       " 《山鬼》"))
     "the verses displayed on the bottom of `initial-scratch-message'")
 
 (defvar my$empty-lines-between-header-and-foot-verse 20)
+
+(defvar my$right-margin-when-centering-margin 80
+    "The assumed window width to calculate appropriate number of
+whitespaces to be prepended when centering the verses.")
 
 (defface my&verses '((t :foreground "#a070b5" :slant italic)) "the faces used for the verses")
 
@@ -83,30 +87,17 @@ Are overtaken.
           (empty-lines (cl-loop
                         for i from 1 to my$empty-lines-between-header-and-foot-verse
                         concat "\n")))
-              (concat head-verse empty-lines foot-verse)))
+        (setq head-verse (mapconcat #'my:center-verse head-verse "\n"))
+        (setq foot-verse (mapconcat #'my:center-verse foot-verse "\n"))
+        (concat head-verse empty-lines foot-verse)))
 
-(defun my:center-verses ()
-    (let* ((win-width 80)
-           spaces-to-be-inserted
-           line-length)
-        (goto-char (point-min))
-        (while (not (eobp))
-            (setq line-length (- (line-end-position)
-                                 (line-beginning-position)))
-            (if (> line-length 1)
-                    ;; line width equals 1 means this line only
-                    ;; contains a single quote ". we shouldn't center
-                    ;; this line
-                    (progn (setq spaces-to-be-inserted
-                                 (/ (- win-width line-length) 2))
-                           (goto-char (line-beginning-position))
-                           (insert (cl-loop for i from 1 to spaces-to-be-inserted concat " "))
-                           (forward-line))
-                (forward-line))))
-    (--> my$empty-lines-between-header-and-foot-verse
-         (* 0.6 it)
-         (truncate it)
-         (goto-line it)))
+(defun my:center-verse (x)
+    "center one line of verse"
+    (let ((spaces-to-be-inserted
+           (/ (- my$right-margin-when-centering-margin (length x))
+              2)))
+        (concat (cl-loop for i from 1 to spaces-to-be-inserted concat " ")
+                x)))
 
 (defun my:verses-add-font-lock ()
     (with-current-buffer (current-buffer)
@@ -121,7 +112,6 @@ Are overtaken.
     :global t
 
     (setq initial-scratch-message (my:generate-initial-messages))
-    (add-hook 'emacs-startup-hook #'my:center-verses)
     (add-hook 'emacs-startup-hook #'my:verses-add-font-lock))
 
 (provide 'my-ui-autoloads)
