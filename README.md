@@ -1,14 +1,15 @@
 
 # Table of Contents
 
-1.  [Features](#orgb95c575)
-2.  [Notes](#org233992c)
-    1.  [Startup speed](#org1826ea8)
-    2.  [Naming conventions (WIP)](#org21af8f2)
+1.  [Features](#org33a569c)
+2.  [Notes](#org8f92494)
+    1.  [Startup speed](#org57544d8)
+    2.  [Naming conventions (WIP)](#org7c73a58)
+    3.  [Corfu or Company?](#orgabfbe35)
 
 
 
-<a id="orgb95c575"></a>
+<a id="org33a569c"></a>
 
 # Features
 
@@ -17,7 +18,7 @@
     TTY starts in 0.3s on Mac M1 and 0.8s on a VPS with 1 core CPU and
     1GB RAM. The GUI starts in 0.45s on Mac M1. You can even `export
       EDITOR="emacs -nw"` and feel no perceptible startup difference
-    comparing to vim! (See [2.1](#org1826ea8) for additional details.)
+    comparing to vim! (See [2.1](#org57544d8) for additional details.)
 
 -   **Robust**
     
@@ -41,19 +42,19 @@
     
     -   Leader key and localleader key centered keybinding scheme powered by `general`.
     
-    -   In-buffer autocompletion frontend based on `company`.
+    -   In-buffer autocompletion frontend based on `company` (see [2.3](#orgabfbe35)).
     
     -   Code completion and navigation based on `eglot` (lsp) and `citre` (ctags).
     
     -   Integration with `eglot` and `org-babel` or `markdown-mode` that takes literate programming to the next level.
 
 
-<a id="org233992c"></a>
+<a id="org8f92494"></a>
 
 # Notes
 
 
-<a id="org1826ea8"></a>
+<a id="org57544d8"></a>
 
 ## Startup speed
 
@@ -68,7 +69,7 @@ skews `(emacs-init-time)` and does not accurately reflect startup
 time. This configuration is honest and truly lazy loads packages.
 
 
-<a id="org21af8f2"></a>
+<a id="org7c73a58"></a>
 
 ## Naming conventions (WIP)
 
@@ -86,4 +87,16 @@ time. This configuration is honest and truly lazy loads packages.
 -   A symbol prefixed with `my*` indicates it is generated via closure or macro.
 
 -   A symbol prefixed with `my&` indicates it is a special symbol like faces.
+
+
+<a id="orgabfbe35"></a>
+
+## Corfu or Company?
+
+`Corfu` is a sleek and minimalistic auto-completion UI that uses only
+`completion-at-point-functions` as its backend. The GUI experience with
+`corfu` is delightful, providing a refreshing and intuitive
+interface. However, to maintain full compatibility with TTY, I
+continue to use `company` as the auto-completion frontend until `corfu`&rsquo;s
+TTY integration is complete.
 

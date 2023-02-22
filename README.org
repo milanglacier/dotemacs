@@ -31,7 +31,7 @@
 
   - Leader key and localleader key centered keybinding scheme powered by ~general~.
 
-  - In-buffer autocompletion frontend based on ~company~.
+  - In-buffer autocompletion frontend based on ~company~ (see [[*Corfu or Company?]]).
 
   - Code completion and navigation based on ~eglot~ (lsp) and ~citre~ (ctags).
 
@@ -66,3 +66,11 @@ time. This configuration is honest and truly lazy loads packages.
 - A symbol prefixed with ~my*~ indicates it is generated via closure or macro.
 
 - A symbol prefixed with ~my&~ indicates it is a special symbol like faces.
+
+** Corfu or Company?
+~Corfu~ is a sleek and minimalistic auto-completion UI that uses only
+~completion-at-point-functions~ as its backend. The GUI experience with
+~corfu~ is delightful, providing a refreshing and intuitive
+interface. However, to maintain full compatibility with TTY, I
+continue to use ~company~ as the auto-completion frontend until ~corfu~'s
+TTY integration is complete.
