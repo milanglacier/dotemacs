@@ -37,7 +37,7 @@ time. This configuration tries to be honest and truly lazy loads.
 ** Naming conventions (WIP)
 - A symbol prefixed with ~my:~ indicates it is a function.
 
-- A symbol prefixed with ~my@~ indicates it is a variable.
+- A symbol prefixed with ~my$~ indicates it is a variable.
 
 - A symbol prefixed with ~my%~ indicates it is a macro.
 

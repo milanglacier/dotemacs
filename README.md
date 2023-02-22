@@ -1,14 +1,14 @@
 
 # Table of Contents
 
-1.  [Features](#org00ec595)
-2.  [Notes](#org85ec5dd)
-    1.  [Startup speed](#org548b3b0)
-    2.  [Naming conventions (WIP)](#org9331d67)
+1.  [Features](#orgddd9904)
+2.  [Notes](#org892d3ab)
+    1.  [Startup speed](#org8bdc512)
+    2.  [Naming conventions (WIP)](#org9ec5f4f)
 
 
 
-<a id="org00ec595"></a>
+<a id="orgddd9904"></a>
 
 # Features
 
@@ -17,7 +17,7 @@
     TTY starts in 0.3s on Mac M1 and 0.8s on a VPS with 1 core CPU and
     1GB RAM. The GUI starts in 0.45s on Mac M1. You can even `export
       EDITOR="emacs -nw"` and feel no perceptible startup difference
-    comparing to vim! (See [2.1](#org548b3b0) for additional details.)
+    comparing to vim! (See [2.1](#org8bdc512) for additional details.)
 
 -   **Robust**
     
@@ -31,12 +31,12 @@
     also well-configured.
 
 
-<a id="org85ec5dd"></a>
+<a id="org892d3ab"></a>
 
 # Notes
 
 
-<a id="org548b3b0"></a>
+<a id="org8bdc512"></a>
 
 ## Startup speed
 
@@ -51,13 +51,13 @@ fools `(emacs-init-time)` and contributes nothing to the startup
 time. This configuration tries to be honest and truly lazy loads.
 
 
-<a id="org9331d67"></a>
+<a id="org9ec5f4f"></a>
 
 ## Naming conventions (WIP)
 
 -   A symbol prefixed with `my:` indicates it is a function.
 
--   A symbol prefixed with `my@` indicates it is a variable.
+-   A symbol prefixed with `my$` indicates it is a variable.
 
 -   A symbol prefixed with `my%` indicates it is a macro.
 
