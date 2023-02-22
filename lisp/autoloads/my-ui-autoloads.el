@@ -100,11 +100,10 @@ whitespaces to be prepended when centering the verses.")
                 x)))
 
 (defun my:verses-add-font-lock ()
-    (with-current-buffer (current-buffer)
-            (font-lock-add-keywords
-             nil
-             '(("^ +\\([^\"]+\\)$" 1 'my&verses)
-               ("^ +\\(.+\\)$" 1 'my&verse-quotes)))))
+    (font-lock-add-keywords
+     nil
+     '(("^ +\\([^\"]+\\)$" 1 'my&verses)
+       ("^ +\\(.+\\)$" 1 'my&verse-quotes))))
 
 ;;;###autoload
 (define-minor-mode my~show-verses-at-startup-mode
