@@ -1,24 +1,24 @@
 
 # Table of Contents
 
-1.  [Features](#org33a569c)
-2.  [Notes](#org8f92494)
-    1.  [Startup speed](#org57544d8)
-    2.  [Naming conventions (WIP)](#org7c73a58)
-    3.  [Corfu or Company?](#orgabfbe35)
+1.  [Features](#org97ca9e7)
+2.  [Notes](#org7661879)
+    1.  [Startup speed](#orgb17875c)
+    2.  [Naming conventions (WIP)](#org56cb9ec)
+    3.  [Corfu or Company?](#org67f4891)
 
 
 
-<a id="org33a569c"></a>
+<a id="org97ca9e7"></a>
 
 # Features
 
 -   **Blazingly fast**.
     
-    TTY starts in 0.3s on Mac M1 and 0.8s on a VPS with 1 core CPU and
-    1GB RAM. The GUI starts in 0.45s on Mac M1. You can even `export
+    TTY starts in 0.32s on Mac M1 and 0.73s on a VPS with 1 core CPU and
+    1GB RAM. The GUI starts in 0.44s on Mac M1. You can even `export
       EDITOR="emacs -nw"` and feel no perceptible startup difference
-    comparing to vim! (See [2.1](#org57544d8) for additional details.)
+    comparing to vim! (See [2.1](#orgb17875c) for additional details.)
 
 -   **Robust**
     
@@ -42,19 +42,19 @@
     
     -   Leader key and localleader key centered keybinding scheme powered by `general`.
     
-    -   In-buffer autocompletion frontend based on `company` (see [2.3](#orgabfbe35)).
+    -   In-buffer autocompletion frontend based on `company` (see [2.3](#org67f4891)).
     
     -   Code completion and navigation based on `eglot` (lsp) and `citre` (ctags).
     
     -   Integration with `eglot` and `org-babel` or `markdown-mode` that takes literate programming to the next level.
 
 
-<a id="org8f92494"></a>
+<a id="org7661879"></a>
 
 # Notes
 
 
-<a id="org57544d8"></a>
+<a id="orgb17875c"></a>
 
 ## Startup speed
 
@@ -69,7 +69,7 @@ skews `(emacs-init-time)` and does not accurately reflect startup
 time. This configuration is honest and truly lazy loads packages.
 
 
-<a id="org7c73a58"></a>
+<a id="org56cb9ec"></a>
 
 ## Naming conventions (WIP)
 
@@ -89,7 +89,7 @@ time. This configuration is honest and truly lazy loads packages.
 -   A symbol prefixed with `my&` indicates it is a special symbol like faces.
 
 
-<a id="orgabfbe35"></a>
+<a id="org67f4891"></a>
 
 ## Corfu or Company?
 

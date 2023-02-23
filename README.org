@@ -4,8 +4,8 @@
 * Features
 - *Blazingly fast*.
 
-  TTY starts in 0.3s on Mac M1 and 0.8s on a VPS with 1 core CPU and
-  1GB RAM. The GUI starts in 0.45s on Mac M1. You can even ~export
+  TTY starts in 0.32s on Mac M1 and 0.73s on a VPS with 1 core CPU and
+  1GB RAM. The GUI starts in 0.44s on Mac M1. You can even ~export
   EDITOR="emacs -nw"~ and feel no perceptible startup difference
   comparing to vim! (See [[*Startup speed]] for additional details.)
 
