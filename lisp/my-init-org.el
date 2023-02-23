@@ -477,11 +477,9 @@
 (use-package evil-org
     :hook (org-mode . evil-org-mode)
 
-    :init
-    (add-hook 'org-capture-mode-hook #'evil-insert-state)
-
     :config
-    (evil-org-set-key-theme))
+    (evil-org-set-key-theme)
+    (add-hook 'org-capture-mode-hook #'evil-insert-state))
 
 ;; make org fontification works similar to vim's conceal.
 ;; moving point over concealed text reveals its content.
