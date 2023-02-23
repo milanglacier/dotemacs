@@ -69,8 +69,6 @@ if they are side window.")
           ;; horizontal split (ale `split-window-below')
           split-width-threshold 300))
 
-(add-hook 'emacs-startup-hook #'my/delayed-startup-screen)
-
 (use-package all-the-icons
     :if (display-graphic-p)
     :commands (all-the-icons-octicon
@@ -157,6 +155,8 @@ if they are side window.")
     (setq which-key-idle-delay 1
           which-key-popup-type 'minibuffer)
     )
+
+(my~show-verses-at-startup-mode)
 
 (provide 'my-init-ui)
 ;;; my-init-ui.el ends here

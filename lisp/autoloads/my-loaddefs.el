@@ -117,6 +117,27 @@ it is disabled.
 
 \(fn &optional ARG)" t nil)
 
+(autoload 'my:elfeed-delete-window-after-kill-buffer "my-apps-autoloads" "\
+
+
+\(fn &rest ARGS)" nil nil)
+
+(autoload 'my:elfeed-open-entry-via-xwidget "my-apps-autoloads" "\
+if point is under a url, then open this url via `xwidget',
+otherwise open the current visited elfeed entry via `xwidget'.  If
+with a prefix \\[universal-argument] create a new `xwidget' session
+otherwise use the existed one
+
+\(fn &optional NEW-SESSION)" t nil)
+
+(autoload 'my:elfeed-open-entry-via-eww "my-apps-autoloads" "\
+if point is under a url, then open this url via `eww',
+otherwise open the current visited elfeed entry via `eww'.  If
+with a prefix \\[universal-argument] create a new `eww' session
+otherwise use the existed one
+
+\(fn &optional NEW-SESSION)" t nil)
+
 (register-definition-prefixes "my-apps-autoloads" '("my/"))
 
 ;;;***
@@ -386,9 +407,6 @@ If there is only one tab, close emacs, otherwise close one tab" t nil)
 
 (autoload 'my/display-truncation-and-wrap-indicator-as-whitespace "my-ui-autoloads" nil nil nil)
 
-(autoload 'my/delayed-startup-screen "my-ui-autoloads" "\
-`org-agenda-list' is slow, don't run it immediately after startup" nil nil)
-
 (autoload 'my/tab-bar-go-to-tab-macro "my-ui-autoloads" "\
 
 
@@ -402,10 +420,40 @@ is called.
 
 \(fn OLD-FUN &rest ARGS)" nil nil)
 
-(autoload 'my/buffer-face-mode-variable "my-ui-autoloads" "\
-Set font to a variable width (proportional) fonts in current buffer" t nil)
+(defvar my~show-verses-at-startup-mode nil "\
+Non-nil if My~Show-Verses-At-Startup mode is enabled.
+See the `my~show-verses-at-startup-mode' command
+for a description of this minor mode.
+Setting this variable directly does not take effect;
+either customize it (see the info node `Easy Customization')
+or call the function `my~show-verses-at-startup-mode'.")
 
-(register-definition-prefixes "my-ui-autoloads" '("my/display-org-agenda-list"))
+(custom-autoload 'my~show-verses-at-startup-mode "my-ui-autoloads" nil)
+
+(autoload 'my~show-verses-at-startup-mode "my-ui-autoloads" "\
+show verses at the startup screen.
+
+This is a minor mode.  If called interactively, toggle the
+`My~Show-Verses-At-Startup mode' mode.  If the prefix argument is
+positive, enable the mode, and if it is zero or negative, disable
+the mode.
+
+If called from Lisp, toggle the mode if ARG is `toggle'.  Enable
+the mode if ARG is nil, omitted, or is a positive number.
+Disable the mode if ARG is a negative number.
+
+To check whether the minor mode is enabled in the current buffer,
+evaluate `(default-value \\='my~show-verses-at-startup-mode)'.
+
+The mode's hook is called both when the mode is enabled and when
+it is disabled.
+
+\(fn &optional ARG)" t nil)
+
+(autoload 'my~refresh-verses "my-ui-autoloads" "\
+refresh verses in the scratch buffer" t nil)
+
+(register-definition-prefixes "my-ui-autoloads" '("my$" "my:"))
 
 ;;;***
 
@@ -437,12 +485,12 @@ on some hooks that will change the variable locally.
 
 Use `my/setq-locally' when you want to set VAR to a simple VAL in many
 modes.  Use `my/setq-on-hook' when you want to set VAR to a complex
-VAL in very few modes.  Why don't I just directly use `(add-hook
+VAL in only one mode.  Why don't I just directly use `(add-hook
 'foo-hook (lambda () (FORM)))'?  Because when you try to
 \\[describe-variable] `foo-hook RET', you will find those lambda
-function will be unreadable. And using a named function in a hook
-makes those variable displayed much more nicely.  This is very helpful
-for debugging purpose if you want to examine a hook value.
+functions unreadable. And using a named function in a hook makes the
+hook described much more nicely.  This is very helpful for debugging
+purpose if you want to examine a hook value.
 
 \(fn VAR VAL)" nil t)
 
@@ -454,9 +502,9 @@ modes.  Use `my/setq-on-hook' when you want to set VAR to a complex
 VAL in only one mode.  Why don't I just directly use `(add-hook
 'foo-hook (lambda () (FORM)))'?  Because when you try to
 \\[describe-variable] `foo-hook RET', you will find those lambda
-function will be unreadable. And using a named function in a hook
-makes those variable displayed much more nicely.  This is very helpful
-for debugging purpose if you want to examine a hook value.
+functions unreadable. And using a named function in a hook makes the
+hook described much more nicely.  This is very helpful for debugging
+purpose if you want to examine a hook value.
 
 \(fn HOOK VAR VAL)" nil t)
 

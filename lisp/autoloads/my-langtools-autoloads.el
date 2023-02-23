@@ -79,8 +79,8 @@ be associated with a real file."
                            (file-name-concat default-directory "org-babel-src.tmp")))
                  (eglot-ensure))
 
-             (if (fboundp ',edit-pre)
-                     (advice-add ',edit-pre :after ',my-setup)
+             (if (fboundp #',edit-pre)
+                     (advice-add #',edit-pre :after #',my-setup)
                  (progn
                      (defun ,edit-pre (info)
                          (,my-setup info)))))))
