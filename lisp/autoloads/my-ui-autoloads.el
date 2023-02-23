@@ -75,9 +75,15 @@ is called."
     "The assumed window width to calculate appropriate number of
 whitespaces to be prepended when centering the verses.")
 
-(defface my&verses '((t :foreground "#a070b5" :slant italic)) "the faces used for the verses")
+(defface my&verses
+    '((((background light)) :foreground "#ed80b5" :slant italic)
+      (((background dark)) :foreground "#a070b5" :slant italic))
+    "the faces used for the verses")
 
-(defface my&verse-quotes '((t :foreground "#ad7f2a")) "the faces used for the quote of verses")
+(defface my&verse-quotes
+    '((((background light)) :foreground "#e8ae92")
+      (((background dark)) :foreground "#ad7f2a"))
+    "the faces used for the quote of verses")
 
 (defun my:generate-initial-messages ()
     (let ((head-verse (nth (random (length my$header-verses))
