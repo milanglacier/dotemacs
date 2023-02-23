@@ -27,9 +27,9 @@
 
   - A modern minibuffer completion experience powered by ~vertico+consult+orderless+embark+marginalia~ family bucket.
 
-  - Modal editing ecosystem in everywhere powered by ~evil~ and many other extensions.
+  - Modal editing ecosystem everywhere, powered by ~evil~ and many other extensions.
 
-  - Leader key and localleader key centered keybinding scheme powered by ~general~.
+  - A keybinding scheme centered around leader and localleader keys, powered by ~general~ and ~which-key~.
 
   - In-buffer autocompletion frontend based on ~company~ (see [[*Corfu or Company?]]).
 

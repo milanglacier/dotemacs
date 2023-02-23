@@ -1,15 +1,15 @@
 
 # Table of Contents
 
-1.  [Features](#org97ca9e7)
-2.  [Notes](#org7661879)
-    1.  [Startup speed](#orgb17875c)
-    2.  [Naming conventions (WIP)](#org56cb9ec)
-    3.  [Corfu or Company?](#org67f4891)
+1.  [Features](#org4646771)
+2.  [Notes](#org136c939)
+    1.  [Startup speed](#org7d5f8a9)
+    2.  [Naming conventions (WIP)](#org3cb8d13)
+    3.  [Corfu or Company?](#orge95847f)
 
 
 
-<a id="org97ca9e7"></a>
+<a id="org4646771"></a>
 
 # Features
 
@@ -18,7 +18,7 @@
     TTY starts in 0.32s on Mac M1 and 0.73s on a VPS with 1 core CPU and
     1GB RAM. The GUI starts in 0.44s on Mac M1. You can even `export
       EDITOR="emacs -nw"` and feel no perceptible startup difference
-    comparing to vim! (See [2.1](#orgb17875c) for additional details.)
+    comparing to vim! (See [2.1](#org7d5f8a9) for additional details.)
 
 -   **Robust**
     
@@ -38,23 +38,23 @@
     
     -   A modern minibuffer completion experience powered by `vertico+consult+orderless+embark+marginalia` family bucket.
     
-    -   Modal editing ecosystem in everywhere powered by `evil` and many other extensions.
+    -   Modal editing ecosystem everywhere, powered by `evil` and many other extensions.
     
-    -   Leader key and localleader key centered keybinding scheme powered by `general`.
+    -   A keybinding scheme centered around leader and localleader keys, powered by `general` and `which-key`.
     
-    -   In-buffer autocompletion frontend based on `company` (see [2.3](#org67f4891)).
+    -   In-buffer autocompletion frontend based on `company` (see [2.3](#orge95847f)).
     
     -   Code completion and navigation based on `eglot` (lsp) and `citre` (ctags).
     
     -   Integration with `eglot` and `org-babel` or `markdown-mode` that takes literate programming to the next level.
 
 
-<a id="org7661879"></a>
+<a id="org136c939"></a>
 
 # Notes
 
 
-<a id="orgb17875c"></a>
+<a id="org7d5f8a9"></a>
 
 ## Startup speed
 
@@ -69,7 +69,7 @@ skews `(emacs-init-time)` and does not accurately reflect startup
 time. This configuration is honest and truly lazy loads packages.
 
 
-<a id="org56cb9ec"></a>
+<a id="org3cb8d13"></a>
 
 ## Naming conventions (WIP)
 
@@ -89,7 +89,7 @@ time. This configuration is honest and truly lazy loads packages.
 -   A symbol prefixed with `my&` indicates it is a special symbol like faces.
 
 
-<a id="org67f4891"></a>
+<a id="orge95847f"></a>
 
 ## Corfu or Company?
 
