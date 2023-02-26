@@ -2,6 +2,7 @@
 
 (straight-use-package 'elfeed)
 (straight-use-package 'elfeed-org)
+(straight-use-package 'pdf-tools)
 
 (use-package eww
     :init
@@ -78,6 +79,33 @@
 
     :config
     (elfeed-org))
+
+(use-package pdf-tools
+    :mode ("\\.pdf\\'" . pdf-view-mode)
+    :init
+    (setq pdf-view-display-size 'fit-page
+          ;; Enable hiDPI support, but at the cost of memory! See politza/pdf-tools#51
+          pdf-view-use-scaling t
+          pdf-view-use-imagemagick nil
+          pdf-view-continuous nil)
+
+    :config
+    (evil-collection-pdf-setup)
+
+    (add-to-list 'display-buffer-alist
+                 `("\\*[oO]utline.*pdf\\*"
+                   (display-buffer-in-side-window display-buffer-reuse-window)
+                   (side . ,(alist-get 'pdf-outline my/side-window-sides))
+                   (window-width . 0.3)))
+
+    (add-hook 'pdf-outline-buffer-mode-hook #'my:font-set-small-variable-font)
+    (add-hook 'pdf-outline-buffer-mode-hook (my/turn-off-mode display-line-numbers-mode))
+    (add-hook 'pdf-view-mode-hook (my/setq-locally evil-normal-state-cursor nil))
+    (add-hook 'pdf-view-mode-hook #'my:pdf-midnight-mode-maybe)
+    (add-hook 'pdf-view-mode-hook (my/turn-off-mode display-line-numbers-mode))
+
+    )
+
 
 (provide 'my-init-apps)
 ;;; my-init-apps.el ends here

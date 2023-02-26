@@ -25,6 +25,16 @@ is called."
         (apply old-fun args)
         (setq-local default-directory current-dir)))
 
+;;;###autoload
+(defun my:font-set-small-mono-font ()
+    "Set the default font to a smaller sized font for current buffer."
+    (face-remap-add-relative 'default :height 140))
+
+;;;###autoload
+(defun my:font-set-small-variable-font ()
+    "Set the default font to a smaller sized font for current buffer."
+    (face-remap-add-relative 'default :height 140 :family "Bookerly"))
+
 (defvar my$header-verses
     '(("Bright star, would I were steadfast as thee art!"
        " John Keats")

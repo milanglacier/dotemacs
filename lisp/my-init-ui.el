@@ -59,7 +59,8 @@ if they are side window.")
           (Rhelp . bottom)
           (Rdired . right)
           (xwidget-plot . right)
-          (dired-sidebar . left))
+          (dired-sidebar . left)
+          (pdf-outline . left))
         "The side different mode if used as side window,
 this is for configuring `display-buffer-in-side-window',
 configuring this would avoid buffer swallows other buffer's window

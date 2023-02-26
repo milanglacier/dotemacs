@@ -138,6 +138,8 @@ otherwise use the existed one
 
 \(fn &optional NEW-SESSION)" t nil)
 
+(autoload 'my:pdf-midnight-mode-maybe "my-apps-autoloads" nil nil nil)
+
 (register-definition-prefixes "my-apps-autoloads" '("my/"))
 
 ;;;***
@@ -421,6 +423,12 @@ Change it to the directory of previous buffer where `tab-bar-new-tab'
 is called.
 
 \(fn OLD-FUN &rest ARGS)" nil nil)
+
+(autoload 'my:font-set-small-mono-font "my-ui-autoloads" "\
+Set the default font to a smaller sized font for current buffer." nil nil)
+
+(autoload 'my:font-set-small-variable-font "my-ui-autoloads" "\
+Set the default font to a smaller sized font for current buffer." nil nil)
 
 (defvar my~show-verses-at-startup-mode nil "\
 Non-nil if My~Show-Verses-At-Startup mode is enabled.

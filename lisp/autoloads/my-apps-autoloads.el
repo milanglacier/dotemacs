@@ -164,5 +164,10 @@ otherwise use the existed one"
          (elfeed-entry-link elfeed-show-entry)
          new-session)))
 
+;;;###autoload
+(defun my:pdf-midnight-mode-maybe ()
+    (when (eq (frame-parameter nil 'background-mode) 'dark)
+        (pdf-view-midnight-minor-mode)))
+
 (provide 'my-apps-autoloads)
 ;;; my-apps-autoloads.el ends here
