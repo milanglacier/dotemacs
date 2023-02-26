@@ -129,6 +129,20 @@ is on the start of current thread. Analagous to `[[' in vim."
     (interactive)
         (my:mu4e-goto-prev-thread-end))
 
+(defun my~mu4e-view-thread-forward ()
+    "Go to prev thread or start of current thread"
+    (interactive)
+    (mu4e~view-quit-buffer)
+    (my~mu4e-thread-forward-start)
+    (mu4e-headers-view-message))
+
+(defun my~mu4e-view-thread-backward ()
+    "Go to prev thread or start of current thread"
+    (interactive)
+    (mu4e~view-quit-buffer)
+    (my~mu4e-thread-backward-start)
+    (mu4e-headers-view-message))
+
 (setq my$mu4e-enable-thread-folding nil)
 
 ;; WIP: there are too many corner cases unresolved

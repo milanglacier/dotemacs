@@ -143,6 +143,12 @@
      "[ t" #'my~mu4e-thread-backward-start
      "[ T" #'my~mu4e-thread-backward-end)
 
+    (general-define-key
+     :states '(normal motion)
+     :keymaps 'mu4e-view-mode-map
+     "] t" #'my~mu4e-view-thread-forward
+     "[ t" #'my~mu4e-view-thread-backward)
+
     ;; don't map `a' to `shr-show-alt-text' which is useless.  reserve
     ;; `a' to `mu4e-view-action'
     (general-define-key :keymaps 'shr-map "a" nil)
