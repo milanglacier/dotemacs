@@ -34,41 +34,43 @@
     (global-whitespace-mode)
     )
 
-(use-package window
-    :init
-    (defvar my/side-window-slots
-        '((helpful . 1) ;; 0 is the default
-          (vterm . -1)
-          (eldoc . 1)
-          (python . -1)
-          (R . -1)
-          (Rhelp . 1)
-          (Rdired . -1)
-          (xwidget-plot . -1)
-          (dired-sidebar . -1))
-        "The slot for different mode if used as side window,
+(defvar my/side-window-slots
+    '((helpful . 1) ;; 0 is the default
+      (vterm . -1)
+      (eldoc . 1)
+      (python . -1)
+      (R . -1)
+      (Rhelp . 1)
+      (Rdired . -1)
+      (xwidget-plot . -1)
+      (dired-sidebar . -1))
+    "The slot for different mode if used as side window,
 this is for configuring `display-buffer-in-side-window',
 configuring this would avoid buffer swallows other buffer's window
 if they are side window.")
-    (defvar my/side-window-sides
-        '((helpful . bottom) ;;bottom is the default
-          (vterm . bottom)
-          (eldoc . bottom)
-          (python . bottom)
-          (R . bottom)
-          (Rhelp . bottom)
-          (Rdired . right)
-          (xwidget-plot . right)
-          (dired-sidebar . left)
-          (pdf-outline . left))
-        "The side different mode if used as side window,
+
+(defvar my/side-window-sides
+    '((helpful . bottom) ;;bottom is the default
+      (vterm . bottom)
+      (eldoc . bottom)
+      (python . bottom)
+      (R . bottom)
+      (Rhelp . bottom)
+      (Rdired . right)
+      (xwidget-plot . right)
+      (dired-sidebar . left)
+      (pdf-outline . left))
+    "The side different mode if used as side window,
 this is for configuring `display-buffer-in-side-window',
 configuring this would avoid buffer swallows other buffer's window
 if they are side window.")
-    (setq window-combination-resize t
-          ;; unless you have a really wide screen, always prefer
-          ;; horizontal split (ale `split-window-below')
-          split-width-threshold 300))
+
+(setq window-combination-resize t
+      ;; unless you have a really wide screen, always prefer
+      ;; horizontal split (ale `split-window-below')
+      split-width-threshold 300)
+
+(blink-cursor-mode -1)
 
 (use-package all-the-icons
     :if (display-graphic-p)
