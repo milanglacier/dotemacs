@@ -215,6 +215,8 @@ this email via `eww'
 
 \(fn MSG &optional ARG)" nil nil)
 
+(register-definition-prefixes "my-email-autoloads" '("my:mu4e-" "my~mu4e-thread-"))
+
 ;;;***
 
 ;;;### (autoloads nil "my-evil-autoloads" "my-evil-autoloads.el"

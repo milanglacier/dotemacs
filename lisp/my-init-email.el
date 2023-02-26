@@ -135,6 +135,14 @@
      "?" #'mu4e-headers-mark-for-unread
      "u" #'mu4e-headers-mark-for-unmark)
 
+    (general-define-key
+     :states '(normal motion)
+     :keymaps 'mu4e-headers-mode-map
+     "] t" #'my~mu4e-thread-forward-start
+     "] T" #'my~mu4e-thread-forward-end
+     "[ t" #'my~mu4e-thread-backward-start
+     "[ T" #'my~mu4e-thread-backward-end)
+
     ;; don't map `a' to `shr-show-alt-text' which is useless.  reserve
     ;; `a' to `mu4e-view-action'
     (general-define-key :keymaps 'shr-map "a" nil)
