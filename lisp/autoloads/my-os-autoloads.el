@@ -16,7 +16,6 @@
     ;; and will switch back to it when Emacs is started or resumed. A nil
     ;; `visible-cursor' prevents this.
     (setq visible-cursor nil)
-    (blink-cursor-mode -1)
 
     ;; Enable the mouse in terminal Emacs
     (xterm-mouse-mode)
