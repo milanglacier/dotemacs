@@ -56,7 +56,13 @@ to next xref location."
              ,xref-move-func-desc
              (interactive)
              (with-current-buffer "*xref*"
-                 (funcall ',func)))))
+                 (funcall #',func)))))
+
+;; TODO: Utilize the contextual information from previous code blocks
+;; PLAN:
+;; 1. Get the contents of previous code blocks
+;; 2. Paste the code blocks into the temp buffer
+;; 3. When finish editing, delete those inserted contextual code.
 
 ;;;###autoload
 (defun my/markdown-src-lsp-setup()
