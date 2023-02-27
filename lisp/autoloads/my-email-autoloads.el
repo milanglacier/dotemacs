@@ -1,27 +1,27 @@
 ;;; my-email-autoloads.el -*- lexical-binding: t; -*-
 
 ;;;###autoload
-(defun my/mu4e-enter-func (use-org-msg-mode &optional additional-func)
+(defun my:mu4e-enter-func (use-org-msg-mode &optional additional-func)
     (lambda ()
         (org-msg-mode use-org-msg-mode)
         (when additional-func
             (funcall additional-func))))
 
 ;;;###autoload
-(defun my/mu4e-leave-func (&optional additional-func)
+(defun my:mu4e-leave-func (&optional additional-func)
     (lambda ()
         (mu4e-clear-caches)
         (when additional-func
             (funcall additional-func))))
 
 ;;;###autoload
-(defun my/mu4e-match-func (prefix)
+(defun my:mu4e-match-func (prefix)
     (lambda (msg)
         (when msg
             (string-prefix-p prefix (mu4e-message-field msg :maildir) t))))
 
 ;;;###autoload
-(defun my/mu4e-open-link-via-eww (msg &optional arg)
+(defun my:mu4e-open-link-via-eww (msg &optional arg)
     "If point is on a link, open this link via `eww'. Otherwise open
 this email via `eww'"
     (if-let ((link-at-point (get-text-property (point) 'shr-url)))
