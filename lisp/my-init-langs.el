@@ -75,7 +75,8 @@
     (add-hook 'ess-r-mode-hook (my/setq-locally eglot-stay-out-of '(company imenu)))
     (add-hook 'ess-r-mode-hook #'eglot-ensure)
     (add-hook 'ess-r-mode-hook (my/setq-locally tab-width 4))
-    (when (display-graphic-p)
+    (when (and (display-graphic-p)
+               (featurep 'xwidget-internal))
         (add-hook 'ess-r-mode-hook #'my/xwidget-side-window-mode))
 
     )
@@ -110,7 +111,8 @@
                    (side . bottom)
                    (slot . ,(alist-get 'python my/side-window-slots))))
 
-    (when (display-graphic-p)
+    (when (and (display-graphic-p)
+               (featurep 'xwidget-internal))
         (add-hook 'python-mode-hook #'my/xwidget-side-window-mode)
         (add-hook 'python-mode-hook #'my/refresh-xwidget-after-eval-python-mode))
 

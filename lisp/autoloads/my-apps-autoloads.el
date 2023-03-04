@@ -56,9 +56,6 @@ xwidget browser. This is useful for interactive usage with web stuffs
 like plotly."
     :global t
 
-    (unless (require 'xwidget nil t)
-        (error "this mode requires xwidget!"))
-
     (if my/refresh-xwidget-after-eval-python-mode
             (progn
                 (advice-add #'python-shell-send-statement
@@ -101,9 +98,6 @@ for interactive plotting usage with python/R where you typically want
 xwdiget to display plots at the side window."
     :global t
 
-    (unless (require 'xwidget nil t)
-        (error "this mode requires xwidget!"))
-
     (if my/xwidget-side-window-mode
             (progn
                 (add-to-list 'display-buffer-alist my/xwidget-side-window-display)
@@ -123,9 +117,6 @@ session.  This minor mode advises `xwidget-webkit-browse-url' to
 ensure such behavior. This is helpful for viewing web contents with
 `mu4e', `notmuch', and `elfeed'"
     :global t
-
-    (unless (require 'xwidget nil t)
-        (error "this mode requires xwidget!"))
 
     (if my/xwidget-force-display-mode
             (progn
