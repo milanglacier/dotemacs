@@ -120,7 +120,9 @@
     :mode (("\\.[Rr]md\\'" . markdown-mode)
            ("\\.qmd\\'" . markdown-mode))
     :init
-    (setq markdown-fontify-code-blocks-natively t)
+    (setq markdown-fontify-code-blocks-natively t
+          markdown-fontify-whole-heading-line t
+          markdown-enable-math t)
 
     :config
 
