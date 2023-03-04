@@ -4,7 +4,6 @@
 (defun my/vterm ()
     "open vterm at project root, if no root is found, open at the default-directory"
     (interactive)
-    (require 'consult)
     (let ((default-directory (my/project-root-or-default-dir)))
         (call-interactively #'vterm)))
 

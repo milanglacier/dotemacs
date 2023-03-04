@@ -138,6 +138,8 @@ otherwise use the existed one
 
 \(fn &optional NEW-SESSION)" t nil)
 
+(autoload 'my:pdf-midnight-mode-maybe "my-apps-autoloads" nil nil nil)
+
 (register-definition-prefixes "my-apps-autoloads" '("my/"))
 
 ;;;***
@@ -194,26 +196,28 @@ https://emacs.stackexchange.com/questions/10230/how-to-indent-keywords-aligned
 ;;;;;;  (0 0 0 0))
 ;;; Generated autoloads from my-email-autoloads.el
 
-(autoload 'my/mu4e-enter-func "my-email-autoloads" "\
+(autoload 'my:mu4e-enter-func "my-email-autoloads" "\
 
 
 \(fn USE-ORG-MSG-MODE &optional ADDITIONAL-FUNC)" nil nil)
 
-(autoload 'my/mu4e-leave-func "my-email-autoloads" "\
+(autoload 'my:mu4e-leave-func "my-email-autoloads" "\
 
 
 \(fn &optional ADDITIONAL-FUNC)" nil nil)
 
-(autoload 'my/mu4e-match-func "my-email-autoloads" "\
+(autoload 'my:mu4e-match-func "my-email-autoloads" "\
 
 
 \(fn PREFIX)" nil nil)
 
-(autoload 'my/mu4e-open-link-via-eww "my-email-autoloads" "\
+(autoload 'my:mu4e-open-link-via-eww "my-email-autoloads" "\
 If point is on a link, open this link via `eww'. Otherwise open
 this email via `eww'
 
 \(fn MSG &optional ARG)" nil nil)
+
+(register-definition-prefixes "my-email-autoloads" '("my:mu4e-" "my~mu4e-"))
 
 ;;;***
 
@@ -419,6 +423,12 @@ Change it to the directory of previous buffer where `tab-bar-new-tab'
 is called.
 
 \(fn OLD-FUN &rest ARGS)" nil nil)
+
+(autoload 'my:font-set-small-mono-font "my-ui-autoloads" "\
+Set the default font to a smaller sized font for current buffer." nil nil)
+
+(autoload 'my:font-set-small-variable-font "my-ui-autoloads" "\
+Set the default font to a smaller sized font for current buffer." nil nil)
 
 (defvar my~show-verses-at-startup-mode nil "\
 Non-nil if My~Show-Verses-At-Startup mode is enabled.

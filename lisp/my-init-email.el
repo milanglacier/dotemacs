@@ -88,7 +88,7 @@
           '(("capture message" . mu4e-action-capture-message)
             ("view in browser" . mu4e-action-view-in-browser)
             ("xview in xwidget" . mu4e-action-view-in-xwidget)
-            ("eview in eww" . my/mu4e-open-link-via-eww)
+            ("eview in eww" . my:mu4e-open-link-via-eww)
             ("show this thread" . mu4e-action-show-thread)
             ("mailbox patch apply (git am)" . mu4e-action-git-apply-mbox)
             ("patch applying (git apply)" . mu4e-action-git-apply-patch))
@@ -134,6 +134,20 @@
      "!" #'mu4e-headers-mark-for-read
      "?" #'mu4e-headers-mark-for-unread
      "u" #'mu4e-headers-mark-for-unmark)
+
+    (general-define-key
+     :states '(normal motion)
+     :keymaps 'mu4e-headers-mode-map
+     "] t" #'my~mu4e-thread-forward-start
+     "] T" #'my~mu4e-thread-forward-end
+     "[ t" #'my~mu4e-thread-backward-start
+     "[ T" #'my~mu4e-thread-backward-end)
+
+    (general-define-key
+     :states '(normal motion)
+     :keymaps 'mu4e-view-mode-map
+     "] t" #'my~mu4e-view-thread-forward
+     "[ t" #'my~mu4e-view-thread-backward)
 
     ;; don't map `a' to `shr-show-alt-text' which is useless.  reserve
     ;; `a' to `mu4e-view-action'
