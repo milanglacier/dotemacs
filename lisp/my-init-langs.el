@@ -129,7 +129,7 @@
     :config
 
     (general-define-key
-     :states '(normal insert motion visual)
+     :states '(normal motion)
      :keymaps 'markdown-mode-map
      "TAB" #'markdown-cycle)
 
