@@ -42,6 +42,7 @@
       (R . -1)
       (Rhelp . 1)
       (Rdired . -1)
+      (RWatch . -2)
       (xwidget-plot . -1)
       (dired-sidebar . -1))
     "The slot for different mode if used as side window,
@@ -57,6 +58,7 @@ if they are side window.")
       (R . bottom)
       (Rhelp . bottom)
       (Rdired . right)
+      (RWatch . right)                  ;
       (xwidget-plot . right)
       (dired-sidebar . left)
       (pdf-outline . left))

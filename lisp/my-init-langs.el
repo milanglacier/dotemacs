@@ -35,6 +35,14 @@
                    (slot . ,(alist-get 'Rdired my/side-window-slots))))
 
     (add-to-list 'display-buffer-alist
+                 `("^\\*R Watch"
+                   (display-buffer-reuse-window display-buffer-in-side-window)
+                   (window-width . 0.33)
+                   (window-height . 0.4)
+                   (side . ,(alist-get 'RWatch my/side-window-sides))
+                   (slot . ,(alist-get 'RWatch my/side-window-slots))))
+
+    (add-to-list 'display-buffer-alist
                  `("^\\*help\\[R\\]"
                    (display-buffer-reuse-window display-buffer-in-side-window)
                    (window-width . 0.5)
