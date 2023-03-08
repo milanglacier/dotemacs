@@ -164,7 +164,11 @@
     (my/find-map
         :states '(normal insert motion visual)
         :keymaps 'override
-        "d" #'dired-sidebar-toggle-sidebar))
+        "d" #'dired-sidebar-toggle-sidebar)
+
+    :config
+    (add-hook 'dired-sidebar-mode-hook (my/turn-off-mode display-line-numbers-mode))
+    (add-hook 'dired-sidebar-mode-hook #'my:font-set-small-mono-font))
 
 (my/leader
     :keymaps 'override
