@@ -348,7 +348,7 @@
     (setq  org-agenda-files `(,org-directory
                               ,@(mapcar
                                  (lambda (x) (file-name-concat org-directory x))
-                                 '("capture"))))
+                                 '("capture" "work" "roam"))))
 
     (advice-add #'org-get-agenda-file-buffer :around #'my/exclude-org-agenda-buffers-from-recentf)
     (add-hook 'org-agenda-finalize-hook #'my/reload-org-agenda-buffers)
