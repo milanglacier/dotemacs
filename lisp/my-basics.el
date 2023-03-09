@@ -24,6 +24,9 @@
 ;; y or n is sufficient.
 (setq use-short-answers t)
 
+;; Dont' make noises
+(setq ring-bell-function #'ignore)
+
 ;; Press "TAB" key should not insert \t.
 (setq-default indent-tabs-mode nil)
 
