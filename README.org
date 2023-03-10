@@ -31,11 +31,11 @@
 
   - A keybinding scheme centered around leader and localleader keys, powered by ~general~ and ~which-key~.
 
-  - In-buffer autocompletion frontend based on ~company~ (see [[*Corfu or Company?]]).
+  - In-buffer autocompletion frontend based on ~acm~ (see [[*lsp-bridge(experimental)]]).
 
-  - Code completion and navigation based on ~eglot~ (lsp) and ~citre~ (ctags).
+  - Code completion and navigation based on ~lsp-bridge~ (lsp) and ~citre~ (ctags).
 
-  - Integration with ~eglot~ and ~org-babel~ or ~markdown-mode~ that takes literate programming to the next level.
+  - Integration with ~lsp-bridge~ and ~org-babel~ or ~markdown-mode~ that takes literate programming to the next level.
 
 * Notes
 
@@ -67,10 +67,12 @@ time. This configuration is honest and truly lazy loads packages.
 
 - A symbol prefixed with ~my&~ indicates it is a special symbol like faces.
 
-** Corfu or Company?
-~Corfu~ is a sleek and minimalistic auto-completion UI that uses only
-~completion-at-point-functions~ as its backend. The GUI experience with
-~corfu~ is delightful, providing a refreshing and intuitive
-interface. However, to maintain full compatibility with TTY, I
-continue to use ~company~ as the auto-completion frontend until ~corfu~'s
-TTY integration is complete.
+** lsp-bridge(experimental)
+~lsp-bridge~ is an all-in-one tool that functions as both an lsp backend
+and an autocompletion backend (referred to as ~acm~). By utilizing an
+external process (python) with advanced multi-threading features for
+time-consuming tasks, it provides the smoothest completion experience
+in emacs. However, the installation of ~lsp-bridge~ requires system
+dependencies on python and multiple python packages, resulting in
+added complexities. Therefore, ~lsp-bridge~ is considered an opt-in
+feature and is enabled in this separate branch.

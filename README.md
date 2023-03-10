@@ -1,15 +1,15 @@
 
 # Table of Contents
 
-1.  [Features](#org4646771)
-2.  [Notes](#org136c939)
-    1.  [Startup speed](#org7d5f8a9)
-    2.  [Naming conventions (WIP)](#org3cb8d13)
-    3.  [Corfu or Company?](#orge95847f)
+1.  [Features](#orge54d4dd)
+2.  [Notes](#org365536b)
+    1.  [Startup speed](#orge45d018)
+    2.  [Naming conventions (WIP)](#org5664630)
+    3.  [lsp-bridge(experimental)](#org5f19f67)
 
 
 
-<a id="org4646771"></a>
+<a id="orge54d4dd"></a>
 
 # Features
 
@@ -18,7 +18,7 @@
     TTY starts in 0.32s on Mac M1 and 0.73s on a VPS with 1 core CPU and
     1GB RAM. The GUI starts in 0.44s on Mac M1. You can even `export
       EDITOR="emacs -nw"` and feel no perceptible startup difference
-    comparing to vim! (See [2.1](#org7d5f8a9) for additional details.)
+    comparing to vim! (See [2.1](#orge45d018) for additional details.)
 
 -   **Robust**
     
@@ -42,19 +42,19 @@
     
     -   A keybinding scheme centered around leader and localleader keys, powered by `general` and `which-key`.
     
-    -   In-buffer autocompletion frontend based on `company` (see [2.3](#orge95847f)).
+    -   In-buffer autocompletion frontend based on `acm` (see [2.3](#org5f19f67)).
     
-    -   Code completion and navigation based on `eglot` (lsp) and `citre` (ctags).
+    -   Code completion and navigation based on `lsp-bridge` (lsp) and `citre` (ctags).
     
-    -   Integration with `eglot` and `org-babel` or `markdown-mode` that takes literate programming to the next level.
+    -   Integration with `lsp-bridge` and `org-babel` or `markdown-mode` that takes literate programming to the next level.
 
 
-<a id="org136c939"></a>
+<a id="org365536b"></a>
 
 # Notes
 
 
-<a id="org7d5f8a9"></a>
+<a id="orge45d018"></a>
 
 ## Startup speed
 
@@ -69,7 +69,7 @@ skews `(emacs-init-time)` and does not accurately reflect startup
 time. This configuration is honest and truly lazy loads packages.
 
 
-<a id="org3cb8d13"></a>
+<a id="org5664630"></a>
 
 ## Naming conventions (WIP)
 
@@ -89,14 +89,16 @@ time. This configuration is honest and truly lazy loads packages.
 -   A symbol prefixed with `my&` indicates it is a special symbol like faces.
 
 
-<a id="orge95847f"></a>
+<a id="org5f19f67"></a>
 
-## Corfu or Company?
+## lsp-bridge(experimental)
 
-`Corfu` is a sleek and minimalistic auto-completion UI that uses only
-`completion-at-point-functions` as its backend. The GUI experience with
-`corfu` is delightful, providing a refreshing and intuitive
-interface. However, to maintain full compatibility with TTY, I
-continue to use `company` as the auto-completion frontend until `corfu`&rsquo;s
-TTY integration is complete.
+`lsp-bridge` is an all-in-one tool that functions as both an lsp backend
+and an autocompletion backend (referred to as `acm`). By utilizing an
+external process (python) with advanced multi-threading features for
+time-consuming tasks, it provides the smoothest completion experience
+in emacs. However, the installation of `lsp-bridge` requires system
+dependencies on python and multiple python packages, resulting in
+added complexities. Therefore, `lsp-bridge` is considered an opt-in
+feature and is enabled in this separate branch.
 
