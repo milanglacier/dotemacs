@@ -9,6 +9,9 @@
 ;; markdown
 (straight-use-package 'markdown-mode)
 
+;; go
+(straight-use-package 'go-mode)
+
 (use-package ess
     :init
     (setq comint-scroll-to-bottom-on-input t
@@ -149,6 +152,11 @@
         "s" #'my/markdown-send-region)
 
     )
+
+(use-package go-mode
+    :config
+    (add-hook 'go-mode-hook (my/setq-locally tab-width 4))
+    (add-hook 'go-mode-hook #'eglot-ensure))
 
 (provide 'my-init-langs)
 ;;; my-init-langs.el ends here
