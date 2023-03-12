@@ -105,6 +105,8 @@
         "a" #'eglot-code-actions
         "e" #'consult-flymake
         "n" #'eglot-rename
+        "t" #'eglot-find-typeDefinition
+        "i" #'eglot-find-implementation
         "[" #'xref-go-back
         "]" #'xref-go-forward)
 
