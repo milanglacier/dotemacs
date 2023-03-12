@@ -69,6 +69,7 @@
  ("general.el" . "9651024e7f40a8ac5c3f31f8675d3ebe2b667344")
  ("git-gutter" . "1451e3149865b88de2402ce4296ee5608fadc5b2")
  ("gnu-elpa-mirror" . "3350028f721bec8076b332a7d50ae8fa488834a6")
+ ("go-mode.el" . "166dfb1e090233c4609a50c2ec9f57f113c1da72")
  ("goto-chg" . "278cd3e6d5107693aa2bb33189ca503f22f227d0")
  ("helpful" . "94c25337b2de2f9da60914a7c0c6cca9584c0231")
  ("highlight-quoted" . "24103478158cd19fbcfb4339a3f1fa1f054f1469")
