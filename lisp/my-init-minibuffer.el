@@ -37,7 +37,9 @@
         "j" #'evil-collection-consult-jump-list
         "m" #'evil-collection-consult-mark
         "i" #'consult-imenu
-        "I" #'consult-imenu-multi)
+        "I" #'consult-imenu-multi
+        "l" #'consult-line
+        "L" #'consult-line-multi)
 
     :config
     (advice-add #'completing-read-multiple :filter-args #'crm-indicator)
