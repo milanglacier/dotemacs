@@ -57,7 +57,13 @@
 
 (use-package eldoc
     :init
-    (setq eldoc-echo-area-use-multiline-p nil)
+    (setq eldoc-echo-area-use-multiline-p nil
+          eldoc-documentation-strategy #'eldoc-documentation-compose)
+    ;; eglot has 3 eldoc functions: `eglot-hover-eldoc-function', and
+    ;; `eglot-signature-eldoc-function', using the default strategy
+    ;; will only show one information, setting to the following option
+    ;; allows the possibility to show both information in eldoc
+    ;; buffer.
 
     :config
     (add-to-list 'display-buffer-alist
@@ -90,6 +96,8 @@
     ;; otherwise, you have to make a state transistion to make them
     ;; become effective.
     (add-hook 'eglot-managed-mode-hook #'evil-normalize-keymaps)
+    (add-hook 'eglot-managed-mode-hook
+              (my/setq-locally eldoc-documentation-function #'eldoc-documentation-compose))
 
     (general-create-definer my/lsp-map
         :prefix "SPC l"
