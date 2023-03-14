@@ -12,6 +12,9 @@
 ;; go
 (straight-use-package 'go-mode)
 
+;; sql
+(straight-use-package 'sql-indent)
+
 (use-package ess
     :init
     (setq comint-scroll-to-bottom-on-input t
@@ -157,6 +160,10 @@
     :config
     (add-hook 'go-mode-hook (my/setq-locally tab-width 4))
     (add-hook 'go-mode-hook #'eglot-ensure))
+
+(use-package sql
+    :init
+    (setq sqlind-basic-offset 4))
 
 (provide 'my-init-langs)
 ;;; my-init-langs.el ends here
