@@ -96,6 +96,7 @@
  ("s.el" . "e957dcb0677da18b2bb60ad867db5df5c35b5616")
  ("shrink-path.el" . "c14882c8599aec79a6e8ef2d06454254bb3e1e41")
  ("spacemacs-theme" . "1ec73d68b0f120f92538d9a329a3a46e32f74510")
+ ("sql-indent" . "f170a2746f8dabc888154c9fdc11ffbaae637594")
  ("straight.el" . "3eca39dfc6797243ec7d1c6a7d45142407f73f88")
  ("tablist" . "faab7a035ef2258cc4ea2182f67e3aedab7e2af9")
  ("themes" . "b5ff201f4bea4286e9ed015a2043cf2394182232")
