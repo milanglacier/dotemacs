@@ -25,6 +25,11 @@
      "s-9" #'my/tab-bar-go-to-tab-9)
     )
 
+(when IS-LINUX
+    (general-define-key
+     "C-S-c" #'evil-yank
+     "C-S-v" #'evil-paste-after))
+
 (add-hook 'tty-setup-hook #'my/tty-setup)
 
 (provide 'my-init-os)
