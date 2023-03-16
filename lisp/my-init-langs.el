@@ -163,7 +163,10 @@
 
 (use-package sql
     :init
-    (setq sqlind-basic-offset 4))
+    (setq sqlind-basic-offset 4)
+
+    :config
+    (add-hook 'sql-mode-hook (my/setq-locally tab-width 4)))
 
 (provide 'my-init-langs)
 ;;; my-init-langs.el ends here
