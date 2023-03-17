@@ -87,6 +87,9 @@
     (add-to-list 'eglot-server-programs
                  '(python-mode . ("pyright-langserver" "--stdio")))
 
+    (add-to-list 'eglot-server-programs
+                 '(sql-mode . ("sqls")))
+
     (add-hook
      'eglot-managed-mode-hook #'my/toggle-citre-eglot-capf)
 
