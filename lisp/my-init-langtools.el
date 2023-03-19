@@ -146,5 +146,12 @@
                    (display-buffer-at-bottom)
                    (window-height . 0.8))))
 
+(use-package comint
+    :config
+    (general-define-key
+     :states '(insert emacs)
+     :keymaps 'comint-mode-map
+     "C-a" #'comint-bol))
+
 (provide 'my-init-langtools)
 ;;; my-init-langtools.el ends here
