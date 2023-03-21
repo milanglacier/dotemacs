@@ -38,6 +38,7 @@
     '((helpful . 1) ;; 0 is the default
       (vterm . -1)
       (eldoc . 1)
+      (aichat . 1)
       (python . -1)
       (R . -1)
       (Rhelp . 1)
@@ -54,6 +55,7 @@ if they are side window.")
     '((helpful . bottom) ;;bottom is the default
       (vterm . bottom)
       (eldoc . bottom)
+      (aichat . bottom)
       (python . bottom)
       (R . bottom)
       (Rhelp . bottom)

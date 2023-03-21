@@ -140,7 +140,16 @@ otherwise use the existed one
 
 (autoload 'my:pdf-midnight-mode-maybe "my-apps-autoloads" nil nil nil)
 
-(register-definition-prefixes "my-apps-autoloads" '("my/"))
+(autoload 'my~aichat-start "my-apps-autoloads" "\
+Create a aichat(URL `https://github.com/sigoden/aichat') REPL
+buffer.  Start a new aichat session or switch to an already active
+session. Return the buffer selected (or created). With a numeric
+prefix arg, create or switch to the session with that number as a
+suffix.
+
+\(fn &optional ARG)" t nil)
+
+(register-definition-prefixes "my-apps-autoloads" '("my/" "my:aichat-input-filter" "my~aichat-send-region"))
 
 ;;;***
 

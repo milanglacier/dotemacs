@@ -87,6 +87,9 @@
     (add-to-list 'eglot-server-programs
                  '(python-mode . ("pyright-langserver" "--stdio")))
 
+    (add-to-list 'eglot-server-programs
+                 '(sql-mode . ("sqls")))
+
     (add-hook
      'eglot-managed-mode-hook #'my/toggle-citre-eglot-capf)
 
@@ -142,6 +145,13 @@
                  '("\\*edit-indirect"
                    (display-buffer-at-bottom)
                    (window-height . 0.8))))
+
+(use-package comint
+    :config
+    (general-define-key
+     :states '(insert emacs)
+     :keymaps 'comint-mode-map
+     "C-a" #'comint-bol))
 
 (provide 'my-init-langtools)
 ;;; my-init-langtools.el ends here

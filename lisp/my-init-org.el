@@ -7,6 +7,11 @@
 (straight-use-package 'org-re-reveal)
 (straight-use-package 'ox-clip)
 
+(defvar my$org-use-jupyter t
+    "whether use jupyter as an org-babel backend.  Since org-jupyter
+requires jupyter kernel installed in your system, the integration
+should be an opt-out option.")
+
 (use-package org
     :init
 
@@ -405,13 +410,18 @@
                  '("\\*Org Src"
                    (display-buffer-at-bottom)
                    (window-height . 0.8)))
-    (org-babel-do-load-languages 'org-babel-load-languages
-                                 '((latex . t)
-                                   (R . t)
-                                   (emacs-lisp . t)
-                                   (shell . t)
-                                   (python . t)
-                                   (jupyter . t)))
+
+    (let ((org-babel-langs '((latex . t)
+                             (R . t)
+                             (emacs-lisp . t)
+                             (shell . t)
+                             (python . t))))
+
+        (when my$org-use-jupyter
+            (push '(jupyter . t) org-babel-langs))
+
+        (org-babel-do-load-languages 'org-babel-load-languages
+                                     org-babel-langs))
 
     ;; HACK: when you want to use org-babel to execute a code block,
     ;; it seems that it uses the language identifer associate with
@@ -419,8 +429,9 @@
     (defalias #'org-babel-execute:r #'org-babel-execute:R)
     (my/org-babel-lsp-setup "R")
     (my/org-babel-lsp-setup "python")
-    (my/org-babel-lsp-setup "jupyter-R")
-    (my/org-babel-lsp-setup "jupyter-python")
+    (when my$org-use-jupyter
+        (my/org-babel-lsp-setup "jupyter-R")
+        (my/org-babel-lsp-setup "jupyter-python"))
 
     ;; TODO: update `org-babel-python-command' in accordance to `python-shell-interpreter'
     ;; and `python-shell-interpreter-args'

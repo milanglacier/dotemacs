@@ -106,6 +106,28 @@
 
     )
 
+;; aichat integration
+(use-package my-apps-autoloads
+    :init
+    (add-to-list 'display-buffer-alist
+                 `("\\*aichat\\*"
+                   (display-buffer-in-side-window display-buffer-reuse-window)
+                   (window-width . 0.5)
+                   (window-height 0.5)
+                   (side . ,(alist-get 'aichat my/side-window-sides))
+                   (slot . ,(alist-get 'aichat my/side-window-slots))))
+
+    (general-create-definer my/chatgpt-map
+        :prefix "SPC c"
+        :non-normal-prefix "M-SPC c"
+        :prefix-map 'my/chatgpt-map)
+
+    (my/chatgpt-map
+        :keymaps 'override
+        :states '(normal insert motion visual)
+        "s" #'my~aichat-start
+        "r" #'my~aichat-send-region-operator))
+
 
 (provide 'my-init-apps)
 ;;; my-init-apps.el ends here
