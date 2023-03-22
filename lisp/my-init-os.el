@@ -28,7 +28,7 @@
 (when IS-LINUX
     (general-define-key
      "C-S-c" #'evil-yank
-     "C-S-v" #'evil-paste-after))
+     "C-S-v" #'evil-paste-before))
 
 (add-hook 'tty-setup-hook #'my/tty-setup)
 
