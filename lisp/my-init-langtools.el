@@ -4,6 +4,8 @@
 (straight-use-package 'eglot)
 (straight-use-package 'consult-eglot)
 (straight-use-package 'edit-indirect)
+(straight-use-package '(copilot :host github :repo "zerolfx/copilot.el"
+                                :files ("dist" "*.el")))
 
 (use-package citre
     :init
@@ -152,6 +154,21 @@
      :states '(insert emacs)
      :keymaps 'comint-mode-map
      "C-a" #'comint-bol))
+
+(use-package copilot
+    :init
+    (my/toggle-map
+        :keymaps 'override
+        :states '(normal insert motion)
+        "g" #'copilot-mode)
+
+    :config
+    (general-define-key
+     :states '(insert)
+     :keymaps 'copilot-mode-map
+     "M-y" #'copilot-accept-completion
+     "M-]" #'copilot-next-completion
+     "M-[" #'copilot-previous-completion))
 
 (provide 'my-init-langtools)
 ;;; my-init-langtools.el ends here
