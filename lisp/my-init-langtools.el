@@ -166,9 +166,12 @@
     (general-define-key
      :states '(insert)
      :keymaps 'copilot-mode-map
-     "M-y" #'copilot-accept-completion
-     "M-<" #'copilot-next-completion
-     "M->" #'copilot-previous-completion))
+     "M-y" #'copilot-accept-completion-by-line
+     "M-Y" #'copilot-accept-completion
+     "M-J" #'copilot-next-completion
+     "M-K" #'copilot-previous-completion
+     "M->" #'copilot-next-completion
+     "M-<" #'copilot-previous-completion))
 
 (provide 'my-init-langtools)
 ;;; my-init-langtools.el ends here
