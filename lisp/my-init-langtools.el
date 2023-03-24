@@ -167,8 +167,8 @@
      :states '(insert)
      :keymaps 'copilot-mode-map
      "M-y" #'copilot-accept-completion
-     "M-]" #'copilot-next-completion
-     "M-[" #'copilot-previous-completion))
+     "M-<" #'copilot-next-completion
+     "M->" #'copilot-previous-completion))
 
 (provide 'my-init-langtools)
 ;;; my-init-langtools.el ends here
