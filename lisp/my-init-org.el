@@ -102,6 +102,8 @@ should be an opt-out option.")
     (add-hook 'org-tab-first-hook #'my/org-indent-maybe-h)
     (add-hook 'org-tab-first-hook #'my/org-yas-expand-maybe-h)
 
+    (add-hook 'org-mode-hook #'eglot-ensure)
+
     (general-define-key
      :states 'normal
      :keymaps 'org-mode-map

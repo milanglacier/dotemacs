@@ -25,8 +25,10 @@
           company-dabbrev-other-buffers nil
           company-dabbrev-code-other-buffers nil
           company-dabbrev-ignore-case t
+          company-dabbrev-code-ignore-case t
           company-dabbrev-downcase nil
-          company-selection-wrap-around t)
+          company-selection-wrap-around t
+          completion-ignore-case t)
 
     (my/run-hook-once evil-insert-state-entry-hook global-company-mode)
     (my/run-hook-once evil-insert-state-entry-hook company-tng-mode)

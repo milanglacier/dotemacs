@@ -82,8 +82,11 @@
     (setq eglot-stay-out-of '(company)
           eglot-workspace-configuration
           '(:pyright (:useLibraryCodeForTypes t :openFilesOnly :json-false)
-            :r (:lsp (:diagnostics :json-false)))
-          read-process-output-max (* 1024 1024))
+            :r (:lsp (:diagnostics :json-false))
+            :ltex (:disabledRules (:en-US ["DATE_NEW_YEAR" "UPPERCASE_SENTENCE_START"]
+                                   :zh-CN ["DATE_NEW_YEAR" "UPPERCASE_SENTENCE_START"])))
+          read-process-output-max (* 1024 1024)
+          eglot-sync-connect 0)
 
     :config
     (add-to-list 'eglot-server-programs
@@ -92,14 +95,20 @@
     (add-to-list 'eglot-server-programs
                  '(sql-mode . ("sqls")))
 
+    (add-to-list 'eglot-server-programs
+                 '(((markdown-mode :language-id "markdown")
+                    (org-mode :language-id "org")) . ("~/.local/bin/ltex-ls")))
+    ;; NOTE: the latest version of ltex-ls (16.0) has bugs and therefore
+    ;; does not work in emacs. Use an older version (15.2) instead.
+    ;; TODO: update ltex-ls to the latest version once the bug has been fixed.
+
     (add-hook
      'eglot-managed-mode-hook #'my/toggle-citre-eglot-capf)
 
     ;; NOTE: THIS IS REALLY IMPORTANT!
-    ;; when you are registered evil keymaps for a minor mode keymap
-    ;; you MUST call this func to automatically activate them
-    ;; otherwise, you have to make a state transistion to make them
-    ;; become effective.
+    ;; when you register evil keymaps for a minor mode keymap you MUST
+    ;; call this func to automatically activate them otherwise, you
+    ;; have to make a state transistion to make them become effective.
     (add-hook 'eglot-managed-mode-hook #'evil-normalize-keymaps)
     (add-hook 'eglot-managed-mode-hook
               (my/setq-locally eldoc-documentation-function #'eldoc-documentation-compose))

@@ -1,24 +1,33 @@
 
 # Table of Contents
 
-1.  [Features](#org4646771)
-2.  [Notes](#org136c939)
-    1.  [Startup speed](#org7d5f8a9)
-    2.  [Naming conventions (WIP)](#org3cb8d13)
-    3.  [Corfu or Company?](#orge95847f)
+1.  [Features](#org4b1d649)
+2.  [TODOs](#orgfc6dd83)
+    1.  [Update `lisp-indent-function` from Doomemacs.](#org682ec0a)
+    2.  [Report `org-capture` bugs when inserting entries into table to upstream.](#org35f0b6c)
+    3.  [Utilize the contextual information from previous code block when editing source block within markdown/org.](#org66a1109)
+    4.  [Update `ltex-ls` when the bug has been fixed.](#org9a5ff59)
+    5.  [Lazily load third-party plugins for `evil`.](#orgd7f0ff9)
+    6.  [Configure `evil-args` to use spaces as argument delimiter for `emacs-lisp-mode`.](#orgd342c44)
+    7.  [Implement thread-folding for `mu4e`.](#org9c1056f)
+3.  [Notes](#org4f81b65)
+    1.  [Startup speed](#orgdedab22)
+    2.  [Naming conventions (WIP)](#orgeb70cce)
+    3.  [Corfu or Company?](#org1f09348)
 
 
 
-<a id="org4646771"></a>
+<a id="org4b1d649"></a>
 
 # Features
 
--   **Blazingly fast**.
+-   **Blazing fast**.
     
-    TTY starts in 0.32s on Mac M1 and 0.73s on a VPS with 1 core CPU and
-    1GB RAM. The GUI starts in 0.44s on Mac M1. You can even `export
+    TTY starts in 0.32s on MacBook Air (M1, 2020), 0.73s on a VPS with 1
+    core CPU and 1 GB RAM, and 0.30s on WSL with Intel i7-1185G7 and 32
+    GB RAM. The GUI starts in 0.44s on Mac M1. You can even `export
       EDITOR="emacs -nw"` and feel no perceptible startup difference
-    comparing to vim! (See [2.1](#org7d5f8a9) for additional details.)
+    comparing to vim! (See [3.1](#orgdedab22) for additional details.)
 
 -   **Robust**
     
@@ -27,14 +36,14 @@
 
 -   **All-around**
     
-    This configuration works well on both TTY and GUI. Compatability on
+    This configuration works well on both TTY and GUI. Compatibility on
     TTY is not compromised, while GUI features, including `xwidget`, are
     also well-configured.
 
 -   **Feature rich**
     
-    A blazingly fast startup speed doesn&rsquo;t mean it is a lite and minimal
-    configuration.  Instead it is &ldquo;heavy&rdquo; and feature rich, including:
+    A blazing fast startup speed doesn&rsquo;t mean it is a lite and minimal
+    configuration.  Instead, it is &ldquo;heavy&rdquo; and feature rich, including:
     
     -   A modern minibuffer completion experience powered by `vertico+consult+orderless+embark+marginalia` family bucket.
     
@@ -42,25 +51,65 @@
     
     -   A keybinding scheme centered around leader and localleader keys, powered by `general` and `which-key`.
     
-    -   In-buffer autocompletion frontend based on `company` (see [2.3](#orge95847f)).
+    -   In-buffer autocompletion frontend based on `company` (see [3.3](#org1f09348)).
     
-    -   Code completion and navigation based on `eglot` (lsp) and `citre` (ctags).
+    -   Code completion and navigation based on `eglot` (LSP) and `citre` (Ctags).
     
     -   Integration with `eglot` and `org-babel` or `markdown-mode` that takes literate programming to the next level.
 
 
-<a id="org136c939"></a>
+<a id="orgfc6dd83"></a>
+
+# TODOs
+
+
+<a id="org682ec0a"></a>
+
+## Update `lisp-indent-function` from Doomemacs.
+
+
+<a id="org35f0b6c"></a>
+
+## Report `org-capture` bugs when inserting entries into table to upstream.
+
+
+<a id="org66a1109"></a>
+
+## Utilize the contextual information from previous code block when editing source block within markdown/org.
+
+
+<a id="org9a5ff59"></a>
+
+## Update `ltex-ls` when the bug has been fixed.
+
+
+<a id="orgd7f0ff9"></a>
+
+## Lazily load third-party plugins for `evil`.
+
+
+<a id="orgd342c44"></a>
+
+## Configure `evil-args` to use spaces as argument delimiter for `emacs-lisp-mode`.
+
+
+<a id="org9c1056f"></a>
+
+## Implement thread-folding for `mu4e`.
+
+
+<a id="org4f81b65"></a>
 
 # Notes
 
 
-<a id="org7d5f8a9"></a>
+<a id="orgdedab22"></a>
 
 ## Startup speed
 
 Startup speed is measured using `(emacs-init-time)`.
 
-However note that this metric may fool you.  If you load some packages
+However, note that this metric may fool you.  If you load some packages
 in `emacs-startup-hook` or `after-init-hook`, then `(emacs-init-time)`
 cannot properly measure your real startup time. Packages loaded at
 `emacs-start-hook` and `after-init-hook` are actually not lazy loaded;
@@ -69,7 +118,7 @@ skews `(emacs-init-time)` and does not accurately reflect startup
 time. This configuration is honest and truly lazy loads packages.
 
 
-<a id="org3cb8d13"></a>
+<a id="orgeb70cce"></a>
 
 ## Naming conventions (WIP)
 
@@ -89,7 +138,7 @@ time. This configuration is honest and truly lazy loads packages.
 -   A symbol prefixed with `my&` indicates it is a special symbol like faces.
 
 
-<a id="orge95847f"></a>
+<a id="org1f09348"></a>
 
 ## Corfu or Company?
 
