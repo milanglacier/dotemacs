@@ -96,10 +96,9 @@
      'eglot-managed-mode-hook #'my/toggle-citre-eglot-capf)
 
     ;; NOTE: THIS IS REALLY IMPORTANT!
-    ;; when you are registered evil keymaps for a minor mode keymap
-    ;; you MUST call this func to automatically activate them
-    ;; otherwise, you have to make a state transistion to make them
-    ;; become effective.
+    ;; when you register evil keymaps for a minor mode keymap you MUST
+    ;; call this func to automatically activate them otherwise, you
+    ;; have to make a state transistion to make them become effective.
     (add-hook 'eglot-managed-mode-hook #'evil-normalize-keymaps)
     (add-hook 'eglot-managed-mode-hook
               (my/setq-locally eldoc-documentation-function #'eldoc-documentation-compose))
