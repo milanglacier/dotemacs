@@ -170,10 +170,14 @@ suffix."
     (interactive "P")
     (require 'vterm)
     (let ((vterm-buffer-name "*aichat*")
-          aichat-buffer)
+          (aichat-buffer)
+          (aichat-buffer-exist-p
+           (get-buffer
+            (if arg (format "*aichat*<%d>" arg) "*aichat*"))))
         (setq aichat-buffer (vterm arg))
-        (with-current-buffer aichat-buffer
-            (vterm-send-string "aichat\n"))))
+        (unless aichat-buffer-exist-p
+            (with-current-buffer aichat-buffer
+                (vterm-send-string "aichat\n")))))
 
 (defun my:aichat-input-filter (str)
     "In aichat, multi-line input is enclosed using `{}` brackets. It
