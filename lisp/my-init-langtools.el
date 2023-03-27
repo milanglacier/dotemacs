@@ -85,7 +85,8 @@
             :r (:lsp (:diagnostics :json-false))
             :ltex (:disabledRules (:en-US ["DATE_NEW_YEAR" "UPPERCASE_SENTENCE_START"]
                                    :zh-CN ["DATE_NEW_YEAR" "UPPERCASE_SENTENCE_START"])))
-          read-process-output-max (* 1024 1024))
+          read-process-output-max (* 1024 1024)
+          eglot-sync-connect 0)
 
     :config
     (add-to-list 'eglot-server-programs
