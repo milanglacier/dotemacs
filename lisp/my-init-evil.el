@@ -161,7 +161,7 @@
     (global-evil-matchit-mode)
     (evil-collection-init)
 
-    ;; TODO: doom hacks a lot of advices. However I don't really understand them.
+    ;; NOTE: doom hacks a lot of advices. However I don't really understand them.
     ;; (Maybe I don't face the situations where I need those advices).  Leave this
     ;; comment for the purpopse of future reminder.  If one day I met those
     ;; situations, I could still go to doom for references.

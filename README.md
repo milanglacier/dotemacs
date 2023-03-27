@@ -1,15 +1,23 @@
 
 # Table of Contents
 
-1.  [Features](#org4646771)
-2.  [Notes](#org136c939)
-    1.  [Startup speed](#org7d5f8a9)
-    2.  [Naming conventions (WIP)](#org3cb8d13)
-    3.  [Corfu or Company?](#orge95847f)
+1.  [Features](#org4906f14)
+2.  [TODOs](#org089665e)
+    1.  [Update `lisp-indent-function` from doomemacs.](#orge6a6981)
+    2.  [Report `org-capture` bugs when inserting entries into table to upstream.](#orga841d88)
+    3.  [Utilize the contextual information from previous code block when editing source block within markdown/org.](#orga5ff0c1)
+    4.  [Update `ltex-ls` when the bug has been fixed.](#org7ad5409)
+    5.  [Lazily load third-party plugins for `evil`.](#orgc7005ee)
+    6.  [Configure `evil-args` to use spaces as argument delimiter for `emacs-lisp-mode`.](#orgff8a373)
+    7.  [Implement thread-folding for `mu4e`.](#org0f8d152)
+3.  [Notes](#org71d63e1)
+    1.  [Startup speed](#orge359a5c)
+    2.  [Naming conventions (WIP)](#org1e9597c)
+    3.  [Corfu or Company?](#org54e60c6)
 
 
 
-<a id="org4646771"></a>
+<a id="org4906f14"></a>
 
 # Features
 
@@ -18,7 +26,7 @@
     TTY starts in 0.32s on Mac M1 and 0.73s on a VPS with 1 core CPU and
     1GB RAM. The GUI starts in 0.44s on Mac M1. You can even `export
       EDITOR="emacs -nw"` and feel no perceptible startup difference
-    comparing to vim! (See [2.1](#org7d5f8a9) for additional details.)
+    comparing to vim! (See [3.1](#orge359a5c) for additional details.)
 
 -   **Robust**
     
@@ -42,19 +50,59 @@
     
     -   A keybinding scheme centered around leader and localleader keys, powered by `general` and `which-key`.
     
-    -   In-buffer autocompletion frontend based on `company` (see [2.3](#orge95847f)).
+    -   In-buffer autocompletion frontend based on `company` (see [3.3](#org54e60c6)).
     
     -   Code completion and navigation based on `eglot` (lsp) and `citre` (ctags).
     
     -   Integration with `eglot` and `org-babel` or `markdown-mode` that takes literate programming to the next level.
 
 
-<a id="org136c939"></a>
+<a id="org089665e"></a>
+
+# TODOs
+
+
+<a id="orge6a6981"></a>
+
+## Update `lisp-indent-function` from doomemacs.
+
+
+<a id="orga841d88"></a>
+
+## Report `org-capture` bugs when inserting entries into table to upstream.
+
+
+<a id="orga5ff0c1"></a>
+
+## Utilize the contextual information from previous code block when editing source block within markdown/org.
+
+
+<a id="org7ad5409"></a>
+
+## Update `ltex-ls` when the bug has been fixed.
+
+
+<a id="orgc7005ee"></a>
+
+## Lazily load third-party plugins for `evil`.
+
+
+<a id="orgff8a373"></a>
+
+## Configure `evil-args` to use spaces as argument delimiter for `emacs-lisp-mode`.
+
+
+<a id="org0f8d152"></a>
+
+## Implement thread-folding for `mu4e`.
+
+
+<a id="org71d63e1"></a>
 
 # Notes
 
 
-<a id="org7d5f8a9"></a>
+<a id="orge359a5c"></a>
 
 ## Startup speed
 
@@ -69,7 +117,7 @@ skews `(emacs-init-time)` and does not accurately reflect startup
 time. This configuration is honest and truly lazy loads packages.
 
 
-<a id="org3cb8d13"></a>
+<a id="org1e9597c"></a>
 
 ## Naming conventions (WIP)
 
@@ -89,7 +137,7 @@ time. This configuration is honest and truly lazy loads packages.
 -   A symbol prefixed with `my&` indicates it is a special symbol like faces.
 
 
-<a id="orge95847f"></a>
+<a id="org54e60c6"></a>
 
 ## Corfu or Company?
 
