@@ -2,10 +2,11 @@
 #+author: Milan Glacier
 
 * Features
-- *Blazingly fast*.
+- *Blazing fast*.
 
-  TTY starts in 0.32s on Mac M1 and 0.73s on a VPS with 1 core CPU and
-  1GB RAM. The GUI starts in 0.44s on Mac M1. You can even ~export
+  TTY starts in 0.32s on MacBook Air (M1, 2020), 0.73s on a VPS with 1
+  core CPU and 1 GB RAM, and 0.30s on WSL with Intel i7-1185G7 and 32
+  GB RAM. The GUI starts in 0.44s on Mac M1. You can even ~export
   EDITOR="emacs -nw"~ and feel no perceptible startup difference
   comparing to vim! (See [[*Startup speed]] for additional details.)
 
@@ -16,14 +17,14 @@
 
 - *All-around*
 
-  This configuration works well on both TTY and GUI. Compatability on
+  This configuration works well on both TTY and GUI. Compatibility on
   TTY is not compromised, while GUI features, including ~xwidget~, are
   also well-configured.
 
 - *Feature rich*
 
-  A blazingly fast startup speed doesn't mean it is a lite and minimal
-  configuration.  Instead it is "heavy" and feature rich, including:
+  A blazing fast startup speed doesn't mean it is a lite and minimal
+  configuration.  Instead, it is "heavy" and feature rich, including:
 
   - A modern minibuffer completion experience powered by ~vertico+consult+orderless+embark+marginalia~ family bucket.
 
@@ -33,13 +34,13 @@
 
   - In-buffer autocompletion frontend based on ~company~ (see [[*Corfu or Company?]]).
 
-  - Code completion and navigation based on ~eglot~ (lsp) and ~citre~ (ctags).
+  - Code completion and navigation based on ~eglot~ (LSP) and ~citre~ (Ctags).
 
   - Integration with ~eglot~ and ~org-babel~ or ~markdown-mode~ that takes literate programming to the next level.
 
 * TODOs
 
-** [#C] Update ~lisp-indent-function~ from doomemacs.
+** [#C] Update ~lisp-indent-function~ from Doomemacs.
 ** [#B] Report ~org-capture~ bugs when inserting entries into table to upstream.
 ** [#B] Utilize the contextual information from previous code block when editing source block within markdown/org.
 ** [#A] Update ~ltex-ls~ when the bug has been fixed.
@@ -53,7 +54,7 @@
 
 Startup speed is measured using ~(emacs-init-time)~.
 
-However note that this metric may fool you.  If you load some packages
+However, note that this metric may fool you.  If you load some packages
 in ~emacs-startup-hook~ or ~after-init-hook~, then ~(emacs-init-time)~
 cannot properly measure your real startup time. Packages loaded at
 ~emacs-start-hook~ and ~after-init-hook~ are actually not lazy loaded;
