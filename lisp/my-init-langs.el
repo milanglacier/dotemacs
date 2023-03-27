@@ -154,6 +154,8 @@
         "rs" #'my/markdown-run-repl
         "s" #'my/markdown-send-region)
 
+    (add-hook 'markdown-mode-hook #'eglot-ensure)
+
     )
 
 (use-package go-mode
