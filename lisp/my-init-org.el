@@ -316,6 +316,13 @@ should be an opt-out option.")
     ;; when refiling from org-capture, Emacs prompts to kill the
     ;; underlying, modified buffer. This fixes that.
     (add-hook 'org-after-refile-insert-hook #'save-buffer)
+
+    ;; ltex-ls (via eglot) and citre has compatability issue with org-capture-mode
+    (add-hook 'org-capture-mode-hook (my/turn-off-mode flymake-mode))
+    (my/setq-on-hook org-capture-mode-hook
+                     completion-at-point-functions
+                     '(pcomplete-completions-at-point
+                       jupyter-org-completion-at-point))
     )
 
 (use-package evil-org-agenda
