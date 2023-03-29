@@ -284,7 +284,27 @@ Run the REPL depending on the context (i.e. the language of the
 code block)" t nil)
  (autoload #'my/markdown-send-region "my-langs-autoloads" nil t)
 
-(register-definition-prefixes "my-langs-autoloads" '("my/"))
+(autoload 'my~conda-activate "my-langs-autoloads" "\
+This command activates a conda environment, assuming that the
+base environment is already activated.  If the environment variable
+CONDA_PREFIX is not present, this command will not perform any
+action.
+
+\(fn &optional PATH)" t nil)
+
+(autoload 'my~conda-deactivate "my-langs-autoloads" "\
+This command deactivates the current conda environment, except
+for the base environment." t nil)
+
+(autoload 'my~python-venv-activate "my-langs-autoloads" "\
+This command activates a python virtual environment.
+
+\(fn &optional PATH)" t nil)
+
+(autoload 'my~python-venv-deactivate "my-langs-autoloads" "\
+This command deactivates the current python virtual environment." t nil)
+
+(register-definition-prefixes "my-langs-autoloads" '("my$" "my/"))
 
 ;;;***
 
