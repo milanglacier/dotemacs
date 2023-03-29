@@ -321,8 +321,7 @@ should be an opt-out option.")
     (add-hook 'org-capture-mode-hook (my/turn-off-mode flymake-mode))
     (my/setq-on-hook org-capture-mode-hook
                      completion-at-point-functions
-                     '(pcomplete-completions-at-point
-                       jupyter-org-completion-at-point))
+                     '(pcomplete-completions-at-point t))
     )
 
 (use-package evil-org-agenda
