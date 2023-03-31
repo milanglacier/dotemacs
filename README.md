@@ -1,33 +1,38 @@
 
 # Table of Contents
 
-1.  [Features](#org4b1d649)
-2.  [TODOs](#orgfc6dd83)
-    1.  [Update `lisp-indent-function` from Doomemacs.](#org682ec0a)
-    2.  [Report `org-capture` bugs when inserting entries into table to upstream.](#org35f0b6c)
-    3.  [Utilize the contextual information from previous code block when editing source block within markdown/org.](#org66a1109)
-    4.  [Update `ltex-ls` when the bug has been fixed.](#org9a5ff59)
-    5.  [Lazily load third-party plugins for `evil`.](#orgd7f0ff9)
-    6.  [Configure `evil-args` to use spaces as argument delimiter for `emacs-lisp-mode`.](#orgd342c44)
-    7.  [Implement thread-folding for `mu4e`.](#org9c1056f)
-3.  [Notes](#org4f81b65)
-    1.  [Startup speed](#orgdedab22)
-    2.  [Naming conventions (WIP)](#orgeb70cce)
-    3.  [Corfu or Company?](#org1f09348)
+1.  [Features](#org4cf7d18)
+2.  [TODOs](#orgd85159a)
+    1.  [Update `ltex-ls` when the bug has been fixed.](#orgf079811)
+    2.  [Once evil-collection addresses the compatibility issue caused by the breaking changes in mu, update mu to version 1.10.](#org028bab2)
+    3.  [Update `lisp-indent-function` from Doomemacs.](#org6f33072)
+    4.  [Report `org-capture` bugs when inserting entries into table to upstream.](#org930d55e)
+    5.  [Utilize the contextual information from previous code block when editing source block within markdown/org.](#orge75213f)
+    6.  [Lazily load third-party plugins for `evil`.](#orgb68b33b)
+    7.  [Configure `evil-args` to use spaces as argument delimiter for `emacs-lisp-mode`.](#org3dc1f75)
+    8.  [Implement thread-folding for `mu4e`.](#orge71d0ae)
+3.  [Notes](#org1a6201f)
+    1.  [Startup speed](#orgcfe5bf3)
+    2.  [Naming conventions (WIP)](#org56096ac)
+    3.  [Corfu or Company?](#orgf63a6ac)
+
+If you&rsquo;re currently reading this README file in Markdown format, it
+has been generated through `org-export`, from its original org
+format. For the best experience, please consider reading the org
+format file instead.
 
 
-
-<a id="org4b1d649"></a>
+<a id="org4cf7d18"></a>
 
 # Features
 
 -   **Blazing fast**.
     
     TTY starts in 0.32s on MacBook Air (M1, 2020), 0.73s on a VPS with 1
-    core CPU and 1 GB RAM, and 0.30s on WSL with Intel i7-1185G7 and 32
+    core CPU and 1 GB RAM, and 0.30s on WSL with Intel i7-1185G7 and 32
     GB RAM. The GUI starts in 0.44s on Mac M1. You can even `export
       EDITOR="emacs -nw"` and feel no perceptible startup difference
-    comparing to vim! (See [3.1](#orgdedab22) for additional details.)
+    comparing to vim! (See [3.1](#orgcfe5bf3) for additional details.)
 
 -   **Robust**
     
@@ -51,59 +56,64 @@
     
     -   A keybinding scheme centered around leader and localleader keys, powered by `general` and `which-key`.
     
-    -   In-buffer autocompletion frontend based on `company` (see [3.3](#org1f09348)).
+    -   In-buffer autocompletion frontend based on `company` (see [3.3](#orgf63a6ac)).
     
     -   Code completion and navigation based on `eglot` (LSP) and `citre` (Ctags).
     
     -   Integration with `eglot` and `org-babel` or `markdown-mode` that takes literate programming to the next level.
 
 
-<a id="orgfc6dd83"></a>
+<a id="orgd85159a"></a>
 
 # TODOs
 
 
-<a id="org682ec0a"></a>
-
-## Update `lisp-indent-function` from Doomemacs.
-
-
-<a id="org35f0b6c"></a>
-
-## Report `org-capture` bugs when inserting entries into table to upstream.
-
-
-<a id="org66a1109"></a>
-
-## Utilize the contextual information from previous code block when editing source block within markdown/org.
-
-
-<a id="org9a5ff59"></a>
+<a id="orgf079811"></a>
 
 ## Update `ltex-ls` when the bug has been fixed.
 
 
-<a id="orgd7f0ff9"></a>
+<a id="org028bab2"></a>
+
+## Once evil-collection addresses the compatibility issue caused by the breaking changes in mu, update mu to version 1.10.
+
+
+<a id="org6f33072"></a>
+
+## Update `lisp-indent-function` from Doomemacs.
+
+
+<a id="org930d55e"></a>
+
+## Report `org-capture` bugs when inserting entries into table to upstream.
+
+
+<a id="orge75213f"></a>
+
+## Utilize the contextual information from previous code block when editing source block within markdown/org.
+
+
+<a id="orgb68b33b"></a>
 
 ## Lazily load third-party plugins for `evil`.
 
 
-<a id="orgd342c44"></a>
+<a id="org3dc1f75"></a>
 
 ## Configure `evil-args` to use spaces as argument delimiter for `emacs-lisp-mode`.
 
 
-<a id="org9c1056f"></a>
+<a id="orge71d0ae"></a>
 
 ## Implement thread-folding for `mu4e`.
 
 
-<a id="org4f81b65"></a>
+<a id="org1a6201f"></a>
 
 # Notes
 
 
-<a id="orgdedab22"></a>
+<a id="orgcfe5bf3"></a>
 
 ## Startup speed
 
@@ -118,7 +128,7 @@ skews `(emacs-init-time)` and does not accurately reflect startup
 time. This configuration is honest and truly lazy loads packages.
 
 
-<a id="orgeb70cce"></a>
+<a id="org56096ac"></a>
 
 ## Naming conventions (WIP)
 
@@ -138,7 +148,7 @@ time. This configuration is honest and truly lazy loads packages.
 -   A symbol prefixed with `my&` indicates it is a special symbol like faces.
 
 
-<a id="org1f09348"></a>
+<a id="orgf63a6ac"></a>
 
 ## Corfu or Company?
 

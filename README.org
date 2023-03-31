@@ -1,6 +1,11 @@
 #+title: Blazingly fast, robust, all-around emacs configuration
 #+author: Milan Glacier
 
+If you're currently reading this README file in Markdown format, it
+has been generated through ~org-export~, from its original org
+format. For the best experience, please consider reading the org
+format file instead.
+
 * Features
 - *Blazing fast*.
 
@@ -40,10 +45,11 @@
 
 * TODOs
 
+** [#A] Update ~ltex-ls~ when the bug has been fixed.
+** [#A] Once evil-collection addresses the compatibility issue caused by the breaking changes in mu, update mu to version 1.10.
 ** [#C] Update ~lisp-indent-function~ from Doomemacs.
 ** [#B] Report ~org-capture~ bugs when inserting entries into table to upstream.
 ** [#B] Utilize the contextual information from previous code block when editing source block within markdown/org.
-** [#A] Update ~ltex-ls~ when the bug has been fixed.
 ** [#C] Lazily load third-party plugins for ~evil~.
 ** [#C] Configure ~evil-args~ to use spaces as argument delimiter for ~emacs-lisp-mode~.
 ** [#A] Implement thread-folding for ~mu4e~.
