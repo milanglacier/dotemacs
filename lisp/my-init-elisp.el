@@ -51,6 +51,7 @@
         :keymaps 'emacs-lisp-mode-map
         :states '(motion visual insert normal)
         "m" #'macrostep-expand
+        "c" #'macrostep-collapse
         "e" '(:ignore t :which-key "eval")
         "ee" #'eval-last-sexp
         "ef" #'eval-defun
