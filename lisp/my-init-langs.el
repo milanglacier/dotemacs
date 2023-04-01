@@ -15,6 +15,9 @@
 ;; sql
 (straight-use-package 'sql-indent)
 
+;; sql
+(straight-use-package 'ein)
+
 (use-package ess
     :init
     (setq comint-scroll-to-bottom-on-input t
@@ -170,6 +173,57 @@
     :config
     (add-hook 'sql-mode-hook (my/setq-locally tab-width 4))
     (add-hook 'sql-mode-hook #'eglot-ensure))
+
+(use-package ein
+    :init
+    (my/open-map
+        :states '(normal visual motion insert)
+        :keymaps 'override
+        "j" '(:ignore t :which-key "jupyter")
+        "jl" #'ein:login
+        "jr" #'ein:run
+        "js" #'ein:stop)
+
+    :config
+    (my/localleader
+        :states '(normal insert motion)
+        :keymaps 'ein:notebook-mode-map
+        "o" #'ein:worksheet-toggle-output-km
+        "t" #'ein:worksheet-toggle-cell-type-km
+
+        "e" '(:ignore t :which-key "execute")
+        "ee" #'ein:worksheet-execute-cell-km
+        "ej" #'ein:worksheet-execute-cell-and-goto-next-km
+
+        "c" '(:ignore t :which-key "clear")
+        "co" #'ein:worksheet-clear-output-km
+        "cO" #'ein:worksheet-clear-all-output-km
+
+        "k" #'ein:worksheet-kill-cell-km
+        "y" #'ein:worksheet-yank-cell-km
+        "a" #'ein:worksheet-insert-cell-above-km
+        "b" #'ein:worksheet-insert-cell-below-km
+        "m" #'ein:worksheet-merge-cell-km
+        "s" #'ein:worksheet-split-cell-at-point-km
+        "<up>" #'ein:worksheet-move-cell-up-km
+        "<down>" #'ein:worksheet-move-cell-down-km
+        "!" #'ein:tb-show-km ;; show traceback
+        "i" #'ein:notebook-interrupt-kernel-km
+        "q" #'ein:notebook-close
+
+        "f" '(:ignore t :which-key "file")
+        "fw" #'ein:notebook-save-notebook-command
+        "fr" #'ein:notebook-rename-command
+        "fq" #'ein:notebook-close
+        "fo" #'ein:notebook-open
+
+        "/" #'ein:notebook-scratchsheet-open
+        )
+
+    (add-to-list 'display-buffer-alist
+                 '("^\\*ein:notebooklist"
+                   (display-buffer-reuse-window display-buffer-in-new-tab)))
+    )
 
 (provide 'my-init-langs)
 ;;; my-init-langs.el ends here
