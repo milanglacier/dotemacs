@@ -223,6 +223,10 @@
     (add-to-list 'display-buffer-alist
                  '("^\\*ein:notebooklist"
                    (display-buffer-reuse-window display-buffer-in-new-tab)))
+
+    (add-to-list 'display-buffer-alist
+                 '("\\*ein:.*\\.ipynb"
+                   (display-buffer-same-window)))
     )
 
 (provide 'my-init-langs)
