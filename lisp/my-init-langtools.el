@@ -6,6 +6,7 @@
 (straight-use-package 'edit-indirect)
 (straight-use-package '(copilot :host github :repo "zerolfx/copilot.el"
                                 :files ("dist" "*.el")))
+(straight-use-package 'code-cells)
 
 (use-package citre
     :init

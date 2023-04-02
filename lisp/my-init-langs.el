@@ -22,7 +22,14 @@
           ess-imenu-use-S nil ;; imenu integration in rmarkdown causes emacs hang
           ess-imenu-use-p nil
           ess-indent-offset 4
-          ess-use-flymake nil)
+          ess-use-flymake nil
+          ;; NOTE: when a comment starts with `# %%', it will be
+          ;; treated as a code cell which can be converted to the
+          ;; jupyter notebook format.
+          ;; `ess-indent-with-fancy-comments' is set to nil to avoid
+          ;; the "peculiar" indentation behavior of ess for such
+          ;; "fancy" comments.
+          ess-indent-with-fancy-comments nil)
 
     :config
     (add-to-list 'display-buffer-alist
