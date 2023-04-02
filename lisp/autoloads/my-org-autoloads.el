@@ -52,7 +52,11 @@ files in the org-directory to create the org-agenda view"
 when clocking out, use this function to automatically update the table."
     (save-excursion
         (goto-char (org-find-olp
-                    `(,(buffer-name) "play" ,(format-time-string "%Y") ,(format-time-string "%B"))))
+                    `(,(buffer-name) "play" ,(format-time-string "%Y")
+                      ;; 5th element of org-heading-components is the
+                      ;; text of current heading which is exactly the
+                      ;; month current table entry is at.
+                      ,(nth 4 (org-heading-components)))))
         (re-search-forward (replace-regexp-in-string "[][]" "" start)
                            ;; [ and ] are regex reserved identifers,
                            ;; need to escape them.

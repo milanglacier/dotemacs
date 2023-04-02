@@ -303,6 +303,7 @@ This command activates a python virtual environment.
 
 (autoload 'my~python-venv-deactivate "my-langs-autoloads" "\
 This command deactivates the current python virtual environment." t nil)
+ (autoload #'yapf-format-buffer "my-langs-autoloads" nil t)
 
 (register-definition-prefixes "my-langs-autoloads" '("my$" "my/"))
 

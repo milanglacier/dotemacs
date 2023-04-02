@@ -171,5 +171,8 @@ for the base environment."
             (setenv "PATH" (string-join paths ":"))
             (setenv "VIRTUAL_ENV" nil))))
 
+;;;###autoload (autoload #'yapf-format-buffer "my-langs-autoloads" nil t)
+(reformatter-define yapf-format :program "yapf")
+
 (provide 'my-langs-autoloads)
 ;;; my-init-langs.el ends here

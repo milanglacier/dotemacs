@@ -7,10 +7,10 @@
 (straight-use-package 'org-re-reveal)
 (straight-use-package 'ox-clip)
 
-(defvar my$org-use-jupyter t
-    "whether use jupyter as an org-babel backend.  Since org-jupyter
-requires jupyter kernel installed in your system, the integration
-should be an opt-out option.")
+(defvar my$jupyter-want-integration t
+    "Enable jupyter integration. which entails configuring it as an
+org-babel backend and allowing for direct editing of Jupyter notebooks
+within Emacs.")
 
 (use-package org
     :init
@@ -425,7 +425,7 @@ should be an opt-out option.")
                              (shell . t)
                              (python . t))))
 
-        (when my$org-use-jupyter
+        (when my$jupyter-want-integration
             (push '(jupyter . t) org-babel-langs))
 
         (org-babel-do-load-languages 'org-babel-load-languages
@@ -437,7 +437,7 @@ should be an opt-out option.")
     (defalias #'org-babel-execute:r #'org-babel-execute:R)
     (my/org-babel-lsp-setup "R")
     (my/org-babel-lsp-setup "python")
-    (when my$org-use-jupyter
+    (when my$jupyter-want-integration
         (my/org-babel-lsp-setup "jupyter-R")
         (my/org-babel-lsp-setup "jupyter-python"))
 
