@@ -8,6 +8,7 @@
  ("better-jumper" . "47622213783ece37d5337dc28d33b530540fc319")
  ("cape" . "f953ea80f1a7ee628064a8478d94383f2763c262")
  ("citre" . "4626ada80fabea6b62935567acc1cb8dad607016")
+ ("code-cells.el" . "fd68a33eb43b3cbd44fed767f48e230382903592")
  ("company-box" . "b6f53e26adf948aca55c3ff6c22c21a6a6614253")
  ("company-mode" . "b3b9fa37ef9fd02471779130a0b53d87fa726ac1")
  ("compat" . "a518b1589d24245629a7aaaa00773f1b76156705")
