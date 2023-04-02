@@ -7,6 +7,7 @@
 (straight-use-package '(copilot :host github :repo "zerolfx/copilot.el"
                                 :files ("dist" "*.el")))
 (straight-use-package 'code-cells)
+(straight-use-package 'reformatter)
 
 (use-package citre
     :init

@@ -114,6 +114,7 @@
     (my/localleader
         :keymaps 'python-mode-map
         :states '(normal visual insert motion)
+        "f" #'yapf-format-buffer
         "s" #'my/send-region-to-python
         "r" '(:ignore t :which-key "REPL")
         "rs" #'my/run-python
