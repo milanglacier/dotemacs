@@ -9,6 +9,12 @@
 ;; markdown
 (straight-use-package 'markdown-mode)
 
+;; go
+(straight-use-package 'go-mode)
+
+;; sql
+(straight-use-package 'sql-indent)
+
 (use-package ess
     :init
     (setq comint-scroll-to-bottom-on-input t
@@ -16,7 +22,14 @@
           ess-imenu-use-S nil ;; imenu integration in rmarkdown causes emacs hang
           ess-imenu-use-p nil
           ess-indent-offset 4
-          ess-use-flymake nil)
+          ess-use-flymake nil
+          ;; NOTE: when a comment starts with `# %%', it will be
+          ;; treated as a code cell which can be converted to the
+          ;; jupyter notebook format.
+          ;; `ess-indent-with-fancy-comments' is set to nil to avoid
+          ;; the "peculiar" indentation behavior of ess for such
+          ;; "fancy" comments.
+          ess-indent-with-fancy-comments nil)
 
     :config
     (add-to-list 'display-buffer-alist
@@ -33,6 +46,14 @@
                    (window-height . 0.4)
                    (side . ,(alist-get 'Rdired my/side-window-sides))
                    (slot . ,(alist-get 'Rdired my/side-window-slots))))
+
+    (add-to-list 'display-buffer-alist
+                 `("^\\*R Watch"
+                   (display-buffer-reuse-window display-buffer-in-side-window)
+                   (window-width . 0.33)
+                   (window-height . 0.4)
+                   (side . ,(alist-get 'RWatch my/side-window-sides))
+                   (slot . ,(alist-get 'RWatch my/side-window-slots))))
 
     (add-to-list 'display-buffer-alist
                  `("^\\*help\\[R\\]"
@@ -93,6 +114,7 @@
     (my/localleader
         :keymaps 'python-mode-map
         :states '(normal visual insert motion)
+        "f" #'yapf-format-buffer
         "s" #'my/send-region-to-python
         "r" '(:ignore t :which-key "REPL")
         "rs" #'my/run-python
@@ -129,7 +151,7 @@
     :config
 
     (general-define-key
-     :states '(normal insert motion visual)
+     :states '(normal motion)
      :keymaps 'markdown-mode-map
      "TAB" #'markdown-cycle)
 
@@ -140,7 +162,22 @@
         "rs" #'my/markdown-run-repl
         "s" #'my/markdown-send-region)
 
+    (add-hook 'markdown-mode-hook #'eglot-ensure)
+
     )
+
+(use-package go-mode
+    :config
+    (add-hook 'go-mode-hook (my/setq-locally tab-width 4))
+    (add-hook 'go-mode-hook #'eglot-ensure))
+
+(use-package sql
+    :init
+    (setq sqlind-basic-offset 4)
+
+    :config
+    (add-hook 'sql-mode-hook (my/setq-locally tab-width 4))
+    (add-hook 'sql-mode-hook #'eglot-ensure))
 
 (provide 'my-init-langs)
 ;;; my-init-langs.el ends here

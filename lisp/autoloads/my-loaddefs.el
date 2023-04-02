@@ -140,7 +140,16 @@ otherwise use the existed one
 
 (autoload 'my:pdf-midnight-mode-maybe "my-apps-autoloads" nil nil nil)
 
-(register-definition-prefixes "my-apps-autoloads" '("my/"))
+(autoload 'my~aichat-start "my-apps-autoloads" "\
+Create a aichat(URL `https://github.com/sigoden/aichat') REPL
+buffer.  Start a new aichat session or switch to an already active
+session. Return the buffer selected (or created). With a numeric
+prefix arg, create or switch to the session with that number as a
+suffix.
+
+\(fn &optional ARG)" t nil)
+
+(register-definition-prefixes "my-apps-autoloads" '("my/" "my:aichat-input-filter" "my~aichat-send-region"))
 
 ;;;***
 
@@ -275,7 +284,28 @@ Run the REPL depending on the context (i.e. the language of the
 code block)" t nil)
  (autoload #'my/markdown-send-region "my-langs-autoloads" nil t)
 
-(register-definition-prefixes "my-langs-autoloads" '("my/"))
+(autoload 'my~conda-activate "my-langs-autoloads" "\
+This command activates a conda environment, assuming that the
+base environment is already activated.  If the environment variable
+CONDA_PREFIX is not present, this command will not perform any
+action.
+
+\(fn &optional PATH)" t nil)
+
+(autoload 'my~conda-deactivate "my-langs-autoloads" "\
+This command deactivates the current conda environment, except
+for the base environment." t nil)
+
+(autoload 'my~python-venv-activate "my-langs-autoloads" "\
+This command activates a python virtual environment.
+
+\(fn &optional PATH)" t nil)
+
+(autoload 'my~python-venv-deactivate "my-langs-autoloads" "\
+This command deactivates the current python virtual environment." t nil)
+ (autoload #'yapf-format-buffer "my-langs-autoloads" nil t)
+
+(register-definition-prefixes "my-langs-autoloads" '("my$" "my/"))
 
 ;;;***
 
@@ -490,31 +520,32 @@ hooks that will turn off MODE locally.
 \(fn MODE)" nil t)
 
 (autoload 'my/setq-locally "my-utils-autoloads" "\
-Create a function to set VAR to VAL locally. Useful for attaching
-on some hooks that will change the variable locally.
+Create a function that sets a local value to a variable (VAR)
+called VAL. This function is particularly useful for setting variables
+locally in certain hooks.
 
-Use `my/setq-locally' when you want to set VAR to a simple VAL in many
-modes.  Use `my/setq-on-hook' when you want to set VAR to a complex
-VAL in only one mode.  Why don't I just directly use `(add-hook
-'foo-hook (lambda () (FORM)))'?  Because when you try to
-\\[describe-variable] `foo-hook RET', you will find those lambda
-functions unreadable. And using a named function in a hook makes the
-hook described much more nicely.  This is very helpful for debugging
-purpose if you want to examine a hook value.
+For setting a simple VAL to VAR in multiple modes, use
+`my/setq-locally'. In case you want to set a complex VAL to VAR in a
+single mode, use `my/setq-on-hook'. You might wonder why you shouldn't
+simply use (add-hook 'foo-hook (lambda () FORM)? This is because, upon
+running \\[describe-variable] `foo-hook RET', you'll find the lambda
+functions unreadable. Using a named function in a hook, however, makes
+the hook more elegantly described, which proves to be useful for
+debugging purposes if you desire to scrutinize a hook value.
 
 \(fn VAR VAL)" nil t)
 
 (autoload 'my/setq-on-hook "my-utils-autoloads" "\
-Create a function to set VAR to VAL on a HOOK.
+Create a function that sets VAR to VAL on a HOOK.
 
-Use `my/setq-locally' when you want to set VAR to a simple VAL in many
-modes.  Use `my/setq-on-hook' when you want to set VAR to a complex
-VAL in only one mode.  Why don't I just directly use `(add-hook
-'foo-hook (lambda () (FORM)))'?  Because when you try to
-\\[describe-variable] `foo-hook RET', you will find those lambda
-functions unreadable. And using a named function in a hook makes the
-hook described much more nicely.  This is very helpful for debugging
-purpose if you want to examine a hook value.
+If you want to set VAR to a simple VAL in multiple modes, use
+`my/setq-locally'. However, if you want to set VAR to a complex VAL in
+only one mode, use `my/setq-on-hook'. Why not directly use (add-hook
+'foo-hook (lambda () FORM))'? Well, when you try to describe the
+variable with \\[describe-variable] `foo-hook RET', those lambda
+functions become unreadable. Using a named function in a hook results
+in much nicer description of the hook. This is particularly helpful
+for debugging purposes when you want to examine a hook value.
 
 \(fn HOOK VAR VAL)" nil t)
 

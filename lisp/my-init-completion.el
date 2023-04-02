@@ -11,6 +11,7 @@
     :init
     (setq company-minimum-prefix-length 2
           company-dabbrev-minimum-length 3
+          company-dabbrev-code-time-limit 0.3
           company-tooltip-limit 14
           company-tooltip-align-annotations t
           company-require-match 'never
@@ -22,12 +23,18 @@
           company-backends '((company-files company-yasnippet company-capf :separate company-dabbrev-code))
           company-auto-commit nil
           company-dabbrev-other-buffers nil
+          company-dabbrev-code-other-buffers nil
           company-dabbrev-ignore-case t
+          company-dabbrev-code-ignore-case t
           company-dabbrev-downcase nil
-          company-selection-wrap-around t)
+          company-selection-wrap-around t
+          completion-ignore-case t)
 
     (my/run-hook-once evil-insert-state-entry-hook global-company-mode)
     (my/run-hook-once evil-insert-state-entry-hook company-tng-mode)
+    (my/setq-on-hook text-mode-hook
+                     company-backends
+                     '((company-files company-yasnippet company-capf :separate company-dabbrev)))
 
     :config
     (add-hook 'company-mode-hook #'evil-normalize-keymaps)

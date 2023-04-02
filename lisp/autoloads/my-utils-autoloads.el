@@ -43,17 +43,18 @@ hooks that will turn off MODE locally."
 
 ;;;###autoload
 (defmacro my/setq-locally (var val)
-    "Create a function to set VAR to VAL locally. Useful for attaching
-on some hooks that will change the variable locally.
+    "Create a function that sets a local value to a variable (VAR)
+called VAL. This function is particularly useful for setting variables
+locally in certain hooks.
 
-Use `my/setq-locally' when you want to set VAR to a simple VAL in many
-modes.  Use `my/setq-on-hook' when you want to set VAR to a complex
-VAL in only one mode.  Why don't I just directly use `(add-hook
-'foo-hook (lambda () (FORM)))'?  Because when you try to
-\\[describe-variable] `foo-hook RET', you will find those lambda
-functions unreadable. And using a named function in a hook makes the
-hook described much more nicely.  This is very helpful for debugging
-purpose if you want to examine a hook value."
+For setting a simple VAL to VAR in multiple modes, use
+`my/setq-locally'. In case you want to set a complex VAL to VAR in a
+single mode, use `my/setq-on-hook'. You might wonder why you shouldn't
+simply use (add-hook 'foo-hook (lambda () FORM)? This is because, upon
+running \\[describe-variable] `foo-hook RET', you'll find the lambda
+functions unreadable. Using a named function in a hook, however, makes
+the hook more elegantly described, which proves to be useful for
+debugging purposes if you desire to scrutinize a hook value."
     (let ((func (intern (concat "my/set-"
                                 (symbol-name var)
                                 "-to-"
@@ -66,16 +67,16 @@ purpose if you want to examine a hook value."
 
 ;;;###autoload
 (defmacro my/setq-on-hook (hook var val)
-    "Create a function to set VAR to VAL on a HOOK.
+    "Create a function that sets VAR to VAL on a HOOK.
 
-Use `my/setq-locally' when you want to set VAR to a simple VAL in many
-modes.  Use `my/setq-on-hook' when you want to set VAR to a complex
-VAL in only one mode.  Why don't I just directly use `(add-hook
-'foo-hook (lambda () (FORM)))'?  Because when you try to
-\\[describe-variable] `foo-hook RET', you will find those lambda
-functions unreadable. And using a named function in a hook makes the
-hook described much more nicely.  This is very helpful for debugging
-purpose if you want to examine a hook value."
+If you want to set VAR to a simple VAL in multiple modes, use
+`my/setq-locally'. However, if you want to set VAR to a complex VAL in
+only one mode, use `my/setq-on-hook'. Why not directly use (add-hook
+'foo-hook (lambda () FORM))'? Well, when you try to describe the
+variable with \\[describe-variable] `foo-hook RET', those lambda
+functions become unreadable. Using a named function in a hook results
+in much nicer description of the hook. This is particularly helpful
+for debugging purposes when you want to examine a hook value."
     (let ((func (intern (concat "my/set-"
                                 (symbol-name var)
                                 "-on-"

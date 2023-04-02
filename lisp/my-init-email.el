@@ -6,6 +6,9 @@
 ;; mu4e binary. If mu4e is installed by a proper package
 ;; manager, then the directory of mu4e.el should be put into one of
 ;; the default location in the `load-path'.
+
+;; TODO: Evil-collection is not compatible with mu version 1.9 or
+;; later. Please use mu version 1.8 instead.
 (use-package mu4e
     :commands mu4e
     :init

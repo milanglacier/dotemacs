@@ -4,6 +4,10 @@
 (straight-use-package 'eglot)
 (straight-use-package 'consult-eglot)
 (straight-use-package 'edit-indirect)
+(straight-use-package '(copilot :host github :repo "zerolfx/copilot.el"
+                                :files ("dist" "*.el")))
+(straight-use-package 'code-cells)
+(straight-use-package 'reformatter)
 
 (use-package citre
     :init
@@ -57,7 +61,13 @@
 
 (use-package eldoc
     :init
-    (setq eldoc-echo-area-use-multiline-p nil)
+    (setq eldoc-echo-area-use-multiline-p nil
+          eldoc-documentation-strategy #'eldoc-documentation-compose)
+    ;; eglot has 3 eldoc functions: `eglot-hover-eldoc-function', and
+    ;; `eglot-signature-eldoc-function', using the default strategy
+    ;; will only show one information, setting to the following option
+    ;; allows the possibility to show both information in eldoc
+    ;; buffer.
 
     :config
     (add-to-list 'display-buffer-alist
@@ -74,22 +84,36 @@
     (setq eglot-stay-out-of '(company)
           eglot-workspace-configuration
           '(:pyright (:useLibraryCodeForTypes t :openFilesOnly :json-false)
-            :r (:lsp (:diagnostics :json-false)))
-          read-process-output-max (* 1024 1024))
+            :r (:lsp (:diagnostics :json-false))
+            :ltex (:disabledRules (:en-US ["DATE_NEW_YEAR" "UPPERCASE_SENTENCE_START"]
+                                   :zh-CN ["DATE_NEW_YEAR" "UPPERCASE_SENTENCE_START"])))
+          read-process-output-max (* 1024 1024)
+          eglot-sync-connect 0)
 
     :config
     (add-to-list 'eglot-server-programs
                  '(python-mode . ("pyright-langserver" "--stdio")))
 
+    (add-to-list 'eglot-server-programs
+                 '(sql-mode . ("sqls")))
+
+    (add-to-list 'eglot-server-programs
+                 '(((markdown-mode :language-id "markdown")
+                    (org-mode :language-id "org")) . ("~/.local/bin/ltex-ls")))
+    ;; NOTE: the latest version of ltex-ls (16.0) has bugs and therefore
+    ;; does not work in emacs. Use an older version (15.2) instead.
+    ;; TODO: update ltex-ls to the latest version once the bug has been fixed.
+
     (add-hook
      'eglot-managed-mode-hook #'my/toggle-citre-eglot-capf)
 
     ;; NOTE: THIS IS REALLY IMPORTANT!
-    ;; when you are registered evil keymaps for a minor mode keymap
-    ;; you MUST call this func to automatically activate them
-    ;; otherwise, you have to make a state transistion to make them
-    ;; become effective.
+    ;; when you register evil keymaps for a minor mode keymap you MUST
+    ;; call this func to automatically activate them otherwise, you
+    ;; have to make a state transistion to make them become effective.
     (add-hook 'eglot-managed-mode-hook #'evil-normalize-keymaps)
+    (add-hook 'eglot-managed-mode-hook
+              (my/setq-locally eldoc-documentation-function #'eldoc-documentation-compose))
 
     (general-create-definer my/lsp-map
         :prefix "SPC l"
@@ -105,6 +129,8 @@
         "a" #'eglot-code-actions
         "e" #'consult-flymake
         "n" #'eglot-rename
+        "t" #'eglot-find-typeDefinition
+        "i" #'eglot-find-implementation
         "[" #'xref-go-back
         "]" #'xref-go-forward)
 
@@ -132,6 +158,31 @@
                  '("\\*edit-indirect"
                    (display-buffer-at-bottom)
                    (window-height . 0.8))))
+
+(use-package comint
+    :config
+    (general-define-key
+     :states '(insert emacs)
+     :keymaps 'comint-mode-map
+     "C-a" #'comint-bol))
+
+(use-package copilot
+    :init
+    (my/toggle-map
+        :keymaps 'override
+        :states '(normal insert motion)
+        "g" #'copilot-mode)
+
+    :config
+    (general-define-key
+     :states '(insert)
+     :keymaps 'copilot-mode-map
+     "M-y" #'copilot-accept-completion-by-line
+     "M-Y" #'copilot-accept-completion
+     "M-J" #'copilot-next-completion
+     "M-K" #'copilot-previous-completion
+     "M->" #'copilot-next-completion
+     "M-<" #'copilot-previous-completion))
 
 (provide 'my-init-langtools)
 ;;; my-init-langtools.el ends here

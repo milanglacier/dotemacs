@@ -7,6 +7,11 @@
 (straight-use-package 'org-re-reveal)
 (straight-use-package 'ox-clip)
 
+(defvar my$jupyter-want-integration t
+    "Enable jupyter integration. which entails configuring it as an
+org-babel backend and allowing for direct editing of Jupyter notebooks
+within Emacs.")
+
 (use-package org
     :init
 
@@ -96,6 +101,8 @@
     (add-hook 'org-mode-hook (my/turn-off-mode evil-vimish-fold-mode))
     (add-hook 'org-tab-first-hook #'my/org-indent-maybe-h)
     (add-hook 'org-tab-first-hook #'my/org-yas-expand-maybe-h)
+
+    (add-hook 'org-mode-hook #'eglot-ensure)
 
     (general-define-key
      :states 'normal
@@ -324,6 +331,12 @@
     ;; when refiling from org-capture, Emacs prompts to kill the
     ;; underlying, modified buffer. This fixes that.
     (add-hook 'org-after-refile-insert-hook #'save-buffer)
+
+    ;; ltex-ls (via eglot) and citre has compatability issue with org-capture-mode
+    (add-hook 'org-capture-mode-hook (my/turn-off-mode flymake-mode))
+    (my/setq-on-hook org-capture-mode-hook
+                     completion-at-point-functions
+                     '(pcomplete-completions-at-point t))
     )
 
 (use-package evil-org-agenda
@@ -363,7 +376,7 @@
     (setq  org-agenda-files `(,org-directory
                               ,@(mapcar
                                  (lambda (x) (file-name-concat org-directory x))
-                                 '("capture"))))
+                                 '("capture" "work" "roam"))))
 
     (advice-add #'org-get-agenda-file-buffer :around #'my/exclude-org-agenda-buffers-from-recentf)
     (add-hook 'org-agenda-finalize-hook #'my/reload-org-agenda-buffers)
@@ -420,13 +433,18 @@
                  '("\\*Org Src"
                    (display-buffer-at-bottom)
                    (window-height . 0.8)))
-    (org-babel-do-load-languages 'org-babel-load-languages
-                                 '((latex . t)
-                                   (R . t)
-                                   (emacs-lisp . t)
-                                   (shell . t)
-                                   (python . t)
-                                   (jupyter . t)))
+
+    (let ((org-babel-langs '((latex . t)
+                             (R . t)
+                             (emacs-lisp . t)
+                             (shell . t)
+                             (python . t))))
+
+        (when my$jupyter-want-integration
+            (push '(jupyter . t) org-babel-langs))
+
+        (org-babel-do-load-languages 'org-babel-load-languages
+                                     org-babel-langs))
 
     ;; HACK: when you want to use org-babel to execute a code block,
     ;; it seems that it uses the language identifer associate with
@@ -434,8 +452,9 @@
     (defalias #'org-babel-execute:r #'org-babel-execute:R)
     (my/org-babel-lsp-setup "R")
     (my/org-babel-lsp-setup "python")
-    (my/org-babel-lsp-setup "jupyter-R")
-    (my/org-babel-lsp-setup "jupyter-python")
+    (when my$jupyter-want-integration
+        (my/org-babel-lsp-setup "jupyter-R")
+        (my/org-babel-lsp-setup "jupyter-python"))
 
     ;; TODO: update `org-babel-python-command' in accordance to `python-shell-interpreter'
     ;; and `python-shell-interpreter-args'

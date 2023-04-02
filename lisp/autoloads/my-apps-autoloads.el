@@ -160,5 +160,58 @@ otherwise use the existed one"
     (when (eq (frame-parameter nil 'background-mode) 'dark)
         (pdf-view-midnight-minor-mode)))
 
+;;;###autoload
+(defun my~aichat-start (&optional arg)
+    "Create a aichat(URL `https://github.com/sigoden/aichat') REPL
+buffer.  Start a new aichat session or switch to an already active
+session. Return the buffer selected (or created). With a numeric
+prefix arg, create or switch to the session with that number as a
+suffix."
+    (interactive "P")
+    (require 'vterm)
+    (let ((vterm-buffer-name "*aichat*")
+          (aichat-buffer)
+          (aichat-buffer-exist-p
+           (get-buffer
+            (if arg (format "*aichat*<%d>" arg) "*aichat*"))))
+        (setq aichat-buffer (vterm arg))
+        (unless aichat-buffer-exist-p
+            (with-current-buffer aichat-buffer
+                (vterm-send-string "aichat\n")))))
+
+(defun my:aichat-input-filter (str)
+    "In aichat, multi-line input is enclosed using `{}` brackets. It
+is important to note that aichat does not recognize the newline
+character, and it should be replaced with the return
+character. Besides, tab character is used to invoke completion,
+there's no way to insert a real tab, we can only replace it by spaces"
+    (setq str (replace-regexp-in-string "\t" "        " str))
+    (if (string-match "\n" str)
+            (progn
+                (setq str (replace-regexp-in-string "\n" "\r" str))
+                (concat "{" str "}" "\r"))
+        (concat str "\r")))
+
+(defun my~aichat-send-region (beg end &optional session)
+    "Send the region delimited by BEG and END to inferior aichat
+process.  With numeric prefix argument, send region to the process
+associated with that number"
+    (interactive "r\nP")
+    (let ((aichat-buffer-name
+           (if session
+                   (format "*aichat*<%d>" session)
+               "*aichat*"))
+          (str (buffer-substring-no-properties beg end)))
+        (with-current-buffer aichat-buffer-name
+            (vterm-send-string
+             (my:aichat-input-filter str)))))
+
+(evil-define-operator my~aichat-send-region-operator (beg end _ _ _ session)
+    "A evil operator wrapper around `my~aichat-send-region'. With a
+numeric prefix argument, send the region to the aichat process
+associated with that number"
+    (interactive "<R><x><y>P")
+    (my~aichat-send-region beg end session))
+
 (provide 'my-apps-autoloads)
 ;;; my-apps-autoloads.el ends here
