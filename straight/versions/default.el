@@ -36,6 +36,7 @@
  ("emacs-htmlize" . "dd27bc3f26efd728f2b1f01f9e4ac4f61f2ffbf9")
  ("emacs-jupyter" . "eebeef1293287075f65d27f5442bb151bf27d92a")
  ("emacs-libvterm" . "3e5a9b754b8e61850bb7d1b63b090b9fbf6687f3")
+ ("emacs-reformatter" . "f454b179ab7d39dc8783b9f2a046cab353b272f5")
  ("emacs-web-server" . "22ce66ea43e0eadb9ec1d691a35d9695fc29cee6")
  ("emacs-websocket" . "1a08093b122d8cf20366a1cba5faddf7a53d08ed")
  ("emacs-which-key" . "8093644032854b1cdf3245ce4e3c7b6673f741bf")
