@@ -106,6 +106,7 @@ if they are side window.")
         "" '(:ignore t :which-key "Tab")
         "n" #'tab-bar-new-tab
         "c" #'tab-bar-close-tab
+        "C" #'tab-bar-close-group-tabs
         "o" #'tab-bar-close-other-tabs
         "]" #'tab-bar-switch-to-next-tab
         "[" #'tab-bar-switch-to-prev-tab
