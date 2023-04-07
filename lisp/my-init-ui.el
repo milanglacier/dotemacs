@@ -60,7 +60,7 @@ if they are side window.")
       (R . bottom)
       (Rhelp . bottom)
       (Rdired . right)
-      (RWatch . right)                  ;
+      (RWatch . right)
       (xwidget-plot . right)
       (dired-sidebar . left)
       (pdf-outline . left))
@@ -92,8 +92,13 @@ if they are side window.")
           tab-bar-new-tab-choice "*scratch*"
           tab-bar-tab-hints t
           tab-bar-new-button-show nil
-          tab-bar-format '(tab-bar-format-tabs-groups
-                           tab-bar-separator))
+          tab-bar-separator " "
+          ;; We have our own tab-bar UI that includes a variable for
+          ;; configuring the separator. Thus, this variable is
+          ;; unnecessary.
+          tab-bar-format '(tab-bar-format-tabs-groups)
+          tab-bar-tab-name-format-function #'my:tab-bar-tab-name-format
+          tab-bar-tab-group-format-function #'my:tab-bar-tab-group-format)
 
     (general-create-definer my/tab-map
         :prefix "SPC TAB"

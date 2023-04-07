@@ -138,5 +138,43 @@ whitespaces to be prepended when centering the verses.")
         (insert (my:generate-initial-messages))
         (my:verses-add-font-lock)))
 
+(defvar my$tab-bar-tab-name-open "")
+(defvar my$tab-bar-tab-name-close "")
+(defvar my$tab-bar-inactive-group-name-open " ")
+(defvar my$tab-bar-inactive-group-name-close " ")
+
+(defun my:tab-bar-tab-name-format (tab i)
+    "This is a slightly modified version of
+`tab-bar-tab-name-format-default', which is the default value of
+`tab-bar-tab-name-format', except that it adds two symbols indicating
+the tab more distinguisably."
+    (let ((current-p (eq (car tab) 'current-tab)))
+        (propertize
+         (concat my$tab-bar-tab-name-open
+                 (if tab-bar-tab-hints (format "%d " i) "")
+                 (alist-get 'name tab)
+                 (or (and tab-bar-close-button-show
+                          (not (eq tab-bar-close-button-show
+                                   (if current-p 'non-selected 'selected)))
+                          tab-bar-close-button)
+                     "")
+                 my$tab-bar-tab-name-close)
+         'face (funcall tab-bar-tab-face-function tab))))
+
+(defun my:tab-bar-tab-group-format (tab i)
+    "This is a slightly modified version of
+`tab-bar-tab-group-format-default', which is the default value of
+`tab-bar-tab-group-format', except that it adds two symbols indicating
+the group more distinguisably.
+
+NOTE: This function actualy formats the inactive group name, not the
+active one."
+    (propertize
+     (concat my$tab-bar-inactive-group-name-open
+             (if tab-bar-tab-hints (format "%d " i) "")
+             (funcall tab-bar-tab-group-function tab)
+             my$tab-bar-inactive-group-name-close)
+     'face 'tab-bar-tab-group-inactive))
+
 (provide 'my-ui-autoloads)
 ;;; my-ui-autoloads ends here
