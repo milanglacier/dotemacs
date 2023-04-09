@@ -45,7 +45,6 @@ format file instead.
 
 * TODOs
 
-** [#A] Update ~ltex-ls~ when the bug has been fixed.
 ** [#A] Once evil-collection addresses the compatibility issue caused by the breaking changes in mu, update mu to version 1.10.
 ** [#C] Update ~lisp-indent-function~ from Doomemacs.
 ** [#B] Report ~org-capture~ bugs when inserting entries into table to upstream.
