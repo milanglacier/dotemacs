@@ -558,6 +558,9 @@ for debugging purposes when you want to examine a hook value.
 (autoload 'my/project-todos "my-vcs-autoloads" "\
 Find `hl-todo--regex' items in project using `consult-ripgrep'" t nil)
 
+(autoload 'my~project-magit "my-vcs-autoloads" "\
+Open `magit' at current project." t nil)
+
 ;;;***
 
 ;;;### (autoloads nil nil ("my-basics-autoloads.el") (0 0 0 0))

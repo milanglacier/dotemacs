@@ -52,7 +52,20 @@
 (use-package project
     :config
     (add-to-list 'project-switch-commands
-                 '(project-dired "Dired at root")))
+                 '(project-dired "Dired at root"))
+    (add-to-list 'project-switch-commands
+                 '(my/vterm "vterm"))
+    (add-to-list 'project-switch-commands
+                 '(my~project-magit "magit"))
+
+    (remove-hook 'project-switch-commands '(project-vc-dir "VC-Dir"))
+
+    (general-define-key
+     :keymaps 'project-prefix-map
+     "v" #'my/vterm
+     "m" #'my~project-magit)
+
+    )
 
 (use-package vterm
     :init
