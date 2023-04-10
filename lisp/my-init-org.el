@@ -523,11 +523,8 @@ within Emacs.")
 (use-package org-re-reveal
     :init
     (setq org-re-reveal-root
-          (concat "file://" (file-name-concat
-                             (expand-file-name org-directory)
-                             "assets"
-                             "reveal.js"))
-          org-re-reveal-revealjs-version "4"))
+          "https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.9.0/"
+          org-re-reveal-revealjs-version "3.9.0"))
 
 (use-package org-download
     :commands (org-download-yank org-download-screenshot org-download-clipboard)
