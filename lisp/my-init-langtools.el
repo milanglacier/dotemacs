@@ -95,6 +95,8 @@
     (add-to-list 'eglot-server-programs
                  '(sql-mode . ("sqls")))
 
+    (add-to-list 'eglot-server-programs '((org-mode markdown-mode) "efm-langserver"))
+
     (add-hook
      'eglot-managed-mode-hook #'my/toggle-citre-eglot-capf)
 
