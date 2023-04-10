@@ -16,7 +16,7 @@
 
 ;; set default font
 (add-to-list 'default-frame-alist
-             '(font . "Monego Nerd Font Fix-15"))
+             '(font . "Liga SFMono Nerd Font-15"))
 
 ;; Set font for text that should be displayed more like prose.
 (set-face-attribute 'variable-pitch nil :family "Bookerly" :height 160)
