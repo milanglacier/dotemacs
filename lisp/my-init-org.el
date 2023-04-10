@@ -7,7 +7,7 @@
 (straight-use-package 'org-re-reveal)
 (straight-use-package 'ox-clip)
 
-(defvar my$jupyter-want-integration t
+(defvar my$jupyter-want-integration nil
     "Enable jupyter integration. which entails configuring it as an
 org-babel backend and allowing for direct editing of Jupyter notebooks
 within Emacs.")
@@ -102,7 +102,7 @@ within Emacs.")
     (add-hook 'org-tab-first-hook #'my/org-indent-maybe-h)
     (add-hook 'org-tab-first-hook #'my/org-yas-expand-maybe-h)
 
-    (add-hook 'org-mode-hook #'eglot-ensure)
+    ;; (add-hook 'org-mode-hook #'eglot-ensure)
 
     (general-define-key
      :states 'normal
@@ -450,8 +450,8 @@ within Emacs.")
     ;; it seems that it uses the language identifer associate with
     ;; this block to query the `org-babel-execute:xxx' function.
     (defalias #'org-babel-execute:r #'org-babel-execute:R)
-    (my/org-babel-lsp-setup "R")
-    (my/org-babel-lsp-setup "python")
+    ;; (my/org-babel-lsp-setup "R")
+    ;; (my/org-babel-lsp-setup "python")
     (when my$jupyter-want-integration
         (my/org-babel-lsp-setup "jupyter-R")
         (my/org-babel-lsp-setup "jupyter-python"))

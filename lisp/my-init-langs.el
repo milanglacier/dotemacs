@@ -94,7 +94,7 @@
                                       :separate company-dabbrev-code)))
 
     (add-hook 'ess-r-mode-hook (my/setq-locally eglot-stay-out-of '(company imenu)))
-    (add-hook 'ess-r-mode-hook #'eglot-ensure)
+    ;; (add-hook 'ess-r-mode-hook #'eglot-ensure)
     (add-hook 'ess-r-mode-hook (my/setq-locally tab-width 4))
     (when (and (display-graphic-p)
                (featurep 'xwidget-internal))
@@ -109,7 +109,7 @@
     (setq python-indent-offset 4)
 
     :config
-    (add-to-list 'python-mode-hook #'eglot-ensure)
+    ;; (add-to-list 'python-mode-hook #'eglot-ensure)
 
     (my/localleader
         :keymaps 'python-mode-map
@@ -162,7 +162,7 @@
         "rs" #'my/markdown-run-repl
         "s" #'my/markdown-send-region)
 
-    (add-hook 'markdown-mode-hook #'eglot-ensure)
+    ;; (add-hook 'markdown-mode-hook #'eglot-ensure)
 
     )
 
@@ -176,8 +176,8 @@
     (setq sqlind-basic-offset 4)
 
     :config
-    (add-hook 'sql-mode-hook (my/setq-locally tab-width 4))
-    (add-hook 'sql-mode-hook #'eglot-ensure))
+    (add-hook 'sql-mode-hook (my/setq-locally tab-width 4)))
+    ;; (add-hook 'sql-mode-hook #'eglot-ensure))
 
 (provide 'my-init-langs)
 ;;; my-init-langs.el ends here
