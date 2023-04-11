@@ -109,16 +109,16 @@
           mu4e-headers-thread-last-child-prefix    '("╰▶ " . "└>")
 
           mu4e-bookmarks
-          '((:name "Unread messages w/o news and gmail"
-             :query "flag:unread AND NOT flag:trashed AND NOT maildir:/news-milanglacier/* AND NOT maildir:/my-personal-gmail/*"
-             :key ?u)
-            (:name "Flagged messages"
+          '((:name "Flagged messages"
              :query "flag:flagged"
              :key ?f)
-            (:name "Unread messages w/ news"
+            (:name "Unread important messages"
+             :query "flag:unread AND NOT flag:trashed AND NOT maildir:/news-milanglacier/* AND NOT maildir:/my-personal-gmail/*"
+             :key ?u)
+            (:name "Unread news"
              :query "flag:unread AND maildir:/news-milanglacier/*"
              :key ?n)
-            (:name "Unread messages w/ gmail"
+            (:name "Unread gmail messages"
              :query "flag:unread AND maildir:/my-personal-gmail/*"
              :key ?g))
           )
