@@ -87,7 +87,7 @@
                      docker doc-view elisp-refs embark eldoc eshell
                      eww elfeed flymake grep help helpful ibuffer
                      imenu macrostep magit-sections magit magic-todos
-                     man markdown-mode mu4e notmuch org org-roam
+                     man markdown-mode notmuch org org-roam
                      osx-dictionary pdf python replace rg ripgrep
                      tab-bar term vertico vterm wdired wgrep which-key
                      xref xwidget)
