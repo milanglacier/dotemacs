@@ -132,14 +132,29 @@ is on the start of current thread. Analagous to `[[' in vim."
 (defun my~mu4e-view-thread-forward ()
     "Go to prev thread or start of current thread"
     (interactive)
-    (mu4e~view-quit-buffer)
+    (if (version< mu4e-mu-version "1.10")
+            (mu4e~view-quit-buffer)
+        (mu4e-view-quit)
+        (switch-to-buffer "*mu4e-headers*"))
+    ;; FIXME: in mu4e 1.10+: upon calling `mu4e-view-quit', the value
+    ;; of `current-buffer' temporarily changes to "*mu4e-main*"
+    ;; instead of "*mu4e-headers*". Although the interactive behavior
+    ;; remains the same (as if we return to the "*mu4e-headers*"
+    ;; buffer immediately), `my~mu4e-thread-forward-start' function
+    ;; requires the buffer to be "*mu4e-headers*". This could be a
+    ;; side effect of using `kill-buffer-and-window'. To ensure that
+    ;; we switch back to the "*mu4e-headers*" buffer, we need to
+    ;; enforce it explicitly.
     (my~mu4e-thread-forward-start)
     (mu4e-headers-view-message))
 
 (defun my~mu4e-view-thread-backward ()
     "Go to prev thread or start of current thread"
     (interactive)
-    (mu4e~view-quit-buffer)
+    (if (version< mu4e-mu-version "1.10")
+            (mu4e~view-quit-buffer)
+        (mu4e-view-quit)
+        (switch-to-buffer "*mu4e-headers*"))
     (my~mu4e-thread-backward-start)
     (mu4e-headers-view-message))
 
