@@ -87,10 +87,10 @@
                      docker doc-view elisp-refs embark eldoc eshell
                      eww elfeed flymake grep help helpful ibuffer
                      imenu macrostep magit-sections magit magic-todos
-                     man markdown-mode mu4e mu4e-conversation notmuch
-                     org org-roam osx-dictionary pdf python replace rg
-                     ripgrep tab-bar term vertico vterm wdired wgrep
-                     which-key xref xwidget)
+                     man markdown-mode mu4e notmuch org org-roam
+                     osx-dictionary pdf python replace rg ripgrep
+                     tab-bar term vertico vterm wdired wgrep which-key
+                     xref xwidget)
           evil-collection-key-blacklist '("SPC" "gj" "gk" "gt" "gT")
           evil-collection-want-unimpaired-p nil))
 ;; I used SPC SPC as my local leader key. So SPC shouldn't be occupied
