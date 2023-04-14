@@ -103,6 +103,9 @@ within Emacs.")
 
     (add-hook 'org-mode-hook #'eglot-ensure)
 
+    (my/define-and-bind-local-paren-text-object "/" "/" "/" org-mode-hook)
+    (my/define-and-bind-local-paren-text-object "*" "*" "*" org-mode-hook)
+
     (general-define-key
      :states 'normal
      :keymaps 'org-mode-map

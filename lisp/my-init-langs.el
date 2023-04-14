@@ -110,6 +110,7 @@
 
     :config
     (add-to-list 'python-mode-hook #'eglot-ensure)
+    (my/define-and-bind-local-paren-text-object " c" "# %%" "# %%" python-mode-hook)
 
     (my/localleader
         :keymaps 'python-mode-map
