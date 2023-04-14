@@ -6,6 +6,7 @@
 (straight-use-package 'jupyter)
 (straight-use-package 'org-re-reveal)
 (straight-use-package 'ox-clip)
+(straight-use-package 'org-download)
 
 (defvar my$jupyter-want-integration t
     "Enable jupyter integration. which entails configuring it as an
@@ -153,6 +154,9 @@ within Emacs.")
         "au" #'org-attach-url
         "as" #'org-attach-set-directory
         "aS" #'org-attach-sync
+        "ac" #'org-download-screenshot
+        "aP" #'org-download-clipboard
+        "ap" #'org-download-yank
 
         "b" '(:ignore t :which-key "table")
         "b-" #'org-table-insert-hline
@@ -523,6 +527,15 @@ within Emacs.")
                              "assets"
                              "reveal.js"))
           org-re-reveal-revealjs-version "4"))
+
+(use-package org-download
+    :commands (org-download-yank org-download-screenshot org-download-clipboard)
+    :config
+    (setq org-download-method 'attach
+          org-download-screenshot-method
+          (if IS-MAC
+                  "screencapture -i %s"
+              org-download-screenshot-method)))
 
 (provide 'my-init-org)
 ;;; my-init-org.el ends here
