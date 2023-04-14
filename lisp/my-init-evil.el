@@ -59,7 +59,11 @@
 
 (use-package evil-vimish-fold
     :init
-    (setq evil-vimish-fold-target-modes '(prog-mode conf-mode text-mode)))
+    (my/toggle-map
+        :states '(motion insert normal)
+        :keymaps 'override
+        "f" '(:ignore t :which-key "fold")
+        "fv" #'evil-vimish-fold-mode))
 
 (use-package evil-anzu
     :demand t
@@ -156,7 +160,6 @@
     (evil-snipe-override-mode)
     (global-evil-visualstar-mode)
     (better-jumper-mode)
-    (global-evil-vimish-fold-mode)
     (global-anzu-mode)
     (global-evil-matchit-mode)
     (evil-collection-init)
