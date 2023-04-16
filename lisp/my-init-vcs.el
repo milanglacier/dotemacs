@@ -37,6 +37,7 @@
      :states '(normal motion)
      :keymaps 'magit-status-mode-map
      "gt" #'tab-bar-switch-to-next-tab
+     "gT" #'tab-bar-switch-to-prev-tab
      ;; emulate C-g
      "<escape>" #'transient-quit-one))
 
