@@ -25,6 +25,7 @@
  ("doom-modeline" . "236fa330c631228e9a513dea2f4598a29b7e8444")
  ("edit-indirect" . "f80f63822ffae78de38dbe72cacaeb1aaa96c732")
  ("editorconfig-emacs" . "cd5799a6b728cfb9995605cdceffb5bf7c97622d")
+ ("ef-themes" . "59ea9a97f1ef35ff53584f104b21e4e139f26c9b")
  ("eglot" . "248c86526efe033cfed074ddaf45f5c16a09598e")
  ("el-get" . "22c83206bab10100fdee03cb2d5b97c8c24eff0e")
  ("eldoc" . "397e38f6d62df77d99b7428c9813d81de722833d")
