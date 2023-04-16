@@ -18,7 +18,6 @@
 (setq use-package-expand-minimally t
       ;; use-package is a macro. Don't let the macro expands into
       ;; codes with too much of irrelevant checks.
-      use-package-always-ensure nil
       ;; Straight is my package manager, don't let package.el get
       ;; involved.
       use-package-always-defer t
