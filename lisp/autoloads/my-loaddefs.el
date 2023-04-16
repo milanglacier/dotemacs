@@ -153,6 +153,20 @@ suffix.
 
 ;;;***
 
+;;;### (autoloads nil "my-colorscheme-autoloads" "my-colorscheme-autoloads.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from my-colorscheme-autoloads.el
+
+(autoload 'my:theme-set-dynamically "my-colorscheme-autoloads" "\
+Select a theme at random from `my$day-themes' or `my$night-themes',
+depending on the current time of day. The time periods for day and
+night are specified by `my$day-to-night-o-clock' and
+`my$night-to-day-o-clock', respectively." nil nil)
+
+(register-definition-prefixes "my-colorscheme-autoloads" '("my$" "my:"))
+
+;;;***
+
 ;;;### (autoloads nil "my-completion-autoloads" "my-completion-autoloads.el"
 ;;;;;;  (0 0 0 0))
 ;;; Generated autoloads from my-completion-autoloads.el
