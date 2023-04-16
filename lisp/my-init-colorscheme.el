@@ -2,11 +2,23 @@
 
 (straight-use-package 'doom-themes)
 (straight-use-package 'spacemacs-theme)
+(straight-use-package 'ef-themes)
 
 (defvar my$day-themes
-    '(doom-solarized-light spacemacs-light doom-one-light))
+    '(doom-solarized-light
+      spacemacs-light
+      doom-one-light
+      ef-tritanopia-light
+      ef-cyprus
+      ef-light))
+
 (defvar my$night-themes
-    '(spacemacs-dark doom-one doom-nord-aurora))
+    '(spacemacs-dark
+      doom-one
+      doom-nord-aurora
+      doom-opera
+      ef-dark))
+
 (defvar my$selected-theme nil
     "selected theme")
 
