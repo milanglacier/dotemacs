@@ -515,7 +515,12 @@ refresh verses in the scratch buffer" t nil)
 ;;;;;;  (0 0 0 0))
 ;;; Generated autoloads from my-utils-autoloads.el
 
-(autoload 'my/update-all-autoloads "my-utils-autoloads" nil t nil)
+(autoload 'my/update-all-autoloads "my-utils-autoloads" "\
+Update all autoloads in the AUTOLOADS-DIR into the AUTOLOADS-FILE.
+If AUTOLOADS-DIR is nil, use `my/autoloads-dir'. If AUTOLOADS-FILE is
+nil, use `my/autoloads-file'.
+
+\(fn &optional AUTOLOADS-DIR AUTOLOADS-FILE)" t nil)
 
 (autoload 'my/run-hook-once "my-utils-autoloads" "\
 a wrapper to run a func on a hook only once

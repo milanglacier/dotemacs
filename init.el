@@ -9,10 +9,16 @@
 (defvar my/autoloads-dir (file-name-concat my/config-dir "autoloads")
     "the directory of my autoloded functions.")
 (defvar my/autoloads-file (file-name-concat my/autoloads-dir "my-loaddefs.el")
-    "the directory of my autoloded functions.")
+    "the file of my autoloded functions.")
+(defvar my/site-lisp-dir (file-name-concat user-emacs-directory "site-lisp")
+    "the directory of third-party lisp files.")
+(defvar my/site-lisp-autoloads-file
+    (file-name-concat my/site-lisp-dir "my-site-lisp-loaddefs.el")
+    "the file of third-party autoloaded functions.")
 
 (push my/config-dir load-path)
 (push my/autoloads-dir load-path)
+(push my/site-lisp-dir load-path)
 (setq custom-file (file-name-concat user-emacs-directory "custom.el"))
 
 (setq use-package-expand-minimally t
@@ -53,6 +59,7 @@
     (load bootstrap-file nil 'nomessage))
 
 (require 'my-loaddefs)
+(require 'my-site-lisp-loaddefs)
 
 (require 'my-init-utils)
 (require 'my-basics)

@@ -1,13 +1,23 @@
 ;;; my-utils-autoloads.el -*- lexical-binding: t; -*-
 
 ;;;###autoload
-(defun my/update-all-autoloads ()
+(defun my/update-all-autoloads (&optional autoloads-dir autoloads-file)
+    "Update all autoloads in the AUTOLOADS-DIR into the AUTOLOADS-FILE.
+If AUTOLOADS-DIR is nil, use `my/autoloads-dir'. If AUTOLOADS-FILE is
+nil, use `my/autoloads-file'."
     (interactive)
-    (when (not (file-exists-p my/autoloads-file))
-        (with-current-buffer (find-file-noselect
-                              my/autoloads-file)
-            (save-buffer)))
-    (make-directory-autoloads my/autoloads-dir my/autoloads-file))
+    (let ((autoloads-dir (or autoloads-dir my/autoloads-dir))
+          (autoloads-file (or autoloads-file my/autoloads-file)))
+        (when (not (file-exists-p autoloads-file))
+            (with-current-buffer (find-file-noselect
+                                  autoloads-file)
+                (save-buffer)))
+        (make-directory-autoloads autoloads-dir autoloads-file)))
+
+;;;###autoload
+(defun my/update-site-lisp-autoloads ()
+    (interactive)
+        (my/update-all-autoloads my/site-lisp-dir my/site-lisp-autoloads-file))
 
 ;;;###autoload
 (defmacro my/run-hook-once (hook func &rest args)

@@ -34,6 +34,11 @@
      :states '(normal motion visual)
      "C-w ]" #'citre-peek)
 
+    (my/find-map
+        :keymaps 'citre-mode-map
+        :states '(normal insert motion)
+        "t" #'consult-citre) ;; find tags
+
     (general-define-key
      :prefix "SPC w"
      :non-normal-prefix "M-SPC w"
