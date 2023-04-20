@@ -10,7 +10,6 @@
 (straight-use-package 'embark-consult)
 (straight-use-package 'marginalia)
 (straight-use-package 'wgrep)
-(straight-use-package 'all-the-icons-completion)
 
 (use-package vertico
     :init
@@ -80,10 +79,7 @@
 
 (use-package marginalia
     :init
-    (my/run-hook-once pre-command-hook marginalia-mode)
-    :config
-    (if (display-graphic-p)
-            (add-hook 'marginalia-mode-hook #'all-the-icons-completion-marginalia-setup)))
+    (my/run-hook-once pre-command-hook marginalia-mode))
 
 (use-package consult
     :init

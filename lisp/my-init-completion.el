@@ -74,8 +74,7 @@
 (use-package company-box
     :config
     (setq company-box-max-candidates 50
-          company-frontends '(company-tng-frontend company-box-frontend)
-          company-box-icons-alist 'company-box-icons-all-the-icons))
+          company-frontends '(company-tng-frontend company-box-frontend)))
 
 (use-package yasnippet
     :init

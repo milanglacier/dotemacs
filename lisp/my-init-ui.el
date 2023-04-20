@@ -1,6 +1,5 @@
 ;;; my-init-ui.el -*- lexical-binding: t; -*-
 
-(straight-use-package 'all-the-icons)
 (straight-use-package 'doom-modeline)
 (straight-use-package 'which-key)
 
@@ -75,15 +74,6 @@ if they are side window.")
       split-width-threshold 300)
 
 (blink-cursor-mode -1)
-
-(use-package all-the-icons
-    :if (display-graphic-p)
-    :commands (all-the-icons-octicon
-               all-the-icons-faicon
-               all-the-icons-fileicon
-               all-the-icons-wicon
-               all-the-icons-material
-               all-the-icons-alltheicon))
 
 (use-package tab-bar
     :init

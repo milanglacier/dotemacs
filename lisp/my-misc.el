@@ -9,7 +9,6 @@
 (straight-use-package 'dired-sidebar)
 (straight-use-package 'dired-rsync)
 (straight-use-package 'diredfl)
-(straight-use-package 'all-the-icons-dired)
 (straight-use-package 'dired-git-info)
 
 (use-package hideshow
@@ -159,9 +158,6 @@
 
 (use-package diredfl
     :hook (dired-mode . diredfl-mode))
-
-(use-package all-the-icons-dired
-    :hook (dired-mode . all-the-icons-dired-mode))
 
 (use-package dired-sidebar
     :init
