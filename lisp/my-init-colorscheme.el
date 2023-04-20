@@ -9,6 +9,7 @@
         spacemacs-light
         doom-one-light
         ef-tritanopia-light
+        modus-operandi
         ef-cyprus
         ef-light)
       my$night-themes
@@ -16,11 +17,9 @@
         doom-one
         doom-nord-aurora
         doom-opera
-        ef-dark))
-
-(when (display-graphic-p)
-    (add-to-list 'my$night-themes 'modus-vivendi)
-    (add-to-list 'my$day-themes 'modus-operandi))
+        modus-vivendi
+        ef-dark)
+      )
 
 (my:theme-set-dynamically)
 
@@ -28,6 +27,16 @@
     :if (string-match-p "doom" (symbol-name my$selected-theme))
     :after org
     :demand t)
+
+;; HACK: The following two themes use the background color code
+;; "#000000", which renders as the background color of your terminal
+;; color scheme instead of the true black. To create a more visually
+;; unified experience, we will use a color that is very close to pure
+;; black, so that the background appears similar to the authenticated
+;; background in the GUI.
+(when (and (not (display-graphic-p))
+           (memq my$selected-theme '(modus-vivendi ef-dark)))
+    (set-background-color "#050000"))
 
 (provide 'my-init-colorscheme)
 ;;; my-init-colorscheme.el ends here
