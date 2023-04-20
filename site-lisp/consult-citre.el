@@ -1,8 +1,11 @@
 ;;; consult-citre.el -*- lexical-binding: t; -*-
+;; author: Chingyat
 ;; URL `https://emacs-china.org/t/citre-ctags/17604/666'
+;; URL `https://emacs-china.org/t/citre-ctags/17604/669'
 
 (require 'citre)
 (require 'consult)
+(require 'consult-xref)
 
 (defun consult-citre-readtags--build-cmd
         (tagsfile &optional name match case-fold filter sorter action)
@@ -47,52 +50,64 @@ any valid actions in readtags, e.g., \"-D\", to get pseudo tags."
                  (`(,re . ,hl) (funcall consult--regexp-compiler arg 'extended t)))
         (setq re (consult--join-regexps re 'extended))
         (cons
-         (consult-citre-readtags--build-cmd
-          (citre-tags-file-path)
-          nil nil t
-          `((string->regexp ,re :case-fold true) $name)
-          nil
-          nil)
+         (append (consult-citre-readtags--build-cmd
+                  (citre-tags-file-path)
+                  nil nil t
+                  `((string->regexp ,re :case-fold true) $name)
+                  nil
+                  nil)
+                 opts)
          hl)
         ))
 
 (defun consult-citre-readtags--format (lines)
-    (mapcar (lambda (line)
-                (let* ((tag (citre-readtags--parse-line
-                             line
-                             (citre-readtags-tags-file-info (citre-tags-file-path))
-                             '(name input pattern line kind) '() '()
-                             '(ext-abspath ext-kind-full) '() '() t
-                             ))
-                       (str (citre-get-tag-field 'name tag)))
-                    (propertize str 'citre-tag tag))
-                )
-            lines))
-
-(defun consult-citre-readtags--annotate (root str)
-    (let ((tag (get-text-property 0 'citre-tag str)))
-        (consult--annotate-align str (citre-make-tag-str tag nil
-                                                         '(annotation)
-                                                         `(location :suffix ":" :root ,root)
-                                                         '(content :ensure t)))))
-
+    (let ((root (citre-project-root))
+          (info (citre-readtags-tags-file-info (citre-tags-file-path))))
+        (mapcar (lambda (line)
+                    (let* ((tag (citre-readtags--parse-line
+                                 line
+                                 info
+                                 '(name input pattern line kind) '() '()
+                                 '(ext-abspath ext-kind-full) '() '() t
+                                 ))
+                           (xref (citre-xref--make-object tag))
+                           (loc (xref-item-location xref))
+                           (group (if (fboundp 'xref--group-name-for-display)
+                                          ;; This function is available in xref 1.3.2
+                                          (xref--group-name-for-display
+                                           (xref-location-group loc) root)
+                                      (xref-location-group loc)))
+                           (cand (consult--format-file-line-match
+                                  group
+                                  (or (xref-location-line loc) 0)
+                                  (xref-item-summary xref))))
+                        (add-text-properties 0 1 `(consult-xref ,xref consult--prefix-group ,group) cand)
+                        cand))
+                lines)))
 
 ;;;###autoload
 (defun consult-citre (initial)
     "Read a tag from minibuffer and jump to the tag."
     (interactive "P")
-    (citre-goto-tag
-     (consult--read
-      (consult--async-command #'consult-citre-readtags--builder
-                              (consult--async-transform consult-citre-readtags--format)
-                              (consult--async-highlight #'consult-citre-readtags--builder))
-      :prompt "Tag: "
-      :keymap consult-async-map
-      :annotate (apply-partially #'consult-citre-readtags--annotate (citre-project-root))
-      :require-match t
-      :category 'citre-tag
-      :initial (consult--async-split-initial initial)
-      :lookup (apply-partially #'consult--lookup-prop 'citre-tag))))
+    (let* ((candidates  (consult--async-command
+                         #'consult-citre-readtags--builder
+                         (consult--async-transform consult-citre-readtags--format)
+                         (consult--async-highlight #'consult-citre-readtags--builder)))
+           (consult-xref--fetcher (lambda ()
+                                      (mapcar (apply-partially get-text-property 0 'consult-xref cand)
+                                              (funcall candidates 'candidates)))))
+        (xref-pop-to-location
+         (consult--read
+          candidates
+          :prompt "Tag: "
+          :keymap consult-async-map
+          :require-match t
+          :category 'consult-xref
+          :initial (consult--async-split-initial initial)
+          :group #'consult--prefix-group
+          :state
+          ;; do not preview other frame
+          (consult-xref--preview #'switch-to-buffer)
+          :lookup (apply-partially #'consult--lookup-prop 'consult-xref)))))
 
 (provide 'consult-citre)
-;;; consult-citre.el ends here
