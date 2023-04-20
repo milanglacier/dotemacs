@@ -1,8 +1,5 @@
 (("ESS" . "86d1bce8b53522a5939924960025799e66d9414e")
  ("Emacs-wgrep" . "edf768732a56840db6879706b64c5773c316d619")
- ("all-the-icons-completion" . "b08f053cee444546ab44a05fd541f59e8bc8983b")
- ("all-the-icons-dired" . "4564bec6bd3fd02dd870e6d2cfed37fe38bbc93a")
- ("all-the-icons.el" . "d922aff57ac8308d3ed067f9151cc76d342855f2")
  ("annalist.el" . "134fa3f0fb91a636a1c005c483516d4b64905a6d")
  ("anzu" . "5abb37455ea44fa401d5f4c1bdc58adb2448db67")
  ("better-jumper" . "47622213783ece37d5337dc28d33b530540fc319")
