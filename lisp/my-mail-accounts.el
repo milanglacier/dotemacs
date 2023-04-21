@@ -1,1 +1,1 @@
-/Users/northyear/Desktop/dotfiles/config/my-mail-accounts.el
+../../dotfiles/config/my-mail-accounts.el
