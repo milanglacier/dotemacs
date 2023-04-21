@@ -15,12 +15,12 @@
       '(spacemacs-dark
         doom-one
         doom-nord-aurora
-        doom-opera
-        ef-dark))
+        doom-opera))
 
 (when (display-graphic-p)
-    (add-to-list 'my$night-themes 'modus-vivendi)
-    (add-to-list 'my$day-themes 'modus-operandi))
+    (push 'modus-vivendi my$night-themes)
+    (push 'modus-operandi my$day-themes)
+    (push 'ef-dark my$night-themes))
 
 (my:theme-set-dynamically)
 
