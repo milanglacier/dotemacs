@@ -3,7 +3,10 @@
 (straight-use-package 'ws-butler)
 (straight-use-package 'rainbow-delimiters)
 (straight-use-package 'vterm)
+
+;; ibuffer
 (straight-use-package 'ibuffer-vc)
+(straight-use-package 'nerd-icons-ibuffer)
 
 ;; dired
 (straight-use-package 'dired-sidebar)
@@ -104,6 +107,9 @@
 (use-package ibuffer-vc
     :init
     (add-hook 'ibuffer-hook #'my/ibuffer-vc-setup))
+
+(use-package nerd-icons-ibuffer
+    :hook (ibuffer-mode . nerd-icons-ibuffer-mode))
 
 (use-package dired
     :init
