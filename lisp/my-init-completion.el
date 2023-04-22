@@ -41,6 +41,37 @@
     (evil-make-overriding-map company-mode-map)
     (evil-make-overriding-map company-active-map)
 
+    (setq company-text-icons-mapping
+          '((array "" font-lock-type-face)
+            (boolean "" font-lock-builtin-face)
+            (class "" font-lock-type-face)
+            (color "" success)
+            (constant "" font-lock-constant-face)
+            (constructor "" font-lock-function-name-face)
+            (enum-member "" font-lock-builtin-face)
+            (enum "" font-lock-builtin-face)
+            (field "ﰠ" font-lock-variable-name-face)
+            (file "" font-lock-string-face)
+            (folder "" font-lock-doc-face)
+            (interface "" font-lock-type-face)
+            (keyword "" font-lock-keyword-face)
+            (method "" font-lock-function-name-face)
+            (function "" font-lock-function-name-face)
+            (module "" font-lock-type-face)
+            (numeric "" font-lock-builtin-face)
+            (operator "" font-lock-comment-delimiter-face)
+            (property "ﰠ" font-lock-variable-name-face)
+            (reference "" font-lock-doc-face)
+            (snippet "" font-lock-string-face)
+            (string "" font-lock-string-face)
+            (struct "פּ" font-lock-variable-name-face)
+            (text "" shadow)
+            (type-parameter "" font-lock-type-face)
+            (unit "" shadow)
+            (value "" font-lock-builtin-face)
+            (variable "" font-lock-variable-name-face)
+            (t "" shadow)))
+
     (unless (display-graphic-p)
         ;; Don't persist company popups when switching back to normal mode.
         ;; `company-box' aborts on mode switch so it doesn't need this.
@@ -68,8 +99,7 @@
 
     (advice-add #'company-capf :around #'my/company-completion-styles)
 
-    (yas-global-mode)
-    )
+    (yas-global-mode))
 
 (use-package company-box
     :config
