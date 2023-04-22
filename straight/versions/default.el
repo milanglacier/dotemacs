@@ -90,6 +90,7 @@
  ("melpa" . "989fc42a867d37e12d35ac38423e1d8828b9be59")
  ("nerd-icons-completion" . "f46fbbd8f5c96b4d96fd67a044a3f0b5b5381c6a")
  ("nerd-icons-dired" . "bb1c6cf2c1c43eb01708f95dc085393f3f018c94")
+ ("nerd-icons-ibuffer" . "18c00c03a0d7193bab5e3374ec02c5428db057fd")
  ("nerd-icons.el" . "2ff304882c1c809713fc2b904b0309bfdb507b7b")
  ("nongnu-elpa" . "0120f3dfe80cffe0c3016080d9205d12be3b741d")
  ("orderless" . "e6784026717a8a6a7dcd0bf31fd3414f148c542e")
