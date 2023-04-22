@@ -51,10 +51,10 @@
      :states '(normal motion)
      "q" #'citre-peek-abort
      "RET" #'citre-peek-jump
-     "[t" #'citre-peek-prev-definition
-     "]t" #'citre-peek-next-definition
-     "M-[" #'citre-peek-prev-line
-     "M-]" #'citre-peek-next-line
+     "[t" #'citre-peek-prev-tag
+     "]t" #'citre-peek-next-tag
+     "M-k" #'citre-peek-prev-line
+     "M-j" #'citre-peek-next-line
      "M-{" #'citre-peek-prev-branch
      "M-}" #'citre-peek-next-branch)
 
