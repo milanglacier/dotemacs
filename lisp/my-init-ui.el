@@ -2,6 +2,9 @@
 
 (straight-use-package 'doom-modeline)
 (straight-use-package 'which-key)
+(straight-use-package '(nerd-icons :host github
+                                   :repo "rainstormstudio/nerd-icons.el"
+                                   :files (:defaults "data")))
 
 (set-display-table-slot standard-display-table 'truncation 32)
 (set-display-table-slot standard-display-table 'wrap 32)
@@ -30,8 +33,7 @@
 (use-package whitespace
     :init
     (setq whitespace-style '(face tabs tab-mark trailing))
-    (global-whitespace-mode)
-    )
+    (global-whitespace-mode))
 
 (defvar my/side-window-slots
     '((helpful . 1) ;; 0 is the default
