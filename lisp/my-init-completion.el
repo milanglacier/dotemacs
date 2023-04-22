@@ -104,7 +104,36 @@
 (use-package company-box
     :config
     (setq company-box-max-candidates 50
-          company-frontends '(company-tng-frontend company-box-frontend)))
+          company-frontends '(company-tng-frontend company-box-frontend)
+          my$company-box-icons-alist
+          '((Unknown . "")
+            (Text . "")
+            (Method . "")
+            (Function . "")
+            (Constructor . "")
+            (Field . "")
+            (Variable . "")
+            (Class . "")
+            (Interface . "")
+            (Module . "")
+            (Property . "")
+            (Unit . "")
+            (Value . "")
+            (Enum . "")
+            (Keyword . "")
+            (Snippet . "")
+            (Color . "")
+            (File . "")
+            (Reference . "")
+            (Folder . "")
+            (EnumMember . "")
+            (Constant . "")
+            (Struct . "פּ")
+            (Event . "")
+            (Operator . "")
+            (TypeParameter . "")
+            (Template . ""))
+          company-box-icons-alist 'my$company-box-icons-alist))
 
 (use-package yasnippet
     :init
