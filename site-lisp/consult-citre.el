@@ -55,59 +55,74 @@ any valid actions in readtags, e.g., \"-D\", to get pseudo tags."
                   nil nil t
                   `((string->regexp ,re :case-fold true) $name)
                   nil
-                  nil)
-                 opts)
+                  (car-safe opts))
+                 (cdr-safe opts))
          hl)
         ))
 
-(defun consult-citre-readtags--format (lines)
-    (let ((root (citre-project-root))
-          (info (citre-readtags-tags-file-info (citre-tags-file-path))))
-        (mapcar (lambda (line)
-                    (let* ((tag (citre-readtags--parse-line
-                                 line
-                                 info
-                                 '(name input pattern line kind) '() '()
-                                 '(ext-abspath ext-kind-full) '() '() t
-                                 ))
-                           (xref (citre-xref--make-object tag))
-                           (loc (xref-item-location xref))
-                           (group (if (fboundp 'xref--group-name-for-display)
-                                          ;; This function is available in xref 1.3.2
-                                          (xref--group-name-for-display
-                                           (xref-location-group loc) root)
-                                      (xref-location-group loc)))
-                           (cand (consult--format-file-line-match
-                                  group
-                                  (or (xref-location-line loc) 0)
-                                  (xref-item-summary xref))))
-                        (add-text-properties 0 1 `(consult-xref ,xref consult--prefix-group ,group) cand)
-                        cand))
-                lines)))
+(defun consult-citre-readtags--format (info lines)
+    (mapcar (lambda (line)
+                (let* ((tag (citre-readtags--parse-line
+                             line
+                             info
+                             '(name input pattern line kind) '() '()
+                             '(ext-abspath ext-kind-full) '() '() t))
+                       (group (citre-get-tag-field 'ext-abspath tag))
+                       (line (citre-get-tag-field 'line tag))
+                       (cand (consult--format-file-line-match
+                              group
+                              line
+                              (citre-make-tag-str tag nil
+                                                  '(annotation :prefix "(" :suffix ")"
+                                                               ;; In xref buffer, we may want to jump to
+                                                               ;; the tags with these anonymous names.
+                                                               :full-anonymous-name t)
+                                                  '(content :ensure t)))))
+                    (add-text-properties 0 (length cand) `(consult-citre-tag ,tag consult--prefix-group ,group) cand)
+                    cand))
+            lines))
 
 ;;;###autoload
 (defun consult-citre (initial)
     "Read a tag from minibuffer and jump to the tag."
     (interactive "P")
-    (let* ((candidates  (consult--async-command
-                         #'consult-citre-readtags--builder
-                         (consult--async-transform consult-citre-readtags--format)
-                         (consult--async-highlight #'consult-citre-readtags--builder)))
-           (consult-xref--fetcher (lambda ()
-                                      (mapcar (apply-partially get-text-property 0 'consult-xref cand)
-                                              (funcall candidates 'candidates)))))
+    (let ((info (citre-readtags-tags-file-info (citre-tags-file-path))))
         (xref-pop-to-location
          (consult--read
-          candidates
+          (consult--async-command
+                  #'consult-citre-readtags--builder
+              (consult--async-transform consult-citre-readtags--format info)
+              (consult--async-highlight #'consult-citre-readtags--builder))
           :prompt "Tag: "
           :keymap consult-async-map
           :require-match t
-          :category 'consult-xref
+          :category 'consult-citre
           :initial (consult--async-split-initial initial)
           :group #'consult--prefix-group
-          :state
-          ;; do not preview other frame
-          (consult-xref--preview #'switch-to-buffer)
-          :lookup (apply-partially #'consult--lookup-prop 'consult-xref)))))
+          :state (consult-xref--preview #'switch-to-buffer)
+          :lookup (lambda (&rest args)
+                      (when-let ((tag (apply #'consult--lookup-prop 'consult-citre-tag args)))
+                          (citre-xref--make-object tag)))))))
+
+(with-eval-after-load 'embark
+    (defvar embark-exporters-alist)
+
+    (defun consult-citre--embark-export-xref (items)
+        "Create an xref buffer listing ITEMS."
+        (let ((xrefs))
+            (dolist-with-progress-reporter (item items)
+                    "Exporting Xrefs..."
+                (redisplay)
+                (push  (citre-xref--make-object (get-text-property 0 'consult-citre-tag item))
+                       xrefs))
+            (set-buffer
+             (xref--show-xref-buffer
+              (lambda () nil)
+              `((fetched-xrefs . ,xrefs)
+                (window . ,(embark--target-window))
+                (auto-jump . ,xref-auto-jump-to-first-xref)
+                (display-action))))))
+    (setf (alist-get 'consult-citre embark-exporters-alist)
+          #'consult-citre--embark-export-xref))
 
 (provide 'consult-citre)
