@@ -2,9 +2,7 @@
 
 (straight-use-package 'doom-modeline)
 (straight-use-package 'which-key)
-(straight-use-package '(nerd-icons :host github
-                                   :repo "rainstormstudio/nerd-icons.el"
-                                   :files (:defaults "data")))
+(straight-use-package 'nerd-icons)
 
 (set-display-table-slot standard-display-table 'truncation 32)
 (set-display-table-slot standard-display-table 'wrap 32)
