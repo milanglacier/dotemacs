@@ -282,7 +282,7 @@
         "+" #'evil-window-increase-height
         "-" #'evil-window-decrease-height
         ":" #'evil-ex
-        "<" #'evil-window-increase-width
+        "<" #'evil-window-decrease-width
         ">" #'evil-window-increase-width
         "_" #'evil-window-set-height
         "|" #'evil-window-set-width
