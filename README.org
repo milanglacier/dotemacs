@@ -7,41 +7,94 @@ format. For the best experience, please consider reading the org
 format file instead.
 
 * Features
-- *Blazing fast*.
+** Blazing fast.
 
-  TTY starts in 0.32s on MacBook Air (M1, 2020), 0.73s on a VPS with 1
-  core CPU and 1 GB RAM, and 0.30s on WSL with Intel i7-1185G7 and 32
-  GB RAM. The GUI starts in 0.44s on Mac M1. You can even ~export
-  EDITOR="emacs -nw"~ and feel no perceptible startup difference
-  comparing to vim! (See [[*Startup speed]] for additional details.)
+TTY starts in 0.32s on MacBook Air (M1, 2020), 0.73s on a VPS with 1
+core CPU and 1 GB RAM, and 0.30s on WSL with Intel i7-1185G7 and 32 GB
+RAM. The GUI starts in 0.44s on Mac M1. You can even ~export
+EDITOR="emacs -nw"~ and feel no perceptible startup difference
+comparing to vim! (See [[*Startup speed]] for additional details.)
 
-- *Robust*
+** Robust
 
-  Package versions are locked and under version control, so no
-  breaking changes are expected.
+Package versions are locked and under version control, so no breaking
+changes are expected.
 
-- *All-around*
+** Compatability
 
-  This configuration works well on both TTY and GUI. Compatibility on
-  TTY is not compromised, while GUI features, including ~xwidget~, are
-  also well-configured.
+This configuration works well on both TTY and GUI. Compatibility on
+TTY is not compromised, while GUI features, including ~xwidget~, are
+also well-configured.
 
-- *Feature rich*
+** Feature rich
 
-  A blazing fast startup speed doesn't mean it is a lite and minimal
-  configuration.  Instead, it is "heavy" and feature rich, including:
+A blazing fast startup speed doesn't mean it is a lite and minimal
+configuration.  Instead, it is "heavy" and feature rich, including:
 
-  - A modern minibuffer completion experience powered by ~vertico+consult+orderless+embark+marginalia~ family bucket.
+- A modern minibuffer completion experience powered by ~vertico+consult+orderless+embark+marginalia~ family bucket.
 
-  - Modal editing ecosystem everywhere, powered by ~evil~ and many other extensions.
+- Modal editing ecosystem everywhere, powered by ~evil~ and many other extensions.
 
-  - A keybinding scheme centered around leader and localleader keys, powered by ~general~ and ~which-key~.
+- A keybinding scheme centered around leader and localleader keys, powered by ~general~ and ~which-key~.
 
-  - In-buffer autocompletion frontend based on ~company~ (see [[*Corfu or Company?]]).
+- In-buffer autocompletion frontend based on ~company~ (see [[*Corfu or Company?]]).
 
-  - Code completion and navigation based on ~eglot~ (LSP) and ~citre~ (Ctags).
+- Code completion and navigation based on ~eglot~ (LSP) and ~citre~ (Ctags).
 
-  - Integration with ~eglot~ and ~org-babel~ or ~markdown-mode~ that takes literate programming to the next level.
+- Integration with ~eglot~ and ~org-babel~ or ~markdown-mode~ that takes literate programming to the next level.
+
+** Be wild
+
+Randomly select a theme from a curated list each time you start up and
+automatically switches between day and night themes at scheduled time.
+Additionally, the displayed verses on the welcome screen is also
+randomized with each launch. Have a fresh experience at every time. Be
+casual and wild!
+
+* Showcase
+
+** Welcome screen
+
+[[file:assets/welcome.png]]
+
+The welcome screen displays two verses randomly selected from my
+curated collection. The minibuffer displays the GUI
+~emacs-init-time~.  This is a scratch buffer where you can perform
+lisp evaluation.
+
+** Code Navigation
+
+[[file:assets/lsp-ctags.png]]
+
+Making use of LSP and Ctags, navigating code is a breeze. The file
+tree is displayed on the leftmost window through ~dired-sidebar~, and
+the bottom right window showcases the references of a selected symbol
+via ~LSP find references~ (the Emacs command is
+~xref-find-references~). In the central floating window, a preview of
+the definition of the chosen symbol is displayed with the aid of
+~ctags~ (the Emacs command is ~citre-peek~).
+
+** Data Science
+
+[[file:assets/data-science.png]]
+
+A typical workflow in data science involves multiple components. The
+top right window showcases an embedded xwidget widget that displays
+the HTML visualization created via ~plotly~. In the bottom left window
+rests the R REPL console where you can send your code for
+execution. Meanwhile, the bottom right window features a chatgpt REPL
+console (via [[https://github.com/sigoden/aichat][aichat]]). I specify
+the aichat mode as ~exp-code-e~ to prompt chatgpt to provide an
+explanation of the code you sent.
+
+** Orgmode
+
+[[file:assets/reveal-js.png]]
+
+Write prose in ~orgmode~, and export it into ~reveal.js~ presentation.
+The right window displays the HTML slides using xwidget
+webkit. Preview slides in emacs without the need to open GUI browser
+anymore.
 
 * TODOs
 
