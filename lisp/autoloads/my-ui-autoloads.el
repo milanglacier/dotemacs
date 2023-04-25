@@ -79,7 +79,15 @@ is called."
        " 《山鬼》"))
     "the verses displayed on the bottom of `initial-scratch-message'")
 
-(defvar my$empty-lines-between-header-and-foot-verse 20)
+(defvar my$actions
+    '((" emacs init time        " . emacs-init-time)
+      (" Pick new theme         " . my:theme-set-dynamically)
+      (" Pick new verse         " . my~refresh-verses)
+      (" recent files    SPC f o" . consult-recent-file)
+      (" recent projects SPC f p" . project-switch-project))
+    "the actions to be displayed on the welcome screen")
+
+(defvar my$empty-lines-between-sections 10)
 
 (defvar my$right-margin-when-centering-margin 80
     "The assumed window width to calculate appropriate number of
@@ -95,20 +103,52 @@ whitespaces to be prepended when centering the verses.")
       (((background dark)) :foreground "#ad7f2a"))
     "the faces used for the quote of verses")
 
+(defface my&welcome-screen-action
+    '((((background light)) :foreground "#0398fc")
+      (((background dark)) :foreground "#73915e"))
+    "the faces used for the actions on the welcome screen")
+
+(define-button-type 'my&welcome-screen-action-button
+    'face 'my&welcome-screen-action)
+
+(defun my:welcome-screen-make-text-button (start end action-string)
+    "Make a button with ACTION-STRING as its label."
+    (let ((action (cdr (assoc action-string my$actions))))
+        (make-text-button
+         start end
+         'type 'my&welcome-screen-action-button
+         'action (lambda (button)
+                     (if (commandp action)
+                             (call-interactively action)
+                         (funcall action))))))
+
 (defun my:generate-initial-messages ()
     (let ((head-verse (nth (random (length my$header-verses))
                            my$header-verses))
           (foot-verse (nth (random (length my$foot-verses))
                            my$foot-verses))
+          (action-strings (mapcar #'car my$actions))
           (empty-lines (cl-loop
-                        for i from 1 to my$empty-lines-between-header-and-foot-verse
+                        for i from 1 to my$empty-lines-between-sections
                         concat "\n")))
-        (setq head-verse (mapconcat #'my:center-verse head-verse "\n"))
-        (setq foot-verse (mapconcat #'my:center-verse foot-verse "\n"))
-        (concat head-verse empty-lines foot-verse)))
+        (setq head-verse (mapconcat #'my:center-a-line head-verse "\n"))
+        (setq action-strings (mapconcat #'my:center-a-line action-strings "\n"))
+        (setq foot-verse (mapconcat #'my:center-a-line foot-verse "\n"))
+        (concat head-verse empty-lines action-strings empty-lines foot-verse)))
 
-(defun my:center-verse (x)
-    "center one line of verse"
+(defun my:generate-button-with-actions ()
+    (let ((action-strings (mapcar #'car my$actions)))
+        (dolist (action-string action-strings)
+            ;; find the position of the action string
+            (goto-char (point-min))
+            (search-forward action-string)
+            (let ((start (match-beginning 0)) ;; 0 means the whole match
+                  (end (match-end 0)))
+                (my:welcome-screen-make-text-button start end action-string)))))
+
+
+(defun my:center-a-line (x)
+    "center one line of verse or action string"
     (let ((spaces-to-be-inserted
            (/ (- my$right-margin-when-centering-margin (length x))
               2)))
@@ -118,7 +158,7 @@ whitespaces to be prepended when centering the verses.")
 (defun my:verses-add-font-lock ()
     (font-lock-add-keywords
      nil
-     '(("^ +\\([^\"]+\\)$" 1 'my&verses)
+     '(("^ +\\([^\"]+\\)$" 1 'my&verses)
        ("^ +\\(.+\\)$" 1 'my&verse-quotes))))
 
 ;;;###autoload
@@ -127,7 +167,8 @@ whitespaces to be prepended when centering the verses.")
     :global t
 
     (setq initial-scratch-message (my:generate-initial-messages))
-    (add-hook 'emacs-startup-hook #'my:verses-add-font-lock))
+    (add-hook 'emacs-startup-hook #'my:verses-add-font-lock)
+    (add-hook 'emacs-startup-hook #'my:generate-button-with-actions))
 
 ;;;###autoload
 (defun my~refresh-verses ()
@@ -136,6 +177,7 @@ whitespaces to be prepended when centering the verses.")
     (with-current-buffer "*scratch*"
         (erase-buffer)
         (insert (my:generate-initial-messages))
+        (my:generate-button-with-actions)
         (my:verses-add-font-lock)))
 
 (defvar my$tab-bar-tab-name-open "")

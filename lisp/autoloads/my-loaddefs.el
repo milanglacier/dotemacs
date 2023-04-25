@@ -507,7 +507,7 @@ it is disabled.
 (autoload 'my~refresh-verses "my-ui-autoloads" "\
 refresh verses in the scratch buffer" t nil)
 
-(register-definition-prefixes "my-ui-autoloads" '("my$" "my:"))
+(register-definition-prefixes "my-ui-autoloads" '("my$" "my&welcome-screen-action-button" "my:"))
 
 ;;;***
 
@@ -521,6 +521,8 @@ If AUTOLOADS-DIR is nil, use `my/autoloads-dir'. If AUTOLOADS-FILE is
 nil, use `my/autoloads-file'.
 
 \(fn &optional AUTOLOADS-DIR AUTOLOADS-FILE)" t nil)
+
+(autoload 'my/update-site-lisp-autoloads "my-utils-autoloads" nil t nil)
 
 (autoload 'my/run-hook-once "my-utils-autoloads" "\
 a wrapper to run a func on a hook only once

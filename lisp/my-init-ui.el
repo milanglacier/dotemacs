@@ -31,7 +31,7 @@
 (use-package whitespace
     :init
     (setq whitespace-style '(face tabs tab-mark trailing))
-    (global-whitespace-mode))
+    :hook ((prog-mode text-mode conf-mode) . whitespace-mode))
 
 (defvar my/side-window-slots
     '((helpful . 1) ;; 0 is the default
