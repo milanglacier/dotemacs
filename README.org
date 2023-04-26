@@ -55,12 +55,13 @@ casual and wild!
 
 ** Welcome screen
 
-[[file:assets/welcome.png]]
+[[file:assets/welcome-screen.png]]
 
-The welcome screen displays two verses randomly selected from my
-curated collection. The minibuffer displays the GUI
-~emacs-init-time~.  This is a scratch buffer where you can perform
-lisp evaluation.
+The welcome screen displays two randomly chosen verses from my
+carefully chosen collection.  This serves as a scratch buffer where
+you can perform Lisp evaluations. Frequently used commands are also
+listed, allowing for convenient execution by simply clicking on the
+corresponding button.
 
 ** Code Navigation
 
