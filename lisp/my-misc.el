@@ -13,9 +13,7 @@
 (straight-use-package 'dired-rsync)
 (straight-use-package 'diredfl)
 (straight-use-package 'dired-git-info)
-(straight-use-package '(nerd-icons-dired :host github
-                                         :repo "rainstormstudio/nerd-icons-dired"
-                                         :files (:defaults "data")))
+(straight-use-package 'nerd-icons-dired)
 
 (use-package hideshow
     :hook (prog-mode . hs-minor-mode))
