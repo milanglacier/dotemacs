@@ -158,7 +158,8 @@ otherwise use the existed one"
 ;;;###autoload
 (defun my:pdf-midnight-mode-maybe ()
     (when (eq (frame-parameter nil 'background-mode) 'dark)
-        (pdf-view-midnight-minor-mode)))
+        (pdf-view-midnight-minor-mode)
+        (pdf-view-dark-minor-mode)))
 
 ;;;###autoload
 (defun my~aichat-start (&optional arg)
