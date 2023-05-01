@@ -47,7 +47,7 @@
  ("evil-ReplaceWithRegister" . "91cc7bf21a94703c441cc9212214075b226b7f67")
  ("evil-anzu" . "d1e98ee6976437164627542909a25c6946497899")
  ("evil-args" . "2671071a4a57eaee7cc8c27b9e4b6fc60fd2ccd3")
- ("evil-collection" . "5092f5e04cfd0a31b1c5c46cb6b792a9e917c728")
+ ("evil-collection" . "d3b497db3172a34cbe9e51269fb6af57925303b3")
  ("evil-embrace.el" . "7b5a539cfe7db238d860122c793a0cb2d329cc6e")
  ("evil-escape" . "3c335a5709b1abb08687960038746b36add465f9")
  ("evil-exchange" . "5f0a2d41434c17c6fb02e4f744043775de1c63a2")
