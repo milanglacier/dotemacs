@@ -10,8 +10,7 @@
 (straight-use-package 'embark-consult)
 (straight-use-package 'marginalia)
 (straight-use-package 'wgrep)
-(straight-use-package '(nerd-icons-completion
-                        :host github :repo "rainstormstudio/nerd-icons-completion"))
+(straight-use-package 'nerd-icons-completion)
 
 (use-package vertico
     :init
