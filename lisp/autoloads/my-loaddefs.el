@@ -240,7 +240,7 @@ this email via `eww'
 
 \(fn MSG &optional ARG)" nil nil)
 
-(register-definition-prefixes "my-email-autoloads" '("my:" "my~mu4e-"))
+(register-definition-prefixes "my-email-autoloads" '("my:mu4e-" "my~mu4e-"))
 
 ;;;***
 

@@ -160,9 +160,6 @@
     ;; HACK: `evil-collection-mu4e' is incompatible with `mu4e' 1.10+
     ;; the following is a workaround to make `mu4e' 1.10+ work with
     ;; `evil-collection-mu4e'.
-    ;;
-    ;; TODO: When the compatability issue is addressed, remove the hack.
-    (my:evil-collection-mu4e-setup)
 
     )
 

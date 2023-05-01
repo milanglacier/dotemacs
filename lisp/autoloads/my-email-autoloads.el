@@ -158,20 +158,6 @@ is on the start of current thread. Analagous to `[[' in vim."
     (my~mu4e-thread-backward-start)
     (mu4e-headers-view-message))
 
-(defun my:evil-collection-mu4e-setup ()
-    "A personal hack to fix incompatibility between `evil-collection'
-and `mu4e' 1.10+."
-    (when (version< "1.8" mu4e-mu-version)
-        (defun mu4e--main-action-str (&rest _) "")
-        (defalias 'mu4e~view-quit-buffer 'mu4e-view-quit))
-
-    (evil-collection-mu4e-setup)
-
-    (when (version< "1.8" mu4e-mu-version)
-        (remove-hook 'mu4e-main-mode-hook #'evil-collection-mu4e-update-main-view)
-        (remove-hook 'org-mode-hook #'evil-collection-mu4e-org-set-header-to-insert-mode)
-        (remove-hook 'mu4e-compose-pre-hook #'evil-collection-mu4e-org-set-header-to-insert-mode)))
-
 (setq my$mu4e-enable-thread-folding nil)
 
 ;; WIP: there are too many corner cases unresolved
