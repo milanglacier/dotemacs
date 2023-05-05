@@ -180,19 +180,6 @@ suffix."
             (with-current-buffer aichat-buffer
                 (vterm-send-string "aichat\n")))))
 
-(defun my:aichat-input-filter (str)
-    "In aichat, multi-line input is enclosed using `{}` brackets. It
-is important to note that aichat does not recognize the newline
-character, and it should be replaced with the return
-character. Besides, tab character is used to invoke completion,
-there's no way to insert a real tab, we can only replace it by spaces"
-    (setq str (replace-regexp-in-string "\t" "        " str))
-    (if (string-match "\n" str)
-            (progn
-                (setq str (replace-regexp-in-string "\n" "\r" str))
-                (concat "{" str "}" "\r"))
-        (concat str "\r")))
-
 (defun my~aichat-send-region (beg end &optional session)
     "Send the region delimited by BEG and END to inferior aichat
 process.  With numeric prefix argument, send region to the process
@@ -204,8 +191,8 @@ associated with that number"
                "*aichat*"))
           (str (buffer-substring-no-properties beg end)))
         (with-current-buffer aichat-buffer-name
-            (vterm-send-string
-             (my:aichat-input-filter str)))))
+            (vterm-send-string str t)
+            (vterm-send-string "\r"))))
 
 (evil-define-operator my~aichat-send-region-operator (beg end _ _ _ session)
     "A evil operator wrapper around `my~aichat-send-region'. With a

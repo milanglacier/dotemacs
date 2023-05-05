@@ -149,7 +149,7 @@ suffix.
 
 \(fn &optional ARG)" t nil)
 
-(register-definition-prefixes "my-apps-autoloads" '("my/" "my:aichat-input-filter" "my~aichat-send-region"))
+(register-definition-prefixes "my-apps-autoloads" '("my/" "my~aichat-send-region"))
 
 ;;;***
 
