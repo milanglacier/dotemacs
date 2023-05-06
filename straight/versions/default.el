@@ -64,7 +64,6 @@
  ("evil-traces" . "290b5323542c46af364ec485c8ec9000040acf90")
  ("evil-vimish-fold" . "b6e0e6b91b8cd047e80debef1a536d9d49eef31a")
  ("evil-visualstar" . "06c053d8f7381f91c53311b1234872ca96ced752")
- ("exato" . "aee7af7b7a0e7551478f453d1de7d5b9cb2e06c4")
  ("expand-region.el" . "b70feaa644310dc2d599dc277cd20a1f2b6446ac")
  ("external-completion" . "d717c138623aeecc8e0a0312e0576e98604c43f2")
  ("f.el" . "af7d37c619010b576fd22b50c62c71ff33093f3c")
