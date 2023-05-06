@@ -14,7 +14,6 @@
 (straight-use-package 'evil-visualstar)
 (straight-use-package 'evil-replace-with-register)
 (straight-use-package 'evil-args)
-(straight-use-package 'exato)
 (straight-use-package 'evil-lion)
 (straight-use-package 'evil-vimish-fold)
 (straight-use-package 'evil-indent-plus)
@@ -222,8 +221,7 @@
      "#" #'evilnc-inner-commenter
      "i" #'evil-indent-plus-i-indent
      "j" #'evil-indent-plus-i-indent-up-down
-     "k" #'evil-indent-plus-i-indent-up
-     "x" #'evil-inner-xml-attr)
+     "k" #'evil-indent-plus-i-indent-up)
 
     (general-define-key
      :keymaps 'out
@@ -231,8 +229,7 @@
      "#" #'evilnc-outer-commenter
      "i" #'evil-indent-plus-i-indent
      "j" #'evil-indent-plus-i-indent-up-down
-     "k" #'evil-indent-plus-i-indent-up
-     "x" #'evil-outer-xml-attr)
+     "k" #'evil-indent-plus-i-indent-up)
 
     (my/define-and-bind-paren-text-object "$" "\\$" "\\$")
     (my/define-and-bind-paren-text-object "|" "|" "|")
