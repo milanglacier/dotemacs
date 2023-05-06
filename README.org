@@ -9,11 +9,12 @@ format file instead.
 * Features
 ** Blazing fast.
 
-TTY starts in 0.32s on MacBook Air (M1, 2020), 0.73s on a VPS with 1
-core CPU and 1 GB RAM, and 0.30s on WSL with Intel i7-1185G7 and 32 GB
-RAM. The GUI starts in 0.44s on Mac M1. You can even ~export
-EDITOR="emacs -nw"~ and feel no perceptible startup difference
-comparing to vim! (See [[*Startup speed]] for additional details.)
+With TTY starting in 0.32 seconds on a MacBook Air (M1, 2020), 0.73
+seconds on a VPS with a 1-core CPU and 1 GB RAM, and 0.22 seconds on
+WSL with an Intel i7-1185G7 and 32 GB RAM, TTY is exceptionally
+fast. The GUI is just as quick, starting in 0.44 seconds on Mac M1 and
+0.31 seconds on WSLg. For more information on startup speed, see
+[[*Startup speed]].
 
 ** Robust
 

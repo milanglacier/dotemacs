@@ -1,28 +1,28 @@
 
 # Table of Contents
 
-1.  [Features](#org1404fcc)
-    1.  [Blazing fast.](#org2c9c970)
-    2.  [Robust](#org10357e3)
-    3.  [Compatability](#org0bc3cfd)
-    4.  [Feature rich](#org0255bd8)
-    5.  [Be wild](#org2f86df9)
-2.  [Showcase](#org6332f87)
-    1.  [Welcome screen](#org6a244be)
-    2.  [Code Navigation](#orgde56be2)
-    3.  [Data Science](#org5271bf8)
-    4.  [Orgmode](#org418212e)
-3.  [TODOs](#org362d562)
-    1.  [Update `lisp-indent-function` from Doomemacs.](#orgee3bf5e)
-    2.  [Report `org-capture` bugs when inserting entries into table to upstream.](#org5ea6efb)
-    3.  [Utilize the contextual information from previous code block when editing source block within markdown/org.](#orga2d58ff)
-    4.  [Lazily load third-party plugins for `evil`.](#org8365810)
-    5.  [Configure `evil-args` to use spaces as argument delimiter for `emacs-lisp-mode`.](#org520faa7)
-    6.  [Implement thread-folding for `mu4e`.](#orgd240dcd)
-4.  [Notes](#orge1044db)
-    1.  [Startup speed](#orga18478e)
-    2.  [Naming conventions (WIP)](#org1c14280)
-    3.  [Corfu or Company?](#org06aaf7e)
+1.  [Features](#orgd8ad978)
+    1.  [Blazing fast.](#orgd7319e8)
+    2.  [Robust](#org88ea411)
+    3.  [Compatability](#org8725a3e)
+    4.  [Feature rich](#org6e67d79)
+    5.  [Be wild](#org10a7106)
+2.  [Showcase](#org8fd3f6f)
+    1.  [Welcome screen](#org7d7789d)
+    2.  [Code Navigation](#orgc414324)
+    3.  [Data Science](#org8223d16)
+    4.  [Orgmode](#orga02e602)
+3.  [TODOs](#orge3a52ba)
+    1.  [Update `lisp-indent-function` from Doomemacs.](#orgf4f5d3d)
+    2.  [Report `org-capture` bugs when inserting entries into table to upstream.](#orga1a0a3f)
+    3.  [Utilize the contextual information from previous code block when editing source block within markdown/org.](#orgf31f346)
+    4.  [Lazily load third-party plugins for `evil`.](#orgc71fab0)
+    5.  [Configure `evil-args` to use spaces as argument delimiter for `emacs-lisp-mode`.](#org040a5d6)
+    6.  [Implement thread-folding for `mu4e`.](#org1338e1c)
+4.  [Notes](#orgf0f8cf7)
+    1.  [Startup speed](#org5a72c84)
+    2.  [Naming conventions (WIP)](#org60cdbe1)
+    3.  [Corfu or Company?](#orgf4b51d6)
 
 If you&rsquo;re currently reading this README file in Markdown format, it
 has been generated through `org-export`, from its original org
@@ -30,23 +30,24 @@ format. For the best experience, please consider reading the org
 format file instead.
 
 
-<a id="org1404fcc"></a>
+<a id="orgd8ad978"></a>
 
 # Features
 
 
-<a id="org2c9c970"></a>
+<a id="orgd7319e8"></a>
 
 ## Blazing fast.
 
-TTY starts in 0.32s on MacBook Air (M1, 2020), 0.73s on a VPS with 1
-core CPU and 1 GB RAM, and 0.30s on WSL with Intel i7-1185G7 and 32 GB
-RAM. The GUI starts in 0.44s on Mac M1. You can even `export
-EDITOR="emacs -nw"` and feel no perceptible startup difference
-comparing to vim! (See [4.1](#orga18478e) for additional details.)
+With TTY starting in 0.32 seconds on a MacBook Air (M1, 2020), 0.73
+seconds on a VPS with a 1-core CPU and 1 GB RAM, and 0.22 seconds on
+WSL with an Intel i7-1185G7 and 32 GB RAM, TTY is exceptionally
+fast. The GUI is just as quick, starting in 0.44 seconds on Mac M1 and
+0.31 seconds on WSLg. For more information on startup speed, see
+[4.1](#org5a72c84).
 
 
-<a id="org10357e3"></a>
+<a id="org88ea411"></a>
 
 ## Robust
 
@@ -54,7 +55,7 @@ Package versions are locked and under version control, so no breaking
 changes are expected.
 
 
-<a id="org0bc3cfd"></a>
+<a id="org8725a3e"></a>
 
 ## Compatability
 
@@ -63,7 +64,7 @@ TTY is not compromised, while GUI features, including `xwidget`, are
 also well-configured.
 
 
-<a id="org0255bd8"></a>
+<a id="org6e67d79"></a>
 
 ## Feature rich
 
@@ -76,14 +77,14 @@ configuration.  Instead, it is &ldquo;heavy&rdquo; and feature rich, including:
 
 -   A keybinding scheme centered around leader and localleader keys, powered by `general` and `which-key`.
 
--   In-buffer autocompletion frontend based on `company` (see [4.3](#org06aaf7e)).
+-   In-buffer autocompletion frontend based on `company` (see [4.3](#orgf4b51d6)).
 
 -   Code completion and navigation based on `eglot` (LSP) and `citre` (Ctags).
 
 -   Integration with `eglot` and `org-babel` or `markdown-mode` that takes literate programming to the next level.
 
 
-<a id="org2f86df9"></a>
+<a id="org10a7106"></a>
 
 ## Be wild
 
@@ -94,12 +95,12 @@ randomized with each launch. Have a fresh experience at every time. Be
 casual and wild!
 
 
-<a id="org6332f87"></a>
+<a id="org8fd3f6f"></a>
 
 # Showcase
 
 
-<a id="org6a244be"></a>
+<a id="org7d7789d"></a>
 
 ## Welcome screen
 
@@ -112,7 +113,7 @@ listed, allowing for convenient execution by simply clicking on the
 corresponding button.
 
 
-<a id="orgde56be2"></a>
+<a id="orgc414324"></a>
 
 ## Code Navigation
 
@@ -127,7 +128,7 @@ the definition of the chosen symbol is displayed with the aid of
 `ctags` (the Emacs command is `citre-peek`).
 
 
-<a id="org5271bf8"></a>
+<a id="org8223d16"></a>
 
 ## Data Science
 
@@ -143,7 +144,7 @@ the aichat mode as `exp-code-e` to prompt chatgpt to provide an
 explanation of the code you sent.
 
 
-<a id="org418212e"></a>
+<a id="orga02e602"></a>
 
 ## Orgmode
 
@@ -155,47 +156,47 @@ webkit. Preview slides in emacs without the need to open GUI browser
 anymore.
 
 
-<a id="org362d562"></a>
+<a id="orge3a52ba"></a>
 
 # TODOs
 
 
-<a id="orgee3bf5e"></a>
+<a id="orgf4f5d3d"></a>
 
 ## Update `lisp-indent-function` from Doomemacs.
 
 
-<a id="org5ea6efb"></a>
+<a id="orga1a0a3f"></a>
 
 ## Report `org-capture` bugs when inserting entries into table to upstream.
 
 
-<a id="orga2d58ff"></a>
+<a id="orgf31f346"></a>
 
 ## Utilize the contextual information from previous code block when editing source block within markdown/org.
 
 
-<a id="org8365810"></a>
+<a id="orgc71fab0"></a>
 
 ## Lazily load third-party plugins for `evil`.
 
 
-<a id="org520faa7"></a>
+<a id="org040a5d6"></a>
 
 ## Configure `evil-args` to use spaces as argument delimiter for `emacs-lisp-mode`.
 
 
-<a id="orgd240dcd"></a>
+<a id="org1338e1c"></a>
 
 ## Implement thread-folding for `mu4e`.
 
 
-<a id="orge1044db"></a>
+<a id="orgf0f8cf7"></a>
 
 # Notes
 
 
-<a id="orga18478e"></a>
+<a id="org5a72c84"></a>
 
 ## Startup speed
 
@@ -210,7 +211,7 @@ skews `(emacs-init-time)` and does not accurately reflect startup
 time. This configuration is honest and truly lazy loads packages.
 
 
-<a id="org1c14280"></a>
+<a id="org60cdbe1"></a>
 
 ## Naming conventions (WIP)
 
@@ -230,7 +231,7 @@ time. This configuration is honest and truly lazy loads packages.
 -   A symbol prefixed with `my&` indicates it is a special symbol like faces.
 
 
-<a id="org06aaf7e"></a>
+<a id="orgf4b51d6"></a>
 
 ## Corfu or Company?
 
