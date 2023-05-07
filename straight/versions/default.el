@@ -88,7 +88,7 @@
  ("markdown-mode" . "5d98592fe516748034d8baf92d7c0ba045e1f87a")
  ("melpa" . "bcab8fff60fb5a88bba2c550aeded521b7f99fa0")
  ("nerd-icons-completion" . "f46fbbd8f5c96b4d96fd67a044a3f0b5b5381c6a")
- ("nerd-icons-dired" . "c05ba4815d375d779644ca7ac215632fda75089c")
+ ("nerd-icons-dired" . "9fa8278a73a9d15eda90c545116a139b15c9e561")
  ("nerd-icons-ibuffer" . "18c00c03a0d7193bab5e3374ec02c5428db057fd")
  ("nerd-icons.el" . "0e2fe5bafd324540cda6745f8c91e0728beff32c")
  ("nongnu-elpa" . "0120f3dfe80cffe0c3016080d9205d12be3b741d")
