@@ -19,7 +19,7 @@
  ("dired-rsync" . "c4f484bff94ed2ddfe0fa45f1e695a1637e1a35a")
  ("dired-sidebar" . "5569d3b53585f5413cf87a694650d0fd6e040803")
  ("diredfl" . "17e805763d57370c4eff2c92ed257b72eeb9f94a")
- ("doom-modeline" . "63eb9d3548c7d4be1774b50cdc2169262dd43100")
+ ("doom-modeline" . "3612082bc5cba712c07860ce37865f938beb9002")
  ("edit-indirect" . "f80f63822ffae78de38dbe72cacaeb1aaa96c732")
  ("editorconfig-emacs" . "ed3defaad8d83f77cfee581cfaa19aaea016664d")
  ("ef-themes" . "59ea9a97f1ef35ff53584f104b21e4e139f26c9b")
