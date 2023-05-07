@@ -25,7 +25,7 @@ within Emacs.")
         "o" #'org-clock-goto)
 
     (setq org-directory "~/Desktop/orgmode"
-          org-archive-location (expand-file-name "%s_archive::" (concat org-directory "/archive"))
+          org-archive-location (expand-file-name "%s.archive.org::" (concat org-directory "/archive"))
           org-id-locations-file (file-name-concat org-directory ".orgids")
           org-id-locations-file-relative t
           org-highlight-latex-and-related '(native latex script entities)
