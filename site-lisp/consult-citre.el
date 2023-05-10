@@ -6,6 +6,7 @@
 (require 'citre)
 (require 'consult)
 (require 'consult-xref)
+(require 'embark)
 
 (defun consult-citre-readtags--build-cmd
         (tagsfile &optional name match case-fold filter sorter action)
@@ -90,9 +91,9 @@ any valid actions in readtags, e.g., \"-D\", to get pseudo tags."
         (xref-pop-to-location
          (consult--read
           (consult--async-command
-                  #'consult-citre-readtags--builder
-              (consult--async-transform consult-citre-readtags--format info)
-              (consult--async-highlight #'consult-citre-readtags--builder))
+           #'consult-citre-readtags--builder
+           (consult--async-transform consult-citre-readtags--format info)
+           (consult--async-highlight #'consult-citre-readtags--builder))
           :prompt "Tag: "
           :keymap consult-async-map
           :require-match t
@@ -104,25 +105,23 @@ any valid actions in readtags, e.g., \"-D\", to get pseudo tags."
                       (when-let ((tag (apply #'consult--lookup-prop 'consult-citre-tag args)))
                           (citre-xref--make-object tag)))))))
 
-(with-eval-after-load 'embark
-    (defvar embark-exporters-alist)
+(defun consult-citre--embark-export-xref (items)
+    "Create an xref buffer listing ITEMS."
+    (let ((xrefs))
+        (dolist-with-progress-reporter (item items)
+                "Exporting Xrefs..."
+            (redisplay)
+            (push  (citre-xref--make-object (get-text-property 0 'consult-citre-tag item))
+                   xrefs))
+        (set-buffer
+         (xref--show-xref-buffer
+          (lambda () nil)
+          `((fetched-xrefs . ,xrefs)
+            (window . ,(embark--target-window))
+            (auto-jump . ,xref-auto-jump-to-first-xref)
+            (display-action))))))
 
-    (defun consult-citre--embark-export-xref (items)
-        "Create an xref buffer listing ITEMS."
-        (let ((xrefs))
-            (dolist-with-progress-reporter (item items)
-                    "Exporting Xrefs..."
-                (redisplay)
-                (push  (citre-xref--make-object (get-text-property 0 'consult-citre-tag item))
-                       xrefs))
-            (set-buffer
-             (xref--show-xref-buffer
-              (lambda () nil)
-              `((fetched-xrefs . ,xrefs)
-                (window . ,(embark--target-window))
-                (auto-jump . ,xref-auto-jump-to-first-xref)
-                (display-action))))))
-    (setf (alist-get 'consult-citre embark-exporters-alist)
-          #'consult-citre--embark-export-xref))
+(setf (alist-get 'consult-citre embark-exporters-alist)
+      #'consult-citre--embark-export-xref)
 
 (provide 'consult-citre)
