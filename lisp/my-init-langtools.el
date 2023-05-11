@@ -172,6 +172,8 @@
         "g" #'copilot-mode)
 
     :config
+    (add-to-list 'copilot-disable-display-predicates #'company--active-p)
+
     (general-define-key
      :states '(insert)
      :keymaps 'copilot-mode-map
