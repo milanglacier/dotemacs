@@ -123,6 +123,10 @@
              :key ?g))
           )
 
+    ;; evil-collection used the `mu4e~main-toggle-mail-sending-mode'
+    ;; command which is obsolete.
+    (defalias #'mu4e~main-toggle-mail-sending-mode #'mu4e--main-toggle-mail-sending-mode)
+
     (plist-put (cdr (assoc :flags mu4e-header-info)) :shortname " Flags") ; default=Flgs
 
     ;; Due to evil, none of the marking commands work when
