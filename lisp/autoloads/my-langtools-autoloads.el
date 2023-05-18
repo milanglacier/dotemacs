@@ -20,7 +20,7 @@ close the eldoc window."
     (if-let ((eldoc-win (get-buffer-window "*eldoc*")))
             (delete-window eldoc-win)
         (progn
-            (eldoc-doc-buffer)
+            (eldoc-doc-buffer t)
             (my/eldoc-dwim-hack)))
     )
 
