@@ -96,5 +96,23 @@ for debugging purposes when you want to examine a hook value."
                               (defun ,func ()
                                   (setq-local ,var ,val))))))
 
+(defvar my$load-incrementally-packages ()
+    "packages to be loaded incrementally after startup")
+
+(defun my:load-packages-incrementally (pkgs)
+    "load package from PKGS incrementally"
+    (let ((gc-cons-threshold most-positive-fixnum))
+        (when pkgs
+            (if (featurep (car pkgs))
+                    (my:load-packages-incrementally (cdr pkgs))
+                (progn
+                    (require (car pkgs))
+                    (run-with-idle-timer 0.75 nil #'my:load-packages-incrementally (cdr pkgs)))))))
+
+;;;###autoload
+(defun my:load-packages-incrementally-setup ()
+    "Set up a idle timer to start idly load packages."
+    (run-with-idle-timer 2 nil #'my:load-packages-incrementally my$load-incrementally-packages))
+
 (provide 'my-utils-autoloads)
 ;;; my-utils-autoloads ends here

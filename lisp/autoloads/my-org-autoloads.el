@@ -1,15 +1,6 @@
 ;;; my-org-autoloads.el -*- lexical-binding: t; -*-
 
 ;;;###autoload
-(defun my/load-org-extensions-idly ()
-    "Some important variables from other org extensions are not autoloaded.
-You may feel annoying if you want to use them but find a void variable.
-(e.g. you want to call `org-open-at-point' on a timestamp)"
-    (let ((org-packages '(org-capture org-agenda)))
-        (dolist (pkg org-packages)
-            (require pkg))))
-
-;;;###autoload
 (defun my/org-capture-bubble-tea-template (letter desc headings template &rest properties)
     `(,letter ,desc table-line
               (file+olp ,my/org-capture-bubble-tea-live-file

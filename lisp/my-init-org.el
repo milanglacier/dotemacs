@@ -15,6 +15,12 @@ within Emacs.")
 
 (use-package org
     :init
+    (setq my$load-incrementally-packages
+          (append
+           my$load-incrementally-packages
+           '(org-macs org-compat org-faces org-entities
+                      org-list org-pcomplete org-src org-footnote org-macro ob org org-agenda
+                      org-capture)))
 
     (my/open-map
         :states '(normal motion visual insert)
@@ -258,9 +264,6 @@ within Emacs.")
         ;; TODO: implement a vim conformant operator.
 
         )
-
-    (run-with-idle-timer 2 nil #'my/load-org-extensions-idly)
-
     )
 
 (use-package org-capture
@@ -517,6 +520,9 @@ within Emacs.")
         (setq org-appear-autosubmarkers t)))
 
 (use-package ob-jupyter
+    :when my$jupyter-want-integration
+    :init
+    (push 'zmq my$load-incrementally-packages)
     :config
     (delq :text/html jupyter-org-mime-types))
 

@@ -389,11 +389,6 @@ If a project root is found, return it. Otherwise return `default-directory'." ni
 ;;;;;;  0 0 0))
 ;;; Generated autoloads from my-org-autoloads.el
 
-(autoload 'my/load-org-extensions-idly "my-org-autoloads" "\
-Some important variables from other org extensions are not autoloaded.
-You may feel annoying if you want to use them but find a void variable.
-\(e.g. you want to call `org-open-at-point' on a timestamp)" nil nil)
-
 (autoload 'my/org-capture-bubble-tea-template "my-org-autoloads" "\
 
 
@@ -569,6 +564,11 @@ in much nicer description of the hook. This is particularly helpful
 for debugging purposes when you want to examine a hook value.
 
 \(fn HOOK VAR VAL)" nil t)
+
+(autoload 'my:load-packages-incrementally-setup "my-utils-autoloads" "\
+Set up a idle timer to start idly load packages." nil nil)
+
+(register-definition-prefixes "my-utils-autoloads" '("my$load-incrementally-packages" "my:load-packages-incrementally"))
 
 ;;;***
 

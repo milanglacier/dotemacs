@@ -28,5 +28,7 @@
     :non-normal-prefix "M-SPC t"
     :prefix-map 'my/toggle-map)
 
+(add-hook 'emacs-startup-hook #'my:load-packages-incrementally-setup)
+
 (provide 'my-init-utils)
 ;;; my-init-utils.el ends here
