@@ -98,21 +98,31 @@ for debugging purposes when you want to examine a hook value."
 
 (defvar my$load-incrementally-packages ()
     "packages to be loaded incrementally after startup")
+(defvar my$load-incrementally-packages-first-time 2
+    "time to load packages incrementally for the first time")
+(defvar my$load-incrementally-packages-idle-time 0.75
+    "idle time to load packages incrementally")
 
 (defun my:load-packages-incrementally (pkgs)
     "load package from PKGS incrementally"
-    (let ((gc-cons-threshold most-positive-fixnum))
+    (let ((gc-cons-threshold most-positive-fixnum)
+          (pkg (car pkgs))
+          (rest-pkgs (cdr pkgs)))
         (when pkgs
-            (if (featurep (car pkgs))
-                    (my:load-packages-incrementally (cdr pkgs))
+            (if (featurep pkg)
+                    (my:load-packages-incrementally rest-pkgs)
                 (progn
-                    (require (car pkgs))
-                    (run-with-idle-timer 0.75 nil #'my:load-packages-incrementally (cdr pkgs)))))))
+                    (require pkg)
+                    (run-with-idle-timer
+                     my$load-incrementally-packages-idle-time nil
+                     #'my:load-packages-incrementally rest-pkgs))))))
 
 ;;;###autoload
 (defun my:load-packages-incrementally-setup ()
     "Set up a idle timer to start idly load packages."
-    (run-with-idle-timer 2 nil #'my:load-packages-incrementally my$load-incrementally-packages))
+    (run-with-idle-timer
+     my$load-incrementally-packages-first-time nil
+     #'my:load-packages-incrementally my$load-incrementally-packages))
 
 (provide 'my-utils-autoloads)
 ;;; my-utils-autoloads ends here
