@@ -299,16 +299,12 @@ code block)" t nil)
  (autoload #'my/markdown-send-region "my-langs-autoloads" nil t)
 
 (autoload 'my~conda-activate "my-langs-autoloads" "\
-This command activates a conda environment, assuming that the
-base environment is already activated.  If the environment variable
-CONDA_PREFIX is not present, this command will not perform any
-action.
+Activate a conda environment.
 
 \(fn &optional PATH)" t nil)
 
 (autoload 'my~conda-deactivate "my-langs-autoloads" "\
-This command deactivates the current conda environment, except
-for the base environment." t nil)
+Deactivate all the conda environments, including the base environment." t nil)
 
 (autoload 'my~python-venv-activate "my-langs-autoloads" "\
 This command activates a python virtual environment.

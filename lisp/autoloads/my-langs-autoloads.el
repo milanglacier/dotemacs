@@ -79,54 +79,52 @@ language of the code block)"
 
 ;;;###autoload
 (defun my~conda-activate (&optional path)
-    "This command activates a conda environment, assuming that the
-base environment is already activated.  If the environment variable
-CONDA_PREFIX is not present, this command will not perform any
-action."
-    (interactive
-     `(,(read-directory-name
-         "select a conda env"
-         (file-name-concat
-          (or (getenv "CONDA_PREFIX_1")
-              (getenv "CONDA_PREFIX"))
-          "envs/"))))
-
+    "Activate a conda environment."
+    (interactive)
     (my~conda-deactivate)
 
-    ;; if the path contains trailing "bin" or "bin/", remove it
-    (let (conda-current-env)
+    (if (executable-find "conda")
+            (let ((conda-info (json-parse-string (shell-command-to-string "conda info --json")
+                                                 :object-type 'plist
+                                                 :array-type 'list)))
+                ;; read the conda environment path
+                (setq path (or path (completing-read "conda env:" (plist-get conda-info :envs)))
+                      ;; if path is empty, which means we want to use the base environment
+                      path (if (equal path "") (plist-get conda-info :root_prefix) path)
+                      ;; if the path contains trailing "bin" or "bin/", remove it
+                      path (replace-regexp-in-string "/bin/?$" "" path)
+                      ;; if the path contains trailing "/", remove it
+                      path (replace-regexp-in-string "/$" "" path)
+                      conda-current-env path
+                      ;; append the path with "/bin"
+                      path (concat path "/bin")
+                      my$conda-current-env conda-current-env)
 
-        ;; get the absolute path of path
-        (setq path (expand-file-name path)
-              path (replace-regexp-in-string "/bin/?$" "" path)
-              ;; if the path contains trailing "/", remove it
-              path (replace-regexp-in-string "/$" "" path)
-              conda-current-env path
-              ;; append the path with "/bin"
-              path (concat path "/bin")
-              my$conda-current-env path)
-
-        (setenv "PATH" (concat path ":" (getenv "PATH")))
-        (setenv "CONDA_PREFIX_1" (getenv "CONDA_PREFIX"))
-        (setenv "CONDA_PREFIX" conda-current-env)
-
-        (message "Activating conda environment: %s" path)))
+                (setenv "PATH" (concat path ":" (getenv "PATH")))
+                (setenv "CONDA_PREFIX" conda-current-env)
+                (setenv "CONDA_DEFAULT_ENV" (file-name-nondirectory conda-current-env))
+                (setenv "CONDA_SHLVL" "1")
+                (message "Activating conda environment: %s" path))
+        (message "conda not found")))
 
 ;;;###autoload
 (defun my~conda-deactivate ()
-    "This command deactivates the current conda environment, except
-for the base environment."
+    "Deactivate all the conda environments, including the base environment."
     (interactive)
-    (when my$conda-current-env
-        ;; split the PATH
-        (let ((paths (split-string (getenv "PATH") ":")))
-            ;; remove the path to the current conda environment
-            (setq paths (delete my$conda-current-env paths)
-                  my$conda-current-env nil)
-            ;; set the PATH
-            (setenv "PATH" (string-join paths ":"))
-            (setenv "CONDA_PREFIX" (getenv "CONDA_PREFIX_1"))
-            (setenv "CONDA_PREFIX_1" nil))))
+    (if (executable-find "conda")
+            (let ((paths (split-string (getenv "PATH") ":"))
+                  (conda-info (json-parse-string (shell-command-to-string "conda info --json")
+                                                 :object-type 'plist
+                                                 :array-type 'list)))
+                (setq my$conda-current-env (or my$conda-current-env (plist-get conda-info :root_prefix))
+                      paths (delete (concat my$conda-current-env "/bin") paths)
+                      my$conda-current-env nil)
+                (setenv "PATH" (string-join paths ":"))
+                (setenv "CONDA_PREFIX" nil)
+                (setenv "CONDA_DEFAULT_ENV" nil)
+                (setenv "CONDA_SHLVL" "0")
+                (message "Conda environment deactivated."))
+        (message "conda not found")))
 
 (defvar my$python-venv-current-env nil
     "The path to the current python venv environment.")
