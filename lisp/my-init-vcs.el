@@ -44,7 +44,8 @@
 (use-package git-gutter
     :commands (git-gutter:revert-hunk git-gutter:stage-hunk)
     :hook ((prog-mode . git-gutter-mode)
-           (conf-mode . git-gutter-mode))
+           (conf-mode . git-gutter-mode)
+           (text-mode . git-gutter-mode))
 
     :init
     (my/git-map
