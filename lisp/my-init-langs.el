@@ -165,6 +165,9 @@
 
     (add-hook 'markdown-mode-hook #'eglot-ensure)
 
+    (add-to-list 'markdown-code-lang-modes '("R" . ess-r-mode))
+    (add-to-list 'markdown-code-lang-modes '("r" . ess-r-mode))
+
     )
 
 (use-package go-mode
