@@ -33,7 +33,7 @@
       ;; call `require' in all cases unless you explicitly include
       ;; :demand t'. This will prevent unnecessary package loading and
       ;; speed up your Emacs startup time.
-      straight-check-for-modifications nil
+      straight-check-for-modifications nil ;;'(find-at-startup)
       ;; This is a useful trick to further optimize your startup
       ;; time. Instead of using `straight-check-for-modifications' to
       ;; check if a package has been modified, you can manually
