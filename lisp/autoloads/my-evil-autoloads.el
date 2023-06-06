@@ -89,5 +89,30 @@
           (search-backward-regexp my/SCM-conflict-marker nil t)
           (move-beginning-of-line nil)))))
 
+;;; shout out to `URL' https://github.com/noctuid/evil-textobj-anyblock#creating-more-specific-text-objects
+;;;###autoload (autoload #'my:evil-textobj-anyblock-inner-quote "my-evil-autoloads" nil t)
+(evil-define-text-object my:evil-textobj-anyblock-inner-quote
+    (count &optional beg end type)
+    "Select the closest outer quote."
+    (require 'evil-textobj-anyblock)
+    (let ((evil-textobj-anyblock-blocks
+           '(("'" . "'")
+             ("\"" . "\"")
+             ("`" . "'")
+             ("“" . "”"))))
+        (evil-textobj-anyblock--make-textobj beg end type count nil)))
+
+;;;###autoload (autoload #'my:evil-apply-macro-line-by-line "my-evil-autoloads" nil t)
+(evil-define-text-object my:evil-textobj-anyblock-outer-quote
+    (count &optional beg end type)
+    "Select the closest outer quote."
+    (require 'evil-textobj-anyblock)
+    (let ((evil-textobj-anyblock-blocks
+           '(("'" . "'")
+             ("\"" . "\"")
+             ("`" . "'")
+             ("“" . "”"))))
+        (evil-textobj-anyblock--make-textobj beg end type count t)))
+
 (provide 'my-evil-autoloads)
 ;;; my-evil-autoloads ends here

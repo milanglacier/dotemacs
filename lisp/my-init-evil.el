@@ -21,6 +21,7 @@
 (straight-use-package 'expand-region)
 (straight-use-package 'evil-collection)
 (straight-use-package 'evil-matchit)
+(straight-use-package 'evil-textobj-anyblock)
 
 (use-package evil-goggles
     :init
@@ -218,6 +219,7 @@
      :keymaps 'in
      ;; TODO: configure emacs-lisp mode to use space as args delimiter.
      "a" #'evil-inner-arg
+     "q" #'my:evil-textobj-anyblock-inner-quote
      "#" #'evilnc-inner-commenter
      "i" #'evil-indent-plus-i-indent
      "j" #'evil-indent-plus-i-indent-up-down
@@ -226,6 +228,7 @@
     (general-define-key
      :keymaps 'out
      "a" #'evil-outer-arg
+     "q" #'my:evil-textobj-anyblock-outer-quote
      "#" #'evilnc-outer-commenter
      "i" #'evil-indent-plus-i-indent
      "j" #'evil-indent-plus-i-indent-up-down

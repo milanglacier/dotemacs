@@ -38,7 +38,9 @@
 
     :config
     (my/define-and-bind-local-paren-text-object "`" "`" "'" emacs-lisp-mode-hook)
+
     (elispfl-mode)
+
     (setq lisp-body-indent 4
           lisp-indent-function #'my/lisp-indent-function)
 
