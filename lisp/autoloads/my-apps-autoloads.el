@@ -194,11 +194,13 @@ associated with that number"
             (vterm-send-string str t)
             (vterm-send-string "\r"))))
 
-(evil-define-operator my~aichat-send-region-operator (beg end _ _ _ session)
+;; check `evil-types' to see the meanings of evil specific interactive
+;; specs.
+(evil-define-operator my~aichat-send-region-operator (beg end session)
     "A evil operator wrapper around `my~aichat-send-region'. With a
 numeric prefix argument, send the region to the aichat process
 associated with that number"
-    (interactive "<R><x><y>P")
+    (interactive "<r>P")
     (my~aichat-send-region beg end session))
 
 (provide 'my-apps-autoloads)
