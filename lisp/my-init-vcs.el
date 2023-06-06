@@ -16,6 +16,7 @@
         :keymaps 'override
         "" '(:ignore t :which-key "git")
         "g" #'magit
+        "b" #'magit-blame
         "a" #'magit-file-dispatch
         "A" #'magit-dispatch)
 
@@ -33,6 +34,7 @@
                    ;; don't create new window if there is one magit window
                    ;; and create new tab if there isn't one magit window.
                    (display-buffer-reuse-window display-buffer-in-new-tab)))
+
     (general-define-key
      :states '(normal motion)
      :keymaps 'magit-status-mode-map
@@ -54,7 +56,6 @@
         "r" #'git-gutter:revert-hunk
         "s" #'git-gutter:stage-hunk)
 
-
     :config
     (general-define-key
      :states '(normal visual motion)
@@ -65,6 +66,7 @@
                  '("\\*git-gutter"
                    (display-buffer-below-selected)
                    (window-height . 0.3)))
+
     )
 
 (use-package hl-todo
