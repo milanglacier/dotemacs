@@ -150,7 +150,7 @@ whitespaces to be prepended when centering the verses.")
 (defun my:center-a-line (x)
     "center one line of verse or action string"
     (let ((spaces-to-be-inserted
-           (/ (- my$right-margin-when-centering-margin (length x))
+           (/ (- my$right-margin-when-centering-margin (string-width x))
               2)))
         (concat (cl-loop for i from 1 to spaces-to-be-inserted concat " ")
                 x)))
