@@ -113,11 +113,11 @@ whitespaces to be prepended when centering the verses.")
 
 (defun my:welcome-screen-make-text-button (start end action-string)
     "Make a button with ACTION-STRING as its label."
-    (let ((action (cdr (assoc action-string my$actions))))
+    (let ((action (alist-get action-string my$actions)))
         (make-text-button
          start end
          'type 'my&welcome-screen-action-button
-         'action (lambda (button)
+         'action (lambda (_)
                      (if (commandp action)
                              (call-interactively action)
                          (funcall action))))))

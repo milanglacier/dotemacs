@@ -139,7 +139,6 @@ if they are side window.")
           doom-modeline-mu4e nil
           doom-modeline-persp-name nil
           doom-modeline-minor-modes nil
-          ;; doom-modeline-major-mode-icon nil
           doom-modeline-buffer-file-name-style 'relative-from-project
           ;; Only show file encoding if it's non-UTF-8 and different line endings
           ;; than the current OSes preference
