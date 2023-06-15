@@ -280,9 +280,6 @@ within Emacs.")
             ("n" "Personal notes" entry
              (file ,my/org-capture-notes-file)
              "* %u %?\n%i\n%a" :prepend t)
-            ("j" "Applied jobs" checkitem
-             (file+olp ,my/org-capture-todo-file "Applied jobs")
-             "- [ ] %?")
             ("i" "clock in(start a timer)" entry
              (file ,my/org-capture-todo-file)
              "* TODO %?%^g\nSCHEDULED: %t"
