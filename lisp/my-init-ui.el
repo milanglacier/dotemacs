@@ -37,7 +37,7 @@
     '((helpful . 1) ;; 0 is the default
       (vterm . -1)
       (eldoc . 1)
-      (aichat . 1)
+      (aichat . 2)
       (python . -1)
       (R . -1)
       (Rhelp . 1)
