@@ -12,6 +12,9 @@
 ;; go
 (straight-use-package 'go-mode)
 
+;; rust
+(straight-use-package 'rust-mode)
+
 ;; sql
 (straight-use-package 'sql-indent)
 
@@ -174,6 +177,11 @@
     :config
     (add-hook 'go-mode-hook (my/setq-locally tab-width 4))
     (add-hook 'go-mode-hook #'eglot-ensure))
+
+(use-package rust-mode
+    :config
+    (add-hook 'rust-mode-hook #'prettify-symbols-mode)
+    (add-hook 'rust-mode-hook #'eglot-ensure))
 
 (use-package sql
     :init
