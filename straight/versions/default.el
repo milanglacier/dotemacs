@@ -102,6 +102,7 @@
  ("pdf-tools" . "c69e7656a4678fe25afbd29f3503dd19ee7f9896")
  ("project" . "87d39416ad2548d101909b3acac98bc769363c13")
  ("rainbow-delimiters" . "a32b39bdfe6c61c322c37226d66e1b6d4f107ed0")
+ ("rust-mode" . "e443ccf2884028d3b6cc550ff20e7c92dadccb68")
  ("s.el" . "dda84d38fffdaf0c9b12837b504b402af910d01d")
  ("shrink-path.el" . "c14882c8599aec79a6e8ef2d06454254bb3e1e41")
  ("spacemacs-theme" . "319ad1cd6aa05dcb43e4edca50eca339892e0865")
