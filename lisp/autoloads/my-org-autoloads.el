@@ -3,8 +3,7 @@
 ;;;###autoload
 (defun my/org-capture-bubble-tea-template (letter desc headings template &rest properties)
     `(,letter ,desc table-line
-              (file+olp ,my/org-capture-bubble-tea-live-file
-                        ,@headings ,(format-time-string "%Y") ,(format-time-string "%B"))
+              (file+olp ,my/org-capture-bubble-tea-live-file ,@headings)
               ,template ,@properties :unnarrowed t))
 ;; HACK: here without `:unnarrowed t', the org-capture will
 ;; automatically insert a new line after the table. That is, if you
@@ -43,11 +42,7 @@ files in the org-directory to create the org-agenda view"
 when clocking out, use this function to automatically update the table."
     (save-excursion
         (goto-char (org-find-olp
-                    `(,(buffer-name) "play" ,(format-time-string "%Y")
-                      ;; 5th element of org-heading-components is the
-                      ;; text of current heading which is exactly the
-                      ;; month current table entry is at.
-                      ,(nth 4 (org-heading-components)))))
+                    `(,(buffer-name) "play")))
         (re-search-forward (replace-regexp-in-string "[][]" "" start)
                            ;; [ and ] are regex reserved identifers,
                            ;; need to escape them.
