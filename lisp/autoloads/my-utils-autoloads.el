@@ -12,7 +12,7 @@ nil, use `my/autoloads-file'."
             (with-current-buffer (find-file-noselect
                                   autoloads-file)
                 (save-buffer)))
-        (loaddefs-generate autoloads-dir autoloads-file)))
+        (loaddefs-generate autoloads-dir autoloads-file nil nil nil t)))
 
 ;;;###autoload
 (defun my/update-site-lisp-autoloads ()
