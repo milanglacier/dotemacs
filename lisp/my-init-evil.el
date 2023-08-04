@@ -83,6 +83,16 @@
         "i" #'better-jumper-jump-forward)
     )
 
+(use-package evil-ts
+    :commands (evil-ts-beginning-of-class
+               evil-ts-end-of-class
+               evil-ts-beginning-of-condition
+               evil-ts-end-of-condition
+               evil-ts-text-obj-class
+               evil-ts-text-obj-fun
+               evil-ts-text-obj-cond
+               evil-ts-text-obj-expand-region))
+
 (use-package evil-collection
     :init
     (setq evil-collection-mode-list
@@ -189,7 +199,17 @@
      "[b" #'evil-prev-buffer
      "]b" #'evil-next-buffer
      "[n" #'my/previous-SCM-conflict-marker
-     "]n" #'my/next-SCM-conflict-marker)
+     "]n" #'my/next-SCM-conflict-marker
+     "]f" #'treesit-beginning-of-defun
+     "[f" #'treesit-end-of-defun
+     "]s" #'treesit-beginning-of-thing
+     "[s" #'treesit-end-of-thing
+     "]C" #'evil-ts-beginning-of-class
+     "[C" #'evil-ts-end-of-class
+     "]c" #'evil-ts-beginning-of-condition
+     "[c" #'evil-ts-end-of-condition
+     )
+
 
     (general-define-key
      :states '(normal visual)
@@ -207,6 +227,11 @@
      "gs" #'evil-replace-with-register
      "g@" #'my/evil-apply-macro-line-by-line)
 
+    (my/leader
+        :states '(normal visual insert motion)
+        :keymaps 'override
+        "RET" #'er/expand-region)
+
     (general-define-key
      :states 'insert
      "C-a" #'move-beginning-of-line
@@ -223,7 +248,11 @@
      "#" #'evilnc-inner-commenter
      "i" #'evil-indent-plus-i-indent
      "j" #'evil-indent-plus-i-indent-up-down
-     "k" #'evil-indent-plus-i-indent-up)
+     "k" #'evil-indent-plus-i-indent-up
+     "c" #'evil-ts-text-obj-cond
+     "C" #'evil-ts-text-obj-class
+     "f" #'evil-ts-text-obj-fun
+     )
 
     (general-define-key
      :keymaps 'out
@@ -232,7 +261,10 @@
      "#" #'evilnc-outer-commenter
      "i" #'evil-indent-plus-i-indent
      "j" #'evil-indent-plus-i-indent-up-down
-     "k" #'evil-indent-plus-i-indent-up)
+     "k" #'evil-indent-plus-i-indent-up
+     "c" #'evil-ts-text-obj-cond
+     "C" #'evil-ts-text-obj-class
+     "f" #'evil-ts-text-obj-fun)
 
     (my/define-and-bind-paren-text-object "$" "\\$" "\\$")
     (my/define-and-bind-paren-text-object "|" "|" "|")

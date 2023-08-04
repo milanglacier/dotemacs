@@ -419,6 +419,10 @@ within Emacs.")
 
     :config
     (add-to-list 'org-src-lang-modes '("r" . R))
+    (add-to-list 'org-src-lang-modes '("python" . python-ts))
+    (setf (alist-get "bash" org-src-lang-modes) 'bash-ts)
+    (setf (alist-get "sh" org-src-lang-modes) 'bash-ts)
+
     (add-to-list 'display-buffer-alist
                  '("\\*Org Src"
                    (display-buffer-at-bottom)
@@ -434,7 +438,11 @@ within Emacs.")
             (push '(jupyter . t) org-babel-langs))
 
         (org-babel-do-load-languages 'org-babel-load-languages
-                                     org-babel-langs))
+                                     org-babel-langs)
+
+        (when my$jupyter-want-integration
+            (setf (alist-get "jupyter-python" org-src-lang-modes) 'python-ts))
+        )
 
     ;; HACK: when you want to use org-babel to execute a code block,
     ;; it seems that it uses the language identifer associate with

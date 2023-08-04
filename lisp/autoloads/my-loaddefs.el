@@ -325,7 +325,7 @@ This command deactivates the current python virtual environment." t nil)
 ;;;;;;  (0 0 0 0))
 ;;; Generated autoloads from my-langtools-autoloads.el
 
-(autoload 'my/toggle-citre-eglot-capf "my-langtools-autoloads" nil nil nil)
+(autoload 'my/toggle-citre-eglot-capf "my-langtools-autoloads")
  (autoload #'my/eldoc-buffer-dwim "my-langtools-autoloads" nil t)
 
 (autoload 'my/xref-move-in-original-src-macro "my-langtools-autoloads" "\
@@ -341,12 +341,14 @@ to next xref location.
 (autoload 'my/markdown-src-lsp-setup "my-langtools-autoloads" "\
 eglot requires the buffer to be a file to be able to attach to
 the lsp. Thus the indirect buffer created by `edit-indirect' needs to
-be associated with a real file." nil nil)
+be associated with a real file.")
 
 (autoload 'my/org-babel-lsp-setup "my-langtools-autoloads" "\
 Support LANG in org source code block.
 
 \(fn LANG)" nil t)
+
+(autoload 'my~treesit-install-all-language-grammar "my-langtools-autoloads" nil t)
 
 (register-definition-prefixes "my-langtools-autoloads" '("my/eldoc-"))
 
@@ -446,7 +448,7 @@ If there is only one tab, close emacs, otherwise close one tab" t nil)
 ;;;;;;  0 0))
 ;;; Generated autoloads from my-ui-autoloads.el
 
-(autoload 'my/display-truncation-and-wrap-indicator-as-whitespace "my-ui-autoloads" nil nil nil)
+(autoload 'my/display-truncation-and-wrap-indicator-as-whitespace "my-ui-autoloads")
 
 (autoload 'my/tab-bar-go-to-tab-macro "my-ui-autoloads" "\
 
@@ -459,13 +461,13 @@ scratch buffer whose directory is set to where emacs is initialized.
 Change it to the directory of previous buffer where `tab-bar-new-tab'
 is called.
 
-\(fn OLD-FUN &rest ARGS)" nil nil)
+\(fn OLD-FUN &rest ARGS)")
 
 (autoload 'my:font-set-small-mono-font "my-ui-autoloads" "\
-Set the default font to a smaller sized font for current buffer." nil nil)
+Set the default font to a smaller sized font for current buffer.")
 
 (autoload 'my:font-set-small-variable-font "my-ui-autoloads" "\
-Set the default font to a smaller sized font for current buffer." nil nil)
+Set the default font to a smaller sized font for current buffer.")
 
 (defvar my~show-verses-at-startup-mode nil "\
 Non-nil if My~Show-Verses-At-Startup mode is enabled.
@@ -480,7 +482,7 @@ or call the function `my~show-verses-at-startup-mode'.")
 (autoload 'my~show-verses-at-startup-mode "my-ui-autoloads" "\
 show verses at the startup screen.
 
-This is a minor mode.  If called interactively, toggle the
+This is a global minor mode.  If called interactively, toggle the
 `My~Show-Verses-At-Startup mode' mode.  If the prefix argument is
 positive, enable the mode, and if it is zero or negative, disable
 the mode.
@@ -495,10 +497,10 @@ evaluate `(default-value \\='my~show-verses-at-startup-mode)'.
 The mode's hook is called both when the mode is enabled and when
 it is disabled.
 
-\(fn &optional ARG)" t nil)
+\(fn &optional ARG)" t)
 
 (autoload 'my~refresh-verses "my-ui-autoloads" "\
-refresh verses in the scratch buffer" t nil)
+refresh verses in the scratch buffer" t)
 
 (register-definition-prefixes "my-ui-autoloads" '("my$" "my&welcome-screen-action-button" "my:"))
 
@@ -585,6 +587,61 @@ Open `magit' at current project." t nil)
 ;;;### (autoloads nil nil ("my-basics-autoloads.el") (0 0 0 0))
 
 ;;;***
+
+
+;;; Generated autoloads from my-utils-autoloads.el
+
+(autoload 'my/update-all-autoloads "my-utils-autoloads" "\
+Update all autoloads in the AUTOLOADS-DIR into the AUTOLOADS-FILE.
+If AUTOLOADS-DIR is nil, use `my/autoloads-dir'. If AUTOLOADS-FILE is
+nil, use `my/autoloads-file'.
+
+(fn &optional AUTOLOADS-DIR AUTOLOADS-FILE)" t)
+(autoload 'my/update-site-lisp-autoloads "my-utils-autoloads" nil t)
+(autoload 'my/run-hook-once "my-utils-autoloads" "\
+a wrapper to run a func on a hook only once
+
+(fn HOOK FUNC &rest ARGS)" nil t)
+(autoload 'my/advise-at-once "my-utils-autoloads" "\
+a wrapper to advise a func only once
+
+(fn FUNC ADVICE WHERE &rest PROPS)" nil t)
+(autoload 'my/turn-off-mode "my-utils-autoloads" "\
+Create a function to turn off MODE. Useful for attaching on some
+hooks that will turn off MODE locally.
+
+(fn MODE)" nil t)
+(autoload 'my/setq-locally "my-utils-autoloads" "\
+Create a function that sets a local value to a variable (VAR)
+called VAL. This function is particularly useful for setting variables
+locally in certain hooks.
+
+For setting a simple VAL to VAR in multiple modes, use
+`my/setq-locally'. In case you want to set a complex VAL to VAR in a
+single mode, use `my/setq-on-hook'. You might wonder why you shouldn't
+simply use (add-hook 'foo-hook (lambda () FORM)? This is because, upon
+running \\[describe-variable] `foo-hook RET', you'll find the lambda
+functions unreadable. Using a named function in a hook, however, makes
+the hook more elegantly described, which proves to be useful for
+debugging purposes if you desire to scrutinize a hook value.
+
+(fn VAR VAL)" nil t)
+(autoload 'my/setq-on-hook "my-utils-autoloads" "\
+Create a function that sets VAR to VAL on a HOOK.
+
+If you want to set VAR to a simple VAL in multiple modes, use
+`my/setq-locally'. However, if you want to set VAR to a complex VAL in
+only one mode, use `my/setq-on-hook'. Why not directly use (add-hook
+'foo-hook (lambda () FORM))'? Well, when you try to describe the
+variable with \\[describe-variable] `foo-hook RET', those lambda
+functions become unreadable. Using a named function in a hook results
+in much nicer description of the hook. This is particularly helpful
+for debugging purposes when you want to examine a hook value.
+
+(fn HOOK VAR VAL)" nil t)
+(autoload 'my:load-packages-incrementally-setup "my-utils-autoloads" "\
+Set up a idle timer to start idly load packages.")
+(register-definition-prefixes "my-utils-autoloads" '("my$load-incrementally-packages" "my:load-packages-incrementally"))
 
 (provide 'my-loaddefs)
 ;; Local Variables:

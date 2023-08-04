@@ -1,28 +1,29 @@
 
 # Table of Contents
 
-1.  [Features](#orgd8ad978)
-    1.  [Blazing fast.](#orgd7319e8)
-    2.  [Robust](#org88ea411)
-    3.  [Compatability](#org8725a3e)
-    4.  [Feature rich](#org6e67d79)
-    5.  [Be wild](#org10a7106)
-2.  [Showcase](#org8fd3f6f)
-    1.  [Welcome screen](#org7d7789d)
-    2.  [Code Navigation](#orgc414324)
-    3.  [Data Science](#org8223d16)
-    4.  [Orgmode](#orga02e602)
-3.  [TODOs](#orge3a52ba)
-    1.  [Update `lisp-indent-function` from Doomemacs.](#orgf4f5d3d)
-    2.  [Report `org-capture` bugs when inserting entries into table to upstream.](#orga1a0a3f)
-    3.  [Utilize the contextual information from previous code block when editing source block within markdown/org.](#orgf31f346)
-    4.  [Lazily load third-party plugins for `evil`.](#orgc71fab0)
-    5.  [Configure `evil-args` to use spaces as argument delimiter for `emacs-lisp-mode`.](#org040a5d6)
-    6.  [Implement thread-folding for `mu4e`.](#org1338e1c)
-4.  [Notes](#orgf0f8cf7)
-    1.  [Startup speed](#org5a72c84)
-    2.  [Naming conventions (WIP)](#org60cdbe1)
-    3.  [Corfu or Company?](#orgf4b51d6)
+1.  [Features](#org3ade0fe)
+    1.  [Blazing fast.](#org5e1a6a0)
+    2.  [Robust](#orge13015a)
+    3.  [Compatability](#org5af64d1)
+    4.  [Feature rich](#orgce41bba)
+    5.  [Be wild](#orgac66783)
+2.  [Showcase](#org00a2ba0)
+    1.  [Welcome screen](#org306daad)
+    2.  [Code Navigation](#org5cd20dd)
+    3.  [Data Science](#orgd023c03)
+    4.  [Orgmode](#org2a36ee2)
+3.  [TODOs](#org1f4c8dd)
+    1.  [Update `lisp-indent-function` from Doomemacs.](#org8a9b0f5)
+    2.  [Report `org-capture` bugs when inserting entries into table to upstream.](#orgb07e954)
+    3.  [Utilize the contextual information from previous code block when editing source block within markdown/org.](#orge43df95)
+    4.  [Lazily load third-party plugins for `evil`.](#orge05fdf8)
+    5.  [Configure `evil-args` to use spaces as argument delimiter for `emacs-lisp-mode`.](#org52b436d)
+    6.  [Implement thread-folding for `mu4e`.](#orgb10a1e3)
+4.  [Prerequisites](#org2ac272b)
+5.  [Notes](#orgd590802)
+    1.  [Startup speed](#orga85c549)
+    2.  [Naming conventions (WIP)](#orge04f9ac)
+    3.  [Corfu or Company?](#org7d7cced)
 
 If you&rsquo;re currently reading this README file in Markdown format, it
 has been generated through `org-export`, from its original org
@@ -30,12 +31,12 @@ format. For the best experience, please consider reading the org
 format file instead.
 
 
-<a id="orgd8ad978"></a>
+<a id="org3ade0fe"></a>
 
 # Features
 
 
-<a id="orgd7319e8"></a>
+<a id="org5e1a6a0"></a>
 
 ## Blazing fast.
 
@@ -44,10 +45,10 @@ seconds on a VPS with a 1-core CPU and 1 GB RAM, and 0.22 seconds on
 WSL with an Intel i7-1185G7 and 32 GB RAM, TTY is exceptionally
 fast. The GUI is just as quick, starting in 0.44 seconds on Mac M1 and
 0.31 seconds on WSLg. For more information on startup speed, see
-[4.1](#org5a72c84).
+[5.1](#orga85c549).
 
 
-<a id="org88ea411"></a>
+<a id="orge13015a"></a>
 
 ## Robust
 
@@ -55,7 +56,7 @@ Package versions are locked and under version control, so no breaking
 changes are expected.
 
 
-<a id="org8725a3e"></a>
+<a id="org5af64d1"></a>
 
 ## Compatability
 
@@ -64,7 +65,7 @@ TTY is not compromised, while GUI features, including `xwidget`, are
 also well-configured.
 
 
-<a id="org6e67d79"></a>
+<a id="orgce41bba"></a>
 
 ## Feature rich
 
@@ -77,14 +78,14 @@ configuration.  Instead, it is &ldquo;heavy&rdquo; and feature rich, including:
 
 -   A keybinding scheme centered around leader and localleader keys, powered by `general` and `which-key`.
 
--   In-buffer autocompletion frontend based on `company` (see [4.3](#orgf4b51d6)).
+-   In-buffer autocompletion frontend based on `company` (see [5.3](#org7d7cced)).
 
 -   Code completion and navigation based on `eglot` (LSP) and `citre` (Ctags).
 
 -   Integration with `eglot` and `org-babel` or `markdown-mode` that takes literate programming to the next level.
 
 
-<a id="org10a7106"></a>
+<a id="orgac66783"></a>
 
 ## Be wild
 
@@ -95,12 +96,12 @@ randomized with each launch. Have a fresh experience at every time. Be
 casual and wild!
 
 
-<a id="org8fd3f6f"></a>
+<a id="org00a2ba0"></a>
 
 # Showcase
 
 
-<a id="org7d7789d"></a>
+<a id="org306daad"></a>
 
 ## Welcome screen
 
@@ -113,7 +114,7 @@ listed, allowing for convenient execution by simply clicking on the
 corresponding button.
 
 
-<a id="orgc414324"></a>
+<a id="org5cd20dd"></a>
 
 ## Code Navigation
 
@@ -128,7 +129,7 @@ the definition of the chosen symbol is displayed with the aid of
 `ctags` (the Emacs command is `citre-peek`).
 
 
-<a id="org8223d16"></a>
+<a id="orgd023c03"></a>
 
 ## Data Science
 
@@ -144,7 +145,7 @@ the aichat mode as `exp-code-e` to prompt chatgpt to provide an
 explanation of the code you sent.
 
 
-<a id="orga02e602"></a>
+<a id="org2a36ee2"></a>
 
 ## Orgmode
 
@@ -156,47 +157,64 @@ webkit. Preview slides in emacs without the need to open GUI browser
 anymore.
 
 
-<a id="orge3a52ba"></a>
+<a id="org1f4c8dd"></a>
 
 # TODOs
 
 
-<a id="orgf4f5d3d"></a>
+<a id="org8a9b0f5"></a>
 
 ## Update `lisp-indent-function` from Doomemacs.
 
 
-<a id="orga1a0a3f"></a>
+<a id="orgb07e954"></a>
 
 ## Report `org-capture` bugs when inserting entries into table to upstream.
 
 
-<a id="orgf31f346"></a>
+<a id="orge43df95"></a>
 
 ## Utilize the contextual information from previous code block when editing source block within markdown/org.
 
 
-<a id="orgc71fab0"></a>
+<a id="orge05fdf8"></a>
 
 ## Lazily load third-party plugins for `evil`.
 
 
-<a id="org040a5d6"></a>
+<a id="org52b436d"></a>
 
 ## Configure `evil-args` to use spaces as argument delimiter for `emacs-lisp-mode`.
 
 
-<a id="org1338e1c"></a>
+<a id="orgb10a1e3"></a>
 
 ## Implement thread-folding for `mu4e`.
 
 
-<a id="orgf0f8cf7"></a>
+<a id="org2ac272b"></a>
+
+# Prerequisites
+
+-   This configuration is designed for Emacs 29 or newer versions.
+-   Your Emacs must be built with Treesitter support for this
+    configuration to work effectively. If you are using a widely used
+    package manager, and said manager has updated Emacs to version 29 or
+    later, it&rsquo;s highly probable that Treesitter is already built into
+    the Emacs version provided via the package manager. We advise
+    verifying the package specifications for exact details if you choose
+    to leverage a package manager-built Emacs.
+-   A separate installation is required for Treesitter grammar.  You can
+    execute the command `M-x my~treesit-install-all-language-grammar` to
+    install all the language grammars that are currently in use.
+
+
+<a id="orgd590802"></a>
 
 # Notes
 
 
-<a id="org5a72c84"></a>
+<a id="orga85c549"></a>
 
 ## Startup speed
 
@@ -211,7 +229,7 @@ skews `(emacs-init-time)` and does not accurately reflect startup
 time. This configuration is honest and truly lazy loads packages.
 
 
-<a id="org60cdbe1"></a>
+<a id="orge04f9ac"></a>
 
 ## Naming conventions (WIP)
 
@@ -231,7 +249,7 @@ time. This configuration is honest and truly lazy loads packages.
 -   A symbol prefixed with `my&` indicates it is a special symbol like faces.
 
 
-<a id="orgf4b51d6"></a>
+<a id="org7d7cced"></a>
 
 ## Corfu or Company?
 

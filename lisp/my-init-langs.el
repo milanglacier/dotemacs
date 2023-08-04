@@ -3,17 +3,8 @@
 ;; ess
 (straight-use-package 'ess)
 
-;; json
-(straight-use-package 'json-mode)
-
 ;; markdown
 (straight-use-package 'markdown-mode)
-
-;; go
-(straight-use-package 'go-mode)
-
-;; rust
-(straight-use-package 'rust-mode)
 
 ;; sql
 (straight-use-package 'sql-indent)
@@ -112,11 +103,11 @@
     (setq python-indent-offset 4)
 
     :config
-    (add-to-list 'python-mode-hook #'eglot-ensure)
-    (my/define-and-bind-local-paren-text-object " c" "# %%" "# %%" python-mode-hook)
+    (add-to-list 'python-ts-mode-hook #'eglot-ensure)
+    (my/define-and-bind-local-paren-text-object " c" "# %%" "# %%" python-ts-mode-hook)
 
     (my/localleader
-        :keymaps 'python-mode-map
+        :keymaps 'python-ts-mode-map
         :states '(normal visual insert motion)
         "f" #'yapf-format-buffer
         "s" #'my/send-region-to-python
@@ -139,8 +130,8 @@
 
     (when (and (display-graphic-p)
                (featurep 'xwidget-internal))
-        (add-hook 'python-mode-hook #'my/xwidget-side-window-mode)
-        (add-hook 'python-mode-hook #'my/refresh-xwidget-after-eval-python-mode))
+        (add-hook 'python-ts-mode-hook #'my/xwidget-side-window-mode)
+        (add-hook 'python-ts-mode-hook #'my/refresh-xwidget-after-eval-python-mode))
 
     )
 
@@ -170,18 +161,19 @@
 
     (add-to-list 'markdown-code-lang-modes '("R" . ess-r-mode))
     (add-to-list 'markdown-code-lang-modes '("r" . ess-r-mode))
+    ;; (add-to-list 'markdown-code-lang-modes '("go" . go-ts-mode))
 
     )
 
-(use-package go-mode
+(use-package go-ts-mode
     :config
-    (add-hook 'go-mode-hook (my/setq-locally tab-width 4))
-    (add-hook 'go-mode-hook #'eglot-ensure))
+    (add-hook 'go-ts-mode-hook (my/setq-locally tab-width 4))
+    (add-hook 'go-ts-mode-hook #'eglot-ensure))
 
-(use-package rust-mode
+(use-package rust-ts-mode
     :config
-    (add-hook 'rust-mode-hook #'prettify-symbols-mode)
-    (add-hook 'rust-mode-hook #'eglot-ensure))
+    (add-hook 'rust-ts-mode-hook #'prettify-symbols-mode)
+    (add-hook 'rust-ts-mode-hook #'eglot-ensure))
 
 (use-package sql
     :init

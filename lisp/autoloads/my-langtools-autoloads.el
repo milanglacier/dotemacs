@@ -91,5 +91,10 @@ be associated with a real file."
                      (defun ,edit-pre (info)
                          (,my-setup info)))))))
 
+;;;###autoload
+(defun my~treesit-install-all-language-grammar ()
+    (interactive)
+    (mapc #'treesit-install-language-grammar (mapcar #'car treesit-language-source-alist)))
+
 (provide 'my-langtools-autoloads)
 ;;; my-langtools-autoloads.el ends here
