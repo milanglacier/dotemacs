@@ -185,7 +185,7 @@ Indents plists more sensibly. Adapted from
 https://emacs.stackexchange.com/questions/10230/how-to-indent-keywords-aligned
 
 (fn INDENT-POINT STATE)")
-(register-definition-prefixes "my-elisp-autoloads" '("my/emacs-lisp-outline-level"))
+(register-definition-prefixes "my-elisp-autoloads" '("my&emacs-lisp--face" "my/emacs-lisp-outline-level" "my:emacs-lisp-highlight-vars-and-faces"))
 
 
 ;;; Generated autoloads from my-email-autoloads.el

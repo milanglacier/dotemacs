@@ -4,7 +4,6 @@
 (straight-use-package 'elisp-demos)
 (straight-use-package 'highlight-quoted)
 (straight-use-package 'macrostep)
-(straight-use-package '(elispfl :host github :repo "cireu/elispfl"))
 ;; fontification for elisp
 
 ;; TODO: configure `lispy' and `lispyville' to work better with
@@ -38,8 +37,6 @@
 
     :config
     (my/define-and-bind-local-paren-text-object "`" "`" "'" emacs-lisp-mode-hook)
-
-    (elispfl-mode)
 
     (setq lisp-body-indent 4
           lisp-indent-function #'my/lisp-indent-function)

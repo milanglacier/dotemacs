@@ -40,6 +40,11 @@ Intended to replace `lisp-outline-level'."
                 outline-level #'my/emacs-lisp-outline-level)
     (outline-minor-mode)
     (highlight-quoted-mode)
+
+    (font-lock-add-keywords
+     'emacs-lisp-mode
+     '((my:emacs-lisp-highlight-vars-and-faces . my&emacs-lisp--face)))
+
     ;; copied from doomemacs
     (setq-local imenu-generic-expression
                 `(("Evil commands" "^\\s-*(evil-define-\\(?:command\\|operator\\|motion\\) +\\(\\_<[^ ()\n]+\\_>\\)" 1)
@@ -108,6 +113,44 @@ https://emacs.stackexchange.com/questions/10230/how-to-indent-keywords-aligned"
                           (lisp-indent-specform method state indent-point normal-indent))
                          (method
                           (funcall method indent-point state))))))))
+
+(defvar my&emacs-lisp--face nil)
+
+(defun my:emacs-lisp-highlight-vars-and-faces (end)
+    "Match defined variables and functions.
+
+Functions are differentiated into special forms, built-in functions and
+library/userland functions"
+    (catch 'matcher
+        (while (re-search-forward "\\(?:\\sw\\|\\s_\\)+" end t)
+            (let ((ppss (save-excursion (syntax-ppss))))
+                (cond ((nth 3 ppss)  ; strings
+                       (search-forward "\"" end t))
+                      ((nth 4 ppss)  ; comments
+                       (forward-line +1))
+                      ((let ((symbol (intern-soft (match-string-no-properties 0))))
+                           (and (cond ((null symbol) nil)
+                                      ((eq symbol t) nil)
+                                      ((keywordp symbol) nil)
+                                      ((special-variable-p symbol)
+                                       (setq my&emacs-lisp--face 'font-lock-variable-name-face))
+                                      ((and (fboundp symbol)
+                                            (eq (char-before (match-beginning 0)) ?\()
+                                            (not (memq (char-before (1- (match-beginning 0)))
+                                                       (list ?\' ?\`))))
+                                       (let ((unaliased (indirect-function symbol)))
+                                           (unless (or (macrop unaliased)
+                                                       (special-form-p unaliased))
+                                               (let (unadvised)
+                                                   (while (not (eq (setq unadvised (ad-get-orig-definition unaliased))
+                                                                   (setq unaliased (indirect-function unadvised)))))
+                                                   unaliased)
+                                               (setq my&emacs-lisp--face
+                                                     (if (subrp unaliased)
+                                                             'font-lock-constant-face
+                                                         'font-lock-function-name-face))))))
+                                (throw 'matcher t)))))))
+        nil))
 
 (provide 'my-elisp-autoloads)
 ;; my-elisp-autoloads.el ends here
