@@ -181,7 +181,12 @@
 
     :config
     (add-hook 'sql-mode-hook (my/setq-locally tab-width 4))
-    (add-hook 'sql-mode-hook #'eglot-ensure))
+    (add-hook 'sql-mode-hook #'eglot-ensure)
+
+    (my/localleader
+        :keymaps 'sql-mode-map
+        :states '(normal visual insert motion)
+        "f" #'sql-formatter-format-buffer))
 
 (provide 'my-init-langs)
 ;;; my-init-langs.el ends here

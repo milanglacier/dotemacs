@@ -172,5 +172,16 @@ language of the code block)"
 ;;;###autoload (autoload #'yapf-format-buffer "my-langs-autoloads" nil t)
 (reformatter-define yapf-format :program "yapf")
 
+;;;###autoload (autoload #'sql-formatter-format-buffer "my-langs-autoloads" nil t)
+(reformatter-define sql-formatter-format
+    :program "sql-formatter"
+    :args (when-let* ((config-file (file-name-concat
+                                    (getenv "HOME")
+                                    ".config"
+                                    "sql_formatter"
+                                    "sql_formatter.json"))
+                      (config-file-exists (file-exists-p config-file)))
+              '(config-file)))
+
 (provide 'my-langs-autoloads)
 ;;; my-init-langs.el ends here
