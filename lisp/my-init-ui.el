@@ -83,6 +83,7 @@ if they are side window.")
           tab-bar-tab-hints t
           tab-bar-new-button-show nil
           tab-bar-separator " "
+          tab-bar-auto-width nil
           ;; We have our own tab-bar UI that includes a variable for
           ;; configuring the separator. Thus, this variable is
           ;; unnecessary.
