@@ -293,7 +293,10 @@ Support LANG in org source code block.
 
 (fn LANG)" nil t)
 (autoload 'my~treesit-install-all-language-grammar "my-langtools-autoloads" nil t)
-(register-definition-prefixes "my-langtools-autoloads" '("my/eldoc-"))
+(autoload 'my~formatter "my-langtools-autoloads" "\
+If current LSP has a formatter, use it. Otherwise, use the
+reformatter according to the `major-mode-reformatter-plist'" t)
+(register-definition-prefixes "my-langtools-autoloads" '("major-mode-reformatter-plist" "my/eldoc-"))
 
 
 ;;; Generated autoloads from my-minibuffer-autoloads.el

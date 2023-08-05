@@ -96,5 +96,22 @@ be associated with a real file."
     (interactive)
     (mapc #'treesit-install-language-grammar (mapcar #'car treesit-language-source-alist)))
 
+(defvar major-mode-reformatter-plist
+    '(python-ts-mode yapf-format-buffer
+                     python-mode yapf-format-buffer
+                     sql-mode sql-formatter-format-buffer)
+    "A plist of major modes and their corresponding reformatters.")
+
+;;;###autoload
+(defun my~formatter ()
+    "If current LSP has a formatter, use it. Otherwise, use the
+reformatter according to the `major-mode-reformatter-plist'"
+    (interactive)
+    (if (and (eglot-managed-p)
+             (eglot--server-capable :documentFormattingProvider))
+            (call-interactively #'eglot-format)
+        (when-let ((formatter (plist-get major-mode-reformatter-plist major-mode)))
+            (call-interactively formatter))))
+
 (provide 'my-langtools-autoloads)
 ;;; my-langtools-autoloads.el ends here

@@ -109,7 +109,6 @@
     (my/localleader
         :keymaps 'python-ts-mode-map
         :states '(normal visual insert motion)
-        "f" #'yapf-format-buffer
         "s" #'my/send-region-to-python
         "r" '(:ignore t :which-key "REPL")
         "rs" #'my/run-python
@@ -180,12 +179,7 @@
 
     :config
     (add-hook 'sql-mode-hook (my/setq-locally tab-width 4))
-    (add-hook 'sql-mode-hook #'eglot-ensure)
-
-    (my/localleader
-        :keymaps 'sql-mode-map
-        :states '(normal visual insert motion)
-        "f" #'sql-formatter-format-buffer))
+    (add-hook 'sql-mode-hook #'eglot-ensure))
 
 (provide 'my-init-langs)
 ;;; my-init-langs.el ends here

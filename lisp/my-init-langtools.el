@@ -122,7 +122,7 @@
         :keymaps 'eglot-mode-map
         :states '(normal insert motion visual)
         "" '(:ignore t :which-key "lsp")
-        "f" #'eglot-format
+        "f" #'my~formatter
         "s" #'consult-eglot-symbols
         "a" #'eglot-code-actions
         "e" #'consult-flymake
