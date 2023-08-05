@@ -161,7 +161,6 @@
 
     (add-to-list 'markdown-code-lang-modes '("R" . ess-r-mode))
     (add-to-list 'markdown-code-lang-modes '("r" . ess-r-mode))
-    ;; (add-to-list 'markdown-code-lang-modes '("go" . go-ts-mode))
 
     )
 
