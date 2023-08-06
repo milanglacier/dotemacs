@@ -20,5 +20,16 @@
     (unless (eq ibuffer-sorting-mode 'alphabetic)
         (ibuffer-do-sort-by-alphabetic)))
 
+(defun my:dired-subtree-add-nerd-icons ()
+    (interactive)
+    (revert-buffer))
+
+;;;###autoload
+(defun my:dired-subtree-toggle-nerd-icons ()
+    (when (require 'dired-subtree nil t)
+        (if nerd-icons-dired-mode
+                (advice-add #'dired-subtree-toggle :after #'my:dired-subtree-add-nerd-icons)
+            (advice-remove #'dired-subtree-toggle #'my:dired-subtree-add-nerd-icons))))
+
 (provide 'my-misc-autoloads)
 ;;; my-misc-autoloads.el ends here

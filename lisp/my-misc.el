@@ -167,7 +167,8 @@
     :hook (dired-mode . diredfl-mode))
 
 (use-package nerd-icons-dired
-    :hook (dired-mode . nerd-icons-dired-mode))
+    :hook ((dired-mode . nerd-icons-dired-mode)
+           (nerd-icons-dired-mode . my:dired-subtree-toggle-nerd-icons)))
 
 (use-package dired-sidebar
     :init
