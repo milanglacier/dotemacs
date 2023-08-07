@@ -181,7 +181,7 @@ language of the code block)"
                                     "sql_formatter"
                                     "sql_formatter.json"))
                       (config-file-exists (file-exists-p config-file)))
-              '(config-file)))
+              `("--config" ,config-file)))
 
 (provide 'my-langs-autoloads)
 ;;; my-init-langs.el ends here
