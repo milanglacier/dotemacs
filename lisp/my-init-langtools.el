@@ -81,7 +81,11 @@
                    (window-width . 0.5)
                    (window-height . 0.4)
                    (slot . ,(alist-get 'eldoc my/side-window-slots))))
-
+    ;; the major mode of eldoc buffer is special-mode.
+    (general-define-key
+     :states '(normal motion)
+     :keymaps 'special-mode-map
+     "q" #'quit-window)
     )
 
 (use-package eglot
