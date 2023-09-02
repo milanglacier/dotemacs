@@ -1,29 +1,28 @@
 
 # Table of Contents
 
-1.  [Features](#org3ade0fe)
-    1.  [Blazing fast.](#org5e1a6a0)
-    2.  [Robust](#orge13015a)
-    3.  [Compatability](#org5af64d1)
-    4.  [Feature rich](#orgce41bba)
-    5.  [Be wild](#orgac66783)
-2.  [Showcase](#org00a2ba0)
-    1.  [Welcome screen](#org306daad)
-    2.  [Code Navigation](#org5cd20dd)
-    3.  [Data Science](#orgd023c03)
-    4.  [Orgmode](#org2a36ee2)
-3.  [TODOs](#org1f4c8dd)
-    1.  [Update `lisp-indent-function` from Doomemacs.](#org8a9b0f5)
-    2.  [Report `org-capture` bugs when inserting entries into table to upstream.](#orgb07e954)
-    3.  [Utilize the contextual information from previous code block when editing source block within markdown/org.](#orge43df95)
-    4.  [Lazily load third-party plugins for `evil`.](#orge05fdf8)
-    5.  [Configure `evil-args` to use spaces as argument delimiter for `emacs-lisp-mode`.](#org52b436d)
-    6.  [Implement thread-folding for `mu4e`.](#orgb10a1e3)
-4.  [Prerequisites](#org2ac272b)
-5.  [Notes](#orgd590802)
-    1.  [Startup speed](#orga85c549)
-    2.  [Naming conventions (WIP)](#orge04f9ac)
-    3.  [Corfu or Company?](#org7d7cced)
+1.  [Features](#org9c75583)
+    1.  [Blazing fast.](#org1f88d3b)
+    2.  [Robust](#orgedef319)
+    3.  [Compatability](#orgc68dd9f)
+    4.  [Feature rich](#org53c8d59)
+    5.  [Be wild](#org0154104)
+2.  [Showcase](#org09f0eac)
+    1.  [Welcome screen](#org6c9489d)
+    2.  [Code Navigation](#org637a086)
+    3.  [Data Science](#org8b50f33)
+    4.  [Orgmode](#org68df6fe)
+3.  [TODOs](#org0bc66d9)
+    1.  [Report `org-capture` bugs when inserting entries into table to upstream.](#org8b81797)
+    2.  [Utilize the contextual information from previous code block when editing source block within markdown/org.](#org5cce158)
+    3.  [Lazily load third-party plugins for `evil`.](#org24c43d3)
+    4.  [Configure `evil-args` to use spaces as argument delimiter for `emacs-lisp-mode`.](#org5ef5331)
+    5.  [Implement thread-folding for `mu4e`.](#orge225461)
+4.  [Prerequisites](#org8efcc44)
+5.  [Notes](#orgb15eea7)
+    1.  [Startup speed](#org653fdb9)
+    2.  [Naming conventions (WIP)](#org2807680)
+    3.  [Corfu or Company?](#org90d2d23)
 
 If you&rsquo;re currently reading this README file in Markdown format, it
 has been generated through `org-export`, from its original org
@@ -31,12 +30,12 @@ format. For the best experience, please consider reading the org
 format file instead.
 
 
-<a id="org3ade0fe"></a>
+<a id="org9c75583"></a>
 
 # Features
 
 
-<a id="org5e1a6a0"></a>
+<a id="org1f88d3b"></a>
 
 ## Blazing fast.
 
@@ -45,10 +44,10 @@ seconds on a VPS with a 1-core CPU and 1 GB RAM, and 0.22 seconds on
 WSL with an Intel i7-1185G7 and 32 GB RAM, TTY is exceptionally
 fast. The GUI is just as quick, starting in 0.44 seconds on Mac M1 and
 0.31 seconds on WSLg. For more information on startup speed, see
-[5.1](#orga85c549).
+[5.1](#org653fdb9).
 
 
-<a id="orge13015a"></a>
+<a id="orgedef319"></a>
 
 ## Robust
 
@@ -56,7 +55,7 @@ Package versions are locked and under version control, so no breaking
 changes are expected.
 
 
-<a id="org5af64d1"></a>
+<a id="orgc68dd9f"></a>
 
 ## Compatability
 
@@ -65,7 +64,7 @@ TTY is not compromised, while GUI features, including `xwidget`, are
 also well-configured.
 
 
-<a id="orgce41bba"></a>
+<a id="org53c8d59"></a>
 
 ## Feature rich
 
@@ -78,14 +77,14 @@ configuration.  Instead, it is &ldquo;heavy&rdquo; and feature rich, including:
 
 -   A keybinding scheme centered around leader and localleader keys, powered by `general` and `which-key`.
 
--   In-buffer autocompletion frontend based on `company` (see [5.3](#org7d7cced)).
+-   In-buffer autocompletion frontend based on `company` (see [5.3](#org90d2d23)).
 
 -   Code completion and navigation based on `eglot` (LSP) and `citre` (Ctags).
 
 -   Integration with `eglot` and `org-babel` or `markdown-mode` that takes literate programming to the next level.
 
 
-<a id="orgac66783"></a>
+<a id="org0154104"></a>
 
 ## Be wild
 
@@ -96,12 +95,12 @@ randomized with each launch. Have a fresh experience at every time. Be
 casual and wild!
 
 
-<a id="org00a2ba0"></a>
+<a id="org09f0eac"></a>
 
 # Showcase
 
 
-<a id="org306daad"></a>
+<a id="org6c9489d"></a>
 
 ## Welcome screen
 
@@ -114,7 +113,7 @@ listed, allowing for convenient execution by simply clicking on the
 corresponding button.
 
 
-<a id="org5cd20dd"></a>
+<a id="org637a086"></a>
 
 ## Code Navigation
 
@@ -129,7 +128,7 @@ the definition of the chosen symbol is displayed with the aid of
 `ctags` (the Emacs command is `citre-peek`).
 
 
-<a id="orgd023c03"></a>
+<a id="org8b50f33"></a>
 
 ## Data Science
 
@@ -145,7 +144,7 @@ the aichat mode as `exp-code-e` to prompt chatgpt to provide an
 explanation of the code you sent.
 
 
-<a id="org2a36ee2"></a>
+<a id="org68df6fe"></a>
 
 ## Orgmode
 
@@ -157,42 +156,37 @@ webkit. Preview slides in emacs without the need to open GUI browser
 anymore.
 
 
-<a id="org1f4c8dd"></a>
+<a id="org0bc66d9"></a>
 
 # TODOs
 
 
-<a id="org8a9b0f5"></a>
-
-## Update `lisp-indent-function` from Doomemacs.
-
-
-<a id="orgb07e954"></a>
+<a id="org8b81797"></a>
 
 ## Report `org-capture` bugs when inserting entries into table to upstream.
 
 
-<a id="orge43df95"></a>
+<a id="org5cce158"></a>
 
 ## Utilize the contextual information from previous code block when editing source block within markdown/org.
 
 
-<a id="orge05fdf8"></a>
+<a id="org24c43d3"></a>
 
 ## Lazily load third-party plugins for `evil`.
 
 
-<a id="org52b436d"></a>
+<a id="org5ef5331"></a>
 
 ## Configure `evil-args` to use spaces as argument delimiter for `emacs-lisp-mode`.
 
 
-<a id="orgb10a1e3"></a>
+<a id="orge225461"></a>
 
 ## Implement thread-folding for `mu4e`.
 
 
-<a id="org2ac272b"></a>
+<a id="org8efcc44"></a>
 
 # Prerequisites
 
@@ -209,12 +203,12 @@ anymore.
     install all the language grammars that are currently in use.
 
 
-<a id="orgd590802"></a>
+<a id="orgb15eea7"></a>
 
 # Notes
 
 
-<a id="orga85c549"></a>
+<a id="org653fdb9"></a>
 
 ## Startup speed
 
@@ -229,7 +223,7 @@ skews `(emacs-init-time)` and does not accurately reflect startup
 time. This configuration is honest and truly lazy loads packages.
 
 
-<a id="orge04f9ac"></a>
+<a id="org2807680"></a>
 
 ## Naming conventions (WIP)
 
@@ -249,7 +243,7 @@ time. This configuration is honest and truly lazy loads packages.
 -   A symbol prefixed with `my&` indicates it is a special symbol like faces.
 
 
-<a id="org7d7cced"></a>
+<a id="org90d2d23"></a>
 
 ## Corfu or Company?
 

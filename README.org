@@ -100,7 +100,6 @@ anymore.
 
 * TODOs
 
-** [#C] Update ~lisp-indent-function~ from Doomemacs.
 ** [#B] Report ~org-capture~ bugs when inserting entries into table to upstream.
 ** [#B] Utilize the contextual information from previous code block when editing source block within markdown/org.
 ** [#C] Lazily load third-party plugins for ~evil~.
