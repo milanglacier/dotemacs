@@ -60,10 +60,6 @@ Intended to replace `lisp-outline-level'."
                   ("Types" "^\\s-*(\\(cl-def\\(?:struct\\|type\\)\\|def\\(?:class\\|face\\|group\\|ine-\\(?:condition\\|error\\|widget\\)\\|package\\|struct\\|t\\(?:\\(?:hem\\|yp\\)e\\)\\)\\)\\s-+'?\\(\\(?:\\sw\\|\\s_\\|\\\\.\\)+\\)" 2)))
     )
 
-;; DEPRECATED Remove when 28 support is dropped.
-(unless (fboundp 'lisp--local-defform-body-p)
-    (fset 'lisp--local-defform-body-p #'ignore))
-
 ;;;copied from doomemacs
 ;;;###autoload
 (defun my/lisp-indent-function (indent-point state)
