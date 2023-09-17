@@ -86,6 +86,8 @@
     :hook (marginalia-mode . nerd-icons-completion-marginalia-setup))
 
 (use-package consult
+    :commands (evil-collection-consult-mark evil-collection-consult-jump-list)
+
     :init
     (general-define-key
      [remap apropos] #'consult-apropos
