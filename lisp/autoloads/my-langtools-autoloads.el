@@ -97,8 +97,8 @@ be associated with a real file."
     (mapc #'treesit-install-language-grammar (mapcar #'car treesit-language-source-alist)))
 
 (defvar major-mode-reformatter-plist
-    '(python-ts-mode yapf-format-buffer
-                     python-mode yapf-format-buffer
+    '(python-ts-mode black-format-buffer
+                     python-mode black-format-buffer
                      sql-mode sql-formatter-format-buffer)
     "A plist of major modes and their corresponding reformatters.")
 

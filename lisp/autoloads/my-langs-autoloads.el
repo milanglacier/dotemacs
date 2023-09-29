@@ -172,6 +172,11 @@ language of the code block)"
 ;;;###autoload (autoload #'yapf-format-buffer "my-langs-autoloads" nil t)
 (reformatter-define yapf-format :program "yapf")
 
+;;;###autoload (autoload #'black-format-buffer "my-langs-autoloads" nil t)
+(reformatter-define black-format
+    :program "black"
+    :args '("--quiet" "-"))
+
 ;;;###autoload (autoload #'sql-formatter-format-buffer "my-langs-autoloads" nil t)
 (reformatter-define sql-formatter-format
     :program "sql-formatter"

@@ -267,6 +267,7 @@ This command activates a python virtual environment.
 (autoload 'my~python-venv-deactivate "my-langs-autoloads" "\
 This command deactivates the current python virtual environment." t)
  (autoload #'yapf-format-buffer "my-langs-autoloads" nil t)
+ (autoload #'black-format-buffer "my-langs-autoloads" nil t)
  (autoload #'sql-formatter-format-buffer "my-langs-autoloads" nil t)
 (register-definition-prefixes "my-langs-autoloads" '("my$" "my/"))
 
@@ -320,6 +321,7 @@ open vterm at project root, if no root is found, open at the default-directory" 
 If a project root is found, return it. Otherwise return `default-directory'.")
 (autoload 'my/ibuffer-vc-setup "my-misc-autoloads")
 (autoload 'my:dired-subtree-toggle-nerd-icons "my-misc-autoloads")
+(register-definition-prefixes "my-misc-autoloads" '("my:dired-subtree-add-nerd-icons"))
 
 
 ;;; Generated autoloads from my-org-autoloads.el
