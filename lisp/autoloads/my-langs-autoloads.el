@@ -104,6 +104,7 @@ language of the code block)"
                 (setenv "PATH" (concat path ":" (getenv "PATH")))
                 (setenv "CONDA_PREFIX" conda-current-env)
                 (setenv "CONDA_DEFAULT_ENV" (file-name-nondirectory conda-current-env))
+                (setenv "CONDA_PROMPT_MODIFIER" (concat "(" (file-name-nondirectory conda-current-env) ") "))
                 (setenv "CONDA_SHLVL" "1")
                 (message "Activating conda environment: %s" path))
         (message "conda not found")))
@@ -124,6 +125,7 @@ language of the code block)"
                 (setenv "CONDA_PREFIX" nil)
                 (setenv "CONDA_DEFAULT_ENV" nil)
                 (setenv "CONDA_SHLVL" "0")
+                (setenv "CONDA_PROMPT_MODIFIER" nil)
                 (message "Conda environment deactivated."))
         (message "conda not found")))
 
