@@ -235,15 +235,15 @@ that number" send-region-func-name repl-name)
 (defun my:vterm-ensure-env-vars-sync-with-emacs (cmd env-vars)
     "`vterm' starts an interactive shell, which may not override the environment variables in current emacs.
 This function ensures the `cmd' to be executed use the `env-vars' as the same as emacs."
-    (setq env-vars (seq-filter
-                     (lambda (x)
-                         (let ((match nil))
-                             (dolist (var env-vars)
-                                        (when (string-match-p (concat "^" var "=") x)
-                                            (setq match t)))
-                             match))
-                     process-environment))
-    (string-join `(,@env-vars ,cmd) " "))
+    (setq env-vars (mapcar
+                    (lambda (x)
+                        (format "%s=%s"
+                                x
+                                (shell-quote-argument (or (getenv x) ""))))
+                    env-vars))
+    (if (file-remote-p default-directory) cmd
+        (concat (string-join `("export" ,@env-vars) " ")
+                "; " cmd)))
 
 ;;;###autoload (autoload #'my~aichat-start "my-apps-autoloads" nil t)
 (my%create-vterm-repl-schema "aichat" "aichat" :bracketed-paste-p t)
@@ -251,7 +251,13 @@ This function ensures the `cmd' to be executed use the `env-vars' as the same as
 ;;;###autoload (autoload #'my~ipython-start "my-apps-autoloads" nil t)
 (my%create-vterm-repl-schema
  "ipython"
- (my:vterm-ensure-env-vars-sync-with-emacs "ipython" '("PATH"))
+ (my:vterm-ensure-env-vars-sync-with-emacs
+  "ipython"
+  '("PATH"
+    "CONDA_PREFIX"
+    "CONDA_DEFAULT_ENV"
+    "CONDA_PROMPT_MODIFIER"
+    "CONDA_SHLVL"))
  :bracketed-paste-p t)
 
 (provide 'my-apps-autoloads)
