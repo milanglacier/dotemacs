@@ -131,24 +131,9 @@ otherwise use the existed one
 
 (fn &optional NEW-SESSION)" t)
 (autoload 'my:pdf-midnight-mode-maybe "my-apps-autoloads")
-(autoload 'my%create-vterm-repl-schema "my-apps-autoloads" "\
-create a REPL schema.
-The REPL session will be created via vterm. The schema includes three
-functions, the function to start the repl, the function to send the
-region and the corresponding operator.
-
-REPL-NAME is a string, REPL-CMD is a form evaluated to a string.
-
-ARGS is a plist, the following properties are supported:
-:bracketed-paste-p whether send the string with bracketed paste mode, the default value is nil.
-:start-pattern the first string to send to the REPl before sending the region. The default is ''.
-:end-pattern the last string to send to the REPL after sending the region. The default is '\\r'.
-:str-process-func the function to process the string to be sent to REPl before sending it to the REPL.
-    The default is 'identity. This function must be a symbol, not a lambda form.
-
-(fn REPL-NAME REPL-CMD &rest ARGS)" nil t)
  (autoload #'my~aichat-start "my-apps-autoloads" nil t)
-(register-definition-prefixes "my-apps-autoloads" '("my/"))
+ (autoload #'my~ipython-start "my-apps-autoloads" nil t)
+(register-definition-prefixes "my-apps-autoloads" '("my%create-vterm-repl-schema" "my/"))
 
 
 ;;; Generated autoloads from my-colorscheme-autoloads.el

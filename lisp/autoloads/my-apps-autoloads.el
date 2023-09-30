@@ -161,7 +161,6 @@ otherwise use the existed one"
         (pdf-view-midnight-minor-mode)
         (pdf-view-dark-minor-mode)))
 
-;;;###autoload
 (defmacro my%create-vterm-repl-schema (repl-name repl-cmd &rest args)
     "create a REPL schema.
 The REPL session will be created via vterm. The schema includes three
@@ -235,6 +234,9 @@ that number" send-region-func-name repl-name)
 
 ;;;###autoload (autoload #'my~aichat-start "my-apps-autoloads" nil t)
 (my%create-vterm-repl-schema "aichat" "aichat" :bracketed-paste-p t)
+
+;;;###autoload (autoload #'my~ipython-start "my-apps-autoloads" nil t)
+(my%create-vterm-repl-schema "ipython" "ipython" :bracketed-paste-p t)
 
 (provide 'my-apps-autoloads)
 ;;; my-apps-autoloads.el ends here

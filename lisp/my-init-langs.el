@@ -104,8 +104,6 @@
     (add-to-list 'python-ts-mode-hook #'eglot-ensure)
     (my/define-and-bind-local-paren-text-object " c" "# %%" "# %%" python-ts-mode-hook)
 
-    (my%create-vterm-repl-schema "ipython" "ipython" :bracketed-paste-p t)
-
     (my/localleader
         :keymaps 'python-ts-mode-map
         :states '(normal visual insert motion)
