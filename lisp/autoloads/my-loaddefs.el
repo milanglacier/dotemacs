@@ -131,15 +131,8 @@ otherwise use the existed one
 
 (fn &optional NEW-SESSION)" t)
 (autoload 'my:pdf-midnight-mode-maybe "my-apps-autoloads")
-(autoload 'my~aichat-start "my-apps-autoloads" "\
-Create a aichat(URL `https://github.com/sigoden/aichat') REPL
-buffer.  Start a new aichat session or switch to an already active
-session. Return the buffer selected (or created). With a numeric
-prefix arg, create or switch to the session with that number as a
-suffix.
-
-(fn &optional ARG)" t)
-(register-definition-prefixes "my-apps-autoloads" '("my/" "my~aichat-send-region"))
+ (autoload #'my~aichat-start "my-apps-autoloads" nil t)
+(register-definition-prefixes "my-apps-autoloads" '("my%create-vterm-repl-schema" "my/"))
 
 
 ;;; Generated autoloads from my-colorscheme-autoloads.el

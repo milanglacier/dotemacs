@@ -161,47 +161,80 @@ otherwise use the existed one"
         (pdf-view-midnight-minor-mode)
         (pdf-view-dark-minor-mode)))
 
-;;;###autoload
-(defun my~aichat-start (&optional arg)
-    "Create a aichat(URL `https://github.com/sigoden/aichat') REPL
-buffer.  Start a new aichat session or switch to an already active
-session. Return the buffer selected (or created). With a numeric
-prefix arg, create or switch to the session with that number as a
-suffix."
-    (interactive "P")
-    (require 'vterm)
-    (let ((vterm-buffer-name "*aichat*")
-          (aichat-buffer)
-          (aichat-buffer-exist-p
-           (get-buffer
-            (if arg (format "*aichat*<%d>" arg) "*aichat*"))))
-        (setq aichat-buffer (vterm arg))
-        (unless aichat-buffer-exist-p
-            (with-current-buffer aichat-buffer
-                (vterm-send-string "aichat\n")))))
+(defmacro my%create-vterm-repl-schema (repl-name repl-cmd &rest args)
+    "create a REPL schema.
+The REPL session will be created via vterm. The schema includes three
+functions, the function to start the repl, the function to send the
+region and the corresponding operator.
 
-(defun my~aichat-send-region (beg end &optional session)
-    "Send the region delimited by BEG and END to inferior aichat
-process.  With numeric prefix argument, send region to the process
-associated with that number"
-    (interactive "r\nP")
-    (let ((aichat-buffer-name
-           (if session
-                   (format "*aichat*<%d>" session)
-               "*aichat*"))
-          (str (buffer-substring-no-properties beg end)))
-        (with-current-buffer aichat-buffer-name
-            (vterm-send-string str t)
-            (vterm-send-string "\r"))))
+REPL-NAME is a string, REPL-CMD is a form evaluated to a string.
 
-;; check `evil-types' to see the meanings of evil specific interactive
-;; specs.
-(evil-define-operator my~aichat-send-region-operator (beg end session)
-    "A evil operator wrapper around `my~aichat-send-region'. With a
-numeric prefix argument, send the region to the aichat process
-associated with that number"
-    (interactive "<r>P")
-    (my~aichat-send-region beg end session))
+ARGS is a plist, the following properties are supported:
+:bracketed-paste-p whether send the string with bracketed paste mode, the default value is nil.
+:start-pattern the first string to send to the REPl before sending the region. The default is ''.
+:end-pattern the last string to send to the REPL after sending the region. The default is '\\r'.
+:str-process-func the function to process the string to be sent to REPl before sending it to the REPL.
+    The default is 'identity. This function must be a symbol, not a lambda form."
+
+    (let ((start-func-name (intern (concat "my~" repl-name "-start")))
+          (send-region-func-name (intern (concat "my~" repl-name "-send-region")))
+          (send-region-operator-name (intern (concat "my~" repl-name "-send-region-operator")))
+          (bracketed-paste-p (plist-get args :bracketed-paste-p))
+          (start-pattern (or (plist-get args :start-pattern) ""))
+          (end-pattern (or (plist-get args :end-pattern) "\r"))
+          (str-process-func (or (plist-get args :str-process-func) ''identity)))
+
+        `(progn
+
+             (defun ,start-func-name (&optional arg)
+                 ,(format
+                   "Create a %s REPL buffer.
+Start a new %s session or switch to an already active session. Return
+the buffer selected (or created). With a numeric prefix arg,create or
+switch to the session with that number as a suffix."
+                   repl-name repl-name)
+                 (interactive "P")
+                 (require 'vterm)
+                 (let ((vterm-buffer-name (format "*%s*" ,repl-name))
+                       (repl-buffer)
+                       (repl-buffer-exist-p
+                        (get-buffer
+                         (if arg (format "*%s*<%d>" ,repl-name arg)
+                             (format "*%s*" ,repl-name)))))
+                     (setq repl-buffer (vterm arg))
+                     (unless repl-buffer-exist-p
+                         (with-current-buffer repl-buffer
+                             (vterm-send-string
+                              (concat ,repl-cmd "\n"))))))
+
+             (defun ,send-region-func-name (beg end &optional session)
+                 ,(format
+                   "Send the region delimited by BEG and END to inferior %s.
+With numeric prefix argument, send region to the process associated
+with that number." repl-name)
+                 (let ((repl-buffer-name
+                        (if session
+                                (format "*%s*<%d>" ,repl-name session)
+                            (format "*%s*" ,repl-name)))
+                        (str (buffer-substring-no-properties beg end)))
+                     (with-current-buffer repl-buffer-name
+                         (vterm-send-string ,start-pattern)
+                         (vterm-send-string (funcall ,str-process-func str) ,bracketed-paste-p)
+                         (vterm-send-string ,end-pattern))))
+
+             (evil-define-operator ,send-region-operator-name (beg end session)
+                 ,(format
+                   "A evil operator wrapper around `%s'. With a numeric
+prefix argument, send the region to the %s process associated with
+that number" send-region-func-name repl-name)
+                 (interactive "<r>P")
+                 (,send-region-func-name beg end session))
+
+
+             )))
+
+;;;###autoload (autoload #'my~aichat-start "my-apps-autoloads" nil t)
+(my%create-vterm-repl-schema "aichat" "aichat" :bracketed-paste-p t)
 
 (provide 'my-apps-autoloads)
 ;;; my-apps-autoloads.el ends here
