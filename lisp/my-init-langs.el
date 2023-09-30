@@ -98,29 +98,25 @@
 
 (use-package python
     :init
-    (defvar my/python-enable-ipython t
-        "use ipython as the embedded REPL.")
     (setq python-indent-offset 4)
 
     :config
     (add-to-list 'python-ts-mode-hook #'eglot-ensure)
     (my/define-and-bind-local-paren-text-object " c" "# %%" "# %%" python-ts-mode-hook)
 
+    (my%create-vterm-repl-schema "ipython" "ipython" :bracketed-paste-p t)
+
     (my/localleader
         :keymaps 'python-ts-mode-map
         :states '(normal visual insert motion)
-        "s" #'my/send-region-to-python
+        "s" #'my~ipython-send-region-operator
         "r" '(:ignore t :which-key "REPL")
-        "rs" #'my/run-python
+        "rs" #'my~ipython-start
         "v" '(:ignore t :which-key "view")
         "vh" #'my/python-toggle-view-local-html)
 
-    (when my/python-enable-ipython
-        (setq python-shell-interpreter "ipython3")
-        (setq python-shell-interpreter-args "-i --simple-prompt --no-color-info"))
-
     (add-to-list 'display-buffer-alist
-                 `("^\\*[pP]ython"
+                 `("^\\*ipython"
                    (display-buffer-reuse-window display-buffer-in-side-window)
                    (window-width . 0.5)
                    (window-height . 0.4)

@@ -61,17 +61,18 @@ code block)"
     (pcase (markdown-code-block-lang)
         ("r" (call-interactively #'run-ess-r))
         ("R" (call-interactively #'run-ess-r))
-        ("python" (call-interactively #'my/run-python))
+        ("python" (call-interactively #'my~ipython-start))
         (x "No associated REPL found!")))
 
 ;;;###autoload (autoload #'my/markdown-send-region "my-langs-autoloads" nil t)
-(evil-define-operator my/markdown-send-region (beg end)
+(evil-define-operator my/markdown-send-region (beg end session)
     "Send region to the REPL depending on the context (i.e. the
 language of the code block)"
+    (interactive "<r>P")
     (pcase (markdown-code-block-lang)
         ("r" (my/send-region-to-ess beg end))
         ("R" (my/send-region-to-ess beg end))
-        ("python" (my/send-region-to-python beg end))
+        ("python" (my~ipython-send-region-operator beg end session))
         (x "No associated REPL found!")))
 
 (defvar my$conda-current-env nil

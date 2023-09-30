@@ -161,6 +161,7 @@ otherwise use the existed one"
         (pdf-view-midnight-minor-mode)
         (pdf-view-dark-minor-mode)))
 
+;;;###autoload
 (defmacro my%create-vterm-repl-schema (repl-name repl-cmd &rest args)
     "create a REPL schema.
 The REPL session will be created via vterm. The schema includes three
@@ -229,7 +230,6 @@ prefix argument, send the region to the %s process associated with
 that number" send-region-func-name repl-name)
                  (interactive "<r>P")
                  (,send-region-func-name beg end session))
-
 
              )))
 
