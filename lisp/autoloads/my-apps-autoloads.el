@@ -173,7 +173,7 @@ ARGS is a plist, the following properties are supported:
 :bracketed-paste-p whether send the string with bracketed paste mode, the default value is nil.
 :start-pattern the first string to send to the REPl before sending the region. The default is ''.
 :end-pattern the last string to send to the REPL after sending the region. The default is '\\r'.
-:str-process-func the function to process the string to be sent to REPl before sending it to the REPL.
+:str-process-func the function to process the string before sending it to the REPL.
     The default is 'identity. This function must be a symbol, not a lambda form."
 
     (let ((start-func-name (intern (concat "my~" repl-name "-start")))
@@ -232,11 +232,27 @@ that number" send-region-func-name repl-name)
 
              )))
 
+(defun my:vterm-ensure-env-vars-sync-with-emacs (cmd env-vars)
+    "`vterm' starts an interactive shell, which may not override the environment variables in current emacs.
+This function ensures the `cmd' to be executed use the `env-vars' as the same as emacs."
+    (setq env-vars (seq-filter
+                     (lambda (x)
+                         (let ((match nil))
+                             (dolist (var env-vars)
+                                        (when (string-match-p (concat "^" var "=") x)
+                                            (setq match t)))
+                             match))
+                     process-environment))
+    (string-join `(,@env-vars ,cmd) " "))
+
 ;;;###autoload (autoload #'my~aichat-start "my-apps-autoloads" nil t)
 (my%create-vterm-repl-schema "aichat" "aichat" :bracketed-paste-p t)
 
 ;;;###autoload (autoload #'my~ipython-start "my-apps-autoloads" nil t)
-(my%create-vterm-repl-schema "ipython" "ipython" :bracketed-paste-p t)
+(my%create-vterm-repl-schema
+ "ipython"
+ (my:vterm-ensure-env-vars-sync-with-emacs "ipython" '("PATH"))
+ :bracketed-paste-p t)
 
 (provide 'my-apps-autoloads)
 ;;; my-apps-autoloads.el ends here
