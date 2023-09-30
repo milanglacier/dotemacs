@@ -143,6 +143,8 @@
      :keymaps 'markdown-mode-map
      "TAB" #'markdown-cycle)
 
+    (my/define-and-bind-local-paren-text-object "c" "```.+$" "^```$" markdown-mode-hook)
+
     (my/localleader
         :states '(normal insert visual motion)
         :keymaps 'markdown-mode-map
