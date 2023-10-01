@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: full code chunck
+# key: rc2
+# --
+# %%
+
+$0
+
+# %%

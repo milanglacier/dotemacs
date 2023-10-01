@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: databricks code chunk
+# key: dbc
+# --
+# COMMAND ----------
+
+$0

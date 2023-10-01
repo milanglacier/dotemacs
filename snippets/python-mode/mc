@@ -1,9 +1,0 @@
-# -*- mode: snippet -*-
-# name: markdown code block
-# key: mc
-# --
-# %% [markdown]
-
-$0
-
-# %%
