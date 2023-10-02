@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: databricks source code
+# key: dbs
+# --
+-- Databricks notebook source
+$0

@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: databricks magic chunk
+# key: dbm
+# --
+-- MAGIC $0
