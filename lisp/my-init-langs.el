@@ -59,6 +59,8 @@
     (evil-set-initial-state 'ess-r-help-mode 'normal)
 
     (my/define-and-bind-local-paren-text-object " c" "# %%" "# %%" ess-r-mode-hook)
+    (my/define-and-bind-local-paren-text-object "m" "# COMMAND ----------" "# COMMAND ----------" ess-r-mode-hook)
+
     (setq ess-R-font-lock-keywords
           '((ess-R-fl-keyword:keywords . t)
             (ess-R-fl-keyword:constants . t)
@@ -103,6 +105,7 @@
     :config
     (add-to-list 'python-ts-mode-hook #'eglot-ensure)
     (my/define-and-bind-local-paren-text-object " c" "# %%" "# %%" python-ts-mode-hook)
+    (my/define-and-bind-local-paren-text-object "m" "# COMMAND ----------" "# COMMAND ----------" python-ts-mode-hook)
 
     (my/localleader
         :keymaps 'python-ts-mode-map
@@ -175,7 +178,7 @@
 
     :config
     (add-hook 'sql-mode-hook (my/setq-locally tab-width 4))
-    (add-hook 'sql-mode-hook #'eglot-ensure))
+    (my/define-and-bind-local-paren-text-object "m" "-- COMMAND ----------" "-- COMMAND ----------" sql-mode-hook))
 
 (provide 'my-init-langs)
 ;;; my-init-langs.el ends here
