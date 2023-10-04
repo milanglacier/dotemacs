@@ -1,7 +1,7 @@
 ;;; my-init-vcs.el -*- lexical-binding: t; -*-
 
 (straight-use-package 'magit)
-(straight-use-package 'git-gutter)
+(straight-use-package 'diff-hl)
 (straight-use-package 'hl-todo)
 
 (general-create-definer my/git-map
@@ -43,29 +43,35 @@
      ;; emulate C-g
      "<escape>" #'transient-quit-one))
 
-(use-package git-gutter
-    :commands (git-gutter:revert-hunk git-gutter:stage-hunk)
-    :hook ((prog-mode . git-gutter-mode)
-           (conf-mode . git-gutter-mode)
-           (text-mode . git-gutter-mode))
+(use-package diff-hl
+    :hook ((prog-mode . diff-hl-mode)
+           (conf-mode . diff-hl-mode)
+           (text-mode . diff-hl-mode))
 
     :init
     (my/git-map
         :states '(normal insert visual insert)
         :keymaps 'override
-        "r" #'git-gutter:revert-hunk
-        "s" #'git-gutter:stage-hunk)
+        "r" #'diff-hl-revert-hunk
+        "s" #'diff-hl-stage-current-hunk
+        ;; preview
+        "p" #'diff-hl-show-hunk)
 
     :config
+    (setq diff-hl-show-hunk-inline-popup-smart-lines nil
+          diff-hl-show-hunk-inline-popup-hide-hunk t
+          diff-hl-show-staged-changes nil)
+
     (general-define-key
      :states '(normal visual motion)
-     "]h" #'git-gutter:next-hunk
-     "[h" #'git-gutter:previous-hunk)
+     "]h" #'diff-hl-next-hunk
+     "[h" #'diff-hl-previous-hunk)
 
-    (add-to-list 'display-buffer-alist
-                 '("\\*git-gutter"
-                   (display-buffer-below-selected)
-                   (window-height . 0.3)))
+    (unless (display-graphic-p)
+        (diff-hl-margin-mode))
+
+    (add-hook 'magit-pre-refresh-hook 'diff-hl-magit-pre-refresh)
+    (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh)
 
     )
 
