@@ -120,6 +120,11 @@ anymore.
   execute the command ~M-x my~treesit-install-all-language-grammar~ to
   install all the language grammars that are currently in use.
 
+* Discussion
+
+- It is recommended to use the mailing list ~~northyear/.emacs.d-devel@lists.sr.ht~.
+- Alternatively, you are also welcome to open a Github issue.
+
 * Notes
 
 ** Startup speed
