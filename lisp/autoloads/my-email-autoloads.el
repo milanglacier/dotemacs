@@ -172,9 +172,9 @@ that thread.")
 (defvar my$mu4e-global-fold-state nil
     "Global state of whether threads should be all folded or not")
 
-(defface my&mu4e-unread-thread '((t :inherit (mu4e-unread-face hl-line))) "")
+(defface my&mu4e-unread-thread '((t :inherit (mu4e-unread-face isearch))) "")
 
-(defface my&mu4e-read-thread '((t :inherit (mu4e-header-face hl-line))) "")
+(defface my&mu4e-read-thread '((t :inherit (mu4e-header-face isearch))) "")
 
 (defun my:mu4e-thread-set-lines ()
     (my~mu4e-unfold-all-threads)
