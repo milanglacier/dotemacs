@@ -21,19 +21,37 @@
             (string-prefix-p prefix (mu4e-message-field msg :maildir) t))))
 
 ;;;###autoload
-(defun my:mu4e-open-link-via-eww (msg &optional arg)
+(defun my:mu4e-open-link-via-eww (msg)
     "If point is on a link, open this link via `eww'. Otherwise open
 this email via `eww'"
-    (if-let ((link-at-point (get-text-property (point) 'shr-url)))
+    (if-let ((link-at-point (or (get-text-property (point) 'shr-url)
+                                (get-text-property (point) 'mu4e-url))))
 
             ;; if point is on a link, open this link via eww
-            (eww link-at-point arg)
+            (eww link-at-point)
 
         ;; else open the email via eww
         (let ((browse-url-browser-function
-               (lambda (url &optional _rest)
+               (lambda (url &rest _rest)
                    (eww url))))
             (mu4e-action-view-in-browser msg))))
+
+(defun my:mu4e-action-view-in-xwidget (msg &optional arg)
+  "If point is on a link, open this link via `xwidget'. Otherwise open
+this email via `xwidget'"
+  (unless (fboundp 'xwidget-webkit-browse-url)
+    (mu4e-error "No xwidget support available"))
+    (if-let ((link-at-point (or (get-text-property (point) 'shr-url)
+                                (get-text-property (point) 'mu4e-url))))
+
+            ;; if point is on a link, open this link via eww
+            (xwidget-webkit-browse-url link-at-point)
+        (let ((browse-url-handlers nil)
+              (browse-url-browser-function
+               (lambda (url &rest _rest)
+                   (xwidget-webkit-browse-url url))))
+            (mu4e-action-view-in-browser msg))))
+
 
 (defun my:mu4e-head-of-thread-p ()
     "Non-nil means current message is the first message of a thread."
