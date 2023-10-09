@@ -43,6 +43,8 @@
 
     :config
 
+    (my~mu4e-thread-folding-mode)
+
     (add-hook 'mu4e-compose-mode-hook (my/setq-locally fill-column 72))
     (add-hook 'mu4e-headers-mode-hook (my/turn-off-mode display-line-numbers-mode))
     (add-hook 'mu4e-main-mode-hook (my/turn-off-mode display-line-numbers-mode))
@@ -147,6 +149,15 @@
      "] T" #'my~mu4e-thread-forward-end
      "[ t" #'my~mu4e-thread-backward-start
      "[ T" #'my~mu4e-thread-backward-end)
+
+    (general-define-key
+     :states '(normal motion)
+     :keymaps 'mu4e-headers-mode-map
+     "za" #'my~mu4e-toggle-thread-folding-at-point
+     "zc" #'my~mu4e-fold-thread-at-point
+     "zo" #'my~mu4e-unfold-thread-at-point
+     "zm" #'my~mu4e-fold-all-threads
+     "zr" #'my~mu4e-unfold-all-threads)
 
     (general-define-key
      :states '(normal motion)
