@@ -246,6 +246,7 @@ that thread.")
                         (delete-overlay over-lay)
                         (setf (alist-get cur-thread-id my$mu4e-thread-overlays-alist nil nil #'equal) nil))
                 (setf (alist-get cur-thread-id my$mu4e-thread-overlays-alist nil nil #'equal) nil))
+            t
             )))
 
 (defun my~mu4e-toggle-thread-folding-at-point ()
@@ -306,6 +307,7 @@ that thread.")
                                      ('folded (my~mu4e-fold-all-threads))
                                      ('unfolded (my~mu4e-unfold-all-threads)))))))
 
+;;;###autoload
 (define-minor-mode my~mu4e-thread-folding-mode
     "Enable thread folding for mu4e."
     :global t
