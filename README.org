@@ -104,7 +104,7 @@ anymore.
 ** [#B] Utilize the contextual information from previous code block when editing source block within markdown/org.
 ** [#C] Lazily load third-party plugins for ~evil~.
 ** [#C] Configure ~evil-args~ to use spaces as argument delimiter for ~emacs-lisp-mode~.
-** [#A] Implement thread-folding for ~mu4e~.
+** DONE [#A] Implement thread-folding for ~mu4e~.
 
 * Prerequisites
 

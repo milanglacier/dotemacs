@@ -158,126 +158,172 @@ is on the start of current thread. Analagous to `[[' in vim."
     (my~mu4e-thread-backward-start)
     (mu4e-headers-view-message))
 
-(setq my$mu4e-enable-thread-folding nil)
-
 ;; WIP: there are too many corner cases unresolved
 ;; TODO: very beginning stage
-(when my$mu4e-enable-thread-folding
 
-    (defvar my$mu4e-thread-lines-alist ()
-        "An alist constitutes of `(thread_id line-num-1 line-num-2 line-num-3 ...)',
+(defvar my$mu4e-thread-lines-alist ()
+    "An alist constitutes of `(thread_id line-num-1 line-num-2 line-num-3 ...)',
 each of which is the `line-number-at-pos' of a message belonging to
 that thread.")
 
-    (defvar my$mu4e-thread-overlays-alist ()
-        "An alist constitutes of `(thread_id . overlay)'")
+(defvar my$mu4e-thread-overlays-alist ()
+    "An alist constitutes of `(thread_id . overlay)'")
 
-    (defface my&mu4e-unread-thread '((t :inherit (mu4e-unread-face hl-line))) "")
+(defvar my$mu4e-global-fold-state nil
+    "Global state of whether threads should be all folded or not")
 
-    (defface my&mu4e-read-thread '((t :inherit (mu4e-header-face hl-line))) "")
+(defface my&mu4e-unread-thread '((t :inherit (mu4e-unread-face hl-line))) "")
 
-    (defun my:mu4e-thread-set-lines ()
-        (my~mu4e-unfold-all-threads)
-        (setq my$mu4e-thread-lines-alist nil)
-        (setq my$mu4e-thread-overlays-alist nil)
+(defface my&mu4e-read-thread '((t :inherit (mu4e-header-face hl-line))) "")
 
-        (mu4e-headers-for-each
-         (lambda (msg)
-             (let* ((cur-thread-id (mu4e~headers-get-thread-info msg 'thread-id))
-                    (cur-thread-lines (alist-get cur-thread-id my$mu4e-thread-lines-alist nil nil #'equal)))
-                 (if cur-thread-lines
-                         (push (line-number-at-pos)
-                               (alist-get cur-thread-id my$mu4e-thread-lines-alist nil nil #'equal))
-                     (push `(,cur-thread-id ,(line-number-at-pos))
-                           my$mu4e-thread-lines-alist)
-                     )))))
+(defun my:mu4e-thread-set-lines ()
+    (my~mu4e-unfold-all-threads)
+    (setq my$mu4e-thread-lines-alist nil)
+    (setq my$mu4e-thread-overlays-alist nil)
 
-    (defun my:mu4e-get-prepended-whitespaces-for-folded-text ()
-        ;; the last fields of `mu4e-headers-fields' is usually `subject'
-        ;; which should not be limited by length, thus its field value is
-        ;; nil. We remove the last nil element and get the summation of
-        ;; the length of other fields.
-        (let ((white-spaces (apply
-                             #'+
-                             (butlast (mapcar #'cdr mu4e-headers-fields)))))
-            (cl-loop for i from 1 to white-spaces concat " ")))
+    (mu4e-headers-for-each
+     (lambda (msg)
+         (let* ((cur-thread-id (mu4e~headers-get-thread-info msg 'thread-id))
+                (cur-thread-lines (alist-get cur-thread-id my$mu4e-thread-lines-alist nil nil #'equal)))
+             (if cur-thread-lines
+                     (push (line-number-at-pos)
+                           (alist-get cur-thread-id my$mu4e-thread-lines-alist nil nil #'equal))
+                 (push `(,cur-thread-id ,(line-number-at-pos))
+                       my$mu4e-thread-lines-alist))))))
 
-    (defun my~mu4e-fold-thread-at-point ()
-        "Fold the thread to which the message at point belongs"
-        (interactive)
-        (let* ((msg (mu4e-message-at-point))
-               (cur-thread-id (mu4e~headers-get-thread-info msg 'thread-id))
-               (over-lay))
-            (when-let* ((is-not-folded (not (alist-get cur-thread-id my$mu4e-thread-overlays-alist nil nil #'equal)))
-                        (thread-lines (alist-get cur-thread-id my$mu4e-thread-lines-alist nil nil #'equal))
-                        (num-of-messages (length thread-lines))
-                        (more-than-1-messages (> num-of-messages 1))
-                        (folded-text (concat "\n"
-                                             (my:mu4e-get-prepended-whitespaces-for-folded-text)
-                                             (format "--- %s messages folded ---" num-of-messages))))
+(defun my:mu4e-get-prepended-whitespaces-for-folded-text ()
+    ;; the last fields of `mu4e-headers-fields' is usually `subject'
+    ;; which should not be limited by length, thus its field value is
+    ;; nil. We remove the last nil element and get the summation of
+    ;; the length of other fields.
+    (let ((white-spaces (apply
+                         #'+
+                         (butlast (mapcar #'cdr mu4e-headers-fields)))))
+        (cl-loop for i from 1 to white-spaces concat " ")))
 
-                (save-excursion
-                    (setq over-lay (make-overlay
-                                    (seq-min (mapcar
+(defun my~mu4e-fold-thread-at-point ()
+    "Fold the thread to which the message at point belongs"
+    (interactive)
+    (let* ((msg (mu4e-message-at-point))
+           (cur-thread-id (mu4e~headers-get-thread-info msg 'thread-id))
+           (over-lay))
+        (when-let* ((is-not-folded (not (alist-get cur-thread-id my$mu4e-thread-overlays-alist nil nil #'equal)))
+                    (thread-lines (alist-get cur-thread-id my$mu4e-thread-lines-alist nil nil #'equal))
+                    (num-of-messages (length thread-lines))
+                    (more-than-1-messages (> num-of-messages 1))
+                    (folded-text (concat
+                                  (my:mu4e-get-prepended-whitespaces-for-folded-text)
+                                  (propertize
+                                   (format "--- thread with %s messages ---" num-of-messages)
+                                   'face
+                                   'my&mu4e-unread-thread))))
+
+            (save-excursion
+                (setq over-lay (make-overlay
+                                (1+ (seq-min (mapcar
                                               (lambda (x) (goto-line x) (line-end-position))
-                                              thread-lines))
-                                    (seq-max (mapcar
-                                              (lambda (x) (goto-line x) (line-end-position))
-                                              thread-lines)))))
+                                              thread-lines)))
+                                (seq-max (mapcar
+                                          (lambda (x) (goto-line x) (line-end-position))
+                                          thread-lines)))))
 
-                (if (alist-get cur-thread-id my$mu4e-thread-overlays-alist nil nil #'equal)
-                        (setf (alist-get cur-thread-id my$mu4e-thread-overlays-alist nil nil #'equal)
-                              over-lay)
-                    (push `(,cur-thread-id . ,over-lay) my$mu4e-thread-overlays-alist))
-                (overlay-put over-lay 'display (propertize folded-text 'face 'my&mu4e-unread-thread))
-                (overlay-put over-lay 'overlay over-lay))))
+            (if (alist-get cur-thread-id my$mu4e-thread-overlays-alist nil nil #'equal)
+                    (setf (alist-get cur-thread-id my$mu4e-thread-overlays-alist nil nil #'equal)
+                          over-lay)
+                (push `(,cur-thread-id . ,over-lay) my$mu4e-thread-overlays-alist))
+            (overlay-put over-lay 'display folded-text)
+            (overlay-put over-lay 'overlay over-lay))))
 
-    (defun my~mu4e-unfold-thread-at-point ()
-        "Unfold the thread to which the message at point belongs"
-        (interactive)
-        (let* ((msg (mu4e-message-at-point))
-               (cur-thread-id (mu4e~headers-get-thread-info msg 'thread-id))
-               (over-lay))
-            (when-let* ((over-lay (alist-get cur-thread-id my$mu4e-thread-overlays-alist nil nil #'equal)))
-                (if (overlayp over-lay)
-                        (progn
-                            (delete-overlay over-lay)
-                            (setf (alist-get cur-thread-id my$mu4e-thread-overlays-alist nil nil #'equal) nil))
-                    (setf (alist-get cur-thread-id my$mu4e-thread-overlays-alist nil nil #'equal) nil))
-                )))
+(defun my~mu4e-unfold-thread-at-point ()
+    "Unfold the thread to which the message at point belongs"
+    (interactive)
+    (let* ((msg (mu4e-message-at-point))
+           (cur-thread-id (mu4e~headers-get-thread-info msg 'thread-id))
+           (over-lay))
+        (when-let* ((over-lay (alist-get cur-thread-id my$mu4e-thread-overlays-alist nil nil #'equal)))
+            (if (overlayp over-lay)
+                    (progn
+                        (delete-overlay over-lay)
+                        (setf (alist-get cur-thread-id my$mu4e-thread-overlays-alist nil nil #'equal) nil))
+                (setf (alist-get cur-thread-id my$mu4e-thread-overlays-alist nil nil #'equal) nil))
+            )))
 
-    (defun my~mu4e-toggle-thread-folding-at-point ()
-        "Toggle the folding state of the thread to which message at point belongs"
-        (interactive)
-        (unless (my~mu4e-unfold-thread-at-point)
-            (my~mu4e-fold-thread-at-point)))
+(defun my~mu4e-toggle-thread-folding-at-point ()
+    "Toggle the folding state of the thread to which message at point belongs"
+    (interactive)
+    (unless (my~mu4e-unfold-thread-at-point)
+        (my~mu4e-fold-thread-at-point)))
 
-    (defun my~mu4e-unfold-all-threads ()
-        "Unfold all threads in current buffer."
-        (interactive)
-        (dolist (thread-over-lay my$mu4e-thread-overlays-alist)
-            (when (overlayp (cdr thread-over-lay))
-                (delete-overlay (cdr thread-over-lay))))
-        (setq my$mu4e-thread-overlays-alist nil))
+(defun my~mu4e-unfold-all-threads ()
+    "Unfold all threads in current buffer."
+    (interactive)
+    (dolist (thread-over-lay my$mu4e-thread-overlays-alist)
+        (when (overlayp (cdr thread-over-lay))
+            (delete-overlay (cdr thread-over-lay))))
+    (setq my$mu4e-thread-overlays-alist nil)
+    (setq my$mu4e-global-fold-state 'unfolded))
 
-    (define-minor-mode my~mu4e-thread-folding-mode
-        "Enable thread folding for mu4e."
-        :global nil
-        :init-value nil
+(defun my~mu4e-fold-all-threads ()
+    "fold all threads in current buffer."
+    (interactive)
+    (mu4e-headers-for-each
+     (lambda (msg)
+         (my~mu4e-fold-thread-at-point)))
+    (setq my$mu4e-global-fold-state 'folded))
 
-        (if my~mu4e-thread-folding-mode
-                (progn
-                    (make-variable-buffer-local 'my$mu4e-thread-overlays-alist)
-                    (make-variable-buffer-local 'my$mu4e-thread-lines-alist)
-                    (my:mu4e-thread-set-lines))
+(defun my:mu4e-thread-folding-mode-setup ()
+    (make-variable-buffer-local 'my$mu4e-thread-overlays-alist)
+    (make-variable-buffer-local 'my$mu4e-thread-lines-alist)
+    (make-variable-buffer-local 'my$mu4e-global-fold-state)
+    (my:mu4e-thread-set-lines))
+
+(defun my:mu4e-thread-folding-mode-unsetup ()
+    (my~mu4e-unfold-all-threads)
+    (setq-local my$mu4e-thread-overlays-alist nil)
+    (setq-local my$mu4e-thread-lines-alist nil))
+
+(defun my:mu4e-unfold-thread-before-opening-message (old-fun &rest args)
+    ;; HACK: It seems that the overlay will be displayed incorrectly
+    ;; after you openning a message. I have no idea why this happens.
+    ;; So I have to unfold current thread before opening a message.
+    ;; Besides, I think it makes sense to unfold a thread since you
+    ;; are reading the message within the thread.
+    (my~mu4e-unfold-thread-at-point)
+    (apply old-fun args))
+
+(defun my:mu4e-refresh-fold-after-executing-mark (old-fun &rest args)
+    (let ((fold-status my$mu4e-global-fold-state)
+          (marks-num (mu4e-mark-marks-num)))
+        (apply old-fun args)
+        (my:mu4e-thread-set-lines)
+        ;; HACK: I have no idea but it seems that I cannot reset the
+        ;; fold status immediately, I have to wait for a while before
+        ;; resetting the fold status.  Otherwise the overlay will be
+        ;; displayed incorrectly.
+        (run-with-idle-timer (* 0.01 marks-num) nil
+                             (lambda ()
+                                 (pcase fold-status
+                                     ('folded (my~mu4e-fold-all-threads))
+                                     ('unfolded (my~mu4e-unfold-all-threads)))))))
+
+(define-minor-mode my~mu4e-thread-folding-mode
+    "Enable thread folding for mu4e."
+    :global t
+    :init-value nil
+    (if my~mu4e-thread-folding-mode
             (progn
-                (my~mu4e-unfold-all-threads)
-                (setq-local my$mu4e-thread-overlays-alist nil)
-                (setq-local my$mu4e-thread-lines-alist nil))
-            )
-        )
-
-    )
+                (add-hook 'mu4e-headers-found-hook #'my:mu4e-thread-folding-mode-setup)
+                (advice-add 'mu4e-headers-view-message :around #'my:mu4e-unfold-thread-before-opening-message)
+                (advice-add 'mu4e-mark-execute-all :around #'my:mu4e-refresh-fold-after-executing-mark)
+                )
+        (progn
+            (when (get-buffer "*mu4e-headers*")
+                (with-current-buffer "*mu4e-headers*"
+                    (my:mu4e-thread-folding-mode-unsetup)))
+            (remove-hook 'mu4e-headers-found-hook #'my:mu4e-thread-folding-mode-setup)
+            (advice-remove 'mu4e-headers-view-message #'my:mu4e-unfold-thread-before-opening-message)
+            (advice-remove 'mu4e-mark-execute-all #'my:mu4e-refresh-fold-after-executing-mark)
+            )))
 
 (provide 'my-email-autoloads)
 ;;; my-email-autoloads.el ends here
