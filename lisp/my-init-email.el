@@ -123,24 +123,7 @@
              :key ?g))
           )
 
-    ;; evil-collection used the `mu4e~main-toggle-mail-sending-mode'
-    ;; command which is obsolete.
-    (defalias #'mu4e~main-toggle-mail-sending-mode #'mu4e--main-toggle-mail-sending-mode)
-
     (plist-put (cdr (assoc :flags mu4e-header-info)) :shortname " Flags") ; default=Flgs
-
-    ;; Due to evil, none of the marking commands work when
-    ;; making a visual selection in the headers view of
-    ;; mu4e. Without overriding any evil commands we may
-    ;; actually want to use in and evil selection, this can be
-    ;; easily fixed.
-    (general-define-key
-     :states 'visual
-     :keymaps 'mu4e-headers-mode-map
-     "*" #'mu4e-headers-mark-for-something
-     "!" #'mu4e-headers-mark-for-read
-     "?" #'mu4e-headers-mark-for-unread
-     "u" #'mu4e-headers-mark-for-unmark)
 
     (general-define-key
      :states '(normal motion)
