@@ -200,7 +200,7 @@ https://emacs.stackexchange.com/questions/10230/how-to-indent-keywords-aligned
 If point is on a link, open this link via `eww'. Otherwise open
 this email via `eww'
 
-(fn MSG &optional ARG)")
+(fn MSG)")
 (defvar my~mu4e-thread-folding-mode nil "\
 Non-nil if My~Mu4e-Thread-Folding mode is enabled.
 See the `my~mu4e-thread-folding-mode' command
