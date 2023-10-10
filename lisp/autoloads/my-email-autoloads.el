@@ -288,6 +288,7 @@ that thread.")
         (when-let* ((over-lay (alist-get cur-thread-id my$mu4e-thread-overlays-alist nil nil #'equal)))
             (if (overlayp over-lay)
                     (progn
+                        (beginning-of-line)
                         (delete-overlay over-lay)
                         (setf (alist-get cur-thread-id my$mu4e-thread-overlays-alist nil nil #'equal) nil))
                 (setf (alist-get cur-thread-id my$mu4e-thread-overlays-alist nil nil #'equal) nil))
