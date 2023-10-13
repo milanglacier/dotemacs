@@ -193,6 +193,12 @@ that thread.")
 (defvar my$mu4e-global-fold-state nil
     "Global state of whether threads should be all folded or not")
 
+(defvar my$mu4e-folded-thread-override ()
+    "A list of threads that should be restored to folded status after refresh.")
+
+(defvar my$mu4e-unfolded-thread-override ()
+    "A list of threads that should be restored to unfolded status after refresh.")
+
 (defface my&mu4e-unread-thread
     '((t :inherit (mu4e-highlight-face)))
     "face for folded thread containing unread messages.")
@@ -235,8 +241,10 @@ that thread.")
                          (butlast (mapcar #'cdr mu4e-headers-fields)))))
         (cl-loop for i from 1 to white-spaces concat " ")))
 
-(defun my~mu4e-fold-thread-at-point ()
-    "Fold the thread to which the message at point belongs"
+(defun my~mu4e-fold-thread-at-point (&optional no-record-fold-status)
+    "Fold the thread to which the message at point belongs. If
+NO-RECORD-FOLD-STATUS is t, the fold status for current thread will
+not be recorded."
     (interactive)
     (let* ((msg (mu4e-message-at-point))
            (cur-thread-id (mu4e~headers-get-thread-info msg 'thread-id))
@@ -272,6 +280,10 @@ that thread.")
                                           (lambda (x) (goto-line x) (line-end-position))
                                           thread-lines)))))
 
+            (unless no-record-fold-status
+                (push cur-thread-id my$mu4e-folded-thread-override)
+                (setq my$mu4e-unfolded-thread-override (delete cur-thread-id my$mu4e-unfolded-thread-override)))
+
             (if (alist-get cur-thread-id my$mu4e-thread-overlays-alist nil nil #'equal)
                     (setf (alist-get cur-thread-id my$mu4e-thread-overlays-alist nil nil #'equal)
                           over-lay)
@@ -292,6 +304,8 @@ that thread.")
                         (delete-overlay over-lay)
                         (setf (alist-get cur-thread-id my$mu4e-thread-overlays-alist nil nil #'equal) nil))
                 (setf (alist-get cur-thread-id my$mu4e-thread-overlays-alist nil nil #'equal) nil))
+            (push cur-thread-id my$mu4e-unfolded-thread-override)
+            (setq my$mu4e-folded-thread-override (delete cur-thread-id my$mu4e-folded-thread-override))
             t
             )))
 
@@ -308,28 +322,56 @@ that thread.")
         (when (overlayp (cdr thread-over-lay))
             (delete-overlay (cdr thread-over-lay))))
     (setq my$mu4e-thread-overlays-alist nil)
-    (setq my$mu4e-global-fold-state 'unfolded))
+    (setq my$mu4e-global-fold-state 'unfolded)
+    (setq my$mu4e-folded-thread-override nil)
+    (setq my$mu4e-unfolded-thread-override nil))
+
+(defun my:mu4e-override-folded-thread (override-threads)
+    "Override the global fold state for threads that should be folded"
+    (save-excursion
+        (dolist (thread-id override-threads)
+            (when-let* ((thread-lines (alist-get thread-id my$mu4e-thread-lines-alist nil nil #'equal))
+                        (tail-of-thread (car thread-lines)))
+                (goto-line tail-of-thread)
+                (my~mu4e-fold-thread-at-point)))))
+
+(defun my:mu4e-override-unfolded-thread (override-threads)
+    "Override the global fold state for threads that should be unfolded"
+    (save-excursion
+        (dolist (thread-id override-threads)
+            (when-let* ((thread-lines (alist-get thread-id my$mu4e-thread-lines-alist nil nil #'equal))
+                        (tail-of-thread (car thread-lines)))
+                (goto-line tail-of-thread)
+                (my~mu4e-unfold-thread-at-point)))))
+
 
 (defun my~mu4e-fold-all-threads ()
     "fold all threads in current buffer."
     (interactive)
     (mu4e-headers-for-each
      (lambda (msg)
-         (my~mu4e-fold-thread-at-point)))
-    (setq my$mu4e-global-fold-state 'folded))
+         (my~mu4e-fold-thread-at-point t)))
+    (setq my$mu4e-global-fold-state 'folded)
+    (setq my$mu4e-folded-thread-override nil)
+    (setq my$mu4e-unfolded-thread-override nil))
 
 (defun my:mu4e-thread-folding-mode-setup ()
     (make-variable-buffer-local 'my$mu4e-thread-overlays-alist)
     (make-variable-buffer-local 'my$mu4e-thread-lines-alist)
     (make-variable-buffer-local 'my$mu4e-global-fold-state)
     (make-variable-buffer-local 'my$mu4e-thread-unread-msg-alist)
+    (make-variable-buffer-local 'my$mu4e-folded-thread-override)
+    (make-variable-buffer-local 'my$mu4e-unfolded-thread-override)
     (my:mu4e-thread-set-lines))
 
 (defun my:mu4e-thread-folding-mode-unsetup ()
     (my~mu4e-unfold-all-threads)
     (setq-local my$mu4e-thread-overlays-alist nil)
     (setq-local my$mu4e-thread-lines-alist nil)
-    (setq-local my$mu4e-thread-unread-msg-alist nil))
+    (setq-local my$mu4e-thread-unread-msg-alist nil)
+    (setq-local my$mu4e-global-fold-state nil)
+    (setq-local my$mu4e-folded-thread-override nil)
+    (setq-local my$mu4e-unfolded-thread-override nil))
 
 (defun my:mu4e-unfold-thread-before-opening-message (old-fun &rest args)
     ;; HACK: It seems that the overlay will be displayed incorrectly
@@ -342,6 +384,8 @@ that thread.")
 
 (defun my:mu4e-refresh-fold-after-executing-mark (old-fun &rest args)
     (let ((fold-status my$mu4e-global-fold-state)
+          (thread-folded-override my$mu4e-folded-thread-override)
+          (thread-unfolded-override my$mu4e-unfolded-thread-override)
           (marks-num (mu4e-mark-marks-num)))
         (apply old-fun args)
         (my~mu4e-unfold-all-threads)
@@ -354,8 +398,12 @@ that thread.")
                              (lambda ()
                                  (my:mu4e-thread-set-lines)
                                  (pcase fold-status
-                                     ('folded (my~mu4e-fold-all-threads))
-                                     ('unfolded (my~mu4e-unfold-all-threads)))))))
+                                     ('folded (progn
+                                                  (my~mu4e-fold-all-threads)
+                                                  (my:mu4e-override-unfolded-thread thread-unfolded-override)))
+                                     ('unfolded (progn
+                                                    (my~mu4e-unfold-all-threads)
+                                                    (my:mu4e-override-folded-thread thread-folded-override))))))))
 
 ;;;###autoload
 (define-minor-mode my~mu4e-thread-folding-mode
