@@ -394,16 +394,22 @@ not be recorded."
         ;; command execution is impossible. However, I don't know how
         ;; to determine when the update concludes. Therefore, I've
         ;; resorted to using a timer to approximate this timeline.
-        (run-with-idle-timer (* 0.01 marks-num) nil
-                             (lambda ()
-                                 (my:mu4e-thread-set-lines)
-                                 (pcase fold-status
-                                     ('folded (progn
-                                                  (my~mu4e-fold-all-threads)
-                                                  (my:mu4e-override-unfolded-thread thread-unfolded-override)))
-                                     ('unfolded (progn
-                                                    (my~mu4e-unfold-all-threads)
-                                                    (my:mu4e-override-folded-thread thread-folded-override))))))))
+        (run-with-idle-timer
+         (cond
+          ((< marks-num 10) 0.3)
+          ((< marks-num 50) 0.5)
+          ((< marks-num 100) 1)
+          (t 2))
+         nil
+         (lambda ()
+             (my:mu4e-thread-set-lines)
+             (pcase fold-status
+                 ('folded (progn
+                              (my~mu4e-fold-all-threads)
+                              (my:mu4e-override-unfolded-thread thread-unfolded-override)))
+                 ('unfolded (progn
+                                (my~mu4e-unfold-all-threads)
+                                (my:mu4e-override-folded-thread thread-folded-override))))))))
 
 ;;;###autoload
 (define-minor-mode my~mu4e-thread-folding-mode
