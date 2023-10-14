@@ -179,24 +179,24 @@ is on the start of current thread. Analagous to `[[' in vim."
 ;; WIP: there are too many corner cases unresolved
 ;; TODO: very beginning stage
 
-(defvar my$mu4e-thread-lines-alist ()
+(defvar-local my$mu4e-thread-lines-alist ()
     "An alist constitutes of `(thread_id line-num-1 line-num-2 line-num-3 ...)',
 each of which is the `line-number-at-pos' of a message belonging to
 that thread.")
 
-(defvar my$mu4e-thread-unread-msg-alist ()
+(defvar-local my$mu4e-thread-unread-msg-alist ()
     "An alist constitutes of `(thread_id . unread-msg-num)'")
 
-(defvar my$mu4e-thread-overlays-alist ()
+(defvar-local my$mu4e-thread-overlays-alist ()
     "An alist constitutes of `(thread_id . overlay)'")
 
-(defvar my$mu4e-global-fold-state nil
+(defvar-local my$mu4e-global-fold-state nil
     "Global state of whether threads should be all folded or not")
 
-(defvar my$mu4e-folded-thread-override ()
+(defvar-local my$mu4e-folded-thread-override ()
     "A list of threads that should be restored to folded status after refresh.")
 
-(defvar my$mu4e-unfolded-thread-override ()
+(defvar-local my$mu4e-unfolded-thread-override ()
     "A list of threads that should be restored to unfolded status after refresh.")
 
 (defface my&mu4e-unread-thread
@@ -356,12 +356,6 @@ not be recorded."
     (setq my$mu4e-unfolded-thread-override nil))
 
 (defun my:mu4e-thread-folding-mode-setup ()
-    (make-variable-buffer-local 'my$mu4e-thread-overlays-alist)
-    (make-variable-buffer-local 'my$mu4e-thread-lines-alist)
-    (make-variable-buffer-local 'my$mu4e-global-fold-state)
-    (make-variable-buffer-local 'my$mu4e-thread-unread-msg-alist)
-    (make-variable-buffer-local 'my$mu4e-folded-thread-override)
-    (make-variable-buffer-local 'my$mu4e-unfolded-thread-override)
     (my:mu4e-thread-set-lines))
 
 (defun my:mu4e-thread-folding-mode-unsetup ()
