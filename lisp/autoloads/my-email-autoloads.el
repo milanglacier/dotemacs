@@ -284,10 +284,7 @@ not be recorded."
                 (push cur-thread-id my$mu4e-folded-thread-override)
                 (setq my$mu4e-unfolded-thread-override (delete cur-thread-id my$mu4e-unfolded-thread-override)))
 
-            (if (alist-get cur-thread-id my$mu4e-thread-overlays-alist nil nil #'equal)
-                    (setf (alist-get cur-thread-id my$mu4e-thread-overlays-alist nil nil #'equal)
-                          over-lay)
-                (push `(,cur-thread-id . ,over-lay) my$mu4e-thread-overlays-alist))
+            (setf (alist-get cur-thread-id my$mu4e-thread-overlays-alist nil nil #'equal) over-lay)
             (overlay-put over-lay 'display folded-text)
             (overlay-put over-lay 'overlay over-lay))))
 
