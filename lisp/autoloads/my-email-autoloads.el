@@ -236,9 +236,12 @@ that thread.")
     ;; which should not be limited by length, thus its field value is
     ;; nil. We remove the last nil element and get the summation of
     ;; the length of other fields.
-    (let ((white-spaces (apply
-                         #'+
-                         (butlast (mapcar #'cdr mu4e-headers-fields)))))
+    (let ((white-spaces (+ 2
+                           ;; the beginning 2 spaces are reserved for mu4e for special purposes
+                           (length (butlast mu4e-headers-fields))
+                           (apply
+                            #'+
+                            (butlast (mapcar #'cdr mu4e-headers-fields))))))
         (cl-loop for i from 1 to white-spaces concat " ")))
 
 (defun my~mu4e-fold-thread-at-point (&optional no-record-fold-status)
