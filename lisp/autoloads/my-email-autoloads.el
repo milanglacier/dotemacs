@@ -209,9 +209,9 @@ that thread.")
 
 (defun my:mu4e-thread-set-lines ()
     (my~mu4e-unfold-all-threads)
-    (setq my$mu4e-thread-lines-alist nil)
-    (setq my$mu4e-thread-overlays-alist nil)
-    (setq my$mu4e-thread-unread-msg-alist nil)
+    (setq-local my$mu4e-thread-lines-alist nil)
+    (setq-local my$mu4e-thread-overlays-alist nil)
+    (setq-local my$mu4e-thread-unread-msg-alist nil)
 
     (mu4e-headers-for-each
      (lambda (msg)
@@ -285,7 +285,7 @@ not be recorded."
 
             (unless no-record-fold-status
                 (push cur-thread-id my$mu4e-folded-thread-override)
-                (setq my$mu4e-unfolded-thread-override (delete cur-thread-id my$mu4e-unfolded-thread-override)))
+                (setq-local my$mu4e-unfolded-thread-override (delete cur-thread-id my$mu4e-unfolded-thread-override)))
 
             (setf (alist-get cur-thread-id my$mu4e-thread-overlays-alist nil nil #'equal) over-lay)
             (overlay-put over-lay 'display folded-text)
@@ -305,7 +305,7 @@ not be recorded."
                         (setf (alist-get cur-thread-id my$mu4e-thread-overlays-alist nil nil #'equal) nil))
                 (setf (alist-get cur-thread-id my$mu4e-thread-overlays-alist nil nil #'equal) nil))
             (push cur-thread-id my$mu4e-unfolded-thread-override)
-            (setq my$mu4e-folded-thread-override (delete cur-thread-id my$mu4e-folded-thread-override))
+            (setq-local my$mu4e-folded-thread-override (delete cur-thread-id my$mu4e-folded-thread-override))
             t
             )))
 
@@ -321,10 +321,10 @@ not be recorded."
     (dolist (thread-over-lay my$mu4e-thread-overlays-alist)
         (when (overlayp (cdr thread-over-lay))
             (delete-overlay (cdr thread-over-lay))))
-    (setq my$mu4e-thread-overlays-alist nil)
-    (setq my$mu4e-global-fold-state 'unfolded)
-    (setq my$mu4e-folded-thread-override nil)
-    (setq my$mu4e-unfolded-thread-override nil))
+    (setq-local my$mu4e-thread-overlays-alist nil)
+    (setq-local my$mu4e-global-fold-state 'unfolded)
+    (setq-local my$mu4e-folded-thread-override nil)
+    (setq-local my$mu4e-unfolded-thread-override nil))
 
 (defun my:mu4e-override-folded-thread (override-threads)
     "Override the global fold state for threads that should be folded"
@@ -351,9 +351,9 @@ not be recorded."
     (mu4e-headers-for-each
      (lambda (msg)
          (my~mu4e-fold-thread-at-point t)))
-    (setq my$mu4e-global-fold-state 'folded)
-    (setq my$mu4e-folded-thread-override nil)
-    (setq my$mu4e-unfolded-thread-override nil))
+    (setq-local my$mu4e-global-fold-state 'folded)
+    (setq-local my$mu4e-folded-thread-override nil)
+    (setq-local my$mu4e-unfolded-thread-override nil))
 
 (defun my:mu4e-thread-folding-mode-setup ()
     (my:mu4e-thread-set-lines))
