@@ -288,8 +288,7 @@ not be recorded."
                 (setq-local my$mu4e-unfolded-thread-override (delete cur-thread-id my$mu4e-unfolded-thread-override)))
 
             (setf (alist-get cur-thread-id my$mu4e-thread-overlays-alist nil nil #'equal) over-lay)
-            (overlay-put over-lay 'display folded-text)
-            (overlay-put over-lay 'overlay over-lay))))
+            (overlay-put over-lay 'display folded-text))))
 
 (defun my~mu4e-unfold-thread-at-point ()
     "Unfold the thread to which the message at point belongs"
@@ -398,12 +397,10 @@ not be recorded."
          (lambda ()
              (my:mu4e-thread-set-lines)
              (pcase fold-status
-                 ('folded (progn
-                              (my~mu4e-fold-all-threads)
-                              (my:mu4e-override-unfolded-thread thread-unfolded-override)))
-                 ('unfolded (progn
-                                (my~mu4e-unfold-all-threads)
-                                (my:mu4e-override-folded-thread thread-folded-override))))))))
+                 ('folded (my~mu4e-fold-all-threads)
+                          (my:mu4e-override-unfolded-thread thread-unfolded-override))
+                 ('unfolded (my~mu4e-unfold-all-threads)
+                            (my:mu4e-override-folded-thread thread-folded-override)))))))
 
 ;;;###autoload
 (define-minor-mode my~mu4e-thread-folding-mode
