@@ -158,6 +158,7 @@
     (general-define-key :keymaps 'shr-map "a" nil)
     (general-define-key :keymaps 'shr-image-map "a" nil)
 
+    (add-hook 'mu4e-compose-mode-hook (my/turn-off-mode diff-hl-mode))
     )
 
 (use-package org-msg
@@ -175,7 +176,10 @@
           org-msg-attached-file-reference
           "see[ \t\n]\\(?:the[ \t\n]\\)?\\(?:\\w+[ \t\n]\\)\\{0,3\\}\\(?:attached\\|enclosed\\)\\|\
 (\\(?:attached\\|enclosed\\))\\|\
-\\(?:attached\\|enclosed\\)[ \t\n]\\(?:for\\|is\\)[ \t\n]"))
+\\(?:attached\\|enclosed\\)[ \t\n]\\(?:for\\|is\\)[ \t\n]")
+
+    :config
+    (add-hook 'org-msg-edit-mode-hook (my/turn-off-mode diff-hl-mode)))
 
 (provide 'my-init-email)
 ;;; my-init-email.el.el ends here
