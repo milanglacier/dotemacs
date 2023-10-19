@@ -141,7 +141,7 @@ to activate `eglot' while using `org-mode', but prefer not to enable
                  #',func-with-blocklist
              (defun ,func-with-blocklist ()
                  (let* ((blocklist (alist-get ',func my$function-predicate-blocklist)))
-                     (unless (eval `(or ,@(mapcar #'eval blocklist)))
+                     (unless (eval `(or ,@blocklist))
                          (,func)))))))
 
 (provide 'my-utils-autoloads)
