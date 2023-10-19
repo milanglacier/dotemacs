@@ -178,6 +178,9 @@
 (\\(?:attached\\|enclosed\\))\\|\
 \\(?:attached\\|enclosed\\)[ \t\n]\\(?:for\\|is\\)[ \t\n]")
 
+    (add-to-list 'my$function-predicate-blocklist
+                 '(eglot-ensure '(derived-mode-p 'org-msg-edit-mode)))
+
     :config
     (add-hook 'org-msg-edit-mode-hook (my/turn-off-mode diff-hl-mode)))
 
