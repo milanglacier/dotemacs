@@ -124,5 +124,25 @@ for debugging purposes when you want to examine a hook value."
      my$load-incrementally-packages-first-time nil
      #'my:load-packages-incrementally my$load-incrementally-packages))
 
+(defvar my$function-predicate-blocklist ()
+    "An alist wherein elements are organized as follows: (function
+predicate-1 predicate-2, ...). When either predicate-1, predicate-2,
+etc., evaluates to true, the function will not be invoked. This
+becomes beneficial when used with a hook. For instance, you may wish
+to activate `eglot' while using `org-mode', but prefer not to enable
+`eglot' when `org-msg-edit-mode' is activated.")
+
+(defmacro my%call-func-respect-blocklist (func)
+    "Calling FUNC only when all the forms associated with FUNC in
+`my$function-predicate-blocklist' evalutes to nil."
+    (let ((func-with-blocklist
+           (intern (format "my*%s-with-blocklist" (symbol-name func)))))
+        `(if (fboundp #',func-with-blocklist)
+                 #',func-with-blocklist
+             (defun ,func-with-blocklist ()
+                 (let* ((blocklist (alist-get ',func my$function-predicate-blocklist)))
+                     (unless (eval `(or ,@(mapcar #'eval blocklist)))
+                         (,func)))))))
+
 (provide 'my-utils-autoloads)
 ;;; my-utils-autoloads ends here
