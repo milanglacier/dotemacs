@@ -266,7 +266,8 @@
      :keymaps 'dape-info-mode-map
      :states 'normal
      "RET" #'dape-info-buton-press-dwim
-     "TAB" #'dape-info-tree-dwim)
+     "TAB" #'dape-info-tree-dwim
+     "za" #'dape-info-tree-dwim)
 
     (add-to-list 'dape-configs
                  '(delve
