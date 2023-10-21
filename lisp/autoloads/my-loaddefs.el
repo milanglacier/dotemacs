@@ -318,6 +318,9 @@ Support LANG in org source code block.
 (autoload 'my~formatter "my-langtools-autoloads" "\
 If current LSP has a formatter, use it. Otherwise, use the
 reformatter according to the `major-mode-reformatter-plist'" t)
+(autoload 'my~dape-start-or-continue "my-langtools-autoloads" "\
+If there is an active DAPE session, run `dape-continue', otherwise run `dape'." t)
+(autoload 'my:dape-keymap-setup "my-langtools-autoloads")
 (register-definition-prefixes "my-langtools-autoloads" '("major-mode-reformatter-plist" "my/eldoc-"))
 
 
@@ -490,7 +493,7 @@ for debugging purposes when you want to examine a hook value.
 (fn HOOK VAR VAL)" nil t)
 (autoload 'my:load-packages-incrementally-setup "my-utils-autoloads" "\
 Set up a idle timer to start idly load packages.")
-(register-definition-prefixes "my-utils-autoloads" '("my$load-incrementally-packages" "my:load-packages-incrementally"))
+(register-definition-prefixes "my-utils-autoloads" '("my$" "my%call-func-respect-blocklist" "my:load-packages-incrementally"))
 
 
 ;;; Generated autoloads from my-vcs-autoloads.el

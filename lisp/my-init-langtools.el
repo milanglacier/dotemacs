@@ -8,6 +8,7 @@
                                 :files ("dist" "*.el")))
 (straight-use-package 'code-cells)
 (straight-use-package 'reformatter)
+(straight-use-package '(dape :host github :repo "svaante/dape"))
 
 (use-package citre
     :init
@@ -123,18 +124,18 @@
         :prefix-map 'my/lsp-map)
 
     (my/lsp-map
-        :keymaps 'eglot-mode-map
-        :states '(normal insert motion visual)
-        "" '(:ignore t :which-key "lsp")
-        "f" #'my~formatter
-        "s" #'consult-eglot-symbols
-        "a" #'eglot-code-actions
-        "e" #'consult-flymake
-        "n" #'eglot-rename
-        "t" #'eglot-find-typeDefinition
-        "i" #'eglot-find-implementation
-        "[" #'xref-go-back
-        "]" #'xref-go-forward)
+     :keymaps 'eglot-mode-map
+     :states '(normal insert motion visual)
+     "" '(:ignore t :which-key "lsp")
+     "f" #'my~formatter
+     "s" #'consult-eglot-symbols
+     "a" #'eglot-code-actions
+     "e" #'consult-flymake
+     "n" #'eglot-rename
+     "t" #'eglot-find-typeDefinition
+     "i" #'eglot-find-implementation
+     "[" #'xref-go-back
+     "]" #'xref-go-forward)
 
     (general-define-key
      :keymaps 'eglot-mode-map
@@ -247,6 +248,43 @@
 
     )
 
+(use-package dape
+    :commands (dape dape-toggle-breakpoint)
+
+    :init
+    (setq dape-repl-use-shorthand t)
+    (add-hook 'python-ts-mode-hook #'my:dape-keymap-setup)
+    (add-hook 'go-ts-mode-hook #'my:dape-keymap-setup)
+
+    :config
+    (my/leader
+        :keymaps 'override
+        :states '(normal insert visual)
+        "d" '(:keymap dape-global-map :which-key "DAP"))
+
+
+    (add-to-list 'dape-configs
+                 '(delve
+                   modes (go-mode go-ts-mode)
+                   command "dlv"
+                   command-args ("dap" "--listen" "127.0.0.1:55878")
+                   command-cwd dape-cwd-fn
+                   host "127.0.0.1"
+                   port 55878
+                   :type "debug"
+                   :request "launch"
+                   :cwd dape-cwd-fn
+                   :program dape-cwd-fn))
+
+    (add-to-list 'dape-configs
+                 '(debugpy
+                   modes (python-ts-mode python-mode)
+                   command "python3"
+                   command-args ("-m" "debugpy.adapter")
+                   :type "executable"
+                   :request "launch"
+                   :cwd dape-cwd-fn
+                   :program dape-find-file-buffer-default)))
 
 (provide 'my-init-langtools)
 ;;; my-init-langtools.el ends here

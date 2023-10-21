@@ -113,5 +113,27 @@ reformatter according to the `major-mode-reformatter-plist'"
         (when-let ((formatter (plist-get major-mode-reformatter-plist major-mode)))
             (call-interactively formatter))))
 
+;;;###autoload
+(defun my~dape-start-or-continue ()
+    "If there is an active DAPE session, run `dape-continue', otherwise run `dape'."
+    (interactive)
+    (if (dape--stopped-threads)
+            (call-interactively #'dape-continue)
+        (call-interactively #'dape)))
+
+;;;###autoload
+(defun my:dape-keymap-setup ()
+    (general-define-key
+     :keymaps 'local
+     "<f5>" #'my~dape-start-or-continue
+     "<S-f5>" #'dape-quit
+     "<f6>" #'dape-pause
+     "<f9>" #'dape-toggle-breakpoint
+     "<S-f9>" #'dape-expression-breakpoint
+     "<f10>" #'dape-next ;; step-over
+     "<f11>" #'dape-step-in
+     "<S-f11>" #'dape-step-out)
+    )
+
 (provide 'my-langtools-autoloads)
 ;;; my-langtools-autoloads.el ends here
