@@ -117,7 +117,9 @@ reformatter according to the `major-mode-reformatter-plist'"
 (defun my~dape-start-or-continue ()
     "If there is an active DAPE session, run `dape-continue', otherwise run `dape'."
     (interactive)
-    (if (dape--stopped-threads)
+    (require 'dape)
+    (if (and (dape--stopped-threads)
+             (dape--live-process t))
             (call-interactively #'dape-continue)
         (call-interactively #'dape)))
 

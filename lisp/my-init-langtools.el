@@ -262,6 +262,11 @@
         :states '(normal insert visual)
         "d" '(:keymap dape-global-map :which-key "DAP"))
 
+    (general-define-key
+     :keymaps 'dape-info-mode-map
+     :states 'normal
+     "RET" #'dape-info-buton-press-dwim
+     "TAB" #'dape-info-tree-dwim)
 
     (add-to-list 'dape-configs
                  '(delve
