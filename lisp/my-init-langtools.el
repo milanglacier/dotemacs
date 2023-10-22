@@ -93,8 +93,13 @@
     :init
     (setq eglot-stay-out-of '(company)
           eglot-workspace-configuration
-          '(:pyright (:useLibraryCodeForTypes t :openFilesOnly :json-false)
-            :r (:lsp (:diagnostics :json-false)))
+          '(:python.analysis (:useLibraryCodeForTypes t :diagnosticMode "workspace" :autoSearchPaths t)
+            ;; NOTE: I was thinking `python.analysis' should be a
+            ;; hierarchical structure like { "python": { "analysis": {
+            ;; xxx } }.  But examining the `eglot-event' buffer
+            ;; suggests me that `python.analysis' should be a whole
+            ;; component.
+            :r (:lsp (:diagnostics t)))
           read-process-output-max (* 1024 1024)
           eglot-sync-connect 0)
 
