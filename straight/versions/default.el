@@ -13,7 +13,7 @@
  ("consult-dir" . "3f5f4b71ebe819392cb090cda71bd39a93bd830a")
  ("consult-eglot" . "db9d41c9812a5a8a7b9a22fa7f3c314e37584d41")
  ("copilot.el" . "3086d214f40a9689d00d647667b73795abc07bc9")
- ("dape" . "2a478560e9b0986ebd6b954ec01c3da90ec9e7a8")
+ ("dape" . "73150fca5559ad99722010ae6a1d045486a0686c")
  ("dash.el" . "6db80c711ce947f6c6fa11e5c2257fff2c79d139")
  ("diff-hl" . "b5651f1c57b42e0f38e01a8fc8c7df9bc76d5d38")
  ("dired-git-info" . "6b6f2a5d716debba9a7dcac623d5a1e4c799eb62")
