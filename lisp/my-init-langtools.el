@@ -222,7 +222,7 @@
             (tsx . ("https://github.com/tree-sitter/tree-sitter-typescript" nil "tsx/src"))
             (ruby . ("https://github.com/tree-sitter/tree-sitter-ruby"))
             (rust . ("https://github.com/tree-sitter/tree-sitter-rust"))
-            (sql . ("https://github.com/m-novikov/tree-sitter-sql"))
+            (sql . ("https://github.com/derekstride/tree-sitter-sql" "gh-pages"))
             (vue . ("https://github.com/merico-dev/tree-sitter-vue"))
             (yaml . ("https://github.com/ikatyang/tree-sitter-yaml"))
             (toml . ("https://github.com/tree-sitter/tree-sitter-toml"))
