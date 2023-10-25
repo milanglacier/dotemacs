@@ -321,6 +321,7 @@ reformatter according to the `major-mode-reformatter-plist'" t)
 (autoload 'my~dape-start-or-continue "my-langtools-autoloads" "\
 If there is an active DAPE session, run `dape-continue', otherwise run `dape'." t)
 (autoload 'my:dape-keymap-setup "my-langtools-autoloads")
+(autoload 'my:treesit-embed-sql-in-python-setup "my-langtools-autoloads")
 (register-definition-prefixes "my-langtools-autoloads" '("major-mode-reformatter-plist" "my/eldoc-"))
 
 
