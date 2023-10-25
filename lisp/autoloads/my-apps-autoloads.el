@@ -163,18 +163,31 @@ otherwise use the existed one"
 
 (defmacro my%create-vterm-repl-schema (repl-name repl-cmd &rest args)
     "create a REPL schema.
+
 The REPL session will be created via vterm. The schema includes three
 functions, the function to start the repl, the function to send the
 region and the corresponding operator.
 
-REPL-NAME is a string, REPL-CMD is a form evaluated to a string.
+REPL-NAME is a string, REPL-CMD is a form evaluated to a string. ARGS
+is a plist, the following properties are supported:
 
-ARGS is a plist, the following properties are supported:
-:bracketed-paste-p whether send the string with bracketed paste mode, the default value is nil.
-:start-pattern the first string to send to the REPl before sending the region. The default is ''.
-:end-pattern the last string to send to the REPL after sending the region. The default is '\\r'.
-:str-process-func the function to process the string before sending it to the REPL.
-    The default is 'identity. This function must be a symbol, not a lambda form."
+:bracketed-paste-p whether send the string with bracketed paste mode,
+the default value is nil.  You can change the behavior at run time by
+setting the generated variable
+`my*REPL-NAME-use-bracketed-paste-mode'.
+
+:start-pattern the first string to send to the REPl before sending the
+region. The default is ''.  You can change the behavior at run time by
+setting the generated variable `my*REPL-NAME-start-pattern'.
+
+:end-pattern the last string to send to the REPL after sending the
+region. The default is '\\r'.  You can change the behavior at run time
+by setting the generated variable `my*REPL-NAME-end-pattern'.
+
+:str-process-func the function to process the string before sending it
+to the REPL.  The default is `identity'. You can change the behavior
+at run time by setting the generated variable
+`my*REPL-NAME-str-process-func'."
 
     (let ((start-func-name (intern (concat "my~" repl-name "-start")))
           (send-region-func-name (intern (concat "my~" repl-name "-send-region")))
@@ -182,9 +195,25 @@ ARGS is a plist, the following properties are supported:
           (bracketed-paste-p (plist-get args :bracketed-paste-p))
           (start-pattern (or (plist-get args :start-pattern) ""))
           (end-pattern (or (plist-get args :end-pattern) "\r"))
-          (str-process-func (or (plist-get args :str-process-func) ''identity)))
+          (str-process-func (or (plist-get args :str-process-func) ''identity))
+          (str-process-func-name (intern (concat "my*" repl-name "-str-process-func")))
+          (bracketed-paste-p-name (intern (concat "my*" repl-name "-use-bracketed-paste-mode")))
+          (start-pattern-name (intern (concat "my*" repl-name "-start-pattern")))
+          (end-pattern-name (intern (concat "my*" repl-name "-end-pattern"))))
 
         `(progn
+
+             (defvar ,str-process-func-name ,str-process-func
+                 ,(format "The function to process the string before sending it to the %s REPL." repl-name))
+
+             (defvar ,bracketed-paste-p-name ,bracketed-paste-p
+                 ,(format "Whether use bracketed paste mode for sending string to the %s REPL." repl-name))
+
+             (defvar ,start-pattern-name ,start-pattern
+                 ,(format "The first string to send to the %s REPL before sending the text." repl-name))
+
+             (defvar ,end-pattern-name ,end-pattern
+                 ,(format "The last string to send to the %s REPL after sending the text." repl-name))
 
              (defun ,start-func-name (&optional arg)
                  ,(format
@@ -216,11 +245,11 @@ with that number." repl-name)
                         (if session
                                 (format "*%s*<%d>" ,repl-name session)
                             (format "*%s*" ,repl-name)))
-                        (str (buffer-substring-no-properties beg end)))
+                       (str (buffer-substring-no-properties beg end)))
                      (with-current-buffer repl-buffer-name
-                         (vterm-send-string ,start-pattern)
-                         (vterm-send-string (funcall ,str-process-func str) ,bracketed-paste-p)
-                         (vterm-send-string ,end-pattern))))
+                         (vterm-send-string ,start-pattern-name)
+                         (vterm-send-string (funcall ,str-process-func-name str) ,bracketed-paste-p-name)
+                         (vterm-send-string ,end-pattern-name))))
 
              (evil-define-operator ,send-region-operator-name (beg end session)
                  ,(format
