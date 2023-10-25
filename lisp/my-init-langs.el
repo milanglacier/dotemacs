@@ -103,7 +103,8 @@
     (setq python-indent-offset 4)
 
     :config
-    (add-to-list 'python-ts-mode-hook #'eglot-ensure)
+    (add-hook 'python-ts-mode-hook #'eglot-ensure)
+
     (my/define-and-bind-local-paren-text-object " c" "# %%" "# %%" python-ts-mode-hook)
     (my/define-and-bind-local-paren-text-object "m" "# COMMAND ----------" "# COMMAND ----------" python-ts-mode-hook)
 
