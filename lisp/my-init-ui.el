@@ -21,6 +21,15 @@
 ;; Set font for text that should be displayed more like prose.
 (set-face-attribute 'variable-pitch nil :family "Bookerly" :height 160)
 
+;; optimize performance for long lines. Don't set these options when
+;; you are using right-to-left languages like Arabic.
+;; See URL `https://emacs-china.org/t/topic/25811/9'
+(setq-default bidi-inhibit-bpa t
+              bidi-display-reordering nil
+              long-line-threshold 1000
+              large-hscroll-threshold 1000
+              syntax-wholeline-max 1000)
+
 ;; display line numbers in the left margin of the window.
 (use-package display-line-numbers
     :init
