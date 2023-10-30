@@ -133,7 +133,7 @@ otherwise use the existed one
 (autoload 'my:pdf-midnight-mode-maybe "my-apps-autoloads")
  (autoload #'my~aichat-start "my-apps-autoloads" nil t)
  (autoload #'my~ipython-start "my-apps-autoloads" nil t)
-(register-definition-prefixes "my-apps-autoloads" '("my%create-vterm-repl-schema" "my/" "my:vterm-ensure-env-vars-sync-with-emacs"))
+(register-definition-prefixes "my-apps-autoloads" '("my%create-vterm-repl-schema" "my/"))
 
 
 ;;; Generated autoloads from my-colorscheme-autoloads.el

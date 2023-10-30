@@ -225,16 +225,13 @@ switch to the session with that number as a suffix."
                  (interactive "P")
                  (require 'vterm)
                  (let ((vterm-buffer-name (format "*%s*" ,repl-name))
+                       (vterm-shell ,repl-cmd)
                        (repl-buffer)
                        (repl-buffer-exist-p
                         (get-buffer
                          (if arg (format "*%s*<%d>" ,repl-name arg)
                              (format "*%s*" ,repl-name)))))
-                     (setq repl-buffer (vterm arg))
-                     (unless repl-buffer-exist-p
-                         (with-current-buffer repl-buffer
-                             (vterm-send-string
-                              (concat ,repl-cmd "\n"))))))
+                     (setq repl-buffer (vterm arg))))
 
              (defun ,send-region-func-name (beg end &optional session)
                  ,(format
@@ -261,33 +258,11 @@ that number" send-region-func-name repl-name)
 
              )))
 
-(defun my:vterm-ensure-env-vars-sync-with-emacs (cmd env-vars)
-    "`vterm' starts an interactive shell, which may not override the environment variables in current emacs.
-This function ensures the `cmd' to be executed use the `env-vars' as the same as emacs."
-    (setq env-vars (mapcar
-                    (lambda (x)
-                        (format "%s=%s"
-                                x
-                                (shell-quote-argument (or (getenv x) ""))))
-                    env-vars))
-    (if (file-remote-p default-directory) cmd
-        (concat (string-join `("export" ,@env-vars) " ")
-                "; " cmd)))
-
 ;;;###autoload (autoload #'my~aichat-start "my-apps-autoloads" nil t)
-(my%create-vterm-repl-schema "aichat" "aichat" :bracketed-paste-p t)
+(my%create-vterm-repl-schema "aichat" "aichat -s" :bracketed-paste-p t)
 
 ;;;###autoload (autoload #'my~ipython-start "my-apps-autoloads" nil t)
-(my%create-vterm-repl-schema
- "ipython"
- (my:vterm-ensure-env-vars-sync-with-emacs
-  "ipython"
-  '("PATH"
-    "CONDA_PREFIX"
-    "CONDA_DEFAULT_ENV"
-    "CONDA_PROMPT_MODIFIER"
-    "CONDA_SHLVL"))
- :bracketed-paste-p t)
+(my%create-vterm-repl-schema "ipython" "ipython" :bracketed-paste-p t)
 
 (provide 'my-apps-autoloads)
 ;;; my-apps-autoloads.el ends here
