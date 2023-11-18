@@ -4,8 +4,8 @@
 (straight-use-package 'eglot)
 (straight-use-package 'consult-eglot)
 (straight-use-package 'edit-indirect)
-(straight-use-package '(copilot :host github :repo "zerolfx/copilot.el"
-                                :files ("dist" "*.el")))
+;; (straight-use-package '(copilot :host github :repo "zerolfx/copilot.el"
+;;                                 :files ("dist" "*.el")))
 (straight-use-package 'code-cells)
 (straight-use-package 'reformatter)
 (straight-use-package '(dape :host github :repo "svaante/dape"))
