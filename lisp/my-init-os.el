@@ -28,7 +28,16 @@
 (when IS-LINUX
     (general-define-key
      "C-S-c" #'evil-yank
-     "C-S-v" #'evil-paste-before))
+     "C-S-v" #'evil-paste-before)
+
+    ;; Manually specify the libzmq path installed by `pkg in libzmq'.
+    ;; the following two flags are obtained via:
+    ;; pkg-config --flags libzmq
+    ;; pkg-config --libs-only-L libzmq
+    (setenv "ZMQ_LIBS" "-L/data/data/com.termux/files/usr/lib")
+    (setenv "ZMQ_CFLAGS" "-DZMQ_BUILD_DRAFT_API=1 -I/data/data/com.termux/files/usr/include")
+
+    )
 
 (add-hook 'tty-setup-hook #'my/tty-setup)
 

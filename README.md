@@ -1,29 +1,33 @@
 
 # Table of Contents
 
-1.  [Features](#orgacce455)
-    1.  [Blazing fast.](#org3d27324)
-    2.  [Robust](#org00cbaf8)
-    3.  [Compatability](#orgba198e0)
-    4.  [Feature rich](#org5f5ddcf)
-    5.  [Be wild](#orgd2cc17f)
-2.  [Showcase](#orgbfe70ba)
-    1.  [Welcome screen](#orgbef1509)
-    2.  [Code Navigation](#orgf930d6f)
-    3.  [Data Science](#orgc4a5d44)
-    4.  [Orgmode](#org5e39bba)
-3.  [TODOs](#orge918b4a)
-    1.  [Report `org-capture` bugs when inserting entries into table to upstream.](#org6e7ad92)
-    2.  [Utilize the contextual information from previous code block when editing source block within markdown/org.](#org61a7ee0)
-    3.  [Lazily load third-party plugins for `evil`.](#orgfa289dd)
-    4.  [Configure `evil-args` to use spaces as argument delimiter for `emacs-lisp-mode`.](#orgdb11e96)
-    5.  [Implement thread-folding for `mu4e`.](#org6ec49b9)
-4.  [Prerequisites](#orgdf00dd9)
-5.  [Discussion](#orgfa9cdc3)
-6.  [Notes](#org8314867)
-    1.  [Startup speed](#org1d8d1ea)
-    2.  [Naming conventions (WIP)](#org458cd3e)
-    3.  [Corfu or Company?](#orgfc8055f)
+1.  [Termux Setup](#orga234110)
+    1.  [Install `xclip`](#org1ac610a)
+    2.  [Build `efm-langserver`](#orgf09a5b5)
+    3.  [Build `emacs-zmq`](#orgca4e868)
+2.  [Features](#org8f0f086)
+    1.  [Blazing fast.](#org6e1c082)
+    2.  [Robust](#orgbc2a4a1)
+    3.  [Compatability](#org1f71fa7)
+    4.  [Feature rich](#org0d04998)
+    5.  [Be wild](#org0516325)
+3.  [Showcase](#orgade50db)
+    1.  [Welcome screen](#org58a58b2)
+    2.  [Code Navigation](#orga390d15)
+    3.  [Data Science](#orgb315ed6)
+    4.  [Orgmode](#orge3e5985)
+4.  [TODOs](#org3b2ab0a)
+    1.  [Report `org-capture` bugs when inserting entries into table to upstream.](#orgcc4e89a)
+    2.  [Utilize the contextual information from previous code block when editing source block within markdown/org.](#orgd75ae6d)
+    3.  [Lazily load third-party plugins for `evil`.](#org71011c1)
+    4.  [Configure `evil-args` to use spaces as argument delimiter for `emacs-lisp-mode`.](#org68ce2c4)
+    5.  [Implement thread-folding for `mu4e`.](#org333fc80)
+5.  [Prerequisites](#orga401710)
+6.  [Discussion](#org5bc1f32)
+7.  [Notes](#org677f6db)
+    1.  [Startup speed](#org8765a8a)
+    2.  [Naming conventions (WIP)](#org07e7e48)
+    3.  [Corfu or Company?](#org4b802a9)
 
 If you&rsquo;re currently reading this README file in Markdown format, it
 has been generated through `org-export`, from its original org
@@ -31,12 +35,46 @@ format. For the best experience, please consider reading the org
 format file instead.
 
 
-<a id="orgacce455"></a>
+<a id="orga234110"></a>
+
+# Termux Setup
+
+
+<a id="org1ac610a"></a>
+
+## Install `xclip`
+
+To make the clipboard work:
+
+    pkg in x11-repo
+    pkg in xclip
+
+
+<a id="orgf09a5b5"></a>
+
+## Build `efm-langserver`
+
+Due to an exsiting issue of golang, you cannot use the official build
+of `efm-langserver`. You must manually compile the `efm-langserver` from
+source. You do not need to compile this program on termux. Instead you
+can cross compile the binary in any platform by `GOOS=android go build`.
+
+
+<a id="orgca4e868"></a>
+
+## Build `emacs-zmq`
+
+To succesfully build emacs-zmq, make sure you have installed the following packages:
+
+    package install autoconf automake libtools pkg-config libzmq
+
+
+<a id="org8f0f086"></a>
 
 # Features
 
 
-<a id="org3d27324"></a>
+<a id="org6e1c082"></a>
 
 ## Blazing fast.
 
@@ -45,10 +83,10 @@ seconds on a VPS with a 1-core CPU and 1 GB RAM, and 0.22 seconds on
 WSL with an Intel i7-1185G7 and 32 GB RAM, TTY is exceptionally
 fast. The GUI is just as quick, starting in 0.44 seconds on Mac M1 and
 0.31 seconds on WSLg. For more information on startup speed, see
-[6.1](#org1d8d1ea).
+[7.1](#org8765a8a).
 
 
-<a id="org00cbaf8"></a>
+<a id="orgbc2a4a1"></a>
 
 ## Robust
 
@@ -56,7 +94,7 @@ Package versions are locked and under version control, so no breaking
 changes are expected.
 
 
-<a id="orgba198e0"></a>
+<a id="org1f71fa7"></a>
 
 ## Compatability
 
@@ -65,7 +103,7 @@ TTY is not compromised, while GUI features, including `xwidget`, are
 also well-configured.
 
 
-<a id="org5f5ddcf"></a>
+<a id="org0d04998"></a>
 
 ## Feature rich
 
@@ -78,14 +116,14 @@ configuration.  Instead, it is &ldquo;heavy&rdquo; and feature rich, including:
 
 -   A keybinding scheme centered around leader and localleader keys, powered by `general` and `which-key`.
 
--   In-buffer autocompletion frontend based on `company` (see [6.3](#orgfc8055f)).
+-   In-buffer autocompletion frontend based on `company` (see [7.3](#org4b802a9)).
 
 -   Code completion and navigation based on `eglot` (LSP) and `citre` (Ctags).
 
 -   Integration with `eglot` and `org-babel` or `markdown-mode` that takes literate programming to the next level.
 
 
-<a id="orgd2cc17f"></a>
+<a id="org0516325"></a>
 
 ## Be wild
 
@@ -96,12 +134,12 @@ randomized with each launch. Have a fresh experience at every time. Be
 casual and wild!
 
 
-<a id="orgbfe70ba"></a>
+<a id="orgade50db"></a>
 
 # Showcase
 
 
-<a id="orgbef1509"></a>
+<a id="org58a58b2"></a>
 
 ## Welcome screen
 
@@ -114,7 +152,7 @@ listed, allowing for convenient execution by simply clicking on the
 corresponding button.
 
 
-<a id="orgf930d6f"></a>
+<a id="orga390d15"></a>
 
 ## Code Navigation
 
@@ -129,7 +167,7 @@ the definition of the chosen symbol is displayed with the aid of
 `ctags` (the Emacs command is `citre-peek`).
 
 
-<a id="orgc4a5d44"></a>
+<a id="orgb315ed6"></a>
 
 ## Data Science
 
@@ -145,7 +183,7 @@ the aichat mode as `exp-code-e` to prompt chatgpt to provide an
 explanation of the code you sent.
 
 
-<a id="org5e39bba"></a>
+<a id="orge3e5985"></a>
 
 ## Orgmode
 
@@ -157,37 +195,37 @@ webkit. Preview slides in emacs without the need to open GUI browser
 anymore.
 
 
-<a id="orge918b4a"></a>
+<a id="org3b2ab0a"></a>
 
 # TODOs
 
 
-<a id="org6e7ad92"></a>
+<a id="orgcc4e89a"></a>
 
 ## Report `org-capture` bugs when inserting entries into table to upstream.
 
 
-<a id="org61a7ee0"></a>
+<a id="orgd75ae6d"></a>
 
 ## Utilize the contextual information from previous code block when editing source block within markdown/org.
 
 
-<a id="orgfa289dd"></a>
+<a id="org71011c1"></a>
 
 ## Lazily load third-party plugins for `evil`.
 
 
-<a id="orgdb11e96"></a>
+<a id="org68ce2c4"></a>
 
 ## Configure `evil-args` to use spaces as argument delimiter for `emacs-lisp-mode`.
 
 
-<a id="org6ec49b9"></a>
+<a id="org333fc80"></a>
 
 ## DONE Implement thread-folding for `mu4e`.
 
 
-<a id="orgdf00dd9"></a>
+<a id="orga401710"></a>
 
 # Prerequisites
 
@@ -204,7 +242,7 @@ anymore.
     install all the language grammars that are currently in use.
 
 
-<a id="orgfa9cdc3"></a>
+<a id="org5bc1f32"></a>
 
 # Discussion
 
@@ -212,12 +250,12 @@ anymore.
 -   Alternatively, you are also welcome to open a Github issue.
 
 
-<a id="org8314867"></a>
+<a id="org677f6db"></a>
 
 # Notes
 
 
-<a id="org1d8d1ea"></a>
+<a id="org8765a8a"></a>
 
 ## Startup speed
 
@@ -232,7 +270,7 @@ skews `(emacs-init-time)` and does not accurately reflect startup
 time. This configuration is honest and truly lazy loads packages.
 
 
-<a id="org458cd3e"></a>
+<a id="org07e7e48"></a>
 
 ## Naming conventions (WIP)
 
@@ -252,7 +290,7 @@ time. This configuration is honest and truly lazy loads packages.
 -   A symbol prefixed with `my&` indicates it is a special symbol like faces.
 
 
-<a id="orgfc8055f"></a>
+<a id="org4b802a9"></a>
 
 ## Corfu or Company?
 

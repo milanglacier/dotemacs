@@ -6,6 +6,26 @@ has been generated through ~org-export~, from its original org
 format. For the best experience, please consider reading the org
 format file instead.
 
+* Termux Setup
+** Install ~xclip~
+To make the clipboard work:
+#+begin_src bash
+pkg in x11-repo
+pkg in xclip
+#+end_src
+
+** Build ~efm-langserver~
+Due to an exsiting issue of golang, you cannot use the official build
+of ~efm-langserver~. You must manually compile the ~efm-langserver~ from
+source. You do not need to compile this program on termux. Instead you
+can cross compile the binary in any platform by ~GOOS=android go build~.
+
+** Build ~emacs-zmq~
+To succesfully build emacs-zmq, make sure you have installed the following packages:
+#+begin_src bash
+package install autoconf automake libtools pkg-config libzmq
+#+end_src
+
 * Features
 ** Blazing fast.
 
