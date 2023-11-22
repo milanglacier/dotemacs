@@ -39,7 +39,7 @@
           mu4e-hide-index-messages t
           mu4e-completing-read-function #'completing-read
           mu4e-confirm-quit nil
-          mu4e-attachment-dir (expand-file-name "Downloads" (getenv "HOME")))
+          mu4e-attachment-dir (expand-file-name "Downloads/" (getenv "HOME")))
 
     :config
 
