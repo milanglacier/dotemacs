@@ -1,33 +1,35 @@
 
 # Table of Contents
 
-1.  [Termux Setup](#orga234110)
-    1.  [Install `xclip`](#org1ac610a)
-    2.  [Build `efm-langserver`](#orgf09a5b5)
-    3.  [Build `emacs-zmq`](#orgca4e868)
-2.  [Features](#org8f0f086)
-    1.  [Blazing fast.](#org6e1c082)
-    2.  [Robust](#orgbc2a4a1)
-    3.  [Compatability](#org1f71fa7)
-    4.  [Feature rich](#org0d04998)
-    5.  [Be wild](#org0516325)
-3.  [Showcase](#orgade50db)
-    1.  [Welcome screen](#org58a58b2)
-    2.  [Code Navigation](#orga390d15)
-    3.  [Data Science](#orgb315ed6)
-    4.  [Orgmode](#orge3e5985)
-4.  [TODOs](#org3b2ab0a)
-    1.  [Report `org-capture` bugs when inserting entries into table to upstream.](#orgcc4e89a)
-    2.  [Utilize the contextual information from previous code block when editing source block within markdown/org.](#orgd75ae6d)
-    3.  [Lazily load third-party plugins for `evil`.](#org71011c1)
-    4.  [Configure `evil-args` to use spaces as argument delimiter for `emacs-lisp-mode`.](#org68ce2c4)
-    5.  [Implement thread-folding for `mu4e`.](#org333fc80)
-5.  [Prerequisites](#orga401710)
-6.  [Discussion](#org5bc1f32)
-7.  [Notes](#org677f6db)
-    1.  [Startup speed](#org8765a8a)
-    2.  [Naming conventions (WIP)](#org07e7e48)
-    3.  [Corfu or Company?](#org4b802a9)
+1.  [Termux Setup](#org8db521c)
+    1.  [Install `xclip`](#org1ff235e)
+    2.  [Build `efm-langserver`](#org1505450)
+    3.  [Setup `emacs-jupyter`](#org7472e87)
+        1.  [Build `emacs-zmq`](#orgab9c349)
+        2.  [Install `jupyter-console`](#org0b42d33)
+2.  [Features](#org9a2d704)
+    1.  [Blazing fast.](#org90e388e)
+    2.  [Robust](#org8464bfe)
+    3.  [Compatability](#org492ff78)
+    4.  [Feature rich](#org503a67a)
+    5.  [Be wild](#orga2e6a70)
+3.  [Showcase](#orgc4333bf)
+    1.  [Welcome screen](#orgeefc442)
+    2.  [Code Navigation](#org3c75395)
+    3.  [Data Science](#org4fc3344)
+    4.  [Orgmode](#orge93727f)
+4.  [TODOs](#org5d40f03)
+    1.  [Report `org-capture` bugs when inserting entries into table to upstream.](#org08b5827)
+    2.  [Utilize the contextual information from previous code block when editing source block within markdown/org.](#org1067e40)
+    3.  [Lazily load third-party plugins for `evil`.](#org6714a05)
+    4.  [Configure `evil-args` to use spaces as argument delimiter for `emacs-lisp-mode`.](#org05d7b5f)
+    5.  [Implement thread-folding for `mu4e`.](#org50a303c)
+5.  [Prerequisites](#org341f26c)
+6.  [Discussion](#org1bc23c9)
+7.  [Notes](#orgcbf6f14)
+    1.  [Startup speed](#org4a288c2)
+    2.  [Naming conventions (WIP)](#org9027ca0)
+    3.  [Corfu or Company?](#orgdddb834)
 
 If you&rsquo;re currently reading this README file in Markdown format, it
 has been generated through `org-export`, from its original org
@@ -35,12 +37,12 @@ format. For the best experience, please consider reading the org
 format file instead.
 
 
-<a id="orga234110"></a>
+<a id="org8db521c"></a>
 
 # Termux Setup
 
 
-<a id="org1ac610a"></a>
+<a id="org1ff235e"></a>
 
 ## Install `xclip`
 
@@ -50,7 +52,7 @@ To make the clipboard work:
     pkg in xclip
 
 
-<a id="orgf09a5b5"></a>
+<a id="org1505450"></a>
 
 ## Build `efm-langserver`
 
@@ -60,21 +62,36 @@ source. You do not need to compile this program on termux. Instead you
 can cross compile the binary in any platform by `GOOS=android go build`.
 
 
-<a id="orgca4e868"></a>
+<a id="org7472e87"></a>
 
-## Build `emacs-zmq`
+## Setup `emacs-jupyter`
+
+
+<a id="orgab9c349"></a>
+
+### Build `emacs-zmq`
 
 To succesfully build emacs-zmq, make sure you have installed the following packages:
 
     package install autoconf automake libtools pkg-config libzmq
 
 
-<a id="org8f0f086"></a>
+<a id="org0b42d33"></a>
+
+### Install `jupyter-console`
+
+It is recommended to install `jupyter-console==6.6.3` instead of
+`jupyter-notebook` or `jupyter-lab`, as the installation process for the
+latter options is much more complex. Please refer to the [Discussion](https://www.reddit.com/r/termux/s/XTMDCf6bTF)
+for more information.
+
+
+<a id="org9a2d704"></a>
 
 # Features
 
 
-<a id="org6e1c082"></a>
+<a id="org90e388e"></a>
 
 ## Blazing fast.
 
@@ -83,10 +100,10 @@ seconds on a VPS with a 1-core CPU and 1 GB RAM, and 0.22 seconds on
 WSL with an Intel i7-1185G7 and 32 GB RAM, TTY is exceptionally
 fast. The GUI is just as quick, starting in 0.44 seconds on Mac M1 and
 0.31 seconds on WSLg. For more information on startup speed, see
-[7.1](#org8765a8a).
+[7.1](#org4a288c2).
 
 
-<a id="orgbc2a4a1"></a>
+<a id="org8464bfe"></a>
 
 ## Robust
 
@@ -94,7 +111,7 @@ Package versions are locked and under version control, so no breaking
 changes are expected.
 
 
-<a id="org1f71fa7"></a>
+<a id="org492ff78"></a>
 
 ## Compatability
 
@@ -103,7 +120,7 @@ TTY is not compromised, while GUI features, including `xwidget`, are
 also well-configured.
 
 
-<a id="org0d04998"></a>
+<a id="org503a67a"></a>
 
 ## Feature rich
 
@@ -116,14 +133,14 @@ configuration.  Instead, it is &ldquo;heavy&rdquo; and feature rich, including:
 
 -   A keybinding scheme centered around leader and localleader keys, powered by `general` and `which-key`.
 
--   In-buffer autocompletion frontend based on `company` (see [7.3](#org4b802a9)).
+-   In-buffer autocompletion frontend based on `company` (see [7.3](#orgdddb834)).
 
 -   Code completion and navigation based on `eglot` (LSP) and `citre` (Ctags).
 
 -   Integration with `eglot` and `org-babel` or `markdown-mode` that takes literate programming to the next level.
 
 
-<a id="org0516325"></a>
+<a id="orga2e6a70"></a>
 
 ## Be wild
 
@@ -134,12 +151,12 @@ randomized with each launch. Have a fresh experience at every time. Be
 casual and wild!
 
 
-<a id="orgade50db"></a>
+<a id="orgc4333bf"></a>
 
 # Showcase
 
 
-<a id="org58a58b2"></a>
+<a id="orgeefc442"></a>
 
 ## Welcome screen
 
@@ -152,7 +169,7 @@ listed, allowing for convenient execution by simply clicking on the
 corresponding button.
 
 
-<a id="orga390d15"></a>
+<a id="org3c75395"></a>
 
 ## Code Navigation
 
@@ -167,7 +184,7 @@ the definition of the chosen symbol is displayed with the aid of
 `ctags` (the Emacs command is `citre-peek`).
 
 
-<a id="orgb315ed6"></a>
+<a id="org4fc3344"></a>
 
 ## Data Science
 
@@ -183,7 +200,7 @@ the aichat mode as `exp-code-e` to prompt chatgpt to provide an
 explanation of the code you sent.
 
 
-<a id="orge3e5985"></a>
+<a id="orge93727f"></a>
 
 ## Orgmode
 
@@ -195,37 +212,37 @@ webkit. Preview slides in emacs without the need to open GUI browser
 anymore.
 
 
-<a id="org3b2ab0a"></a>
+<a id="org5d40f03"></a>
 
 # TODOs
 
 
-<a id="orgcc4e89a"></a>
+<a id="org08b5827"></a>
 
 ## Report `org-capture` bugs when inserting entries into table to upstream.
 
 
-<a id="orgd75ae6d"></a>
+<a id="org1067e40"></a>
 
 ## Utilize the contextual information from previous code block when editing source block within markdown/org.
 
 
-<a id="org71011c1"></a>
+<a id="org6714a05"></a>
 
 ## Lazily load third-party plugins for `evil`.
 
 
-<a id="org68ce2c4"></a>
+<a id="org05d7b5f"></a>
 
 ## Configure `evil-args` to use spaces as argument delimiter for `emacs-lisp-mode`.
 
 
-<a id="org333fc80"></a>
+<a id="org50a303c"></a>
 
 ## DONE Implement thread-folding for `mu4e`.
 
 
-<a id="orga401710"></a>
+<a id="org341f26c"></a>
 
 # Prerequisites
 
@@ -242,7 +259,7 @@ anymore.
     install all the language grammars that are currently in use.
 
 
-<a id="org5bc1f32"></a>
+<a id="org1bc23c9"></a>
 
 # Discussion
 
@@ -250,12 +267,12 @@ anymore.
 -   Alternatively, you are also welcome to open a Github issue.
 
 
-<a id="org677f6db"></a>
+<a id="orgcbf6f14"></a>
 
 # Notes
 
 
-<a id="org8765a8a"></a>
+<a id="org4a288c2"></a>
 
 ## Startup speed
 
@@ -270,7 +287,7 @@ skews `(emacs-init-time)` and does not accurately reflect startup
 time. This configuration is honest and truly lazy loads packages.
 
 
-<a id="org07e7e48"></a>
+<a id="org9027ca0"></a>
 
 ## Naming conventions (WIP)
 
@@ -290,7 +307,7 @@ time. This configuration is honest and truly lazy loads packages.
 -   A symbol prefixed with `my&` indicates it is a special symbol like faces.
 
 
-<a id="org4b802a9"></a>
+<a id="orgdddb834"></a>
 
 ## Corfu or Company?
 

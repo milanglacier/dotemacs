@@ -20,11 +20,19 @@ of ~efm-langserver~. You must manually compile the ~efm-langserver~ from
 source. You do not need to compile this program on termux. Instead you
 can cross compile the binary in any platform by ~GOOS=android go build~.
 
-** Build ~emacs-zmq~
+** Setup ~emacs-jupyter~
+
+*** Build ~emacs-zmq~
 To succesfully build emacs-zmq, make sure you have installed the following packages:
 #+begin_src bash
 package install autoconf automake libtools pkg-config libzmq
 #+end_src
+
+*** Install ~jupyter-console~
+It is recommended to install ~jupyter-console==6.6.3~ instead of
+~jupyter-notebook~ or ~jupyter-lab~, as the installation process for the
+latter options is much more complex. Please refer to the [[https://www.reddit.com/r/termux/s/XTMDCf6bTF][Discussion]]
+for more information.
 
 * Features
 ** Blazing fast.
