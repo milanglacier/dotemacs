@@ -17,5 +17,20 @@
 
 (setq native-comp-async-report-warnings-errors 'silent)
 
+(setenv "PATH" (format "%s:%s:%s"
+                       "/data/data/com.termux/files/usr/bin"
+                       (getenv "PATH")
+                       "/data/data/com.termux/files/home/.local/bin"))
+
+(setenv "LD_LIBRARY_PATH" (format "%s%s"
+                                  "/data/data/com.termux/files/usr/lib"
+                                  (if-let ((ld-path (getenv "LD_LIBRARY_PATH")))
+                                          (concat ":" ld-path)
+                                      "")))
+
+(setq exec-path `("/data/data/com.termux/files/usr/bin"
+                  "/data/data/com.termux/files/home/.local/bin"
+                  ,@exec-path))
+
 (provide 'early-init)
 ;;; early-init.el ends here
