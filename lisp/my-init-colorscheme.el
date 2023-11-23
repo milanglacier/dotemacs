@@ -4,6 +4,7 @@
 (straight-use-package 'spacemacs-theme)
 (straight-use-package 'ef-themes)
 
+;; we want to always use light theme on android termux
 (setq my$day-themes
       '(doom-solarized-light
         spacemacs-light
@@ -12,15 +13,10 @@
         ef-cyprus
         ef-light)
       my$night-themes
-      '(spacemacs-dark
-        doom-one
-        doom-nord-aurora
-        doom-opera))
+      my$day-themes)
 
 (when (display-graphic-p)
-    (push 'modus-vivendi my$night-themes)
-    (push 'modus-operandi my$day-themes)
-    (push 'ef-dark my$night-themes))
+    (push 'modus-operandi my$day-themes))
 
 (my:theme-set-dynamically)
 
