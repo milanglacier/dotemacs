@@ -6,6 +6,19 @@ has been generated through ~org-export~, from its original org
 format. For the best experience, please consider reading the org
 format file instead.
 
+* ~emacs-android~ setup
+
+Please follow the [[https://sourceforge.net/projects/android-ports-for-gnu-emacs/files/termux/][Instruction]] to install ~termux~ and ~emacs-android~.
+
+To be specific:
+
+#+begin_quote
+To install Emacs with Termux support, first remove any existing copy
+of Emacs (this will remove all data within Emacs's home directory, so
+make a backup beforehand!) and Termux, to avoid signature or user ID
+conflicts.  Next, install Termux _first_, then install Emacs.
+#+end_quote
+
 * Termux Setup
 ** Install ~xclip~
 To make the clipboard work:
@@ -19,20 +32,6 @@ Due to an exsiting issue of golang, you cannot use the official build
 of ~efm-langserver~. You must manually compile the ~efm-langserver~ from
 source. You do not need to compile this program on termux. Instead you
 can cross compile the binary in any platform by ~GOOS=android go build~.
-
-** Setup ~emacs-jupyter~
-
-*** Build ~emacs-zmq~
-To succesfully build emacs-zmq, make sure you have installed the following packages:
-#+begin_src bash
-package install autoconf automake libtools pkg-config libzmq
-#+end_src
-
-*** Install ~jupyter-console~
-It is recommended to install ~jupyter-console==6.6.3~ instead of
-~jupyter-notebook~ or ~jupyter-lab~, as the installation process for the
-latter options is much more complex. Please refer to the [[https://www.reddit.com/r/termux/s/XTMDCf6bTF][Discussion]]
-for more information.
 
 * Features
 ** Blazing fast.

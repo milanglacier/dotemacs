@@ -1,35 +1,33 @@
 
 # Table of Contents
 
-1.  [Termux Setup](#org8db521c)
-    1.  [Install `xclip`](#org1ff235e)
-    2.  [Build `efm-langserver`](#org1505450)
-    3.  [Setup `emacs-jupyter`](#org7472e87)
-        1.  [Build `emacs-zmq`](#orgab9c349)
-        2.  [Install `jupyter-console`](#org0b42d33)
-2.  [Features](#org9a2d704)
-    1.  [Blazing fast.](#org90e388e)
-    2.  [Robust](#org8464bfe)
-    3.  [Compatability](#org492ff78)
-    4.  [Feature rich](#org503a67a)
-    5.  [Be wild](#orga2e6a70)
-3.  [Showcase](#orgc4333bf)
-    1.  [Welcome screen](#orgeefc442)
-    2.  [Code Navigation](#org3c75395)
-    3.  [Data Science](#org4fc3344)
-    4.  [Orgmode](#orge93727f)
-4.  [TODOs](#org5d40f03)
-    1.  [Report `org-capture` bugs when inserting entries into table to upstream.](#org08b5827)
-    2.  [Utilize the contextual information from previous code block when editing source block within markdown/org.](#org1067e40)
-    3.  [Lazily load third-party plugins for `evil`.](#org6714a05)
-    4.  [Configure `evil-args` to use spaces as argument delimiter for `emacs-lisp-mode`.](#org05d7b5f)
-    5.  [Implement thread-folding for `mu4e`.](#org50a303c)
-5.  [Prerequisites](#org341f26c)
-6.  [Discussion](#org1bc23c9)
-7.  [Notes](#orgcbf6f14)
-    1.  [Startup speed](#org4a288c2)
-    2.  [Naming conventions (WIP)](#org9027ca0)
-    3.  [Corfu or Company?](#orgdddb834)
+1.  [`emacs-android` setup](#orgaaee539)
+2.  [Termux Setup](#org32c86de)
+    1.  [Install `xclip`](#orgdb30100)
+    2.  [Build `efm-langserver`](#org58894e0)
+3.  [Features](#org58de41a)
+    1.  [Blazing fast.](#org9b75457)
+    2.  [Robust](#org292ead5)
+    3.  [Compatability](#org5a83ea5)
+    4.  [Feature rich](#org2b05233)
+    5.  [Be wild](#org06a7189)
+4.  [Showcase](#org0702324)
+    1.  [Welcome screen](#org1fe51ed)
+    2.  [Code Navigation](#org325ed5b)
+    3.  [Data Science](#org2a02d67)
+    4.  [Orgmode](#orgc74b74a)
+5.  [TODOs](#org8b3bd7b)
+    1.  [Report `org-capture` bugs when inserting entries into table to upstream.](#org33e17ec)
+    2.  [Utilize the contextual information from previous code block when editing source block within markdown/org.](#org8c64c42)
+    3.  [Lazily load third-party plugins for `evil`.](#org565d50e)
+    4.  [Configure `evil-args` to use spaces as argument delimiter for `emacs-lisp-mode`.](#org2913915)
+    5.  [Implement thread-folding for `mu4e`.](#org8a1e2f1)
+6.  [Prerequisites](#orgea0866a)
+7.  [Discussion](#orga75c0a2)
+8.  [Notes](#org66c53b9)
+    1.  [Startup speed](#org94ea2e5)
+    2.  [Naming conventions (WIP)](#org1ac671f)
+    3.  [Corfu or Company?](#orgbb9ed93)
 
 If you&rsquo;re currently reading this README file in Markdown format, it
 has been generated through `org-export`, from its original org
@@ -37,12 +35,26 @@ format. For the best experience, please consider reading the org
 format file instead.
 
 
-<a id="org8db521c"></a>
+<a id="orgaaee539"></a>
+
+# `emacs-android` setup
+
+Please follow the [Instruction](https://sourceforge.net/projects/android-ports-for-gnu-emacs/files/termux/) to install `termux` and `emacs-android`.
+
+To be specific:
+
+> To install Emacs with Termux support, first remove any existing copy
+> of Emacs (this will remove all data within Emacs&rsquo;s home directory, so
+> make a backup beforehand!) and Termux, to avoid signature or user ID
+> conflicts.  Next, install Termux <span class="underline">first</span>, then install Emacs.
+
+
+<a id="org32c86de"></a>
 
 # Termux Setup
 
 
-<a id="org1ff235e"></a>
+<a id="orgdb30100"></a>
 
 ## Install `xclip`
 
@@ -52,7 +64,7 @@ To make the clipboard work:
     pkg in xclip
 
 
-<a id="org1505450"></a>
+<a id="org58894e0"></a>
 
 ## Build `efm-langserver`
 
@@ -62,36 +74,12 @@ source. You do not need to compile this program on termux. Instead you
 can cross compile the binary in any platform by `GOOS=android go build`.
 
 
-<a id="org7472e87"></a>
-
-## Setup `emacs-jupyter`
-
-
-<a id="orgab9c349"></a>
-
-### Build `emacs-zmq`
-
-To succesfully build emacs-zmq, make sure you have installed the following packages:
-
-    package install autoconf automake libtools pkg-config libzmq
-
-
-<a id="org0b42d33"></a>
-
-### Install `jupyter-console`
-
-It is recommended to install `jupyter-console==6.6.3` instead of
-`jupyter-notebook` or `jupyter-lab`, as the installation process for the
-latter options is much more complex. Please refer to the [Discussion](https://www.reddit.com/r/termux/s/XTMDCf6bTF)
-for more information.
-
-
-<a id="org9a2d704"></a>
+<a id="org58de41a"></a>
 
 # Features
 
 
-<a id="org90e388e"></a>
+<a id="org9b75457"></a>
 
 ## Blazing fast.
 
@@ -100,10 +88,10 @@ seconds on a VPS with a 1-core CPU and 1 GB RAM, and 0.22 seconds on
 WSL with an Intel i7-1185G7 and 32 GB RAM, TTY is exceptionally
 fast. The GUI is just as quick, starting in 0.44 seconds on Mac M1 and
 0.31 seconds on WSLg. For more information on startup speed, see
-[7.1](#org4a288c2).
+[8.1](#org94ea2e5).
 
 
-<a id="org8464bfe"></a>
+<a id="org292ead5"></a>
 
 ## Robust
 
@@ -111,7 +99,7 @@ Package versions are locked and under version control, so no breaking
 changes are expected.
 
 
-<a id="org492ff78"></a>
+<a id="org5a83ea5"></a>
 
 ## Compatability
 
@@ -120,7 +108,7 @@ TTY is not compromised, while GUI features, including `xwidget`, are
 also well-configured.
 
 
-<a id="org503a67a"></a>
+<a id="org2b05233"></a>
 
 ## Feature rich
 
@@ -133,14 +121,14 @@ configuration.  Instead, it is &ldquo;heavy&rdquo; and feature rich, including:
 
 -   A keybinding scheme centered around leader and localleader keys, powered by `general` and `which-key`.
 
--   In-buffer autocompletion frontend based on `company` (see [7.3](#orgdddb834)).
+-   In-buffer autocompletion frontend based on `company` (see [8.3](#orgbb9ed93)).
 
 -   Code completion and navigation based on `eglot` (LSP) and `citre` (Ctags).
 
 -   Integration with `eglot` and `org-babel` or `markdown-mode` that takes literate programming to the next level.
 
 
-<a id="orga2e6a70"></a>
+<a id="org06a7189"></a>
 
 ## Be wild
 
@@ -151,12 +139,12 @@ randomized with each launch. Have a fresh experience at every time. Be
 casual and wild!
 
 
-<a id="orgc4333bf"></a>
+<a id="org0702324"></a>
 
 # Showcase
 
 
-<a id="orgeefc442"></a>
+<a id="org1fe51ed"></a>
 
 ## Welcome screen
 
@@ -169,7 +157,7 @@ listed, allowing for convenient execution by simply clicking on the
 corresponding button.
 
 
-<a id="org3c75395"></a>
+<a id="org325ed5b"></a>
 
 ## Code Navigation
 
@@ -184,7 +172,7 @@ the definition of the chosen symbol is displayed with the aid of
 `ctags` (the Emacs command is `citre-peek`).
 
 
-<a id="org4fc3344"></a>
+<a id="org2a02d67"></a>
 
 ## Data Science
 
@@ -200,7 +188,7 @@ the aichat mode as `exp-code-e` to prompt chatgpt to provide an
 explanation of the code you sent.
 
 
-<a id="orge93727f"></a>
+<a id="orgc74b74a"></a>
 
 ## Orgmode
 
@@ -212,37 +200,37 @@ webkit. Preview slides in emacs without the need to open GUI browser
 anymore.
 
 
-<a id="org5d40f03"></a>
+<a id="org8b3bd7b"></a>
 
 # TODOs
 
 
-<a id="org08b5827"></a>
+<a id="org33e17ec"></a>
 
 ## Report `org-capture` bugs when inserting entries into table to upstream.
 
 
-<a id="org1067e40"></a>
+<a id="org8c64c42"></a>
 
 ## Utilize the contextual information from previous code block when editing source block within markdown/org.
 
 
-<a id="org6714a05"></a>
+<a id="org565d50e"></a>
 
 ## Lazily load third-party plugins for `evil`.
 
 
-<a id="org05d7b5f"></a>
+<a id="org2913915"></a>
 
 ## Configure `evil-args` to use spaces as argument delimiter for `emacs-lisp-mode`.
 
 
-<a id="org50a303c"></a>
+<a id="org8a1e2f1"></a>
 
 ## DONE Implement thread-folding for `mu4e`.
 
 
-<a id="org341f26c"></a>
+<a id="orgea0866a"></a>
 
 # Prerequisites
 
@@ -259,7 +247,7 @@ anymore.
     install all the language grammars that are currently in use.
 
 
-<a id="org1bc23c9"></a>
+<a id="orga75c0a2"></a>
 
 # Discussion
 
@@ -267,12 +255,12 @@ anymore.
 -   Alternatively, you are also welcome to open a Github issue.
 
 
-<a id="orgcbf6f14"></a>
+<a id="org66c53b9"></a>
 
 # Notes
 
 
-<a id="org4a288c2"></a>
+<a id="org94ea2e5"></a>
 
 ## Startup speed
 
@@ -287,7 +275,7 @@ skews `(emacs-init-time)` and does not accurately reflect startup
 time. This configuration is honest and truly lazy loads packages.
 
 
-<a id="org9027ca0"></a>
+<a id="org1ac671f"></a>
 
 ## Naming conventions (WIP)
 
@@ -307,7 +295,7 @@ time. This configuration is honest and truly lazy loads packages.
 -   A symbol prefixed with `my&` indicates it is a special symbol like faces.
 
 
-<a id="orgdddb834"></a>
+<a id="orgbb9ed93"></a>
 
 ## Corfu or Company?
 
