@@ -3,12 +3,12 @@
 (straight-use-package '(org :type built-in))
 (straight-use-package 'evil-org)
 (straight-use-package 'org-appear)
-(straight-use-package 'jupyter)
+;; (straight-use-package 'jupyter)
 (straight-use-package 'org-re-reveal)
 (straight-use-package 'ox-clip)
 (straight-use-package 'org-download)
 
-(defvar my$jupyter-want-integration t
+(defvar my$jupyter-want-integration nil
     "Enable jupyter integration. which entails configuring it as an
 org-babel backend and allowing for direct editing of Jupyter notebooks
 within Emacs.")
