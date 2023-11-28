@@ -36,6 +36,7 @@
           mu4e-sent-messages-behavior 'delete
           ;; outlook automatically save the sent messages, should directly delete it
           mu4e-compose-format-flowed t
+          mu4e-maildir-initial-input "" ;; the default is "/", which causes some dirs cannot be completed
           mu4e-hide-index-messages t
           mu4e-completing-read-function #'completing-read
           mu4e-confirm-quit nil
