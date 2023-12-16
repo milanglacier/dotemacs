@@ -175,20 +175,28 @@
 
 (use-package codeium
     :init
-    ;; FIXME: I need to figure out how to properly configure
-    ;; `codeium-completion-at-point` as a normal `completion-at-point`
-    ;; function that can be used seamlessly together with other
-    ;; completion sources such as `citre-completion-at-point` and
-    ;; `eglot-completion-at-point`.
+    ;; NEXT: I need to determine how to properly configure
+    ;; `codeium-completion-at-point' as a regular
+    ;; `completion-at-point' function that integrates with other
+    ;; completion sources, such as `citre-completion-at-point' and
+    ;; `eglot-completion-at-point'.
 
-    ;; When trying to use `cape-capf-super' to merge the capfs, then
-    ;; `citre-completion-at-point' and `eglot-completion-at-point'
-    ;; will always be not triggered.  Besides, in python file, when
-    ;; inside a function, the `codeium-completion-at-point` will also
-    ;; not be triggered.
+    ;; There are two issues to address:
 
-    ;; Currently, I can only use `codeium-completion-at-point' as if
-    ;; an interactive command to be used in minibuffer.
+    ;; 1. It is not possible to place other company backends, such as
+    ;; `company-yasnippet', before `company-capf'. Using (setq
+    ;; company-backedns '((company-yasnippet company-capf))) as an
+    ;; example will not work in this case. Consequently, when inside a
+    ;; function body, company will only provide candidates from
+    ;; `company-yasnippet'.
+
+    ;; 2. When attempting to use `cape-capf-super' to combine
+    ;; `eglot-completion-at-point' and `codeium-completion-at-point',
+    ;; only the candidates from the first capf will be displayed, and
+    ;; the candidates from the second capf will never appear.
+
+    ;; Currently, I can only use `codeium-completion-at-point' as an
+    ;; interactive command in the minibuffer.
     (general-define-key
      :states 'insert
      "M-y" #'my~codeium-completion)
