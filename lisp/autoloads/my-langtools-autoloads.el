@@ -1,7 +1,7 @@
 ;;; my-langtools-autoloads.el -*- lexical-binding: t; -*-
 
 (defalias #'my/eglot-citre-capf
-    (cape-super-capf #'eglot-completion-at-point #'citre-completion-at-point))
+    (cape-capf-super #'eglot-completion-at-point #'citre-completion-at-point))
 
 ;;;###autoload
 (defun my/toggle-citre-eglot-capf ()
