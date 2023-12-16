@@ -28,7 +28,8 @@
               bidi-display-reordering nil
               long-line-threshold 1000
               large-hscroll-threshold 1000
-              syntax-wholeline-max 1000)
+              syntax-wholeline-max 1000
+              use-dialog-box nil)
 
 ;; display line numbers in the left margin of the window.
 (use-package display-line-numbers
