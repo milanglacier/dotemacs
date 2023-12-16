@@ -41,6 +41,8 @@
     (setq lisp-body-indent 4
           lisp-indent-function #'my/lisp-indent-function)
 
+    (add-hook 'emacs-lisp-mode-hook (my/setq-locally tab-width 4))
+
     (general-define-key
      :states '(motion visual normal)
      :keymaps 'emacs-lisp-mode-map
