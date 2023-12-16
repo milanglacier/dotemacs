@@ -80,7 +80,7 @@
 
 ;; I personally HATE custom.el. But I don't think I have a better
 ;; place to store the API key for codeium.
-(load (file-name-concat user-emacs-directory "custom.el"))
+(load custom-file)
 
 (setq debug-on-error nil)
 
