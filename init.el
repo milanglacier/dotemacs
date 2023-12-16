@@ -78,6 +78,10 @@
 (require 'my-init-email)
 (require 'my-misc)
 
+;; I personally HATE custom.el. But I don't think I have a better
+;; place to store the API key for codeium.
+(load (file-name-concat user-emacs-directory "custom.el"))
+
 (setq debug-on-error nil)
 
 ;; after started up, reset GC threshold to normal.

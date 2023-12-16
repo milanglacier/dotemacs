@@ -4,8 +4,7 @@
 (straight-use-package 'eglot)
 (straight-use-package 'consult-eglot)
 (straight-use-package 'edit-indirect)
-(straight-use-package '(copilot :host github :repo "zerolfx/copilot.el"
-                                :files ("dist" "*.el")))
+(straight-use-package '(codeium :type git :host github :repo "Exafunction/codeium.el"))
 (straight-use-package 'code-cells)
 (straight-use-package 'reformatter)
 (straight-use-package '(dape :host github :repo "svaante/dape"))
@@ -174,25 +173,26 @@
      :keymaps 'comint-mode-map
      "C-a" #'comint-bol))
 
-(use-package copilot
+(use-package codeium
     :init
-    (my/toggle-map
-        :keymaps 'override
-        :states '(normal insert motion)
-        "g" #'copilot-mode)
+    ;; FIXME: I need to figure out how to properly configure
+    ;; `codeium-completion-at-point` as a normal `completion-at-point`
+    ;; function that can be used seamlessly together with other
+    ;; completion sources such as `citre-completion-at-point` and
+    ;; `eglot-completion-at-point`.
 
-    :config
-    (add-to-list 'copilot-disable-display-predicates #'company--active-p)
+    ;; When trying to use `cape-capf-super' to merge the capfs, then
+    ;; `citre-completion-at-point' and `eglot-completion-at-point'
+    ;; will always be not triggered.  Besides, in python file, when
+    ;; inside a function, the `codeium-completion-at-point` will also
+    ;; not be triggered.
 
+    ;; Currently, I can only use `codeium-completion-at-point' as if
+    ;; an interactive command to be used in minibuffer.
     (general-define-key
-     :states '(insert)
-     :keymaps 'copilot-mode-map
-     "M-y" #'copilot-accept-completion-by-line
-     "M-Y" #'copilot-accept-completion
-     "M-J" #'copilot-next-completion
-     "M-K" #'copilot-previous-completion
-     "M->" #'copilot-next-completion
-     "M-<" #'copilot-previous-completion))
+     :states 'insert
+     "M-y" #'my~codeium-completion)
+    )
 
 (use-package treesit
     :init
