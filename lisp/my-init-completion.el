@@ -95,7 +95,7 @@
      :keymaps
      'company-mode-map
      ;; manually invoke the completion
-     "M-i" #'company-complete)
+     "M-i" #'company-manual-begin)
 
     (advice-add #'company-capf :around #'my/company-completion-styles)
 
