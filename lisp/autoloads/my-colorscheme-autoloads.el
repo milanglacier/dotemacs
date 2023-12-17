@@ -46,20 +46,26 @@ of time remaining until the switch."
 
 ;;;###autoload
 (defun my:theme-set-dynamically ()
-    "Select a theme at random from `my$day-themes' or `my$night-themes',
-depending on the current time of day. The time periods for day and
-night are specified by `my$day-to-night-o-clock' and
-`my$night-to-day-o-clock', respectively."
-    (if (or (>= (string-to-number (format-time-string "%H"))
-                my$day-to-night-o-clock)
-            (< (string-to-number (format-time-string "%H"))
-               my$night-to-day-o-clock))
-            (progn
-                (my:pickup-random-color-theme my$night-themes)
-                (run-at-time (my:calculate-time-to-switch-theme 'night-to-day) nil #'my:theme-set-dynamically))
-        (progn
-            (my:pickup-random-color-theme my$day-themes)
-            (run-at-time (my:calculate-time-to-switch-theme 'day-to-night) nil #'my:theme-set-dynamically))))
+    "Select a theme at random from `my$day-themes' or
+`my$night-themes', depending on the current time of day. The
+environment variable `CURRENT_BACKGROUND' can override current time.
+The time periods for day and night are specified by
+`my$day-to-night-o-clock' and `my$night-to-day-o-clock',
+respectively."
+    (let* ((transition-direction
+            (if (or (>= (string-to-number (format-time-string "%H"))
+                        my$day-to-night-o-clock)
+                    (< (string-to-number (format-time-string "%H"))
+                       my$night-to-day-o-clock))
+                    'night-to-day
+                'day-to-night))
+           (themes (cond
+                    ((equal (getenv "CURRENT_BACKGROUND") "day") my$day-themes)
+                    ((equal (getenv "CURRENT_BACKGROUND") "night") my$night-themes)
+                    ((eq transition-direction 'night-to-day) my$night-themes)
+                    ((eq transition-direction 'day-to-night) my$day-themes))))
+        (my:pickup-random-color-theme themes)
+        (run-at-time (my:calculate-time-to-switch-theme transition-direction) nil #'my:theme-set-dynamically)))
 
 (provide 'my-colorscheme-autoloads)
 ;;; my-colorscheme-autoloads.el ends here
