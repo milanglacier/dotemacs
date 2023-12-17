@@ -37,9 +37,6 @@
                      '((company-files company-yasnippet company-capf :separate company-dabbrev)))
 
     :config
-    (add-hook 'company-mode-hook #'evil-normalize-keymaps)
-    (evil-make-overriding-map company-mode-map)
-    (evil-make-overriding-map company-active-map)
 
     (setq company-text-icons-mapping
           '((array "" font-lock-type-face)
@@ -71,11 +68,6 @@
             (value "󰎠" font-lock-builtin-face)
             (variable "󰀫" font-lock-variable-name-face)
             (t "" shadow)))
-
-    (unless (display-graphic-p)
-        ;; Don't persist company popups when switching back to normal mode.
-        ;; `company-box' aborts on mode switch so it doesn't need this.
-        (add-hook 'evil-normal-state-entry-hook #'my/company-abort))
 
     (with-eval-after-load 'company-files
         ;; Fix `company-files' completion for org file:* links
