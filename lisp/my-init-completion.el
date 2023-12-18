@@ -73,6 +73,11 @@
         ;; Fix `company-files' completion for org file:* links
         (add-to-list 'company-files--regexps "file:\\(\\(?:\\.\\{1,2\\}/\\|~/\\|/\\)[^\]\n]*\\)"))
 
+    (unless (display-graphic-p)
+        ;; Don't persist company popups when switching back to normal mode.
+        ;; `company-box' aborts on mode switch so it doesn't need this.
+        (add-hook 'evil-normal-state-entry-hook #'my/company-abort))
+
     (when (display-graphic-p)
         (add-hook 'company-mode-hook #'company-box-mode))
 
