@@ -81,6 +81,8 @@
     (when (display-graphic-p)
         (add-hook 'company-mode-hook #'company-box-mode))
 
+    (add-hook 'company-mode-hook #'evil-normalize-keymaps)
+
     (general-define-key
      :keymaps 'company-active-map
      "C-e" #'company-abort
@@ -89,8 +91,8 @@
      "C-y" #'company-complete-selection)
 
     (general-define-key
-     :keymaps
-     'company-mode-map
+     :keymaps 'company-mode-map
+     :states '(insert emacs)
      ;; manually invoke the completion
      "M-i" #'company-manual-begin)
 
