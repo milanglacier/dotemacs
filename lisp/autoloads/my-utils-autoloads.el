@@ -17,7 +17,7 @@ nil, use `my/autoloads-file'."
 ;;;###autoload
 (defun my/update-site-lisp-autoloads ()
     (interactive)
-        (my/update-all-autoloads my/site-lisp-dir my/site-lisp-autoloads-file))
+    (my/update-all-autoloads my/site-lisp-dir my/site-lisp-autoloads-file))
 
 ;;;###autoload
 (defmacro my/run-hook-once (hook func &rest args)
