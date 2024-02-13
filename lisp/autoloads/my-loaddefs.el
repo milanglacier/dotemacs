@@ -139,10 +139,12 @@ otherwise use the existed one
 ;;; Generated autoloads from my-colorscheme-autoloads.el
 
 (autoload 'my:theme-set-dynamically "my-colorscheme-autoloads" "\
-Select a theme at random from `my$day-themes' or `my$night-themes',
-depending on the current time of day. The time periods for day and
-night are specified by `my$day-to-night-o-clock' and
-`my$night-to-day-o-clock', respectively.")
+Select a theme at random from `my$day-themes' or
+`my$night-themes', depending on the current time of day. The
+environment variable `CURRENT_BACKGROUND' can override current time.
+The time periods for day and night are specified by
+`my$day-to-night-o-clock' and `my$night-to-day-o-clock',
+respectively.")
 (register-definition-prefixes "my-colorscheme-autoloads" '("my$" "my:"))
 
 
@@ -287,6 +289,12 @@ This command activates a python virtual environment.
 (fn &optional PATH)" t)
 (autoload 'my~python-venv-deactivate "my-langs-autoloads" "\
 This command deactivates the current python virtual environment." t)
+(autoload 'my~poetry-venv-activate "my-langs-autoloads" "\
+This command activates a poetry virtual environment.
+
+(fn &optional PATH)" t)
+(autoload 'my~poetry-venv-deactivate "my-langs-autoloads" "\
+This command deactivates the current poetry virtual environment." t)
  (autoload #'yapf-format-buffer "my-langs-autoloads" nil t)
  (autoload #'black-format-buffer "my-langs-autoloads" nil t)
  (autoload #'sql-formatter-format-buffer "my-langs-autoloads" nil t)

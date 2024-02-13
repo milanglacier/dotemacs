@@ -172,6 +172,27 @@ language of the code block)"
             (setenv "PATH" (string-join paths ":"))
             (setenv "VIRTUAL_ENV" nil))))
 
+
+;;;###autoload
+(defun my~poetry-venv-activate (&optional path)
+    "This command activates a poetry virtual environment."
+    (interactive (list
+                  (completing-read
+                   "select a poetry venv"
+                   (condition-case error
+                           (seq-filter (lambda (x) (not (equal x "")))
+                                       (process-lines "poetry" "env" "list" "--full-path"))
+                       (error (error "current project is not a poetry project or poetry is not installed!")))
+                   nil t)))
+    (my~python-venv-activate (replace-regexp-in-string " (Activated)$" "" path)))
+
+;;;###autoload
+(defun my~poetry-venv-deactivate ()
+    "This command deactivates the current poetry virtual environment."
+    (interactive)
+    (my~python-venv-deactivate))
+
+
 ;;;###autoload (autoload #'yapf-format-buffer "my-langs-autoloads" nil t)
 (reformatter-define yapf-format :program "yapf")
 
