@@ -278,21 +278,25 @@ Run the REPL depending on the context (i.e. the language of the
 code block)" t)
  (autoload #'my/markdown-send-region "my-langs-autoloads" nil t)
 (autoload 'my~conda-activate "my-langs-autoloads" "\
-Activate a conda environment.
+Activate a conda environment.  If called with
+\\[universal-argument], only modify the corresponding environmental
+variables in local buffer.
 
-(fn &optional PATH)" t)
+(fn &optional PATH LOCAL-P)" t)
 (autoload 'my~conda-deactivate "my-langs-autoloads" "\
 Deactivate all the conda environments, including the base environment." t)
 (autoload 'my~python-venv-activate "my-langs-autoloads" "\
-This command activates a python virtual environment.
+This command activates a python virtual environment.  If called
+with \\[universal-argument], only modify the corresponding
+environmental variables in local buffer.
 
-(fn &optional PATH)" t)
+(fn &optional PATH LOCAL-P)" t)
 (autoload 'my~python-venv-deactivate "my-langs-autoloads" "\
 This command deactivates the current python virtual environment." t)
 (autoload 'my~poetry-venv-activate "my-langs-autoloads" "\
 This command activates a poetry virtual environment.
 
-(fn &optional PATH)" t)
+(fn &optional PATH LOCAL-P)" t)
 (autoload 'my~poetry-venv-deactivate "my-langs-autoloads" "\
 This command deactivates the current poetry virtual environment." t)
  (autoload #'yapf-format-buffer "my-langs-autoloads" nil t)

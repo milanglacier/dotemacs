@@ -79,15 +79,27 @@ language of the code block)"
     "The path to the current conda environment.")
 
 ;;;###autoload
-(defun my~conda-activate (&optional path)
-    "Activate a conda environment."
-    (interactive)
+(defun my~conda-activate (&optional path local-p)
+    "Activate a conda environment.  If called with
+\\[universal-argument], only modify the corresponding environmental
+variables in local buffer."
+    (interactive (list nil current-prefix-arg))
     (my~conda-deactivate)
 
     (if (executable-find "conda")
             (let ((conda-info (json-parse-string (shell-command-to-string "conda info --json")
                                                  :object-type 'plist
                                                  :array-type 'list)))
+
+                (if local-p
+                        (progn
+                            (make-local-variable 'my$conda-current-env)
+                            (set (make-local-variable 'process-environment)
+                                 (seq-copy process-environment)))
+                    (progn
+                        (kill-local-variable 'my$conda-current-env)
+                        (kill-local-variable 'process-environment)))
+
                 ;; read the conda environment path
                 (setq path (or path (completing-read "conda env:" (plist-get conda-info :envs)))
                       ;; if path is empty, which means we want to use the base environment
@@ -133,14 +145,25 @@ language of the code block)"
     "The path to the current python venv environment.")
 
 ;;;###autoload
-(defun my~python-venv-activate (&optional path)
-    "This command activates a python virtual environment."
-    (interactive "Dselect a python venv: ")
+(defun my~python-venv-activate (&optional path local-p)
+    "This command activates a python virtual environment.  If called
+with \\[universal-argument], only modify the corresponding
+environmental variables in local buffer."
+    (interactive "Dselect a python venv: \nP")
 
     (my~python-venv-deactivate)
 
     ;; if the path contains trailing "bin" or "bin/", remove it
     (let (pyvenv-current-env)
+
+        (if local-p
+                (progn
+                    (make-local-variable 'my$python-venv-current-env)
+                    (set (make-local-variable 'process-environment)
+                         (seq-copy process-environment)))
+            (progn
+                (kill-local-variable 'my$python-venv-current-env)
+                (kill-local-variable 'process-environment)))
 
         (setq path (expand-file-name path)
               path (replace-regexp-in-string "/bin/?$" "" path)
@@ -174,7 +197,7 @@ language of the code block)"
 
 
 ;;;###autoload
-(defun my~poetry-venv-activate (&optional path)
+(defun my~poetry-venv-activate (&optional path local-p)
     "This command activates a poetry virtual environment."
     (interactive (list
                   (completing-read
@@ -183,8 +206,9 @@ language of the code block)"
                            (seq-filter (lambda (x) (not (equal x "")))
                                        (process-lines "poetry" "env" "list" "--full-path"))
                        (error (error "current project is not a poetry project or poetry is not installed!")))
-                   nil t)))
-    (my~python-venv-activate (replace-regexp-in-string " (Activated)$" "" path)))
+                   nil t)
+                  current-prefix-arg))
+    (my~python-venv-activate (replace-regexp-in-string " (Activated)$" "" path) local-p))
 
 ;;;###autoload
 (defun my~poetry-venv-deactivate ()
