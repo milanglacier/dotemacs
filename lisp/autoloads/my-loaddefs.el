@@ -328,7 +328,7 @@ Support LANG in org source code block.
 If current LSP has a formatter, use it. Otherwise, use the
 reformatter according to the `major-mode-reformatter-plist'" t)
 (autoload 'my~dape-start-or-continue "my-langtools-autoloads" "\
-If there is an active DAPE session, run `dape-continue', otherwise run `dape'." t)
+Try `dape-continue' and fall back to `dape'." t)
 (autoload 'my:dape-keymap-setup "my-langtools-autoloads")
 (register-definition-prefixes "my-langtools-autoloads" '("major-mode-reformatter-plist" "my/eldoc-"))
 

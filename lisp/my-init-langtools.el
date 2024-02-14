@@ -262,10 +262,12 @@
     )
 
 (use-package dape
-    :commands (dape dape-toggle-breakpoint)
+    :commands (dape dape-breakpoint-toggle)
 
     :init
-    (setq dape-repl-use-shorthand t)
+    (setq dape-repl-use-shorthand t
+          dape-key-prefix nil)
+
     (add-hook 'python-ts-mode-hook #'my:dape-keymap-setup)
     (add-hook 'go-ts-mode-hook #'my:dape-keymap-setup)
 
@@ -275,35 +277,9 @@
         :states '(normal insert visual)
         "d" '(:keymap dape-global-map :which-key "DAP"))
 
-    (general-define-key
-     :keymaps 'dape-info-mode-map
-     :states 'normal
-     "RET" #'dape-info-buton-press-dwim
-     "TAB" #'dape-info-tree-dwim
-     "za" #'dape-info-tree-dwim)
+    (setf (plist-get (alist-get 'debugpy dape-configs) 'command) "python3")
 
-    (add-to-list 'dape-configs
-                 '(delve
-                   modes (go-mode go-ts-mode)
-                   command "dlv"
-                   command-args ("dap" "--listen" "127.0.0.1:55878")
-                   command-cwd dape-cwd-fn
-                   host "127.0.0.1"
-                   port 55878
-                   :type "debug"
-                   :request "launch"
-                   :cwd dape-cwd-fn
-                   :program dape-cwd-fn))
-
-    (add-to-list 'dape-configs
-                 '(debugpy
-                   modes (python-ts-mode python-mode)
-                   command "python3"
-                   command-args ("-m" "debugpy.adapter")
-                   :type "executable"
-                   :request "launch"
-                   :cwd dape-cwd-fn
-                   :program dape-find-file-buffer-default)))
+    )
 
 (provide 'my-init-langtools)
 ;;; my-init-langtools.el ends here

@@ -121,13 +121,12 @@ reformatter according to the `major-mode-reformatter-plist'"
 
 ;;;###autoload
 (defun my~dape-start-or-continue ()
-    "If there is an active DAPE session, run `dape-continue', otherwise run `dape'."
+    "Try `dape-continue' and fall back to `dape'."
     (interactive)
     (require 'dape)
-    (if (and (dape--stopped-threads)
-             (dape--live-process t))
+    (condition-case err
             (call-interactively #'dape-continue)
-        (call-interactively #'dape)))
+        (error (call-interactively #'dape))))
 
 ;;;###autoload
 (defun my:dape-keymap-setup ()
@@ -136,8 +135,8 @@ reformatter according to the `major-mode-reformatter-plist'"
      "<f5>" #'my~dape-start-or-continue
      "<S-f5>" #'dape-quit
      "<f6>" #'dape-pause
-     "<f9>" #'dape-toggle-breakpoint
-     "<S-f9>" #'dape-expression-breakpoint
+     "<f9>" #'dape-breakpoint-toggle
+     "<S-f9>" #'dape-breakpoint-expression
      "<f10>" #'dape-next ;; step-over
      "<f11>" #'dape-step-in
      "<S-f11>" #'dape-step-out)
