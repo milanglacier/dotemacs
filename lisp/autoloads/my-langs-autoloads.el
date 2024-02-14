@@ -101,7 +101,7 @@ language of the code block)"
                       path (concat path "/bin")
                       my$conda-current-env conda-current-env)
 
-                (setenv "PATH" (concat path ":" (getenv "PATH")))
+                (setenv "PATH" (concat path path-separator (getenv "PATH")))
                 (setenv "CONDA_PREFIX" conda-current-env)
                 (setenv "CONDA_DEFAULT_ENV" (file-name-nondirectory conda-current-env))
                 (setenv "CONDA_PROMPT_MODIFIER" (concat "(" (file-name-nondirectory conda-current-env) ") "))
@@ -114,14 +114,14 @@ language of the code block)"
     "Deactivate all the conda environments, including the base environment."
     (interactive)
     (if (executable-find "conda")
-            (let ((paths (split-string (getenv "PATH") ":"))
+            (let ((paths (split-string (getenv "PATH") path-separator))
                   (conda-info (json-parse-string (shell-command-to-string "conda info --json")
                                                  :object-type 'plist
                                                  :array-type 'list)))
                 (setq my$conda-current-env (or my$conda-current-env (plist-get conda-info :root_prefix))
                       paths (delete (concat my$conda-current-env "/bin") paths)
                       my$conda-current-env nil)
-                (setenv "PATH" (string-join paths ":"))
+                (setenv "PATH" (string-join paths path-separator))
                 (setenv "CONDA_PREFIX" nil)
                 (setenv "CONDA_DEFAULT_ENV" nil)
                 (setenv "CONDA_SHLVL" "0")
@@ -152,7 +152,7 @@ language of the code block)"
               path (concat path "/bin")
               my$python-venv-current-env path)
 
-        (setenv "PATH" (concat path ":" (getenv "PATH")))
+        (setenv "PATH" (concat path path-separator (getenv "PATH")))
         (setenv "VIRTUAL_ENV" pyvenv-current-env)
 
         (message "Activating python venv: %s" path)))
@@ -163,13 +163,13 @@ language of the code block)"
     (interactive)
     (when my$python-venv-current-env
         ;; split the PATH
-        (let ((paths (split-string (getenv "PATH") ":")))
+        (let ((paths (split-string (getenv "PATH") path-separator)))
             ;; remove the path to the current python venv environment
             (setq paths (delete my$python-venv-current-env paths)
                   my$python-venv-current-env nil
                   python-shell-virtualenv-root nil)
             ;; set the PATH
-            (setenv "PATH" (string-join paths ":"))
+            (setenv "PATH" (string-join paths path-separator))
             (setenv "VIRTUAL_ENV" nil))))
 
 
