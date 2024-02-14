@@ -102,6 +102,8 @@ language of the code block)"
                       my$conda-current-env conda-current-env)
 
                 (setenv "PATH" (concat path path-separator (getenv "PATH")))
+                ;; exec-path does not sync with $PATH on the fly.
+                (setq exec-path (split-string (getenv "PATH") path-separator))
                 (setenv "CONDA_PREFIX" conda-current-env)
                 (setenv "CONDA_DEFAULT_ENV" (file-name-nondirectory conda-current-env))
                 (setenv "CONDA_PROMPT_MODIFIER" (concat "(" (file-name-nondirectory conda-current-env) ") "))
@@ -120,6 +122,7 @@ language of the code block)"
                                                  :array-type 'list)))
                 (setq my$conda-current-env (or my$conda-current-env (plist-get conda-info :root_prefix))
                       paths (delete (concat my$conda-current-env "/bin") paths)
+                      exec-path paths
                       my$conda-current-env nil)
                 (setenv "PATH" (string-join paths path-separator))
                 (setenv "CONDA_PREFIX" nil)
@@ -153,6 +156,7 @@ language of the code block)"
               my$python-venv-current-env path)
 
         (setenv "PATH" (concat path path-separator (getenv "PATH")))
+        (setq exec-path (split-string (getenv "PATH") path-separator))
         (setenv "VIRTUAL_ENV" pyvenv-current-env)
 
         (message "Activating python venv: %s" path)))
@@ -166,6 +170,7 @@ language of the code block)"
         (let ((paths (split-string (getenv "PATH") path-separator)))
             ;; remove the path to the current python venv environment
             (setq paths (delete my$python-venv-current-env paths)
+                  exec-path paths
                   my$python-venv-current-env nil
                   python-shell-virtualenv-root nil)
             ;; set the PATH
