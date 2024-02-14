@@ -128,6 +128,14 @@ reformatter according to the `major-mode-reformatter-plist'"
             (call-interactively #'dape-continue)
         (error (call-interactively #'dape))))
 
+(defun my~dape-info-goto-prev-tab  ()
+    (interactive)
+    (dape--info-buffer-tab t))
+
+(defun my~dape-info-goto-next-tab  ()
+    (interactive)
+    (dape--info-buffer-tab))
+
 ;;;###autoload
 (defun my:dape-keymap-setup ()
     (general-define-key

@@ -277,6 +277,21 @@
         :states '(normal insert visual)
         "d" '(:keymap dape-global-map :which-key "DAP"))
 
+    (general-define-key
+     :keymaps 'dape-info-parent-mode-map
+     :states 'normal
+     "RET" #'dape-info-scope-watch-dwim
+     "TAB" #'dape-info-scope-toggle
+     "]]" #'my~dape-info-goto-prev-tab
+     "[[" #'my~dape-info-goto-prev-tab)
+
+
+    (general-define-key
+     :keymaps 'dape-info-parent-mode-map
+     ;; we want to unbind the default map of dape-info-parent-mode
+     "<tab>" nil
+     "<backtab>" nil)
+
     (setf (plist-get (alist-get 'debugpy dape-configs) 'command) "python3")
 
     )
