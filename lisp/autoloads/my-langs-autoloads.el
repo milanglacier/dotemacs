@@ -122,7 +122,7 @@ language of the code block)"
                                                  :array-type 'list)))
                 (setq my$conda-current-env (or my$conda-current-env (plist-get conda-info :root_prefix))
                       paths (delete (concat my$conda-current-env "/bin") paths)
-                      exec-path (delete (concat my$conda-current-env "/bin") paths)
+                      exec-path (delete (concat my$conda-current-env "/bin") exec-path)
                       my$conda-current-env nil)
                 (setenv "PATH" (string-join paths path-separator))
                 (setenv "CONDA_PREFIX" nil)
@@ -170,7 +170,7 @@ language of the code block)"
         (let ((paths (split-string (getenv "PATH") path-separator)))
             ;; remove the path to the current python venv environment
             (setq paths (delete my$python-venv-current-env paths)
-                  exec-path (delete my$python-venv-current-env paths)
+                  exec-path (delete my$python-venv-current-env exec-path)
                   my$python-venv-current-env nil
                   python-shell-virtualenv-root nil)
             ;; set the PATH
