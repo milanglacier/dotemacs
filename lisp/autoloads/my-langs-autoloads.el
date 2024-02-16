@@ -150,9 +150,7 @@ language of the code block)"
               path (replace-regexp-in-string "/$" "" path)
               pyvenv-current-env path
               ;; append the path with "/bin"
-              python-shell-virtualenv-root pyvenv-current-env
-              path (concat path "/bin")
-              my$python-venv-current-env path)
+              path (concat path "/bin"))
 
         (setenv "PATH" (concat path path-separator (getenv "PATH")))
         (add-to-list 'exec-path path)
@@ -164,14 +162,13 @@ language of the code block)"
 (defun my~python-venv-deactivate ()
     "This command deactivates the current python virtual environment."
     (interactive)
-    (when my$python-venv-current-env
+    (when-let ((pyvenv-current-env (and (not (equal (getenv "VIRTUAL_ENV") ""))
+                                        (getenv "VIRTUAL_ENV"))))
         ;; split the PATH
         (let ((paths (split-string (getenv "PATH") path-separator)))
             ;; remove the path to the current python venv environment
-            (setq paths (delete my$python-venv-current-env paths)
-                  exec-path (delete my$python-venv-current-env exec-path)
-                  my$python-venv-current-env nil
-                  python-shell-virtualenv-root nil)
+            (setq paths (delete (concat pyvenv-current-env "/bin") paths)
+                  exec-path (delete (concat pyvenv-current-env "/bin") exec-path))
             ;; set the PATH
             (setenv "PATH" (string-join paths path-separator))
             (setenv "VIRTUAL_ENV" nil))))
