@@ -98,8 +98,7 @@ language of the code block)"
                       path (replace-regexp-in-string "/$" "" path)
                       conda-current-env path
                       ;; append the path with "/bin"
-                      path (concat path "/bin")
-                      my$conda-current-env conda-current-env)
+                      path (concat path "/bin"))
 
                 (setenv "PATH" (concat path path-separator (getenv "PATH")))
                 ;; exec-path does not sync with $PATH on the fly.
@@ -116,14 +115,14 @@ language of the code block)"
     "Deactivate all the conda environments, including the base environment."
     (interactive)
     (if (executable-find "conda")
-            (let ((paths (split-string (getenv "PATH") path-separator))
-                  (conda-info (json-parse-string (shell-command-to-string "conda info --json")
-                                                 :object-type 'plist
-                                                 :array-type 'list)))
-                (setq my$conda-current-env (or my$conda-current-env (plist-get conda-info :root_prefix))
-                      paths (delete (concat my$conda-current-env "/bin") paths)
-                      exec-path (delete (concat my$conda-current-env "/bin") exec-path)
-                      my$conda-current-env nil)
+            (let* ((paths (split-string (getenv "PATH") path-separator))
+                   (conda-info (json-parse-string (shell-command-to-string "conda info --json")
+                                                  :object-type 'plist
+                                                  :array-type 'list))
+                   (conda-current-env (plist-get conda-info :default_prefix)))
+
+                (setq paths (delete (concat conda-current-env "/bin") paths)
+                      exec-path (delete (concat conda-current-env "/bin") exec-path))
                 (setenv "PATH" (string-join paths path-separator))
                 (setenv "CONDA_PREFIX" nil)
                 (setenv "CONDA_DEFAULT_ENV" nil)
