@@ -80,11 +80,12 @@ is called."
     "the verses displayed on the bottom of `initial-scratch-message'")
 
 (defvar my$actions
-    '((" emacs init time        " . emacs-init-time)
-      (" Pick new theme         " . my:theme-set-dynamically)
-      (" Pick new verse         " . my~refresh-verses)
-      (" recent files    SPC f o" . consult-recent-file)
-      (" recent projects SPC f p" . project-switch-project))
+    '((" Emacs Init Time        " . emacs-init-time)
+      (" Pick New Theme         " . my:theme-set-dynamically)
+      (" Pick New Verse         " . my~refresh-verses)
+      (" Org Agenda      SPC o a" . org-agenda-list)
+      (" Recent Files    SPC f o" . consult-recent-file)
+      (" Recent Projects SPC f p" . project-switch-project))
     "the actions to be displayed on the welcome screen")
 
 (defvar my$empty-lines-between-sections 10)
