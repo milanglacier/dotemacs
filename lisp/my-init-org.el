@@ -451,8 +451,13 @@ within Emacs.")
     (my/org-babel-lsp-setup "R")
     (my/org-babel-lsp-setup "python")
     (when my$jupyter-want-integration
-        (my/org-babel-lsp-setup "jupyter-R")
-        (my/org-babel-lsp-setup "jupyter-python"))
+        ;; `org-babel-edit-prep:jupyter-python' (or other jupyter
+        ;; kernels) will not be available at now, instead it will be
+        ;; created as alias at the runtime after the kernel specs are
+        ;; fetched. Since `org-babel-execute:jupyter-python' is just
+        ;; an alias of `org-babel-execute:jupyter', we can just advice
+        ;; `org-babel-execute:jupyter' here.
+        (my/org-babel-lsp-setup "jupyter"))
 
     ;; TODO: update `org-babel-python-command' in accordance to `python-shell-interpreter'
     ;; and `python-shell-interpreter-args'
