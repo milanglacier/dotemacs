@@ -10,7 +10,6 @@
 ;;;###autoload
 (defun my:mu4e-leave-func (&optional additional-func)
     (lambda ()
-        (mu4e-clear-caches)
         (when additional-func
             (funcall additional-func))))
 
