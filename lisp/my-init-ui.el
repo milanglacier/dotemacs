@@ -16,7 +16,7 @@
 
 ;; set default font
 (add-to-list 'default-frame-alist
-             '(font . "CaskaydiaCove Nerd Font Mono-15"))
+             '(font . "ComicShannsMono Nerd Font Mono-17"))
 
 ;; Set font for text that should be displayed more like prose.
 (set-face-attribute 'variable-pitch nil :family "Bookerly" :height 160)
