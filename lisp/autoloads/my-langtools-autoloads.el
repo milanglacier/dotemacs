@@ -150,5 +150,42 @@ reformatter according to the `major-mode-reformatter-plist'"
      "<S-f11>" #'dape-step-out)
     )
 
+(defun my:python-ts-mode--treesit-language-at-point (point)
+    (let* ((range nil)
+           (language-in-range
+            (cl-loop
+             for parser in (treesit-parser-list)
+             do (setq range
+                      (cl-loop
+                       for range in (treesit-parser-included-ranges parser)
+                       if (and (>= point (car range)) (<= point (cdr range)))
+                       return parser))
+             if range
+             return (treesit-parser-language parser))))
+        (or language-in-range 'python)))
+
+;;;###autoload
+(defun my:treesit-embed-sql-in-python-setup ()
+    (setq treesit-range-settings
+          (treesit-range-rules
+           :embed 'sql
+           :host 'python
+           '((
+              ((string_content) @capture)
+              (:match "\s*--[sS][qQ][lL]" @capture)
+              ))
+           :embed 'sql
+           :host 'python
+           '((
+              ((string_content) @capture)
+              (:match "^\s*/\\*.*[sS][qQ][lL]" @capture)
+              ))
+           ))
+
+    (setq-local treesit-language-at-point-function
+                #'my:python-ts-mode--treesit-language-at-point)
+
+    )
+
 (provide 'my-langtools-autoloads)
 ;;; my-langtools-autoloads.el ends here

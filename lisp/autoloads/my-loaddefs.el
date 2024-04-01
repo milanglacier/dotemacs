@@ -133,18 +133,16 @@ otherwise use the existed one
 (autoload 'my:pdf-midnight-mode-maybe "my-apps-autoloads")
  (autoload #'my~aichat-start "my-apps-autoloads" nil t)
  (autoload #'my~ipython-start "my-apps-autoloads" nil t)
-(register-definition-prefixes "my-apps-autoloads" '("my%create-vterm-repl-schema" "my/"))
+(register-definition-prefixes "my-apps-autoloads" '("my%create-vterm-repl-schema" "my/" "my:vterm-ensure-env-vars-sync-with-emacs"))
 
 
 ;;; Generated autoloads from my-colorscheme-autoloads.el
 
 (autoload 'my:theme-set-dynamically "my-colorscheme-autoloads" "\
-Select a theme at random from `my$day-themes' or
-`my$night-themes', depending on the current time of day. The
-environment variable `CURRENT_BACKGROUND' can override current time.
-The time periods for day and night are specified by
-`my$day-to-night-o-clock' and `my$night-to-day-o-clock',
-respectively.")
+Select a theme at random from `my$day-themes' or `my$night-themes',
+depending on the current time of day. The time periods for day and
+night are specified by `my$day-to-night-o-clock' and
+`my$night-to-day-o-clock', respectively.")
 (register-definition-prefixes "my-colorscheme-autoloads" '("my$" "my:"))
 
 
@@ -289,12 +287,6 @@ This command activates a python virtual environment.
 (fn &optional PATH)" t)
 (autoload 'my~python-venv-deactivate "my-langs-autoloads" "\
 This command deactivates the current python virtual environment." t)
-(autoload 'my~poetry-venv-activate "my-langs-autoloads" "\
-This command activates a poetry virtual environment.
-
-(fn &optional PATH)" t)
-(autoload 'my~poetry-venv-deactivate "my-langs-autoloads" "\
-This command deactivates the current poetry virtual environment." t)
  (autoload #'yapf-format-buffer "my-langs-autoloads" nil t)
  (autoload #'black-format-buffer "my-langs-autoloads" nil t)
  (autoload #'sql-formatter-format-buffer "my-langs-autoloads" nil t)
@@ -304,7 +296,6 @@ This command deactivates the current poetry virtual environment." t)
 ;;; Generated autoloads from my-langtools-autoloads.el
 
 (autoload 'my/toggle-citre-eglot-capf "my-langtools-autoloads")
- (autoload #'my~codeium-completion "my-langtools-autoloads" nil t)
  (autoload #'my/eldoc-buffer-dwim "my-langtools-autoloads" nil t)
 (autoload 'my/xref-move-in-original-src-macro "my-langtools-autoloads" "\
 There can only be one xref buffer. That is, if you find
@@ -328,9 +319,10 @@ Support LANG in org source code block.
 If current LSP has a formatter, use it. Otherwise, use the
 reformatter according to the `major-mode-reformatter-plist'" t)
 (autoload 'my~dape-start-or-continue "my-langtools-autoloads" "\
-Try `dape-continue' and fall back to `dape'." t)
+If there is an active DAPE session, run `dape-continue', otherwise run `dape'." t)
 (autoload 'my:dape-keymap-setup "my-langtools-autoloads")
-(register-definition-prefixes "my-langtools-autoloads" '("major-mode-reformatter-plist"))
+(autoload 'my:treesit-embed-sql-in-python-setup "my-langtools-autoloads")
+(register-definition-prefixes "my-langtools-autoloads" '("major-mode-reformatter-plist" "my/eldoc-"))
 
 
 ;;; Generated autoloads from my-minibuffer-autoloads.el
@@ -352,8 +344,6 @@ Try `dape-continue' and fall back to `dape'." t)
 open vterm at project root, if no root is found, open at the default-directory" t)
 (autoload 'my/project-root-or-default-dir "my-misc-autoloads" "\
 If a project root is found, return it. Otherwise return `default-directory'.")
-(autoload 'my~dired-find-file-other-tab "my-misc-autoloads" "\
-In Dired, visit this file or directory in another window." t)
 (autoload 'my/ibuffer-vc-setup "my-misc-autoloads")
 (autoload 'my:dired-subtree-toggle-nerd-icons "my-misc-autoloads")
 (register-definition-prefixes "my-misc-autoloads" '("my:dired-subtree-add-nerd-icons"))
