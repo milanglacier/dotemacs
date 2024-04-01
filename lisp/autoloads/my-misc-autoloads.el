@@ -15,6 +15,12 @@
         default-directory))
 
 ;;;###autoload
+(defun my~dired-find-file-other-tab ()
+    "In Dired, visit this file or directory in another window."
+    (interactive)
+    (dired--find-file #'find-file-other-tab (dired-get-file-for-visit)))
+
+;;;###autoload
 (defun my/ibuffer-vc-setup ()
     (ibuffer-vc-set-filter-groups-by-vc-root)
     (unless (eq ibuffer-sorting-mode 'alphabetic)

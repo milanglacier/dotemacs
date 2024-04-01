@@ -330,7 +330,7 @@ reformatter according to the `major-mode-reformatter-plist'" t)
 (autoload 'my~dape-start-or-continue "my-langtools-autoloads" "\
 Try `dape-continue' and fall back to `dape'." t)
 (autoload 'my:dape-keymap-setup "my-langtools-autoloads")
-(register-definition-prefixes "my-langtools-autoloads" '("major-mode-reformatter-plist" "my/eldoc-"))
+(register-definition-prefixes "my-langtools-autoloads" '("major-mode-reformatter-plist"))
 
 
 ;;; Generated autoloads from my-minibuffer-autoloads.el
@@ -352,6 +352,8 @@ Try `dape-continue' and fall back to `dape'." t)
 open vterm at project root, if no root is found, open at the default-directory" t)
 (autoload 'my/project-root-or-default-dir "my-misc-autoloads" "\
 If a project root is found, return it. Otherwise return `default-directory'.")
+(autoload 'my~dired-find-file-other-tab "my-misc-autoloads" "\
+In Dired, visit this file or directory in another window." t)
 (autoload 'my/ibuffer-vc-setup "my-misc-autoloads")
 (autoload 'my:dired-subtree-toggle-nerd-icons "my-misc-autoloads")
 (register-definition-prefixes "my-misc-autoloads" '("my:dired-subtree-add-nerd-icons"))

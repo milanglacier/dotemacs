@@ -152,7 +152,8 @@
     (general-define-key
      :states '(normal insert motion visual)
      :keymaps 'dired-mode-map
-     "TAB" #'dired-subtree-toggle)
+     "TAB" #'dired-subtree-toggle
+     "g TAB" #'my~dired-find-file-other-tab)
 
     (my/localleader
         :keymaps 'dired-mode-map
