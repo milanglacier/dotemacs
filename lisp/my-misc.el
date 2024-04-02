@@ -57,7 +57,7 @@
     (add-to-list 'project-switch-commands
                  '(project-dired "Dired at root"))
     (add-to-list 'project-switch-commands
-                 '(my/vterm "vterm"))
+                 '(vterm "vterm"))
     (add-to-list 'project-switch-commands
                  '(my~project-magit "magit"))
 
@@ -65,7 +65,7 @@
 
     (general-define-key
      :keymaps 'project-prefix-map
-     "v" #'my/vterm
+     "v" #'vterm
      "m" #'my~project-magit)
 
     )
@@ -75,9 +75,11 @@
     (my/open-map
         :keymaps 'override
         :states '(normal insert motion)
-        "t" #'my/vterm)
+        "t" #'vterm)
 
     :config
+
+    (advice-add #'vterm :around #'call-command-at-project-root)
 
     (setq vterm-max-scrollback 5000)
 

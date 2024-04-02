@@ -1,11 +1,20 @@
 ;;; my-misc-autoloads.el -*- lexical-binding: t; -*-
 
+(message "miscloaded")
+
 ;;;###autoload
-(defun my/vterm ()
-    "open vterm at project root, if no root is found, open at the default-directory"
-    (interactive)
+(defun call-command-at-project-root (orig-fun args)
+    "call command at project root, if no root is found, open at the default-directory"
     (let ((default-directory (my/project-root-or-default-dir)))
-        (call-interactively #'vterm)))
+        (apply orig-fun args)))
+
+;;;###autoload
+(defun wrap-command-at-project-root (orig-cmd)
+    "create a new command that calls orig-cmd at project root, if no root is found, open at the default-directory"
+    (lambda ()
+        (interactive)
+        (let ((default-directory (my/project-root-or-default-dir)))
+            (call-interactively orig-cmd))))
 
 ;;;###autoload
 (defun my/project-root-or-default-dir ()

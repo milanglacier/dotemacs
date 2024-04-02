@@ -7,12 +7,9 @@
     (require 'hl-todo)
     (consult-ripgrep nil hl-todo--regexp))
 
-;;;###autoload
-(defun my~project-magit ()
-    "Open `magit' at current project."
-    (interactive)
-    (let ((default-directory (my/project-root-or-default-dir)))
-        (call-interactively #'magit)))
+;;;###autoload (autoload #'my~project-magit "my-vcs-autoloads" nil t)
+(defalias #'my~project-magit (wrap-command-at-project-root #'magit)
+    "open `magit' at project root.")
 
 (provide 'my-vcs-autoloads.el)
 ;;; my-vcs-autoloads.el.el ends here

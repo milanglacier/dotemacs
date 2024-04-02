@@ -348,8 +348,14 @@ Try `dape-continue' and fall back to `dape'." t)
 
 ;;; Generated autoloads from my-misc-autoloads.el
 
-(autoload 'my/vterm "my-misc-autoloads" "\
-open vterm at project root, if no root is found, open at the default-directory" t)
+(autoload 'call-command-at-project-root "my-misc-autoloads" "\
+call command at project root, if no root is found, open at the default-directory
+
+(fn ORIG-FUN ARGS)")
+(autoload 'wrap-command-at-project-root "my-misc-autoloads" "\
+create a new command that calls orig-cmd at project root, if no root is found, open at the default-directory
+
+(fn ORIG-CMD)")
 (autoload 'my/project-root-or-default-dir "my-misc-autoloads" "\
 If a project root is found, return it. Otherwise return `default-directory'.")
 (autoload 'my~dired-find-file-other-tab "my-misc-autoloads" "\
@@ -511,8 +517,7 @@ Set up a idle timer to start idly load packages.")
 
 (autoload 'my/project-todos "my-vcs-autoloads" "\
 Find `hl-todo--regex' items in project using `consult-ripgrep'" t)
-(autoload 'my~project-magit "my-vcs-autoloads" "\
-Open `magit' at current project." t)
+ (autoload #'my~project-magit "my-vcs-autoloads" nil t)
 
 ;;; End of scraped data
 
