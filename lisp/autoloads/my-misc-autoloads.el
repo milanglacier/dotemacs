@@ -1,9 +1,7 @@
 ;;; my-misc-autoloads.el -*- lexical-binding: t; -*-
 
-(message "miscloaded")
-
 ;;;###autoload
-(defun call-command-at-project-root (orig-fun args)
+(defun call-command-at-project-root (orig-fun &rest args)
     "call command at project root, if no root is found, open at the default-directory"
     (let ((default-directory (my/project-root-or-default-dir)))
         (apply orig-fun args)))
