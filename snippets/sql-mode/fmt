@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: sql formatter toggle
+# key: fmt
+# --
+/* sql-formatter-disable */
+$0
+/* sql-formatter-enable */
