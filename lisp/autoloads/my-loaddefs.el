@@ -351,7 +351,7 @@ Try `dape-continue' and fall back to `dape'." t)
 (autoload 'call-command-at-project-root "my-misc-autoloads" "\
 call command at project root, if no root is found, open at the default-directory
 
-(fn ORIG-FUN ARGS)")
+(fn ORIG-FUN &rest ARGS)")
 (autoload 'wrap-command-at-project-root "my-misc-autoloads" "\
 create a new command that calls orig-cmd at project root, if no root is found, open at the default-directory
 
