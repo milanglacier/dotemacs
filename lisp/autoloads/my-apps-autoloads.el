@@ -253,6 +253,7 @@ with that number." repl-name)
                    "A evil operator wrapper around `%s'. With a numeric
 prefix argument, send the region to the %s process associated with
 that number" send-region-func-name repl-name)
+                 :move-point nil
                  (interactive "<r>P")
                  (,send-region-func-name beg end session))
 
