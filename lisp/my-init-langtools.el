@@ -135,6 +135,7 @@
      "s" #'consult-eglot-symbols
      "a" #'eglot-code-actions
      "e" #'consult-flymake
+     "p" #'flymake-show-project-diagnostics
      "n" #'eglot-rename
      "t" #'eglot-find-typeDefinition
      "i" #'eglot-find-implementation
