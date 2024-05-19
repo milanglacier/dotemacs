@@ -92,7 +92,7 @@
     :init
     (setq eglot-stay-out-of '(company)
           eglot-workspace-configuration
-          '(:python.analysis (:useLibraryCodeForTypes t :diagnosticMode "workspace" :autoSearchPaths t)
+          '(:basedpyright.analysis (:useLibraryCodeForTypes t :diagnosticMode "workspace" :autoSearchPaths t)
             ;; NOTE: I was thinking `python.analysis' should be a
             ;; hierarchical structure like { "python": { "analysis": {
             ;; xxx } }.  But examining the `eglot-event' buffer
@@ -104,7 +104,7 @@
 
     :config
     (add-to-list 'eglot-server-programs
-                 '(python-ts-mode . ("pyright-langserver" "--stdio")))
+                 '(python-ts-mode . ("basedpyright-langserver" "--stdio")))
 
     (add-to-list 'eglot-server-programs
                  '(sql-mode . ("sqls")))
