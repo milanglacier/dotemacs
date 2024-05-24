@@ -134,7 +134,6 @@
                    (display-buffer-reuse-window display-buffer-in-side-window)
                    (window-width . 0.5)
                    (window-height . 0.4)
-                   (side . bottom)
                    (slot . ,(alist-get 'python my/side-window-slots))))
 
     (when (and (display-graphic-p)
