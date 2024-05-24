@@ -133,6 +133,7 @@ otherwise use the existed one
 (autoload 'my:pdf-midnight-mode-maybe "my-apps-autoloads")
  (autoload #'my~aichat-start "my-apps-autoloads" nil t)
  (autoload #'my~ipython-start "my-apps-autoloads" nil t)
+ (autoload #'my~radian-start "my-apps-autoloads" nil t)
 (register-definition-prefixes "my-apps-autoloads" '("my%create-vterm-repl-schema" "my/"))
 
 

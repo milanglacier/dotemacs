@@ -265,5 +265,8 @@ that number" send-region-func-name repl-name)
 ;;;###autoload (autoload #'my~ipython-start "my-apps-autoloads" nil t)
 (my%create-vterm-repl-schema "ipython" "ipython" :bracketed-paste-p t)
 
+;;;###autoload (autoload #'my~radian-start "my-apps-autoloads" nil t)
+(my%create-vterm-repl-schema "radian" "radian" :bracketed-paste-p t :end-pattern "")
+
 (provide 'my-apps-autoloads)
 ;;; my-apps-autoloads.el ends here

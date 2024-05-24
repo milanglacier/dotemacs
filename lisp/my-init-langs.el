@@ -34,6 +34,13 @@
                    (slot . ,(alist-get 'R my/side-window-slots))))
 
     (add-to-list 'display-buffer-alist
+                 `("^\\*radian"
+                   (display-buffer-reuse-window display-buffer-in-side-window)
+                   (window-width . 0.5)
+                   (window-height . 0.4)
+                   (slot . ,(alist-get 'R my/side-window-slots))))
+
+    (add-to-list 'display-buffer-alist
                  `("^\\*R Dired"
                    (display-buffer-reuse-window display-buffer-in-side-window)
                    (window-width . 0.33)
@@ -78,11 +85,15 @@
     (my/localleader
         :keymaps 'ess-mode-map
         :states '(normal visual motion insert)
-        "s" #'my/send-region-to-ess
+        "s" #'my~radian-send-region-operator
         "r" '(:ignore t :which-key "repl")
-        "rs" #'run-ess-r
+        "rs" #'my~radian-start
         "v" '(:ignore t :which-key "view")
         "vh" #'my/ess-toggle-view-httpgd)
+
+    (general-define-key
+        :keymaps 'ess-mode-map
+        "C-c r" #'my/send-region-to-ess)
 
     (my/setq-on-hook ess-r-mode-hook company-backends
                      '((company-files company-yasnippet company-capf
