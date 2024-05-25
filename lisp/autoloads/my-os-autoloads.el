@@ -32,5 +32,9 @@
     ;; Have to turn off it again.
     (xclip-mode 1))
 
+;;;###autoload
+(defun my:server-setup ()
+    (setenv "EMACS_SERVER" server-name))
+
 (provide 'my-os-autoloads)
 ;;; my-os-autoloads.el ends here

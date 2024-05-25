@@ -32,5 +32,7 @@
 
 (add-hook 'tty-setup-hook #'my/tty-setup)
 
+(my/run-hook-once server-after-make-frame-hook my:server-setup)
+
 (provide 'my-init-os)
 ;;; my-init-os.el ends here

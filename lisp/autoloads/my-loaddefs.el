@@ -407,6 +407,7 @@ toggle hide drawer. This function is effective only after org 9.6." t)
 (autoload 'my/macos-cmd-w "my-os-autoloads" "\
 If there is only one tab, close emacs, otherwise close one tab" t)
 (autoload 'my/tty-setup "my-os-autoloads")
+(autoload 'my:server-setup "my-os-autoloads")
 
 
 ;;; Generated autoloads from my-ui-autoloads.el
