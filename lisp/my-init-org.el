@@ -526,6 +526,7 @@ within Emacs.")
     (setq org-appear-autolinks t
           org-appear-autoentities t)
 
+    :config
     (when (display-graphic-p)
         (setq org-appear-autosubmarkers t)))
 
