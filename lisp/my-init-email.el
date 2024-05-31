@@ -40,12 +40,11 @@
           mu4e-hide-index-messages t
           mu4e-completing-read-function #'completing-read
           mu4e-confirm-quit nil
-          mu4e-thread-fold-unread t
           mu4e-attachment-dir (expand-file-name "Downloads/" (getenv "HOME")))
 
     :config
 
-    (set-face-attribute 'mu4e-thread-fold-face nil :inherit 'font-lock-comment-face)
+    (my~mu4e-thread-folding-mode)
 
     (add-hook 'mu4e-compose-mode-hook (my/setq-locally fill-column 72))
     (add-hook 'mu4e-headers-mode-hook (my/turn-off-mode display-line-numbers-mode))
@@ -143,11 +142,11 @@
     (general-define-key
      :states '(normal motion)
      :keymaps 'mu4e-headers-mode-map
-     "za" #'mu4e-thread-fold-toggle
-     "zc" #'mu4e-thread-fold
-     "zo" #'mu4e-thread-unfold
-     "zm" #'mu4e-thread-fold-all
-     "zr" #'mu4e-thread-unfold-all)
+     "za" #'my~mu4e-toggle-thread-folding-at-point
+     "zc" #'my~mu4e-fold-thread-at-point
+     "zo" #'my~mu4e-unfold-thread-at-point
+     "zm" #'my~mu4e-fold-all-threads
+     "zr" #'my~mu4e-unfold-all-threads)
 
     (general-define-key
      :states '(normal motion)
