@@ -178,8 +178,7 @@ whitespaces to be prepended when centering the verses.")
     (with-current-buffer "*scratch*"
         (erase-buffer)
         (insert (my:generate-initial-messages))
-        (my:generate-button-with-actions)
-        (my:verses-add-font-lock)))
+        (my:generate-button-with-actions)))
 
 (defvar my$tab-bar-tab-name-open "")
 (defvar my$tab-bar-tab-name-close "")
