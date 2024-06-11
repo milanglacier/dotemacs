@@ -428,33 +428,7 @@ is called.
 Set the default font to a smaller sized font for current buffer.")
 (autoload 'my:font-set-small-variable-font "my-ui-autoloads" "\
 Set the default font to a smaller sized font for current buffer.")
-(defvar my~show-verses-at-startup-mode nil "\
-Non-nil if My~Show-Verses-At-Startup mode is enabled.
-See the `my~show-verses-at-startup-mode' command
-for a description of this minor mode.
-Setting this variable directly does not take effect;
-either customize it (see the info node `Easy Customization')
-or call the function `my~show-verses-at-startup-mode'.")
-(custom-autoload 'my~show-verses-at-startup-mode "my-ui-autoloads" nil)
-(autoload 'my~show-verses-at-startup-mode "my-ui-autoloads" "\
-show verses at the startup screen.
-
-This is a global minor mode.  If called interactively, toggle the
-`My~Show-Verses-At-Startup mode' mode.  If the prefix argument is
-positive, enable the mode, and if it is zero or negative, disable
-the mode.
-
-If called from Lisp, toggle the mode if ARG is `toggle'.  Enable
-the mode if ARG is nil, omitted, or is a positive number.
-Disable the mode if ARG is a negative number.
-
-To check whether the minor mode is enabled in the current buffer,
-evaluate `(default-value \\='my~show-verses-at-startup-mode)'.
-
-The mode's hook is called both when the mode is enabled and when
-it is disabled.
-
-(fn &optional ARG)" t)
+(autoload 'my:show-verses-at-startup "my-ui-autoloads")
 (autoload 'my~refresh-verses "my-ui-autoloads" "\
 refresh verses in the scratch buffer" t)
 (register-definition-prefixes "my-ui-autoloads" '("my$" "my&welcome-screen-action-button" "my:"))

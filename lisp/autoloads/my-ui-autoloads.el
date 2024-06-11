@@ -163,13 +163,12 @@ whitespaces to be prepended when centering the verses.")
        ("^ +\\(.+\\)$" 1 'my&verse-quotes))))
 
 ;;;###autoload
-(define-minor-mode my~show-verses-at-startup-mode
-    "show verses at the startup screen."
-    :global t
-
+(defun my:show-verses-at-startup ()
     (setq initial-scratch-message (my:generate-initial-messages))
     (add-hook 'emacs-startup-hook #'my:verses-add-font-lock)
-    (add-hook 'emacs-startup-hook #'my:generate-button-with-actions))
+    (add-hook 'emacs-startup-hook #'my:generate-button-with-actions)
+    (add-hook 'emacs-startup-hook (my/turn-off-mode display-line-numbers-mode))
+    (add-hook 'emacs-startup-hook (my/setq-locally mode-line-format nil)))
 
 ;;;###autoload
 (defun my~refresh-verses ()

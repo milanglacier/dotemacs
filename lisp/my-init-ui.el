@@ -167,7 +167,7 @@ if they are side window.")
           which-key-popup-type 'minibuffer)
     )
 
-(my~show-verses-at-startup-mode)
+(my:show-verses-at-startup)
 
 (provide 'my-init-ui)
 ;;; my-init-ui.el ends here
