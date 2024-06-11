@@ -155,8 +155,8 @@ if they are side window.")
           doom-modeline-default-eol-type (cond (IS-MAC 2)
                                                (IS-WINDOWS 1)
                                                (0)))
-
-    (doom-modeline-mode 1))
+    (my/run-hook-once pre-command-hook doom-modeline-mode)
+    )
 
 (use-package which-key
     :init
