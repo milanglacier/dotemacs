@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: pd groupby apply series shortcut
+# key: gbs
+# --
+groupby($1).apply(lambda x: pd.Series({
+$0
+}), include_group=False)
