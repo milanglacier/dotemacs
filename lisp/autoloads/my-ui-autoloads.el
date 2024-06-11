@@ -88,11 +88,24 @@ is called."
       (" Recent Projects SPC f p" . project-switch-project))
     "the actions to be displayed on the welcome screen")
 
-(defvar my$empty-lines-between-sections 10)
+(defun my:empty-lines-between-sections ()
+    (let ((height (window-height)))
+        (cond ((< height 30) 3)
+              ((< height 50) 8)
+              (t 10))))
 
-(defvar my$right-margin-when-centering-margin 80
-    "The assumed window width to calculate appropriate number of
-whitespaces to be prepended when centering the verses.")
+(defun my:top-lines-padding ()
+    (let ((height (window-height)))
+        (cond ((< height 30) 0)
+              ((< height 50) 8)
+              (t 12))))
+
+(defun my:right-margin-when-centering-margin ()
+    "The absolute symmetry is in fact less aesthetically pleasing than a slight leftward skew."
+    (let ((width (window-width)))
+        (cond ((< width 100) width)
+              ((< width 200) (- width 10))
+              (t (- width 15)))))
 
 (defface my&verses
     '((((background light)) :foreground "#ed80b5" :slant italic)
@@ -129,13 +142,12 @@ whitespaces to be prepended when centering the verses.")
           (foot-verse (nth (random (length my$foot-verses))
                            my$foot-verses))
           (action-strings (mapcar #'car my$actions))
-          (empty-lines (cl-loop
-                        for i from 1 to my$empty-lines-between-sections
-                        concat "\n")))
+          (top-paddings (cl-loop for i from 1 to (my:top-lines-padding) concat "\n"))
+          (empty-lines (cl-loop for i from 1 to (my:empty-lines-between-sections) concat "\n")))
         (setq head-verse (mapconcat #'my:center-a-line head-verse "\n"))
         (setq action-strings (mapconcat #'my:center-a-line action-strings "\n"))
         (setq foot-verse (mapconcat #'my:center-a-line foot-verse "\n"))
-        (concat head-verse empty-lines action-strings empty-lines foot-verse)))
+        (concat top-paddings head-verse empty-lines action-strings empty-lines foot-verse)))
 
 (defun my:generate-button-with-actions ()
     (let ((action-strings (mapcar #'car my$actions)))
@@ -151,7 +163,7 @@ whitespaces to be prepended when centering the verses.")
 (defun my:center-a-line (x)
     "center one line of verse or action string"
     (let ((spaces-to-be-inserted
-           (/ (- my$right-margin-when-centering-margin (string-width x))
+           (/ (- (my:right-margin-when-centering-margin) (string-width x))
               2)))
         (concat (cl-loop for i from 1 to spaces-to-be-inserted concat " ")
                 x)))
