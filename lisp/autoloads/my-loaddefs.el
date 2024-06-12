@@ -444,9 +444,18 @@ nil, use `my/autoloads-file'.
 (fn &optional AUTOLOADS-DIR AUTOLOADS-FILE)" t)
 (autoload 'my/update-site-lisp-autoloads "my-utils-autoloads" nil t)
 (autoload 'my/run-hook-once "my-utils-autoloads" "\
-a wrapper to run a func on a hook only once
+a wrapper to run a function (can be named or lambda) on a hook or
+a list of hooks only once.  When HOOKS is a list, only run FUNC once
+on the first hook. The rest hook will not run FUNC.
 
-(fn HOOK FUNC &rest ARGS)" nil t)
+ARGS is a plist which takes the following keys:
+
+:func-name a string which is the name of FUNC. If FUNC is a lambda,
+must be provided. Can be omitted if FUNC is a symbol.
+
+:func-args a list which is the rest args passed to FUNC.
+
+(fn HOOKS FUNC &rest ARGS)" nil t)
 (autoload 'my/advise-at-once "my-utils-autoloads" "\
 a wrapper to advise a func only once
 

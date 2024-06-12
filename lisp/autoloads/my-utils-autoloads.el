@@ -20,14 +20,36 @@ nil, use `my/autoloads-file'."
     (my/update-all-autoloads my/site-lisp-dir my/site-lisp-autoloads-file))
 
 ;;;###autoload
-(defmacro my/run-hook-once (hook func &rest args)
-    "a wrapper to run a func on a hook only once"
-    (let ((func-once (gensym (concat "my/" (symbol-name func)
-                                     "-" "at-" (symbol-name hook) "-" "once"))))
-        `(add-hook ',hook
-                   (defun ,func-once ()
-                       (funcall #',func)
-                       (remove-hook ',hook #',func-once)) ,@args)))
+(defmacro my/run-hook-once (hooks func &rest args)
+    "a wrapper to run a function (can be named or lambda) on a hook or
+a list of hooks only once.  When HOOKS is a list, only run FUNC once
+on the first hook. The rest hook will not run FUNC.
+
+ARGS is a plist which takes the following keys:
+
+:func-name a string which is the name of FUNC. If FUNC is a lambda,
+must be provided. Can be omitted if FUNC is a symbol.
+
+:func-args a list which is the rest args passed to FUNC."
+    (when (not (or (symbolp func)
+                   (plist-get args :func-name)))
+        (error "when func is not a symbol, must provide :func-name"))
+    (let* ((hooks
+            (if (listp hooks) hooks (list hooks)))
+           (func-name (or (plist-get args :func-name) (symbol-name func)))
+           (func-args (plist-get args :func-args))
+           (func-once (gensym (format "my/%s-at-%s-once"
+                                      func-name
+                                      (mapconcat #'symbol-name hooks)))))
+        `(progn
+             (defun ,func-once ()
+                 (funcall #',func ,@func-args)
+                 ,@(mapcar
+                    (lambda (hook) `(remove-hook ',hook #',func-once))
+                    hooks))
+             ,@(mapcar
+                (lambda (hook) `(add-hook ',hook #',func-once))
+                hooks))))
 
 ;;;###autoload
 (defmacro my/advise-at-once (func advice where &rest props)
