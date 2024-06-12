@@ -97,8 +97,6 @@
     (add-hook 'vterm-mode-hook (my/setq-locally confirm-kill-processes nil))
     ;; From doomemacs: Prevent premature horizontal scrolling
     (add-hook 'vterm-mode-hook (my/setq-locally hscroll-margin 0))
-    (add-hook 'vterm-mode-hook (my/turn-off-mode display-line-numbers-mode))
-
     )
 
 (use-package auto-revert
@@ -191,7 +189,6 @@
         "d" #'dired-sidebar-toggle-sidebar)
 
     :config
-    (add-hook 'dired-sidebar-mode-hook (my/turn-off-mode display-line-numbers-mode))
     (add-hook 'dired-sidebar-mode-hook #'my:font-set-small-mono-font))
 
 (my/leader

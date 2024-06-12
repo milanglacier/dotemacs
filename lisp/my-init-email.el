@@ -47,9 +47,6 @@
     (my~mu4e-thread-folding-mode)
 
     (add-hook 'mu4e-compose-mode-hook (my/setq-locally fill-column 72))
-    (add-hook 'mu4e-headers-mode-hook (my/turn-off-mode display-line-numbers-mode))
-    (add-hook 'mu4e-main-mode-hook (my/turn-off-mode display-line-numbers-mode))
-    (add-hook 'mu4e-view-mode-hook (my/turn-off-mode display-line-numbers-mode))
 
     ;; To keep personal privacy, I hide my email account settings in
     ;; the `my-mail-accounts.el' which is a symlinked file.  This file

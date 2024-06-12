@@ -179,7 +179,6 @@ is called."
     (setq initial-scratch-message (my:generate-initial-messages))
     (add-hook 'emacs-startup-hook #'my:verses-add-font-lock)
     (add-hook 'emacs-startup-hook #'my:generate-button-with-actions)
-    (add-hook 'emacs-startup-hook (my/turn-off-mode display-line-numbers-mode))
     (add-hook 'emacs-startup-hook (my/setq-locally mode-line-format nil)))
 
 ;;;###autoload

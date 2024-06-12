@@ -26,9 +26,6 @@
             (window-height . 0.5)
             (side . ,(alist-get 'xwidget-plot my/side-window-sides))
             (slot . ,(alist-get 'xwidget-plot my/side-window-slots))))
-
-    :config
-    (add-hook 'xwidget-webkit-mode-hook (my/turn-off-mode display-line-numbers-mode))
     )
 
 (use-package elfeed
@@ -99,10 +96,8 @@
                    (window-width . 0.3)))
 
     (add-hook 'pdf-outline-buffer-mode-hook #'my:font-set-small-variable-font)
-    (add-hook 'pdf-outline-buffer-mode-hook (my/turn-off-mode display-line-numbers-mode))
     (add-hook 'pdf-view-mode-hook (my/setq-locally evil-normal-state-cursor nil))
     (add-hook 'pdf-view-mode-hook #'my:pdf-midnight-mode-maybe)
-    (add-hook 'pdf-view-mode-hook (my/turn-off-mode display-line-numbers-mode))
 
     )
 

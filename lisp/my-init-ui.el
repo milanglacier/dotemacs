@@ -33,9 +33,9 @@
 
 ;; display line numbers in the left margin of the window.
 (use-package display-line-numbers
+    :hook ((prog-mode text-mode conf-mode) . display-line-numbers-mode)
     :init
     (setq display-line-numbers-type t)
-    (global-display-line-numbers-mode)
     )
 
 (use-package whitespace
