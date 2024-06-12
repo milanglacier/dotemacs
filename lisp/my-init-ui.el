@@ -155,7 +155,7 @@ if they are side window.")
           doom-modeline-default-eol-type (cond (IS-MAC 2)
                                                (IS-WINDOWS 1)
                                                (0)))
-    (my/run-hook-once find-file-hook doom-modeline-mode)
+    (my/run-hook-once (minibuffer-setup-hook after-change-major-mode-hook) doom-modeline-mode)
     )
 
 (use-package which-key
