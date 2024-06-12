@@ -80,12 +80,12 @@ is called."
     "the verses displayed on the bottom of `initial-scratch-message'")
 
 (defvar my$actions
-    '((" Emacs Init Time        " . emacs-init-time)
-      (" Pick New Theme         " . my:theme-set-dynamically)
-      (" Pick New Verse         " . my~refresh-verses)
-      (" Org Agenda      SPC o a" . org-agenda-list)
-      (" Recent Files    SPC f o" . consult-recent-file)
-      (" Recent Projects SPC f p" . project-switch-project))
+    '((" Pick New Theme             " . my:theme-set-dynamically)
+      (" Pick New Verse             " . my~refresh-verses)
+      (" Emacs Startup Time         " . my:emacs-startup-time)
+      (" Org Agenda          SPC o a" . org-agenda-list)
+      (" Recent Files        SPC f o" . consult-recent-file)
+      (" Recent Projects     SPC f p" . project-switch-project))
     "the actions to be displayed on the welcome screen")
 
 (defun my:empty-lines-between-sections ()
@@ -106,6 +106,10 @@ is called."
         (cond ((< width 100) width)
               ((< width 200) (- width 10))
               (t (- width 15)))))
+
+(defun my:emacs-startup-time ()
+    "measure the startup time until the welcome screen is displayed. More accurate than `emacs-init-time'"
+    (message (format "%f seconds" (float-time (time-subtract after-startup-time before-startup-time)))))
 
 (defface my&verses
     '((((background light)) :foreground "#ed80b5" :slant italic)
@@ -187,7 +191,8 @@ is called."
         (insert (my:generate-initial-messages))
         (my:verses-add-font-lock)
         (my:generate-button-with-actions)
-        (setq-local mode-line-format nil)))
+        (setq-local mode-line-format nil))
+    (setq after-startup-time (current-time)))
 
 ;;;###autoload
 (defun my~refresh-verses ()

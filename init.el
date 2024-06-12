@@ -1,5 +1,8 @@
 ;;; init.el -*- lexical-binding: t; -*-
 
+(setq before-startup-time (current-time)
+      after-startup-time before-startup-time)
+
 ;; increase gc threshold to speedup starting up
 (setq gc-cons-percentage 0.6)
 (setq gc-cons-threshold most-positive-fixnum)
