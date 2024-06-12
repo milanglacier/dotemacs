@@ -90,7 +90,7 @@ is called."
 
 (defun my:empty-lines-between-sections ()
     (let ((height (window-height)))
-        (cond ((< height 30) 3)
+        (cond ((< height 40) 3)
               ((< height 50) 8)
               (t 10))))
 
