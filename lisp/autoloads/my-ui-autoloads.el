@@ -177,9 +177,13 @@ is called."
 ;;;###autoload
 (defun my:show-verses-at-startup ()
     (setq initial-scratch-message (my:generate-initial-messages))
-    (add-hook 'emacs-startup-hook #'my:verses-add-font-lock)
-    (add-hook 'emacs-startup-hook #'my:generate-button-with-actions)
-    (add-hook 'emacs-startup-hook (my/setq-locally mode-line-format nil)))
+    (add-hook 'emacs-startup-hook #'my:set-scratch-buffer))
+
+(defun my:set-scratch-buffer ()
+    (with-current-buffer "*scratch*"
+        (my:verses-add-font-lock)
+        (my:generate-button-with-actions)
+        (setq-local mode-line-format nil)))
 
 ;;;###autoload
 (defun my~refresh-verses ()
