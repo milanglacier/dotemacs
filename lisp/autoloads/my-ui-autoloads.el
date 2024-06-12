@@ -176,11 +176,15 @@ is called."
 
 ;;;###autoload
 (defun my:show-verses-at-startup ()
-    (setq initial-scratch-message (my:generate-initial-messages))
-    (add-hook 'emacs-startup-hook #'my:set-scratch-buffer))
+    (setq initial-scratch-message nil)
+    (add-hook 'emacs-startup-hook #'my:set-scratch-buffer)
+    ;; when running emacs in server mode, cannot get the window
+    ;; height/width at startup
+    (add-hook 'server-after-make-frame-hook #'my~refresh-verses))
 
 (defun my:set-scratch-buffer ()
     (with-current-buffer "*scratch*"
+        (insert (my:generate-initial-messages))
         (my:verses-add-font-lock)
         (my:generate-button-with-actions)
         (setq-local mode-line-format nil)))
