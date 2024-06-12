@@ -109,7 +109,9 @@ is called."
 
 (defun my:emacs-startup-time ()
     "measure the startup time until the welcome screen is displayed. More accurate than `emacs-init-time'"
-    (message (format "%f seconds" (float-time (time-subtract after-startup-time before-startup-time)))))
+    (message (format "%f seconds"
+                     (max (float-time (time-subtract my:welcome-screen-setup-time before-init-time))
+                          (float-time (time-subtract after-init-time before-init-time))))))
 
 (defface my&verses
     '((((background light)) :foreground "#ed80b5" :slant italic)
@@ -192,7 +194,7 @@ is called."
         (my:verses-add-font-lock)
         (my:generate-button-with-actions)
         (setq-local mode-line-format nil))
-    (setq after-startup-time (current-time)))
+    (setq my:welcome-screen-setup-time (current-time)))
 
 ;;;###autoload
 (defun my~refresh-verses ()
