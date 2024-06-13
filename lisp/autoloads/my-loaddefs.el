@@ -299,7 +299,9 @@ This command deactivates the current poetry virtual environment." t)
  (autoload #'yapf-format-buffer "my-langs-autoloads" nil t)
  (autoload #'black-format-buffer "my-langs-autoloads" nil t)
  (autoload #'sql-formatter-format-buffer "my-langs-autoloads" nil t)
-(register-definition-prefixes "my-langs-autoloads" '("my$" "my/"))
+(autoload 'my~python-edit-sql "my-langs-autoloads" "\
+Edit the embedded sql code within a separate buffer." t)
+(register-definition-prefixes "my-langs-autoloads" '("my$" "my/" "my:treesit-python-get-sql-range"))
 
 
 ;;; Generated autoloads from my-langtools-autoloads.el

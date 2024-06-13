@@ -213,5 +213,26 @@ language of the code block)"
                       (config-file-exists (file-exists-p config-file)))
               `("--config" ,config-file)))
 
+(defun my:treesit-python-get-sql-range ()
+    (let ((node (treesit-node-at (point)))
+          (query "((string_content)
+                   @sql
+                   (#match \"^\\s*--[sS][qQ][lL]\" @sql))
+                  ((string_content)
+                   @sql
+                   (#match \"^\\s*/\\*.*[sS][qQ][lL].*\\*/\" @sql))"))
+        (treesit-query-range node query)))
+
+;;;###autoload
+(defun my~python-edit-sql ()
+    "Edit the embedded sql code within a separate buffer."
+    (interactive)
+    (require 'edit-indirect)
+    (when-let ((edit-indirect-guess-mode-function (lambda (&rest _) (sql-mode)))
+               (range (my:treesit-python-get-sql-range))
+               (beg (caar range))
+               (end (cdar range)))
+        (edit-indirect-region beg end t)))
+
 (provide 'my-langs-autoloads)
 ;;; my-init-langs.el ends here

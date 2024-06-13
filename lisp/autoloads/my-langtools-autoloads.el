@@ -70,13 +70,20 @@ to next xref location."
 ;; 2. Paste the code blocks into the temp buffer
 ;; 3. When finish editing, delete those inserted contextual code.
 
+(defvar my$code-block-lsp-major-mode
+    '(ess-r-mode python-ts-mode)
+    "the major mode that will activate lsp in code blocks (either in
+markdown or in org)")
+
 ;;;###autoload
 (defun my/markdown-src-lsp-setup()
     "eglot requires the buffer to be a file to be able to attach to
 the lsp. Thus the indirect buffer created by `edit-indirect' needs to
 be associated with a real file."
-    (setq-local buffer-file-name (file-name-concat default-directory "markdown-src.tmp"))
-    (eglot-ensure))
+    (setq-local buffer-file-name (file-name-concat default-directory "indirect-src.tmp"))
+    (dolist (mode my$code-block-lsp-major-mode)
+        (when (derived-mode-p mode)
+            (eglot-ensure))))
 
 ;;; copied from Centaur Emacs
 ;;;###autoload
@@ -89,7 +96,9 @@ be associated with a real file."
                  (setq buffer-file-name
                        (or (->> info caddr (alist-get :file))
                            (file-name-concat default-directory "org-babel-src.tmp")))
-                 (eglot-ensure))
+                 (dolist (mode my$code-block-lsp-major-mode)
+                     (when (derived-mode-p mode)
+                         (eglot-ensure))))
 
              (if (fboundp #',edit-pre)
                      (advice-add #',edit-pre :after #',my-setup)

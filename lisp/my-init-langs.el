@@ -129,6 +129,10 @@
         "v" '(:ignore t :which-key "view")
         "vh" #'my/python-toggle-view-local-html)
 
+    (general-define-key
+        :keymaps 'python-ts-mode-map
+        "C-c '" #'my~python-edit-sql)
+
     (add-to-list 'display-buffer-alist
                  `("^\\*ipython"
                    (display-buffer-reuse-window display-buffer-in-side-window)
@@ -190,7 +194,12 @@
 
     :config
     (add-hook 'sql-mode-hook (my/setq-locally tab-width 4))
-    (my/define-and-bind-local-paren-text-object "m" "-- COMMAND ----------" "-- COMMAND ----------" sql-mode-hook))
+    (my/define-and-bind-local-paren-text-object "m" "-- COMMAND ----------" "-- COMMAND ----------" sql-mode-hook)
+
+    (my/localleader
+        :keymaps 'sql-mode-map
+        :states '(normal visual motion insert)
+        "f" #'sql-formatter-format-buffer))
 
 (provide 'my-init-langs)
 ;;; my-init-langs.el ends here
