@@ -1,7 +1,7 @@
 # -*- mode: snippet -*-
 # name: pd pipe series shortcut
-# key: gbs
+# key: pps
 # --
 pipe(lambda x: pd.Series({
 $0
-}), include_group=False)
+}))

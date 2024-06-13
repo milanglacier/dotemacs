@@ -4,4 +4,4 @@
 # --
 groupby($1).apply(lambda x: pd.Series({
 $0
-}), include_group=False)
+}), include_groups=False)
