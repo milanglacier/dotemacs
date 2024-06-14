@@ -127,7 +127,8 @@
         "r" '(:ignore t :which-key "REPL")
         "rs" #'my~ipython-start
         "v" '(:ignore t :which-key "view")
-        "vh" #'my/python-toggle-view-local-html)
+        "vh" #'my/python-toggle-view-local-html
+        "'" #'my~python-edit-sql)
 
     (general-define-key
         :keymaps 'python-ts-mode-map
