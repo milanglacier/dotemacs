@@ -94,11 +94,11 @@ is called."
               ((< height 50) 8)
               (t 10))))
 
-(defun my:top-lines-padding ()
-    (let ((height (window-height)))
-        (cond ((< height 30) 0)
-              ((< height 50) 8)
-              (t 12))))
+(defun my:top-lines-padding (content-length)
+    (let* ((height (window-height))
+           (paddings (ceiling (* (- height content-length) 0.35)))
+           (paddings (max 0 paddings)))
+        (cl-loop for i from 1 to paddings concat "\n")))
 
 (defun my:right-margin-when-centering-margin ()
     "The absolute symmetry is in fact less aesthetically pleasing than a slight leftward skew."
@@ -143,13 +143,16 @@ is called."
                          (funcall action))))))
 
 (defun my:generate-initial-messages ()
-    (let ((head-verse (nth (random (length my$header-verses))
-                           my$header-verses))
-          (foot-verse (nth (random (length my$foot-verses))
-                           my$foot-verses))
-          (action-strings (mapcar #'car my$actions))
-          (top-paddings (cl-loop for i from 1 to (my:top-lines-padding) concat "\n"))
-          (empty-lines (cl-loop for i from 1 to (my:empty-lines-between-sections) concat "\n")))
+    (let* ((head-verse (nth (random (length my$header-verses))
+                            my$header-verses))
+           (foot-verse (nth (random (length my$foot-verses))
+                            my$foot-verses))
+           (action-strings (mapcar #'car my$actions))
+           (empty-lines (cl-loop for i from 1 to (my:empty-lines-between-sections) concat "\n"))
+           (content-length (+ (length head-verse)
+                              (length foot-verse)
+                              (* 2 (my:empty-lines-between-sections))))
+           (top-paddings (my:top-lines-padding content-length)))
         (setq head-verse (mapconcat #'my:center-a-line head-verse "\n"))
         (setq action-strings (mapconcat #'my:center-a-line action-strings "\n"))
         (setq foot-verse (mapconcat #'my:center-a-line foot-verse "\n"))
@@ -177,8 +180,8 @@ is called."
 (defun my:verses-add-font-lock ()
     (font-lock-add-keywords
      nil
-     '(("^ +\\([^\"]+\\)$" 1 'my&verses)
-       ("^ +\\(.+\\)$" 1 'my&verse-quotes))))
+     '(("^ *\\([^\"]+\\)$" 1 'my&verses)
+       ("^ *\\(.+\\)$" 1 'my&verse-quotes))))
 
 ;;;###autoload
 (defun my:show-verses-at-startup ()
