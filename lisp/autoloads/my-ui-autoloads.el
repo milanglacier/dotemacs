@@ -96,7 +96,7 @@ is called."
 
 (defun my:top-lines-padding (content-length)
     (let* ((height (window-height))
-           (paddings (ceiling (* (- height content-length) 0.35)))
+           (paddings (ceiling (* (- height content-length) 0.5)))
            (paddings (max 0 paddings)))
         (cl-loop for i from 1 to paddings concat "\n")))
 
@@ -148,15 +148,24 @@ is called."
            (foot-verse (nth (random (length my$foot-verses))
                             my$foot-verses))
            (action-strings (mapcar #'car my$actions))
-           (empty-lines (cl-loop for i from 1 to (my:empty-lines-between-sections) concat "\n"))
+           (n-lines-between-section (my:empty-lines-between-sections))
+           ;; require one additionl \n inserted at the end of other sections.
+           (lines-between-sections
+            (cl-loop for i from 1 to (1+ n-lines-between-section) concat "\n"))
            (content-length (+ (length head-verse)
                               (length foot-verse)
-                              (* 2 (my:empty-lines-between-sections))))
+                              (length action-strings)
+                              (* 2 n-lines-between-section)))
            (top-paddings (my:top-lines-padding content-length)))
         (setq head-verse (mapconcat #'my:center-a-line head-verse "\n"))
         (setq action-strings (mapconcat #'my:center-a-line action-strings "\n"))
         (setq foot-verse (mapconcat #'my:center-a-line foot-verse "\n"))
-        (concat top-paddings head-verse empty-lines action-strings empty-lines foot-verse)))
+        (concat top-paddings
+                head-verse
+                lines-between-sections
+                action-strings
+                lines-between-sections
+                foot-verse)))
 
 (defun my:generate-button-with-actions ()
     (let ((action-strings (mapcar #'car my$actions)))
