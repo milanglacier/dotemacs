@@ -101,7 +101,7 @@
                                       :separate company-dabbrev-code)))
 
     (add-hook 'ess-r-mode-hook (my/setq-locally eglot-stay-out-of '(company imenu)))
-    (add-hook 'ess-r-mode-hook #'eglot-ensure)
+    ;; (add-hook 'ess-r-mode-hook #'eglot-ensure)
     (add-hook 'ess-r-mode-hook (my/setq-locally tab-width 4))
     (when (and (display-graphic-p)
                (featurep 'xwidget-internal))
@@ -114,7 +114,7 @@
     (setq python-indent-offset 4)
 
     :config
-    (add-hook 'python-ts-mode-hook #'eglot-ensure)
+    ;; (add-hook 'python-ts-mode-hook #'eglot-ensure)
     (add-hook 'python-ts-mode-hook (my/setq-locally tab-width 4))
 
     (my/define-and-bind-local-paren-text-object " c" "# %%" "# %%" python-ts-mode-hook)
@@ -172,7 +172,7 @@
         "rs" #'my/markdown-run-repl
         "s" #'my/markdown-send-region)
 
-    (add-hook 'markdown-mode-hook #'eglot-ensure)
+    ;; (add-hook 'markdown-mode-hook #'eglot-ensure)
 
     (add-to-list 'markdown-code-lang-modes '("R" . ess-r-mode))
     (add-to-list 'markdown-code-lang-modes '("r" . ess-r-mode))
