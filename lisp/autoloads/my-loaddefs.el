@@ -430,10 +430,10 @@ is called.
 Set the default font to a smaller sized font for current buffer.")
 (autoload 'my:font-set-small-variable-font "my-ui-autoloads" "\
 Set the default font to a smaller sized font for current buffer.")
-(autoload 'my:show-verses-at-startup "my-ui-autoloads")
+(autoload 'my:welcome-screen-mode "my-ui-autoloads")
 (autoload 'my~refresh-verses "my-ui-autoloads" "\
 refresh verses in the scratch buffer" t)
-(register-definition-prefixes "my-ui-autoloads" '("my$" "my&welcome-screen-action-button" "my:"))
+(register-definition-prefixes "my-ui-autoloads" '("my$" "my:" "my~emacs-startup-time"))
 
 
 ;;; Generated autoloads from my-utils-autoloads.el

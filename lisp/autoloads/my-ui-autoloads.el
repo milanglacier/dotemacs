@@ -80,12 +80,12 @@ is called."
     "the verses displayed on the bottom of `initial-scratch-message'")
 
 (defvar my$actions
-    '((" Pick New Theme             " . my:theme-set-dynamically)
-      (" Pick New Verse             " . my~refresh-verses)
-      (" Emacs Startup Time         " . my:emacs-startup-time)
-      (" Org Agenda          SPC o a" . org-agenda-list)
-      (" Recent Files        SPC f o" . consult-recent-file)
-      (" Recent Projects     SPC f p" . project-switch-project))
+    '((" New [T]heme      " . load-theme)
+      (" New [V]erse      " . my~refresh-verses)
+      (" [S]tartup Time   " . my~emacs-startup-time)
+      (" Org [A]genda     " . org-agenda-list)
+      (" Recent [F]iles   " . consult-recent-file)
+      (" Recent [P]rojects" . project-switch-project))
     "the actions to be displayed on the welcome screen")
 
 (defun my:empty-lines-between-sections ()
@@ -107,11 +107,26 @@ is called."
               ((< width 200) (- width 10))
               (t (- width 15)))))
 
-(defun my:emacs-startup-time ()
+(defun my~emacs-startup-time ()
     "measure the startup time until the welcome screen is displayed. More accurate than `emacs-init-time'"
+    (interactive)
     (message (format "%f seconds"
                      (max (float-time (time-subtract my:welcome-screen-setup-time before-init-time))
                           (float-time (time-subtract after-init-time before-init-time))))))
+
+(defun my:welcome-screen-set-keymap ()
+    (let* ((action-strings (mapcar #'car my$actions))
+           (actions (mapcar #'cdr my$actions))
+           (keys (mapcar (lambda (x)
+                             (when-let ((pos (string-search "[" x)))
+                                 (substring x (1+ pos) (+ 2 pos))))
+                         action-strings))
+           (keymaps
+            (cl-loop for key in keys
+                     for action in actions
+                     if key
+                     append `(,(downcase key) ,action))))
+        (apply #'general-define-key :keymaps 'local :states '(normal emacs) keymaps)))
 
 (defface my&verses
     '((((background light)) :foreground "#ed80b5" :slant italic)
@@ -128,19 +143,10 @@ is called."
       (((background dark)) :foreground "#73915e"))
     "the faces used for the actions on the welcome screen")
 
-(define-button-type 'my&welcome-screen-action-button
-    'face 'my&welcome-screen-action)
-
-(defun my:welcome-screen-make-text-button (start end action-string)
-    "Make a button with ACTION-STRING as its label."
-    (let ((action (alist-get action-string my$actions)))
-        (make-text-button
-         start end
-         'type 'my&welcome-screen-action-button
-         'action (lambda (_)
-                     (if (commandp action)
-                             (call-interactively action)
-                         (funcall action))))))
+(defface my&welcome-screen-action-key
+    '((((background light)) :foreground "#6b82e2")
+      (((background dark)) :foreground "#cfe8a3"))
+    "the faces used for the actions on the welcome screen")
 
 (defun my:generate-initial-messages ()
     (let* ((head-verse (nth (random (length my$header-verses))
@@ -167,17 +173,6 @@ is called."
                 lines-between-sections
                 foot-verse)))
 
-(defun my:generate-button-with-actions ()
-    (let ((action-strings (mapcar #'car my$actions)))
-        (dolist (action-string action-strings)
-            ;; find the position of the action string
-            (goto-char (point-min))
-            (search-forward action-string)
-            (let ((start (match-beginning 0)) ;; 0 means the whole match
-                  (end (match-end 0)))
-                (my:welcome-screen-make-text-button start end action-string)))))
-
-
 (defun my:center-a-line (x)
     "center one line of verse or action string"
     (let ((spaces-to-be-inserted
@@ -190,22 +185,25 @@ is called."
     (font-lock-add-keywords
      nil
      '(("^ *\\([^\"]+\\)$" 1 'my&verses)
-       ("^ *\\(.+\\)$" 1 'my&verse-quotes))))
+       ("^ *\\(.+\\)$" 1 'my&verse-quotes)
+       ("^ *\\(.+\\)\\[" 1 'my&welcome-screen-action)
+       ("\\(\\[.*\\]\\)" 1 'my&welcome-screen-action-key)
+       ("\\]\\(.*\\)$" 1 'my&welcome-screen-action))))
 
 ;;;###autoload
-(defun my:show-verses-at-startup ()
+(defun my:welcome-screen-mode ()
     (setq initial-scratch-message nil)
-    (add-hook 'emacs-startup-hook #'my:set-scratch-buffer)
+    (add-hook 'emacs-startup-hook #'my:set-welcome-screen-buffer)
     ;; when running emacs in server mode, cannot get the window
     ;; height/width at startup
     (add-hook 'server-after-make-frame-hook #'my~refresh-verses))
 
-(defun my:set-scratch-buffer ()
+(defun my:set-welcome-screen-buffer ()
     (with-current-buffer "*scratch*"
         (insert (my:generate-initial-messages))
         (my:verses-add-font-lock)
-        (my:generate-button-with-actions)
-        (setq-local mode-line-format nil))
+        (setq-local mode-line-format nil)
+        (my:welcome-screen-set-keymap))
     (setq my:welcome-screen-setup-time (current-time)))
 
 ;;;###autoload
@@ -214,8 +212,7 @@ is called."
     (interactive)
     (with-current-buffer "*scratch*"
         (erase-buffer)
-        (insert (my:generate-initial-messages))
-        (my:generate-button-with-actions)))
+        (insert (my:generate-initial-messages))))
 
 (defvar my$tab-bar-tab-name-open "")
 (defvar my$tab-bar-tab-name-close "")
