@@ -61,8 +61,8 @@ casual and wild!
 The welcome screen displays two randomly chosen verses from my
 carefully chosen collection.  This serves as a scratch buffer where
 you can perform Lisp evaluations. Frequently used commands are also
-listed, allowing for convenient execution by simply clicking on the
-corresponding button.
+listed, allowing for convenient execution by simply typing the hint
+key.
 
 ** Code Navigation
 
