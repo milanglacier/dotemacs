@@ -36,6 +36,10 @@
     :hook ((prog-mode text-mode conf-mode) . display-line-numbers-mode)
     :init
     (setq display-line-numbers-type t)
+    (my/toggle-map
+        :keymaps 'override
+        :states '(motion insert normal)
+        "n" #'display-line-numbers-mode)
     )
 
 (use-package whitespace
