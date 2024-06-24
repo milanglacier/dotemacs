@@ -80,12 +80,12 @@ is called."
     "the verses displayed on the bottom of `initial-scratch-message'")
 
 (defvar my$actions
-    '((" New [T]heme      " . load-theme)
-      (" New [V]erse      " . my~refresh-verses)
-      (" [S]tartup Time   " . my~emacs-startup-time)
-      (" Org [A]genda     " . org-agenda-list)
-      (" Recent [F]iles   " . consult-recent-file)
-      (" Recent [P]rojects" . project-switch-project))
+    '(("⦾ New [T]heme      " . load-theme)
+      ("⦾ New [V]erse      " . my~refresh-verses)
+      ("⦾ [S]tartup Time   " . my~emacs-startup-time)
+      ("⦾ Org [A]genda     " . org-agenda-list)
+      ("⦾ Recent [F]iles   " . consult-recent-file)
+      ("⦾ Recent [P]rojects" . project-switch-project))
     "the actions to be displayed on the welcome screen")
 
 (defun my:empty-lines-between-sections ()
@@ -184,9 +184,9 @@ is called."
 (defun my:verses-add-font-lock ()
     (font-lock-add-keywords
      nil
-     '(("^ *\\([^\"]+\\)$" 1 'my&verses)
+     '(("^ *\\([^\"⦾]+\\)$" 1 'my&verses)
        ("^ *\\(.+\\)$" 1 'my&verse-quotes)
-       ("^ *\\(.+\\)\\[" 1 'my&welcome-screen-action)
+       ("^ *\\(⦾.+\\)\\[" 1 'my&welcome-screen-action)
        ("\\(\\[.*\\]\\)" 1 'my&welcome-screen-action-key)
        ("\\]\\(.*\\)$" 1 'my&welcome-screen-action))))
 

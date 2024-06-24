@@ -6,14 +6,12 @@
 
 ;; ibuffer
 (straight-use-package 'ibuffer-vc)
-(straight-use-package 'nerd-icons-ibuffer)
 
 ;; dired
 (straight-use-package 'dired-sidebar)
 (straight-use-package 'dired-rsync)
 (straight-use-package 'diredfl)
 (straight-use-package 'dired-git-info)
-(straight-use-package 'nerd-icons-dired)
 
 (use-package hideshow
     :hook (prog-mode . hs-minor-mode))
@@ -107,9 +105,6 @@
     :init
     (add-hook 'ibuffer-hook #'my/ibuffer-vc-setup))
 
-(use-package nerd-icons-ibuffer
-    :hook (ibuffer-mode . nerd-icons-ibuffer-mode))
-
 (use-package dired
     :init
     (setq dired-dwim-target t
@@ -167,10 +162,6 @@
 
 (use-package diredfl
     :hook (dired-mode . diredfl-mode))
-
-(use-package nerd-icons-dired
-    :hook ((dired-mode . nerd-icons-dired-mode)
-           (nerd-icons-dired-mode . my:dired-subtree-toggle-nerd-icons)))
 
 (use-package dired-sidebar
     :init
