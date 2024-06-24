@@ -37,46 +37,46 @@ is called."
 
 (defvar my$header-verses
     '(("Bright star, would I were steadfast as thee art!"
-       " John Keats")
+       "◈ John Keats")
       ("For clattering parrots to launch their fleet at sunrise"
        "For April to ignite the African violet"
-       " Derek Walcott")
+       "◈ Derek Walcott")
       ("In these poinsettia meadows of her tides,—"
        "Adagios of islands, O my Prodigal,"
        "Complete the dark confessions her veins spell."
-       " Hart Crane")
+       "◈ Hart Crane")
       ("帝子降兮北渚，目眇眇兮愁予，"
        "袅袅兮秋风，洞庭波兮木叶下。"
-       " 《湘夫人》")
+       "◈ 《湘夫人》")
       ("美人迈兮音尘阙，隔千里兮共明月。"
        "临风叹兮将焉歇，川路长兮不可越！"
-       " 《月赋》")
+       "◈ 《月赋》")
       ("浴兰汤兮沐芳，华采衣兮若英。"
        "灵连蜷兮既留，烂昭昭兮未央。"
        "蹇将憺兮寿宫，与日月兮齐光。"
-       " 《云中君》"))
+       "◈ 《云中君》"))
     "the verses displayed on the top of `initial-scratch-message'")
 
 (defvar my$foot-verses
     '(("Whispers antiphonal in the azure swing..."
-       " Hart Crane")
+       "◈ Hart Crane")
       ("In the drumming world that dampens your tired eyes"
        "Behind two clouding lenses, sunrise, sunset,"
        "The quiet ravage of diabetes."
-       " Derek Walcott")
+       "◈ Derek Walcott")
       ("What words"
        "Can strangle this deaf moonlight? For we"
        "Are overtaken."
-       " Hart Crane")
+       "◈ Hart Crane")
       ("搴汀洲兮杜若，将以遗兮远者。"
        "时不可兮骤得，聊逍遥兮容与！"
-       " 《湘夫人》")
+       "◈ 《湘夫人》")
       ("月既没兮露欲晞，岁方晏兮无与归。"
        "佳期可以还，微霜沾人衣。"
-       " 《月赋》")
+       "◈ 《月赋》")
       ("雷填填兮雨冥冥，猨啾啾兮狖夜鸣。"
        "风飒飒兮木萧萧，思公子兮徒离忧。"
-       " 《山鬼》"))
+       "◈ 《山鬼》"))
     "the verses displayed on the bottom of `initial-scratch-message'")
 
 (defvar my$actions
@@ -184,8 +184,8 @@ is called."
 (defun my:verses-add-font-lock ()
     (font-lock-add-keywords
      nil
-     '(("^ *\\([^\"⦾]+\\)$" 1 'my&verses)
-       ("^ *\\(.+\\)$" 1 'my&verse-quotes)
+     '(("^ *\\([^\"◈⦾]+\\)$" 1 'my&verses)
+       ("^ *\\(◈.+\\)$" 1 'my&verse-quotes)
        ("^ *\\(⦾.+\\)\\[" 1 'my&welcome-screen-action)
        ("\\(\\[.*\\]\\)" 1 'my&welcome-screen-action-key)
        ("\\]\\(.*\\)$" 1 'my&welcome-screen-action))))
@@ -214,10 +214,10 @@ is called."
         (erase-buffer)
         (insert (my:generate-initial-messages))))
 
-(defvar my$tab-bar-tab-name-open "")
-(defvar my$tab-bar-tab-name-close "")
-(defvar my$tab-bar-group-name-open " ")
-(defvar my$tab-bar-group-name-close " ")
+(defvar my$tab-bar-tab-name-open "⌜")
+(defvar my$tab-bar-tab-name-close "⌟")
+(defvar my$tab-bar-group-name-open "« ")
+(defvar my$tab-bar-group-name-close " »")
 
 (defun my:tab-bar-tab-name-format (tab i)
     "This is a slightly modified version of
