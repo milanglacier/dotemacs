@@ -9,6 +9,8 @@
 (straight-use-package 'reformatter)
 (straight-use-package '(dape :host github :repo "svaante/dape"))
 
+(straight-use-package 'plz) ; used for minuet
+
 (use-package citre
     :init
     (require 'citre-config)
