@@ -44,7 +44,7 @@ context before cursor will be used.")
 
 (defun minuet--add-tab-comment ()
     (if (derived-mode-p 'prog-mode 'conf-mode)
-            (let ((commentstring (format "%s %%s%s"
+            (let ((commentstring (format "%s%%s%s"
                                          (or comment-start "#")
                                          (or comment-end ""))))
                 (if indent-tabs-mode
@@ -57,7 +57,7 @@ context before cursor will be used.")
               (mode (symbol-name major-mode))
               (mode (replace-regexp-in-string "-ts-mode" "" mode))
               (mode (replace-regexp-in-string "-mode" "" mode))
-              (commentstring (format "%s %%s%s"
+              (commentstring (format "%s%%s%s"
                                      (or comment-start "#")
                                      (or comment-end ""))))
             (format commentstring (concat "language: " mode))
@@ -68,9 +68,8 @@ context before cursor will be used.")
            (n-chars-before point)
            (point-max (point-max))
            (n-chars-after (- point-max point))
-           context-before-cursor context-after-cursor)
-        (setq context-before-cursor (buffer-substring-no-properties (point-min) (point))
-              context-after-cursor (buffer-substring-no-properties (point) (point-max)))
+           (context-before-cursor (buffer-substring-no-properties (point-min) point))
+           (context-after-cursor (buffer-substring-no-properties point point-max)))
         ;; use some heuristic to decide the context length of before cursor and after cursor
         (when (>= (+ n-chars-before n-chars-after) minuet-context-window)
             (cond ((< n-chars-before (* 0.5 minuet-context-window))
@@ -79,11 +78,9 @@ context before cursor will be used.")
                          (substring context-after-cursor 0 (- minuet-context-window n-chars-before))))
                   ((< n-chars-after (* 0.5 minuet-context-window))
                    ;; at the very end of the file
-                   (if (< n-chars-before minuet-context-window)
-                           (setq context-before-curosr
-                                 (substring context-before-cursor (- minuet-context-window n-chars-before)))
-                       (setq context-before-cursor
-                             (substring context-before-cursor (- minuet-context-window n-chars-before)))))
+                   (setq context-before-curosr
+                         (substring context-before-cursor (- (+ n-chars-before n-chars-after)
+                                                             minuet-context-window))))
                   (t
                    ;; at the middle of the file, use the context_ratio to determine the allocation
                    (setq context-after-cursor
@@ -93,7 +90,8 @@ context before cursor will be used.")
                          context-before-cursor
                          (substring context-before-cursor
                                     (max 0 (- n-chars-before (floor (* minuet-context-window minuet-context-ratio)))))))))
-        `(,context-before-cursor . ,context-after-cursor)))
+        (cons (format "%s\n%s\n%s" (minuet--add-language-comment) (minuet--add-tab-comment) context-before-cursor)
+              context-after-cursor)))
 
 ;;;###autoload
 (defun minuet-completion-in-region ()
