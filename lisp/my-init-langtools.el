@@ -4,7 +4,6 @@
 (straight-use-package 'eglot)
 (straight-use-package 'consult-eglot)
 (straight-use-package 'edit-indirect)
-(straight-use-package '(codeium :type git :host github :repo "Exafunction/codeium.el"))
 (straight-use-package 'code-cells)
 (straight-use-package 'reformatter)
 (straight-use-package '(dape :host github :repo "svaante/dape"))
@@ -176,34 +175,13 @@
      :keymaps 'comint-mode-map
      "C-a" #'comint-bol))
 
-(use-package codeium
+
+(use-package minuet
+    ;; AI completion tool
     :init
-    ;; NEXT: I need to determine how to properly configure
-    ;; `codeium-completion-at-point' as a regular
-    ;; `completion-at-point' function that integrates with other
-    ;; completion sources, such as `citre-completion-at-point' and
-    ;; `eglot-completion-at-point'.
-
-    ;; There are two issues to address:
-
-    ;; 1. It is not possible to place other company backends, such as
-    ;; `company-yasnippet', before `company-capf'. Using (setq
-    ;; company-backedns '((company-yasnippet company-capf))) as an
-    ;; example will not work in this case. Consequently, when inside a
-    ;; function body, company will only provide candidates from
-    ;; `company-yasnippet'.
-
-    ;; 2. When attempting to use `cape-capf-super' to combine
-    ;; `eglot-completion-at-point' and `codeium-completion-at-point',
-    ;; only the candidates from the first capf will be displayed, and
-    ;; the candidates from the second capf will never appear.
-
-    ;; Currently, I can only use `codeium-completion-at-point' as an
-    ;; interactive command in the minibuffer.
     (general-define-key
      :states 'insert
-     "M-y" #'my~codeium-completion)
-    )
+     "M-y" #'minuet-completion-in-region))
 
 (use-package treesit
     :init
