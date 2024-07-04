@@ -79,7 +79,7 @@
 (require 'my-misc)
 
 ;; I personally HATE custom.el. But I don't think I have a better
-;; place to store the API key for codeium.
+;; place to store some temp file.
 (when (file-exists-p custom-file)
     (load custom-file))
 

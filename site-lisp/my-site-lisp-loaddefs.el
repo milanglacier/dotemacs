@@ -19,6 +19,13 @@ Read a tag from minibuffer and jump to the tag.
 ;;; Generated autoloads from evil-ts.el
 
 (register-definition-prefixes "evil-ts" '("evil-ts-"))
+
+
+;;; Generated autoloads from minuet.el
+
+(autoload 'minuet-completion-in-region "minuet" "\
+Complete code in region with LLM." t)
+(register-definition-prefixes "minuet" '("minuet-"))
 
 ;;; End of scraped data
 

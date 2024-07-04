@@ -10,12 +10,6 @@
         (setq-local completion-at-point-functions
                     (delq #'my/eglot-citre-capf completion-at-point-functions))))
 
-;;;###autoload (autoload #'my~codeium-completion "my-langtools-autoloads" nil t)
-(defalias #'my~codeium-completion (cape-capf-interactive #'codeium-completion-at-point)
-    "An interactive command that shows completion candidates from
-Codeium in minibuffer, from which you can select one and insert it
-into the buffer.")
-
 (defun my/eldoc-buffer-dwim-fallback ()
     "When eldoc buffer window is not opened, display the eldoc
 window. Pressing \\[my/eldoc-buffer-dwim] again within a short

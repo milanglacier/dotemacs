@@ -307,7 +307,6 @@ Edit the embedded sql code within a separate buffer." t)
 ;;; Generated autoloads from my-langtools-autoloads.el
 
 (autoload 'my/toggle-citre-eglot-capf "my-langtools-autoloads")
- (autoload #'my~codeium-completion "my-langtools-autoloads" nil t)
  (autoload #'my/eldoc-buffer-dwim "my-langtools-autoloads" nil t)
 (autoload 'my/xref-move-in-original-src-macro "my-langtools-autoloads" "\
 There can only be one xref buffer. That is, if you find
