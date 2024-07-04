@@ -47,7 +47,7 @@ item only containing its first line.")
 
 (defun minuet--add-tab-comment ()
     (if (derived-mode-p 'prog-mode 'conf-mode)
-            (let ((commentstring (format "%s%%s%s"
+            (let ((commentstring (format "%s %%s%s"
                                          (or comment-start "#")
                                          (or comment-end ""))))
                 (if indent-tabs-mode
@@ -60,7 +60,7 @@ item only containing its first line.")
               (mode (symbol-name major-mode))
               (mode (replace-regexp-in-string "-ts-mode" "" mode))
               (mode (replace-regexp-in-string "-mode" "" mode))
-              (commentstring (format "%s%%s%s"
+              (commentstring (format "%s %%s%s"
                                      (or comment-start "#")
                                      (or comment-end ""))))
             (format commentstring (concat "language: " mode))
