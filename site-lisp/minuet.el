@@ -26,6 +26,9 @@
 context before cursor and after cursor, the larger the ratio the more
 context before cursor will be used.")
 (defvar minuet-request-timeout 3 "maximum timeout for sending request in second")
+(defvar minuet-add-single-line-entry t
+    "if completion item has multiple lines, create another completion
+item only containing its first line.")
 
 (defvar minuet-codestral-options
     '(:max_tokens 128
@@ -62,6 +65,13 @@ context before cursor will be used.")
                                      (or comment-end ""))))
             (format commentstring (concat "language: " mode))
         ""))
+
+(defun minuet--add-single-line-entry (data)
+    (cl-loop
+     for item in data
+     when (stringp item)
+     append (list (car (split-string item "\n"))
+                  item)))
 
 (defun minuet--get-context ()
     (let* ((point (point))
@@ -106,7 +116,11 @@ context before cursor will be used.")
                  (cdr context)
                  (lambda (items)
                      (with-current-buffer current-buffer
-                         (setq items (mapcar
+                         (setq items (if minuet-add-single-line-entry
+                                             (minuet--add-single-line-entry items)
+                                         items)
+                               items (-distinct items)
+                               items (mapcar
                                       (lambda (x) (replace-regexp-in-string "^[\s\n\t]*" "" x))
                                       items))
                          (completion-in-region (point) (point) items))))))
