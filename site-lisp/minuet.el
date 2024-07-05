@@ -46,13 +46,13 @@ item only containing its first line.")
             (message "%s" message))))
 
 (defun minuet--add-tab-comment ()
-    (if (derived-mode-p 'prog-mode 'conf-mode)
-            (let ((commentstring (format "%s %%s%s"
-                                         (or comment-start "#")
-                                         (or comment-end ""))))
-                (if indent-tabs-mode
-                        (format commentstring "indentation: use \t for a tab")
-                    (format commentstring (format "indentation: use %d spaces for a tab" tab-width))))
+    (if-let* ((language-p (derived-mode-p 'prog-mode 'text-mode 'conf-mode))
+              (commentstring (format "%s %%s%s"
+                                     (or comment-start "#")
+                                     (or comment-end ""))))
+            (if indent-tabs-mode
+                    (format commentstring "indentation: use \t for a tab")
+                (format commentstring (format "indentation: use %d spaces for a tab" tab-width)))
         ""))
 
 (defun minuet--add-language-comment ()
