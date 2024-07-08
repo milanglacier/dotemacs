@@ -23,7 +23,7 @@
 
     (my/find-map
         :keymaps 'override
-        :states '(motion normal)
+        :states '(motion normal emacs)
         "" '(:ignore t :which-key "find")
         "f" #'project-find-file
         "F" #'find-file

@@ -109,7 +109,7 @@ if they are side window.")
         :prefix-map 'my/tab-map)
 
     (my/tab-map
-        :states '(motion insert normal)
+        :states '(motion insert normal emacs)
         :keymaps 'override
         "" '(:ignore t :which-key "Tab")
         "n" #'tab-bar-new-tab
