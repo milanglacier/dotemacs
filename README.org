@@ -99,7 +99,6 @@ webkit. Preview slides in emacs without the need to open GUI browser
 anymore.
 
 * TODOs
-** [#A] Migrate from `mu4e` to `notmuch`.
 ** [#B] Report ~org-capture~ bugs when inserting entries into table to upstream.
 ** [#B] Utilize the contextual information from previous code block when editing source block within markdown/org.
 ** [#C] Lazily load third-party plugins for ~evil~.
