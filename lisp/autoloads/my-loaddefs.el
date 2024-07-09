@@ -187,51 +187,9 @@ https://emacs.stackexchange.com/questions/10230/how-to-indent-keywords-aligned
 
 ;;; Generated autoloads from my-email-autoloads.el
 
-(autoload 'my:mu4e-enter-func "my-email-autoloads" "\
-
-
-(fn USE-ORG-MSG-MODE &optional ADDITIONAL-FUNC)")
-(autoload 'my:mu4e-leave-func "my-email-autoloads" "\
-
-
-(fn &optional ADDITIONAL-FUNC)")
-(autoload 'my:mu4e-match-func "my-email-autoloads" "\
-
-
-(fn PREFIX)")
-(autoload 'my:mu4e-open-link-via-eww "my-email-autoloads" "\
-If point is on a link, open this link via `eww'. Otherwise open
-this email via `eww'
-
-(fn MSG)")
-(defvar my~mu4e-thread-folding-mode nil "\
-Non-nil if My~Mu4e-Thread-Folding mode is enabled.
-See the `my~mu4e-thread-folding-mode' command
-for a description of this minor mode.
-Setting this variable directly does not take effect;
-either customize it (see the info node `Easy Customization')
-or call the function `my~mu4e-thread-folding-mode'.")
-(custom-autoload 'my~mu4e-thread-folding-mode "my-email-autoloads" nil)
-(autoload 'my~mu4e-thread-folding-mode "my-email-autoloads" "\
-Enable thread folding for mu4e.
-
-This is a global minor mode.  If called interactively, toggle the
-`My~Mu4e-Thread-Folding mode' mode.  If the prefix argument is
-positive, enable the mode, and if it is zero or negative, disable
-the mode.
-
-If called from Lisp, toggle the mode if ARG is `toggle'.  Enable
-the mode if ARG is nil, omitted, or is a positive number.
-Disable the mode if ARG is a negative number.
-
-To check whether the minor mode is enabled in the current buffer,
-evaluate `(default-value \\='my~mu4e-thread-folding-mode)'.
-
-The mode's hook is called both when the mode is enabled and when
-it is disabled.
-
-(fn &optional ARG)" t)
-(register-definition-prefixes "my-email-autoloads" '("my$mu4e-" "my:mu4e-" "my~mu4e-"))
+(autoload 'my:notmuch-setup "my-email-autoloads" "\
+Modified from `evil-collection-notmuch', but remove those keybindings I do not need. Especially for archiving.")
+(register-definition-prefixes "my-email-autoloads" '("my$notmuch-deleted-tags" "my:notmuch-search-show-thread" "my~notmuch-"))
 
 
 ;;; Generated autoloads from my-evil-autoloads.el
