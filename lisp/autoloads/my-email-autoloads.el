@@ -51,7 +51,9 @@
      "cc" #'notmuch-mua-new-mail ; like mu4e
      "cr" #'notmuch-show-reply-sender ; like mu4e
      "cR" #'notmuch-show-reply
-     "cf" #'notmuch-show-forward-message
+     "cf" #'notmuch-show-forward-message ; forward only current message
+     ;; forward the entire thread if on conversation mode, otherwise forward current message
+     "cF" #'notmuch-show-forward-open-messages
      "zv" #'notmuch-tree-from-show-current-query ; like mu4e-conversation
      "<" #'notmuch-show-toggle-thread-indentation
      "D" #'my~notmuch-search-toggle-deleted
@@ -79,22 +81,20 @@
     (general-define-key
      :states 'normal
      :keymaps 'notmuch-search-mode-map
-     "cC" #'compose-mail-other-frame
      "J" #'notmuch-jump-search
      "S" #'notmuch-search-filter
      "K" #'notmuch-tag-jump ; apply +tags with popup menu to select to selected messages, <C-u> to apply -tags.
      "O" #'notmuch-search-toggle-order
      "zv" #'notmuch-tree-from-search-current-query
      "*" #'notmuch-search-tag-all
-     "cc" #'compose-mail                ; like mu4e
      "D" #'my~notmuch-search-toggle-deleted
      "!" #'evil-collection-notmuch-search-toggle-unread
      "F" #'evil-collection-notmuch-search-toggle-flagged
      "q" #'notmuch-bury-or-kill-this-buffer
+     "cc" #'notmuch-mua-new-mail ; like mu4e
      "cr" #'notmuch-search-reply-to-thread-sender
      "cR" #'notmuch-search-reply-to-thread
      "t" #'notmuch-search-filter-by-tag
-     [mouse-1] #'notmuch-search-show-thread
      "-" #'notmuch-search-remove-tag
      "+" #'notmuch-search-add-tag
      "RET" #'notmuch-search-show-thread
@@ -122,11 +122,11 @@
      "zv" #'notmuch-search-from-tree-current-query ; like mu4e-conversation
      "cr" #'notmuch-show-reply-sender ; like mu4e
      "cR" #'notmuch-show-reply
+     "cf" #'notmuch-tree-forward-message
      "!" #'evil-collection-notmuch-tree-toggle-unread
      "=" #'evil-collection-notmuch-tree-toggle-flagged
      "K" #'notmuch-tag-jump
      "RET" #'notmuch-tree-show-message
-     [mouse-1] #'notmuch-tree-show-message
      "s" #'notmuch-tree-to-tree
      "gj" #'notmuch-tree-next-matching-message
      "gk" #'notmuch-tree-prev-matching-message
