@@ -118,6 +118,8 @@
             ("attachment" "󰁦")
             ("emacs.*" "")
             ("list" "")
+            ("replied" "")
+            ("signed" "󱧃")
             ("misc-list" "")
             ("R" "")
             ("python" "")
