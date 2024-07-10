@@ -98,10 +98,10 @@
             (:name "sent" :query "tag:sent" :key "S")
             )
           notmuch-search-result-format
-          '(("date" . "%12s  ")
-            ("count" . "%-7s  ")
-            ("authors" . "%-20s  ")
-            ("subject" . "%-80s  ")
+          '(("date" . "%12s ")
+            ("count" . "%-7s ")
+            ("authors" . "%-25s  ")
+            ("subject" . "%-90s  ")
             ("tags" . "(%s)"))
           notmuch-tag-formats
           '(("unread" (propertize "" 'face 'notmuch-tag-unread))
