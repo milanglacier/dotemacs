@@ -189,7 +189,7 @@ https://emacs.stackexchange.com/questions/10230/how-to-indent-keywords-aligned
 
 (autoload 'my:notmuch-setup "my-email-autoloads" "\
 Modified from `evil-collection-notmuch', but remove those keybindings I do not need. Especially for archiving.")
-(register-definition-prefixes "my-email-autoloads" '("my$notmuch-deleted-tags" "my:notmuch-search-show-thread" "my~notmuch-"))
+(register-definition-prefixes "my-email-autoloads" '("my$notmuch-deleted-tags" "my:notmuch-" "my~notmuch-"))
 
 
 ;;; Generated autoloads from my-evil-autoloads.el

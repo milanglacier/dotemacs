@@ -113,6 +113,7 @@
     (general-define-key
      :states 'normal
      :keymaps 'notmuch-tree-mode-map
+     [mouse-1] nil
      "g?" #'notmuch-help
      "q" #'notmuch-tree-quit
      "S" #'notmuch-tree-to-search
@@ -164,6 +165,30 @@
                     (funcall orig-notmuch-show
                              thread-id elide-toggle parent-buffer query-context
                              (format "*nm-msg:%s*" (substring buffer-name 1 -1))))))
+        (apply fn args)))
+
+(defun my:notmuch-ensure-field-truncation (fn &rest args)
+    "Ensure the field get truncated appropriately"
+    (require 's)
+    (cl-letf* ((orig-format
+                (symbol-function #'format))
+               ((symbol-function #'format)
+                (lambda (string &rest objects)
+                    (when-let* ((truncation-width
+                                 (s-match (rx "%-" (group (+ num)) "s")
+                                          string))
+                                (truncation-width (nth 1 truncation-width))
+                                (truncation-width (string-to-number truncation-width)))
+                        (setq objects
+                              (mapcar
+                               (lambda (x)
+                                   (if (and (stringp x)
+                                            (> (string-width x) truncation-width))
+                                           (truncate-string-to-width x truncation-width)
+                                       x))
+                               objects))
+                        )
+                    (apply orig-format string objects))))
         (apply fn args)))
 
 (provide 'my-email-autoloads)

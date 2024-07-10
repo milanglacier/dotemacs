@@ -54,6 +54,13 @@
     ;; `display-buffer-alist'.
     (advice-add #'notmuch-search-show-thread :around #'my:notmuch-search-show-thread)
 
+    ;; Ensure proper truncation of all fields in notmuch search
+    ;; results. Notmuch only truncated long strings for the "authors"
+    ;; field. This advice extends truncation to all fields, including
+    ;; "subjects". It guarantees that format strings like "%-80s" will
+    ;; limit output to 80 characters
+    (advice-add #'notmuch-search-insert-field :around #'my:notmuch-ensure-field-truncation)
+
     ;; always latest messages display at top
     (setq-default notmuch-search-oldest-first nil)
 
