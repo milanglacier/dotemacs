@@ -72,6 +72,8 @@
      "TAB" #'notmuch-show-next-button
      "S-TAB" #'notmuch-show-previous-button
      "RET" #'notmuch-show-toggle-message
+     "zo" #'my~notmuch-show-open-entire-thread ; show all messages in current threads
+     "zc" #'my~notmuch-show-close-entire-thred ; hide all messages in current threads
      "SPC SPC" 'notmuch-show-part-map
      "gs" 'notmuch-show-stash-map
      )
@@ -190,6 +192,18 @@
                         )
                     (apply orig-format string objects))))
         (apply fn args)))
+
+(defun my~notmuch-show-open-entire-thread ()
+    "Show all messages in current thread."
+    (interactive)
+    (let ((current-prefix-arg nil))
+        (notmuch-show-open-or-close-all)))
+
+(defun my~notmuch-show-close-entire-thred ()
+    "Hide all messages in current thread."
+    (interactive)
+    (let ((current-prefix-arg t))
+        (notmuch-show-open-or-close-all)))
 
 (provide 'my-email-autoloads)
 ;;; my-email-autoloads.el ends here
