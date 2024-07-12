@@ -159,7 +159,10 @@
                  '(eglot-ensure (derived-mode-p 'org-msg-edit-mode)))
 
     :config
-    (add-hook 'org-msg-edit-mode-hook (my/turn-off-mode diff-hl-mode)))
+    (add-hook 'org-msg-edit-mode-hook (my/turn-off-mode diff-hl-mode))
+    (my/setq-on-hook org-msg-edit-mode-hook company-backends
+                     `(notmuch-company ,@company-backends))
+    )
 
 (provide 'my-init-email)
 ;;; my-init-email.el.el ends here
