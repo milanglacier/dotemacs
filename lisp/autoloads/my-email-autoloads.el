@@ -5,8 +5,7 @@
 ;;;###autoload
 (defun my:notmuch-setup ()
     "Modified from `evil-collection-notmuch', but remove those keybindings I do not need. Especially for archiving."
-    (require 'evil-collection-notmuch
-             (expand-file-name "modes/notmuch/evil-collection-notmuch" evil-collection-base-dir))
+    (evil-collection-require 'notmuch)
 
     (evil-collection-inhibit-insert-state 'notmuch-show-mode-map)
     (evil-collection-inhibit-insert-state 'notmuch-search-mode-map)

@@ -108,7 +108,7 @@
             ("flagged" (propertize "" 'face 'notmuch-tag-flagged))
             ("archive" (propertize "" 'face 'notmuch-tag-flagged))
             ("deleted" "")
-            ("spam" "󰉚" 'face 'notmuch-tag-flagged)
+            ("spam" "󰉚")
             ("inbox" "")
             ("action-archive" "[]")
             ("action-delete" "[]")
