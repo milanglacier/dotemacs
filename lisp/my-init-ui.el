@@ -90,15 +90,25 @@ if they are side window.")
 (use-package tab-bar
     :init
     (setq tab-bar-show 1
+          ;; hide the tab bar when it has only one tab, and show it
+          ;; again once more tabs are created.
           tab-bar-close-button-show nil
+          ;; Previously, this option was set to `"*scratch*"`, which
+          ;; would create a buffer associated with a file (named
+          ;; `*scratch*`) if that buffer did not exist. This behavior
+          ;; was not ideal, as one might accidentally save that file,
+          ;; resulting in directory pollution. Set this option to a
+          ;; function that creates a buffer and avoid associating it
+          ;; with a file.
           tab-bar-new-tab-choice #'my:tab-bar-new-buffer
           tab-bar-tab-hints t
           tab-bar-new-button-show nil
           tab-bar-separator " "
           tab-bar-auto-width nil
           ;; We have our own tab-bar UI that includes a variable for
-          ;; configuring the separator. Thus, this variable is
-          ;; unnecessary.
+          ;; configuring the separator. Thus, we want to ensure the
+          ;; tab bar does not automatically resize, to keep the
+          ;; tab-bar ui consistent.
           tab-bar-format '(tab-bar-format-tabs-groups)
           tab-bar-tab-name-format-function #'my:tab-bar-tab-name-format
           tab-bar-tab-group-format-function #'my:tab-bar-tab-group-format)
