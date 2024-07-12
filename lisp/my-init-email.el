@@ -116,6 +116,7 @@
             ("action-inbox" "[]")
             ("sent" "󰗍")
             ("attachment" "󰁦")
+            ("emacs-org" "")
             ("emacs.*" "")
             ("list" "")
             ("replied" "")
