@@ -91,7 +91,7 @@ if they are side window.")
     :init
     (setq tab-bar-show 1
           tab-bar-close-button-show nil
-          tab-bar-new-tab-choice "*scratch*"
+          tab-bar-new-tab-choice #'my:tab-bar-new-buffer
           tab-bar-tab-hints t
           tab-bar-new-button-show nil
           tab-bar-separator " "

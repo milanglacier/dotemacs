@@ -25,6 +25,9 @@ is called."
         (apply old-fun args)
         (setq-local default-directory current-dir)))
 
+(defun my:tab-bar-new-buffer ()
+    (get-buffer-create "*scratch*"))
+
 ;;;###autoload
 (defun my:font-set-small-mono-font ()
     "Set the default font to a smaller sized font for current buffer."
