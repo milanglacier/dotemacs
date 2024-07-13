@@ -43,67 +43,55 @@ enclosed in markers:
 
 (defvar minuet-default-guidelines
     "Guidelines:
+
 1. Offer completions after the `<cursorPosition>` marker.
 2. Make sure you have maintained the user's existing whitespace and indentation.
    This is REALLY IMPORTANT!
 3. Provide multiple completion options when possible.
-4. Return completions in JSON format as a list of lists, with each inner list
-   representing a single completion option. Make sure it is a plain list without
-   keys.
-5. The returned message will be further parsed and processed. Do not
-   include additional comments or markdown code block fences. Return the json
-   result directly."
+4. Return completions separated by the marker <endCompletion>.
+5. The returned message will be further parsed and processed. DO NOT include
+   additional comments or markdown code block fences. Return the result directly."
     "The default guidelines for minuet completion")
 
-(defvar minuet-default-examples "
-
-Example input:
-```
+(defvar minuet-default-fewshots
+    `((:role "user"
+       :content "# language: python
 <beginCode>
-# language: python
-def fib(n):
+def fibonacci(n):
     <cursorPosition>
 
 fib(5)
-<endCode>
-```
-
-Example output:
-```
-[
-[
-\"    '''\",
-\"    Recursive Fibonacci implementation\",
-\"    '''\",
-\"    if n < 2:\",
-\"        return n\",
-\"    return fib(n - 1) + fib(n - 2)\"
-],
-[
-\"    '''\",
-\"    Iterative Fibonacci implementation\",
-\"''\",
-\"    a, b = 0, 1\",
-\"    for _ in range(n):\",
-\"        a, b = b, a + b\",
-\"    return a\"
-]
-]
-```
-" "The default guidelines for minuet completion")
+<endCode>")
+      (:role "assistant"
+       :content "    '''
+    Recursive Fibonacci implementation
+    '''
+    if n < 2:
+        return n
+    return fib(n - 1) + fib(n - 2)
+<endCompletion>
+    '''
+    Iterative Fibonacci implementation
+    '''
+    a, b = 0, 1
+    for _ in range(n):
+        a, b = b, a + b
+    return a
+<endCompletion>
+")))
 
 (defvar minuet-claude-options
     `(:model "claude-3-5-sonnet-20240620"
       :max_tokens 512
       :system
       ,(format
-        "%s%s\n%s\n%s%s"
+        "%s%s\n%s\n%s"
         minuet-default-prompt
         minuet-default-guidelines
         "6. Keep each completion option concise, limiting it to a single line or only a few lines."
-        "7. Provide at most 2 completion items."
         ;; claude is slower and expensive, 2 items are enough.
-        minuet-default-examples))
+        "7. Provide at most 2 completion items.")
+      :few_shots ,minuet-default-fewshots)
     "config options for Minuet Claude provider")
 
 (defvar minuet-openai-options
@@ -111,8 +99,8 @@ Example output:
       :system
       ,(concat
         minuet-default-prompt
-        minuet-default-guidelines
-        minuet-default-examples))
+        minuet-default-guidelines)
+      :few_shots ,minuet-default-fewshots)
     "config options for Minuet OpenAI provider")
 
 (defvar minuet-codestral-options
@@ -229,6 +217,19 @@ Example output:
 (defun minuet--claude-available-p ()
     (minuet--check-env-var "ANTHROPIC_API_KEY"))
 
+(defun minuet--initial-process-completion-items-default (items)
+    (setq
+     items (split-string items "<endCompletion>")
+     items (mapcar (lambda (x)
+                       (if (or (equal x "")
+                               (string-match "^[\s\t\n]+$" x))
+                               nil
+                           (setq x (replace-regexp-in-string "\n$" "" x)
+                                 x (replace-regexp-in-string "^\n+" "" x))))
+                   items)
+     items (seq-filter #'identity items))
+    items)
+
 (defun minuet--codestral-complete (context callback)
     (let ((try 0)
           (total-try (plist-get minuet-codestral-options :n_completions))
@@ -271,16 +272,18 @@ Example output:
                    ("Authorization" . ,(concat "Bearer " (getenv "OPENAI_API_KEY"))))
         :timeout minuet-request-timeout
         :body (json-serialize `(:model ,(plist-get minuet-openai-options :model)
-                                :messages [(:role "system"
-                                            :content ,(plist-get minuet-openai-options :system))
-                                           (:role "user"
-                                            :content ,(concat
-                                                       (plist-get context :additional-context)
-                                                       "\n<beginCode>\n"
-                                                       (plist-get context :context-before-cursor)
-                                                       "<cursorPosition>"
-                                                       (plist-get context :context-after-cursor)
-                                                       "<endCode>"))]))
+                                :messages ,(vconcat
+                                            `((:role "system"
+                                               :content ,(plist-get minuet-openai-options :system))
+                                              ,@(plist-get minuet-openai-options :few_shots)
+                                              (:role "user"
+                                               :content ,(concat
+                                                          (plist-get context :additional-context)
+                                                          "\n<beginCode>\n"
+                                                          (plist-get context :context-before-cursor)
+                                                          "<cursorPosition>"
+                                                          (plist-get context :context-after-cursor)
+                                                          "<endCode>"))))))
         :as 'string
         :then
         (lambda (json)
@@ -290,18 +293,7 @@ Example output:
                         (choices (or (plist-get json :choices)
                                      (progn (minuet--log "No response from OpenAI API") nil)))
                         (result (--> choices car (plist-get it :message) (plist-get it :content)))
-                        (parse-result
-                         (condition-case err
-                                 (json-parse-string result :object-type 'plist :array-type 'list)
-                             (error (progn (minuet--log "Failed to parse OpenAI response at choices.message.content") nil))))
-                        (parse-result-is-list (or (listp parse-result)
-                                                  (progn (minuet--log "Failed to parse OpenAI response content as a list") nil)))
-                        (item-list (mapcar (lambda (item)
-                                               (condition-case err
-                                                       (string-join item "\n")
-                                                   (error nil)))
-                                           parse-result))
-                        (completion-items (seq-filter (lambda (x) (stringp x)) item-list)))
+                        (completion-items (minuet--initial-process-completion-items-default result)))
                 ;; insert the current result into the completion items list
                 (funcall callback completion-items)))
         :else (lambda (err)
@@ -318,14 +310,16 @@ Example output:
         :body (json-serialize `(:model ,(plist-get minuet-claude-options :model)
                                 :system ,(plist-get minuet-claude-options :system)
                                 :max_tokens ,(plist-get minuet-claude-options :max_tokens)
-                                :messages [(:role "user"
-                                            :content ,(concat
-                                                       (plist-get context :additional-context)
-                                                       "\n<beginCode>\n"
-                                                       (plist-get context :context-before-cursor)
-                                                       "<cursorPosition>"
-                                                       (plist-get context :context-after-cursor)
-                                                       "<endCode>"))]))
+                                :messages ,(vconcat
+                                            `(,@(plist-get minuet-openai-options :few_shots)
+                                              (:role "user"
+                                               :content ,(concat
+                                                          (plist-get context :additional-context)
+                                                          "\n<beginCode>\n"
+                                                          (plist-get context :context-before-cursor)
+                                                          "<cursorPosition>"
+                                                          (plist-get context :context-after-cursor)
+                                                          "<endCode>"))))))
         :as 'string
         :then
         (lambda (json)
@@ -335,18 +329,7 @@ Example output:
                         (content (or (plist-get json :content)
                                      (progn (minuet--log "No response from Claude API") nil)))
                         (result (--> content car (plist-get it :text)))
-                        (parse-result
-                         (condition-case err
-                                 (json-parse-string result :object-type 'plist :array-type 'list)
-                             (error (progn (minuet--log "Failed to parse Claude response at content.text") nil))))
-                        (parse-result-is-list (or (listp parse-result)
-                                                  (progn (minuet--log "Failed to parse Claude response content as a list") nil)))
-                        (item-list (mapcar (lambda (item)
-                                               (condition-case err
-                                                       (string-join item "\n")
-                                                   (error nil)))
-                                           parse-result))
-                        (completion-items (seq-filter (lambda (x) (stringp x)) item-list)))
+                        (completion-items (minuet--initial-process-completion-items-default result)))
                 ;; insert the current result into the completion items list
                 (funcall callback completion-items)))
         :else (lambda (err)
