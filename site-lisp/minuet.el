@@ -173,7 +173,7 @@ Example output:
                          (substring context-after-cursor 0 (- minuet-context-window n-chars-before))))
                   ((< n-chars-after (* 0.5 minuet-context-window))
                    ;; at the very end of the file
-                   (setq context-before-curosr
+                   (setq context-before-cursor
                          (substring context-before-cursor (- (+ n-chars-before n-chars-after)
                                                              minuet-context-window))))
                   (t
@@ -185,8 +185,9 @@ Example output:
                          context-before-cursor
                          (substring context-before-cursor
                                     (max 0 (- n-chars-before (floor (* minuet-context-window minuet-context-ratio)))))))))
-        (cons (format "%s\n%s\n%s" (minuet--add-language-comment) (minuet--add-tab-comment) context-before-cursor)
-              context-after-cursor)))
+        `(:context-before-cursor ,context-before-cursor
+          :context-after-cursor ,context-after-cursor
+          :additional-context ,(format "%s\n%s" (minuet--add-language-comment) (minuet--add-tab-comment)))))
 
 ;;;###autoload
 (defun minuet-completion-in-region ()
@@ -201,8 +202,7 @@ Example output:
             (minuet--log (format "Minuet provider %s is not available" minuet-provider))
             (error "Minuet provider %s is not available" minuet-provider))
         (funcall complete-fn
-                 (car context)
-                 (cdr context)
+                 context
                  (lambda (items)
                      (with-current-buffer current-buffer
                          (setq items (if minuet-add-single-line-entry
@@ -229,7 +229,7 @@ Example output:
 (defun minuet--claude-available-p ()
     (minuet--check-env-var "ANTHROPIC_API_KEY"))
 
-(defun minuet--codestral-complete (context-before-cursor context-after-cursor callback)
+(defun minuet--codestral-complete (context callback)
     (let ((try 0)
           (total-try (plist-get minuet-codestral-options :n_completions))
           completion-items)
@@ -240,8 +240,10 @@ Example output:
                            ("Authorization" . ,(concat "Bearer " (getenv "CODESTRAL_API_KEY"))))
                 :timeout minuet-request-timeout
                 :body (json-serialize `(:model ,(plist-get minuet-codestral-options :model)
-                                        :prompt ,context-before-cursor
-                                        :suffix ,context-after-cursor
+                                        :prompt ,(format "%s\n%s"
+                                                         (plist-get context :additional-context)
+                                                         (plist-get context :context-before-cursor))
+                                        :suffix ,(plist-get context :context-after-cursor)
                                         :max_tokens ,(plist-get minuet-codestral-options :max_tokens)
                                         :stop ,(plist-get minuet-codestral-options :stop)))
                 :as 'string
@@ -259,9 +261,10 @@ Example output:
                                   (funcall callback completion-items))))
                 :else (lambda (err)
                           (setq try (1+ try))
-                          (minuet--log "An error occured when sending request to Codestral"))))))
+                          (minuet--log "An error occured when sending request to Codestral")
+                          (minuet--log err))))))
 
-(defun minuet--openai-complete (context-before-cursor context-after-cursor callback)
+(defun minuet--openai-complete (context callback)
     (plz 'post "https://api.openai.com/v1/chat/completions"
         :headers `(("Content-Type" . "application/json")
                    ("Accept" . "application/json")
@@ -271,11 +274,13 @@ Example output:
                                 :messages [(:role "system"
                                             :content ,(plist-get minuet-openai-options :system))
                                            (:role "user"
-                                            :content ,(concat "<beginCode>\n"
-                                                              context-before-cursor
-                                                              "<cursorPosition>"
-                                                              context-after-cursor
-                                                              "<endCode>"))]))
+                                            :content ,(concat
+                                                       (plist-get context :additional-context)
+                                                       "\n<beginCode>\n"
+                                                       (plist-get context :context-before-cursor)
+                                                       "<cursorPosition>"
+                                                       (plist-get context :context-after-cursor)
+                                                       "<endCode>"))]))
         :as 'string
         :then
         (lambda (json)
@@ -300,9 +305,10 @@ Example output:
                 ;; insert the current result into the completion items list
                 (funcall callback completion-items)))
         :else (lambda (err)
-                  (minuet--log "An error occured when sending request to OpenAI"))))
+                  (minuet--log "An error occured when sending request to OpenAI")
+                  (minuet--log err))))
 
-(defun minuet--claude-complete (context-before-cursor context-after-cursor callback)
+(defun minuet--claude-complete (context callback)
     (plz 'post "https://api.anthropic.com/v1/messages"
         :headers `(("Content-Type" . "application/json")
                    ("Accept" . "application/json")
@@ -313,11 +319,13 @@ Example output:
                                 :system ,(plist-get minuet-claude-options :system)
                                 :max_tokens ,(plist-get minuet-claude-options :max_tokens)
                                 :messages [(:role "user"
-                                            :content ,(concat "<beginCode>\n"
-                                                              context-before-cursor
-                                                              "<cursorPosition>"
-                                                              context-after-cursor
-                                                              "<endCode>"))]))
+                                            :content ,(concat
+                                                       (plist-get context :additional-context)
+                                                       "\n<beginCode>\n"
+                                                       (plist-get context :context-before-cursor)
+                                                       "<cursorPosition>"
+                                                       (plist-get context :context-after-cursor)
+                                                       "<endCode>"))]))
         :as 'string
         :then
         (lambda (json)
@@ -342,7 +350,8 @@ Example output:
                 ;; insert the current result into the completion items list
                 (funcall callback completion-items)))
         :else (lambda (err)
-                  (minuet--log "An error occured when sending request to Claude"))))
+                  (minuet--log "An error occured when sending request to Claude")
+                  (minuet--log err))))
 
 (provide 'minuet)
 ;;; minuet.el ends here
