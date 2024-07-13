@@ -30,12 +30,97 @@ context before cursor will be used.")
     "if completion item has multiple lines, create another completion
 item only containing its first line.")
 
+(defvar minuet-default-prompt
+    "You are the backend of an AI-powered code completion engine. Your task is to
+provide code suggestions based on the user's input. The user's code will be
+enclosed in markers:
+
+- `<beginCode>`: Start of the code context
+- `<cursorPosition>`: Current cursor location
+- `<endCode>`: End of the code context
+
+" "The default prompt for minuet completion")
+
+(defvar minuet-default-guidelines
+    "Guidelines:
+1. Offer completions after the `<cursorPosition>` marker.
+2. Make sure you have maintained the user's existing whitespace and indentation.
+   This is REALLY IMPORTANT!
+3. Provide multiple completion options when possible.
+4. Return completions in JSON format as a list of lists, with each inner list
+   representing a single completion option. Make sure it is a plain list without
+   keys.
+5. The returned message will be further parsed and processed. Do not
+   include additional comments or markdown code block fences. Return the json
+   result directly."
+    "The default guidelines for minuet completion")
+
+(defvar minuet-default-examples "
+
+Example input:
+```
+<beginCode>
+# language: python
+def fib(n):
+    <cursorPosition>
+
+fib(5)
+<endCode>
+```
+
+Example output:
+```
+[
+[
+\"    '''\",
+\"    Recursive Fibonacci implementation\",
+\"    '''\",
+\"    if n < 2:\",
+\"        return n\",
+\"    return fib(n - 1) + fib(n - 2)\"
+],
+[
+\"    '''\",
+\"    Iterative Fibonacci implementation\",
+\"''\",
+\"    a, b = 0, 1\",
+\"    for _ in range(n):\",
+\"        a, b = b, a + b\",
+\"    return a\"
+]
+]
+```
+" "The default guidelines for minuet completion")
+
+(defvar minuet-claude-options
+    `(:model "claude-3-5-sonnet-20240620"
+      :max_tokens 512
+      :system
+      ,(format
+        "%s%s\n%s\n%s%s"
+        minuet-default-prompt
+        minuet-default-guidelines
+        "6. Keep each completion option concise, limiting it to a single line or only a few lines."
+        "7. Provide at most 2 completion items."
+        ;; claude is slower and expensive, 2 items are enough.
+        minuet-default-examples))
+    "config options for Minuet Claude provider")
+
+(defvar minuet-openai-options
+    `(:model "gpt-4o"
+      :system
+      ,(concat
+        minuet-default-prompt
+        minuet-default-guidelines
+        minuet-default-examples))
+    "config options for Minuet OpenAI provider")
+
 (defvar minuet-codestral-options
     '(:max_tokens 128
       :stop "\n\n"
       :model "codestral-latest"
       :n_completions 1)
-    "config options for Minuet when the provider is Codestral")
+    "config options for Minuet Codestral provider")
 
 (defun minuet--log (message &optional message-p)
     "Log minuet messages into `minuet-buffer-name'. Also print the message when MESSAGE-P is t."
@@ -108,9 +193,13 @@ item only containing its first line.")
     "Complete code in region with LLM."
     (interactive)
     (let ((current-buffer (current-buffer))
+          (available-p-fn (intern (format "minuet--%s-available-p" minuet-provider)))
           (complete-fn (intern (format "minuet--%s-complete" minuet-provider)))
           (context (minuet--get-context))
           (point (point)))
+        (unless (funcall available-p-fn)
+            (minuet--log (format "Minuet provider %s is not available" minuet-provider))
+            (error "Minuet provider %s is not available" minuet-provider))
         (funcall complete-fn
                  (car context)
                  (cdr context)
@@ -127,6 +216,18 @@ item only containing its first line.")
                                       items))
                          (completion-in-region (point) (point) items))))))
 
+(defun minuet--check-env-var (env-var)
+    (when-let ((var (getenv env-var)))
+        (not (equal var ""))))
+
+(defun minuet--codestral-available-p ()
+    (minuet--check-env-var "CODESTRAL_API_KEY"))
+
+(defun minuet--openai-available-p ()
+    (minuet--check-env-var "OPENAI_API_KEY"))
+
+(defun minuet--claude-available-p ()
+    (minuet--check-env-var "ANTHROPIC_API_KEY"))
 
 (defun minuet--codestral-complete (context-before-cursor context-after-cursor callback)
     (let ((try 0)
@@ -160,4 +261,88 @@ item only containing its first line.")
                           (setq try (1+ try))
                           (minuet--log "An error occured when sending request to Codestral"))))))
 
+(defun minuet--openai-complete (context-before-cursor context-after-cursor callback)
+    (plz 'post "https://api.openai.com/v1/chat/completions"
+        :headers `(("Content-Type" . "application/json")
+                   ("Accept" . "application/json")
+                   ("Authorization" . ,(concat "Bearer " (getenv "OPENAI_API_KEY"))))
+        :timeout minuet-request-timeout
+        :body (json-serialize `(:model ,(plist-get minuet-openai-options :model)
+                                :messages [(:role "system"
+                                            :content ,(plist-get minuet-openai-options :system))
+                                           (:role "user"
+                                            :content ,(concat "<beginCode>\n"
+                                                              context-before-cursor
+                                                              "<cursorPosition>"
+                                                              context-after-cursor
+                                                              "<endCode>"))]))
+        :as 'string
+        :then
+        (lambda (json)
+            (when-let* ((json (condition-case err
+                                      (json-parse-string json :object-type 'plist :array-type 'list)
+                                  (error (progn (minuet--log "Failed to parse OpenAI API response") nil))))
+                        (choices (or (plist-get json :choices)
+                                     (progn (minuet--log "No response from OpenAI API") nil)))
+                        (result (--> choices car (plist-get it :message) (plist-get it :content)))
+                        (parse-result
+                         (condition-case err
+                                 (json-parse-string result :object-type 'plist :array-type 'list)
+                             (error (progn (minuet--log "Failed to parse OpenAI response at choices.message.content") nil))))
+                        (parse-result-is-list (or (listp parse-result)
+                                                  (progn (minuet--log "Failed to parse OpenAI response content as a list") nil)))
+                        (item-list (mapcar (lambda (item)
+                                               (condition-case err
+                                                       (string-join item "\n")
+                                                   (error nil)))
+                                           parse-result))
+                        (completion-items (seq-filter (lambda (x) (stringp x)) item-list)))
+                ;; insert the current result into the completion items list
+                (funcall callback completion-items)))
+        :else (lambda (err)
+                  (minuet--log "An error occured when sending request to OpenAI"))))
+
+(defun minuet--claude-complete (context-before-cursor context-after-cursor callback)
+    (plz 'post "https://api.anthropic.com/v1/messages"
+        :headers `(("Content-Type" . "application/json")
+                   ("Accept" . "application/json")
+                   ("x-api-key" . ,(getenv "ANTHROPIC_API_KEY"))
+                   ("anthropic-version" . "2023-06-01"))
+        :timeout minuet-request-timeout
+        :body (json-serialize `(:model ,(plist-get minuet-claude-options :model)
+                                :system ,(plist-get minuet-claude-options :system)
+                                :max_tokens ,(plist-get minuet-claude-options :max_tokens)
+                                :messages [(:role "user"
+                                            :content ,(concat "<beginCode>\n"
+                                                              context-before-cursor
+                                                              "<cursorPosition>"
+                                                              context-after-cursor
+                                                              "<endCode>"))]))
+        :as 'string
+        :then
+        (lambda (json)
+            (when-let* ((json (condition-case err
+                                      (json-parse-string json :object-type 'plist :array-type 'list)
+                                  (error (progn (minuet--log "Failed to parse Claude API response") nil))))
+                        (content (or (plist-get json :content)
+                                     (progn (minuet--log "No response from Claude API") nil)))
+                        (result (--> content car (plist-get it :text)))
+                        (parse-result
+                         (condition-case err
+                                 (json-parse-string result :object-type 'plist :array-type 'list)
+                             (error (progn (minuet--log "Failed to parse Claude response at content.text") nil))))
+                        (parse-result-is-list (or (listp parse-result)
+                                                  (progn (minuet--log "Failed to parse Claude response content as a list") nil)))
+                        (item-list (mapcar (lambda (item)
+                                               (condition-case err
+                                                       (string-join item "\n")
+                                                   (error nil)))
+                                           parse-result))
+                        (completion-items (seq-filter (lambda (x) (stringp x)) item-list)))
+                ;; insert the current result into the completion items list
+                (funcall callback completion-items)))
+        :else (lambda (err)
+                  (minuet--log "An error occured when sending request to Claude"))))
+
+(provide 'minuet)
 ;;; minuet.el ends here
