@@ -173,9 +173,9 @@ fib(5)
                          context-before-cursor
                          (substring context-before-cursor
                                     (max 0 (- n-chars-before (floor (* minuet-context-window minuet-context-ratio)))))))))
-        `(:context-before-cursor ,context-before-cursor
-          :context-after-cursor ,context-after-cursor
-          :additional-context ,(format "%s\n%s" (minuet--add-language-comment) (minuet--add-tab-comment)))))
+        `(:before-cursor ,context-before-cursor
+          :after-cursor ,context-after-cursor
+          :additional ,(format "%s\n%s" (minuet--add-language-comment) (minuet--add-tab-comment)))))
 
 ;;;###autoload
 (defun minuet-completion-in-region ()
@@ -242,9 +242,9 @@ fib(5)
                 :timeout minuet-request-timeout
                 :body (json-serialize `(:model ,(plist-get minuet-codestral-options :model)
                                         :prompt ,(format "%s\n%s"
-                                                         (plist-get context :additional-context)
-                                                         (plist-get context :context-before-cursor))
-                                        :suffix ,(plist-get context :context-after-cursor)
+                                                         (plist-get context :additional)
+                                                         (plist-get context :before-cursor))
+                                        :suffix ,(plist-get context :after-cursor)
                                         :max_tokens ,(plist-get minuet-codestral-options :max_tokens)
                                         :stop ,(plist-get minuet-codestral-options :stop)))
                 :as 'string
@@ -278,11 +278,11 @@ fib(5)
                                               ,@(plist-get minuet-openai-options :few_shots)
                                               (:role "user"
                                                :content ,(concat
-                                                          (plist-get context :additional-context)
+                                                          (plist-get context :additional)
                                                           "\n<beginCode>\n"
-                                                          (plist-get context :context-before-cursor)
+                                                          (plist-get context :before-cursor)
                                                           "<cursorPosition>"
-                                                          (plist-get context :context-after-cursor)
+                                                          (plist-get context :after-cursor)
                                                           "<endCode>"))))))
         :as 'string
         :then
@@ -314,11 +314,11 @@ fib(5)
                                             `(,@(plist-get minuet-openai-options :few_shots)
                                               (:role "user"
                                                :content ,(concat
-                                                          (plist-get context :additional-context)
+                                                          (plist-get context :additional)
                                                           "\n<beginCode>\n"
-                                                          (plist-get context :context-before-cursor)
+                                                          (plist-get context :before-cursor)
                                                           "<cursorPosition>"
-                                                          (plist-get context :context-after-cursor)
+                                                          (plist-get context :after-cursor)
                                                           "<endCode>"))))))
         :as 'string
         :then
