@@ -83,6 +83,7 @@ fib(5)
 (defvar minuet-claude-options
     `(:model "claude-3-5-sonnet-20240620"
       :max_tokens 512
+      :stop nil
       :system
       ,(format
         "%s%s\n%s\n%s"
@@ -100,7 +101,9 @@ fib(5)
       ,(concat
         minuet-default-prompt
         minuet-default-guidelines)
-      :few_shots ,minuet-default-fewshots)
+      :few_shots ,minuet-default-fewshots
+      :max_tokens nil
+      :stop nil)
     "config options for Minuet OpenAI provider")
 
 (defvar minuet-codestral-options
@@ -117,7 +120,9 @@ fib(5)
       :system ,(concat
                 minuet-default-prompt
                 minuet-default-guidelines)
-      :few_shots ,minuet-default-fewshots)
+      :few_shots ,minuet-default-fewshots
+      :max_tokens nil
+      :stop nil)
     "config options for Minuet OpenAI compatible provider")
 
 (defun minuet--log (message &optional message-p)
@@ -186,6 +191,12 @@ fib(5)
         `(:before-cursor ,context-before-cursor
           :after-cursor ,context-after-cursor
           :additional ,(format "%s\n%s" (minuet--add-language-comment) (minuet--add-tab-comment)))))
+
+(defun minuet-encode-options (options key &optional override-key)
+    "If the value of KEY from OPTIONS is not nil, then create a plist with KEY and its VALUE, otherwise return nil.
+If OVERRIDE-KEY is provided, then use OVERRIDE-KEY as the key in the plist."
+    (if-let ((value (plist-get options key)))
+            `(,(or override-key key) ,value)))
 
 ;;;###autoload
 (defun minuet-completion-in-region ()
@@ -259,8 +270,8 @@ fib(5)
                                                          (plist-get context :additional)
                                                          (plist-get context :before-cursor))
                                         :suffix ,(plist-get context :after-cursor)
-                                        :max_tokens ,(plist-get minuet-codestral-options :max_tokens)
-                                        :stop ,(plist-get minuet-codestral-options :stop)))
+                                        ,@(minuet-encode-options minuet-codestral-options :max_tokens)
+                                        ,@(minuet-encode-options minuet-codestral-options :stop)))
                 :as 'string
                 :then (lambda (json)
                           (setq try (1+ try))
@@ -286,6 +297,8 @@ fib(5)
                    ("Authorization" . ,(concat "Bearer " api-key)))
         :timeout minuet-request-timeout
         :body (json-serialize `(:model ,(plist-get options :model)
+                                ,@(minuet-encode-options options :max_tokens)
+                                ,@(minuet-encode-options options :stop)
                                 :messages ,(vconcat
                                             `((:role "system"
                                                :content ,(plist-get options :system))
@@ -335,6 +348,7 @@ fib(5)
         :body (json-serialize `(:model ,(plist-get minuet-claude-options :model)
                                 :system ,(plist-get minuet-claude-options :system)
                                 :max_tokens ,(plist-get minuet-claude-options :max_tokens)
+                                ,@(minuet-encode-options minuet-claude-options :stop :stop_sequences)
                                 :messages ,(vconcat
                                             `(,@(plist-get minuet-openai-options :few_shots)
                                               (:role "user"
