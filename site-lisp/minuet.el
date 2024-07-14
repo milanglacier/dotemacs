@@ -110,6 +110,16 @@ fib(5)
       :n_completions 1)
     "config options for Minuet Codestral provider")
 
+(defvar minuet-openai-compatible-options
+    `(:end_point nil
+      :api_key nil
+      :model nil
+      :system ,(concat
+                minuet-default-prompt
+                minuet-default-guidelines)
+      :few_shots ,minuet-default-fewshots)
+    "config options for Minuet OpenAI compatible provider")
+
 (defun minuet--log (message &optional message-p)
     "Log minuet messages into `minuet-buffer-name'. Also print the message when MESSAGE-P is t."
     (with-current-buffer (get-buffer-create minuet-buffer-name)
@@ -217,6 +227,10 @@ fib(5)
 (defun minuet--claude-available-p ()
     (minuet--check-env-var "ANTHROPIC_API_KEY"))
 
+(defun minuet--openai-compatible-available-p ()
+    (when-let ((env-var (plist-get minuet-openai-compatible-options :api_key)))
+        (minuet--check-env-var env-var)))
+
 (defun minuet--initial-process-completion-items-default (items)
     (setq
      items (split-string items "<endCompletion>")
@@ -265,17 +279,17 @@ fib(5)
                           (minuet--log "An error occured when sending request to Codestral")
                           (minuet--log err))))))
 
-(defun minuet--openai-complete (context callback)
-    (plz 'post "https://api.openai.com/v1/chat/completions"
+(defun minuet--openai-complete-base (end-point api-key options context callback)
+    (plz 'post end-point
         :headers `(("Content-Type" . "application/json")
                    ("Accept" . "application/json")
-                   ("Authorization" . ,(concat "Bearer " (getenv "OPENAI_API_KEY"))))
+                   ("Authorization" . ,(concat "Bearer " api-key)))
         :timeout minuet-request-timeout
-        :body (json-serialize `(:model ,(plist-get minuet-openai-options :model)
+        :body (json-serialize `(:model ,(plist-get options :model)
                                 :messages ,(vconcat
                                             `((:role "system"
-                                               :content ,(plist-get minuet-openai-options :system))
-                                              ,@(plist-get minuet-openai-options :few_shots)
+                                               :content ,(plist-get options :system))
+                                              ,@(plist-get options :few_shots)
                                               (:role "user"
                                                :content ,(concat
                                                           (plist-get context :additional)
@@ -299,6 +313,17 @@ fib(5)
         :else (lambda (err)
                   (minuet--log "An error occured when sending request to OpenAI")
                   (minuet--log err))))
+
+(defun minuet--openai-complete (context callback)
+    (minuet--openai-complete-base
+     "https://api.openai.com/v1/chat/completions" (getenv "OPENAI_API_KEY")
+     minuet-openai-options context callback))
+
+(defun minuet--openai-compatible-complete (context callback)
+    (minuet--openai-complete-base
+     (plist-get minuet-openai-compatible-options :end_point)
+     (getenv (plist-get minuet-openai-compatible-options :api_key))
+     minuet-openai-compatible-options context callback))
 
 (defun minuet--claude-complete (context callback)
     (plz 'post "https://api.anthropic.com/v1/messages"
