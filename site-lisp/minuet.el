@@ -279,7 +279,7 @@ If OVERRIDE-KEY is provided, then use OVERRIDE-KEY as the key in the plist."
                                                     (json-parse-string json :object-type 'plist :array-type 'list)
                                                 (error (progn (minuet--log "Failed to parse Codestral API response") nil))))
                                       (choices (or (plist-get json :choices)
-                                                   (progn (minuet--log "No response from Codestral API") nil)))
+                                                   (progn (minuet--log "Codestral API returns no content") nil)))
                                       (result (--> choices car (plist-get it :message) (plist-get it :content))))
                               ;; insert the current result into the completion items list
                               (push result completion-items)
@@ -318,7 +318,7 @@ If OVERRIDE-KEY is provided, then use OVERRIDE-KEY as the key in the plist."
                                       (json-parse-string json :object-type 'plist :array-type 'list)
                                   (error (progn (minuet--log "Failed to parse OpenAI API response") nil))))
                         (choices (or (plist-get json :choices)
-                                     (progn (minuet--log "No response from OpenAI API") nil)))
+                                     (progn (minuet--log "OpenAI API returns no content") nil)))
                         (result (--> choices car (plist-get it :message) (plist-get it :content)))
                         (completion-items (minuet--initial-process-completion-items-default result)))
                 ;; insert the current result into the completion items list
@@ -366,7 +366,7 @@ If OVERRIDE-KEY is provided, then use OVERRIDE-KEY as the key in the plist."
                                       (json-parse-string json :object-type 'plist :array-type 'list)
                                   (error (progn (minuet--log "Failed to parse Claude API response") nil))))
                         (content (or (plist-get json :content)
-                                     (progn (minuet--log "No response from Claude API") nil)))
+                                     (progn (minuet--log "Claude API returns no content") nil)))
                         (result (--> content car (plist-get it :text)))
                         (completion-items (minuet--initial-process-completion-items-default result)))
                 ;; insert the current result into the completion items list
