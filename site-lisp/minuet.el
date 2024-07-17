@@ -83,7 +83,6 @@ fib(5)
 (defvar minuet-claude-options
     `(:model "claude-3-5-sonnet-20240620"
       :max_tokens 512
-      :stop nil
       :system
       ,(format
         "%s%s\n%s\n%s"
@@ -92,7 +91,8 @@ fib(5)
         "6. Keep each completion option concise, limiting it to a single line or only a few lines."
         ;; claude is slower and expensive, 2 items are enough.
         "7. Provide at most 2 completion items.")
-      :few_shots ,minuet-default-fewshots)
+      :few_shots ,minuet-default-fewshots
+      :optional nil)
     "config options for Minuet Claude provider")
 
 (defvar minuet-openai-options
@@ -103,14 +103,14 @@ fib(5)
         minuet-default-guidelines)
       :few_shots ,minuet-default-fewshots
       :max_tokens nil
-      :stop nil)
+      :optional nil)
     "config options for Minuet OpenAI provider")
 
 (defvar minuet-codestral-options
-    '(:max_tokens 128
-      :stop "\n\n"
-      :model "codestral-latest"
-      :n_completions 1)
+    '(:model "codestral-latest"
+      :n_completions 1
+      :optional (:max_tokens 128
+                 :stop "\n\n"))
     "config options for Minuet Codestral provider")
 
 (defvar minuet-openai-compatible-options
@@ -121,8 +121,7 @@ fib(5)
                 minuet-default-prompt
                 minuet-default-guidelines)
       :few_shots ,minuet-default-fewshots
-      :max_tokens nil
-      :stop nil)
+      :optional nil)
     "config options for Minuet OpenAI compatible provider")
 
 (defun minuet--log (message &optional message-p)
@@ -239,7 +238,11 @@ If OVERRIDE-KEY is provided, then use OVERRIDE-KEY as the key in the plist."
     (minuet--check-env-var "ANTHROPIC_API_KEY"))
 
 (defun minuet--openai-compatible-available-p ()
-    (when-let ((env-var (plist-get minuet-openai-compatible-options :api_key)))
+    (when-let* ((options minuet-openai-compatible-options)
+                (env-var (plist-get options :api_key))
+                (name (plist-get options :name))
+                (end-point (plist-get options :end_point))
+                (model (plist-get options :model)))
         (minuet--check-env-var env-var)))
 
 (defun minuet--initial-process-completion-items-default (items)
@@ -258,6 +261,7 @@ If OVERRIDE-KEY is provided, then use OVERRIDE-KEY as the key in the plist."
 (defun minuet--codestral-complete (context callback)
     (let ((try 0)
           (total-try (plist-get minuet-codestral-options :n_completions))
+          (options (copy-tree minuet-codestral-options))
           completion-items)
         (dotimes (_ total-try)
             (plz 'post "https://codestral.mistral.ai/v1/fim/completions"
@@ -265,13 +269,12 @@ If OVERRIDE-KEY is provided, then use OVERRIDE-KEY as the key in the plist."
                            ("Accept" . "application/json")
                            ("Authorization" . ,(concat "Bearer " (getenv "CODESTRAL_API_KEY"))))
                 :timeout minuet-request-timeout
-                :body (json-serialize `(:model ,(plist-get minuet-codestral-options :model)
+                :body (json-serialize `(,@(plist-get options :optional)
+                                        :model ,(plist-get options :model)
                                         :prompt ,(format "%s\n%s"
                                                          (plist-get context :additional)
                                                          (plist-get context :before-cursor))
-                                        :suffix ,(plist-get context :after-cursor)
-                                        ,@(minuet-encode-options minuet-codestral-options :max_tokens)
-                                        ,@(minuet-encode-options minuet-codestral-options :stop)))
+                                        :suffix ,(plist-get context :after-cursor)))
                 :as 'string
                 :then (lambda (json)
                           (setq try (1+ try))
@@ -296,9 +299,8 @@ If OVERRIDE-KEY is provided, then use OVERRIDE-KEY as the key in the plist."
                    ("Accept" . "application/json")
                    ("Authorization" . ,(concat "Bearer " api-key)))
         :timeout minuet-request-timeout
-        :body (json-serialize `(:model ,(plist-get options :model)
-                                ,@(minuet-encode-options options :max_tokens)
-                                ,@(minuet-encode-options options :stop)
+        :body (json-serialize `(,@(plist-get options :optional)
+                                :model ,(plist-get options :model)
                                 :messages ,(vconcat
                                             `((:role "system"
                                                :content ,(plist-get options :system))
@@ -330,13 +332,13 @@ If OVERRIDE-KEY is provided, then use OVERRIDE-KEY as the key in the plist."
 (defun minuet--openai-complete (context callback)
     (minuet--openai-complete-base
      "https://api.openai.com/v1/chat/completions" (getenv "OPENAI_API_KEY")
-     minuet-openai-options context callback))
+     (copy-tree minuet-openai-options) context callback))
 
 (defun minuet--openai-compatible-complete (context callback)
     (minuet--openai-complete-base
      (plist-get minuet-openai-compatible-options :end_point)
      (getenv (plist-get minuet-openai-compatible-options :api_key))
-     minuet-openai-compatible-options context callback))
+     (copy-tree minuet-openai-compatible-options) context callback))
 
 (defun minuet--claude-complete (context callback)
     (plz 'post "https://api.anthropic.com/v1/messages"
@@ -345,20 +347,21 @@ If OVERRIDE-KEY is provided, then use OVERRIDE-KEY as the key in the plist."
                    ("x-api-key" . ,(getenv "ANTHROPIC_API_KEY"))
                    ("anthropic-version" . "2023-06-01"))
         :timeout minuet-request-timeout
-        :body (json-serialize `(:model ,(plist-get minuet-claude-options :model)
-                                :system ,(plist-get minuet-claude-options :system)
-                                :max_tokens ,(plist-get minuet-claude-options :max_tokens)
-                                ,@(minuet-encode-options minuet-claude-options :stop :stop_sequences)
-                                :messages ,(vconcat
-                                            `(,@(plist-get minuet-openai-options :few_shots)
-                                              (:role "user"
-                                               :content ,(concat
-                                                          (plist-get context :additional)
-                                                          "\n<beginCode>\n"
-                                                          (plist-get context :before-cursor)
-                                                          "<cursorPosition>"
-                                                          (plist-get context :after-cursor)
-                                                          "<endCode>"))))))
+        :body (json-serialize (let ((options (copy-tree minuet-claude-options)))
+                                  `(,@(plist-get options :optional)
+                                    :model ,(plist-get options :model)
+                                    :system ,(plist-get options :system)
+                                    :max_tokens ,(plist-get options :max_tokens)
+                                    :messages ,(vconcat
+                                                `(,@(plist-get options :few_shots)
+                                                  (:role "user"
+                                                   :content ,(concat
+                                                              (plist-get context :additional)
+                                                              "\n<beginCode>\n"
+                                                              (plist-get context :before-cursor)
+                                                              "<cursorPosition>"
+                                                              (plist-get context :after-cursor)
+                                                              "<endCode>")))))))
         :as 'string
         :then
         (lambda (json)
