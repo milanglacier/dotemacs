@@ -110,7 +110,7 @@ fib(5)
     '(:model "codestral-latest"
       :n_completions 1
       :optional (:max_tokens 128
-                 :stop "\n\n"))
+                 :stop ["\n\n"]))
     "config options for Minuet Codestral provider")
 
 (defvar minuet-openai-compatible-options
