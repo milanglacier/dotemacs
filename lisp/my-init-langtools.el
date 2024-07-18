@@ -184,7 +184,8 @@
      "M-y" #'minuet-completion-in-region)
     :config
     (plist-put minuet-codestral-options :n_completions 3)
-    (plist-put (plist-get minuet-codestral-options :optional) :top_p 0.9)
+    (minuet-set-optional-options minuet-codestral-options :max_tokens 128)
+    (minuet-set-optional-options minuet-codestral-options :top_p 0.9)
     )
 
 (use-package treesit

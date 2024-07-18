@@ -124,6 +124,15 @@ fib(5)
       :optional nil)
     "config options for Minuet OpenAI compatible provider")
 
+(defun minuet-set-optional-options (options key val)
+    "Set the value of KEY in the :optional field of OPTIONS to VAL. If
+VAL is nil, then remove KEY from OPTIONS."
+    (if val
+            (setf (plist-get options :optional)
+                  (plist-put (plist-get options :optional) key val))
+        (setf (plist-get options :optional)
+              (map-delete (plist-get options :optional) key))))
+
 (defun minuet--log (message &optional message-p)
     "Log minuet messages into `minuet-buffer-name'. Also print the message when MESSAGE-P is t."
     (with-current-buffer (get-buffer-create minuet-buffer-name)
