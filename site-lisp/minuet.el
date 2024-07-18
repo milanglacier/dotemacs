@@ -96,7 +96,7 @@ fib(5)
     "config options for Minuet Claude provider")
 
 (defvar minuet-openai-options
-    `(:model "gpt-4o"
+    `(:model "gpt-4o-mini"
       :system
       ,(concat
         minuet-default-prompt
