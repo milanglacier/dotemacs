@@ -124,6 +124,20 @@ fib(5)
       :optional nil)
     "config options for Minuet OpenAI compatible provider")
 
+(defvar minuet-gemini-options
+    `(:model "gemini-1.5-flash-latest"
+      :system
+      ,(concat
+        minuet-default-prompt
+        minuet-default-guidelines)
+      :few_shots ,minuet-default-fewshots
+      :optional nil)
+    ;; (:generationConfig
+    ;;  (:stopSequences nil
+    ;;   :maxOutputTokens 256
+    ;;   :topP 0.8))
+    "config options for Minuet Gemini provider")
+
 (defun minuet-set-optional-options (options key val)
     "Set the value of KEY in the :optional field of OPTIONS to VAL. If
 VAL is nil, then remove KEY from OPTIONS."
@@ -252,6 +266,9 @@ If OVERRIDE-KEY is provided, then use OVERRIDE-KEY as the key in the plist."
                 (end-point (plist-get options :end_point))
                 (model (plist-get options :model)))
         (minuet--check-env-var env-var)))
+
+(defun minuet--gemini-available-p ()
+    (minuet--check-env-var "GEMINI_API_KEY"))
 
 (defun minuet--initial-process-completion-items-default (items)
     (setq
@@ -384,6 +401,57 @@ If OVERRIDE-KEY is provided, then use OVERRIDE-KEY as the key in the plist."
                 (funcall callback completion-items)))
         :else (lambda (err)
                   (minuet--log "An error occured when sending request to Claude")
+                  (minuet--log err))))
+
+(defun minuet--gemini-complete (context callback)
+    (plz 'post (format "https://generativelanguage.googleapis.com/v1beta/models/%s:generateContent?key=%s"
+                       (plist-get minuet-gemini-options :model)
+                       (getenv "GEMINI_API_KEY"))
+        :headers `(("Content-Type" . "application/json")
+                   ("Accept" . "application/json"))
+        :timeout minuet-request-timeout
+        :body (json-serialize
+               (let* ((options (copy-tree minuet-gemini-options))
+                      (few_shots (plist-get options :few_shots))
+                      (few_shots (mapcar
+                                  (lambda (shot)
+                                      `(:role
+                                        ,(if (equal (plist-get shot :role) "user") "user" "model")
+                                        :parts
+                                        [(:text ,(plist-get shot :content))]))
+                                  few_shots)))
+                   `(,@(plist-get options :optional)
+                     :system_instruction (:parts (:text ,(plist-get options :system)))
+                     :contents ,(vconcat
+                                 `(,@few_shots
+                                   (:role "user"
+                                    :parts [(:text
+                                             ,(concat
+                                               (plist-get context :additional)
+                                               "\n<beginCode>\n"
+                                               (plist-get context :before-cursor)
+                                               "<cursorPosition>"
+                                               (plist-get context :after-cursor)
+                                               "<endCode>"))]))))))
+        :as 'string
+        :then
+        (lambda (json)
+            (when-let* ((json (condition-case err
+                                      (json-parse-string json :object-type 'plist :array-type 'list)
+                                  (error (progn (minuet--log "Failed to parse Gemini API response") nil))))
+                        (candidates (or (plist-get json :candidates)
+                                        (progn (minuet--log "Gemini API returns no content") nil)))
+                        (result (--> candidates
+                                     car
+                                     (plist-get it :content)
+                                     (plist-get it :parts)
+                                     car
+                                     (plist-get it :text)))
+                        (completion-items (minuet--initial-process-completion-items-default result)))
+                ;; insert the current result into the completion items list
+                (funcall callback completion-items)))
+        :else (lambda (err)
+                  (minuet--log "An error occured when sending request to Gemini")
                   (minuet--log err))))
 
 (provide 'minuet)
