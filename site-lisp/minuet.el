@@ -114,9 +114,9 @@ fib(5)
     "config options for Minuet Codestral provider")
 
 (defvar minuet-openai-compatible-options
-    `(:end_point nil
-      :api_key nil
-      :model nil
+    `(:end_point "https://api.mistral.ai/v1/chat/completions"
+      :api_key "MISTRAL_API_KEY"
+      :model "codestral-mamba-latest"
       :system ,(concat
                 minuet-default-prompt
                 minuet-default-guidelines)
@@ -240,7 +240,6 @@ If OVERRIDE-KEY is provided, then use OVERRIDE-KEY as the key in the plist."
 (defun minuet--openai-compatible-available-p ()
     (when-let* ((options minuet-openai-compatible-options)
                 (env-var (plist-get options :api_key))
-                (name (plist-get options :name))
                 (end-point (plist-get options :end_point))
                 (model (plist-get options :model)))
         (minuet--check-env-var env-var)))
