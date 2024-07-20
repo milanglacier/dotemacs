@@ -29,6 +29,13 @@ context before cursor will be used.")
 (defvar minuet-add-single-line-entry t
     "if completion item has multiple lines, create another completion
 item only containing its first line.")
+(defvar minuet-n-completions 3
+    "The number of completion items (encoded as part of the prompt for
+the chat LLM) requested from the language model. It's important to
+note that when `minuet-add_single_line_entry' is set to true, the
+actual number of returned items may exceed this value. Additionally,
+the LLM cannot guarantee the exact number of completion items
+specified, as this parameter serves only as a prompt guideline.")
 
 (defvar minuet-default-prompt
     "You are the backend of an AI-powered code completion engine. Your task is to
@@ -38,20 +45,28 @@ enclosed in markers:
 - `<beginCode>`: Start of the code context
 - `<cursorPosition>`: Current cursor location
 - `<endCode>`: End of the code context
-
-" "The default prompt for minuet completion")
+"
+    "The default prompt for minuet completion")
 
 (defvar minuet-default-guidelines
     "Guidelines:
-
 1. Offer completions after the `<cursorPosition>` marker.
 2. Make sure you have maintained the user's existing whitespace and indentation.
    This is REALLY IMPORTANT!
 3. Provide multiple completion options when possible.
 4. Return completions separated by the marker <endCompletion>.
 5. The returned message will be further parsed and processed. DO NOT include
-   additional comments or markdown code block fences. Return the result directly."
+   additional comments or markdown code block fences. Return the result directly.
+6. Keep each completion option concise, limiting it to a single line or a few lines."
     "The default guidelines for minuet completion")
+
+(defvar minuet-default-n-completion-template
+    "7. Provide at most %d completion items."
+    "The default prompt for minuet for number of completions request.")
+
+(defvar minuet-default-system-template
+    "{{{:prompt}}}\n{{{:guidelines}}}\n{{{:n-completions-template}}}"
+    "The default template for minuet system template")
 
 (defvar minuet-default-fewshots
     `((:role "user"
@@ -84,13 +99,10 @@ fib(5)
     `(:model "claude-3-5-sonnet-20240620"
       :max_tokens 512
       :system
-      ,(format
-        "%s%s\n%s\n%s"
-        minuet-default-prompt
-        minuet-default-guidelines
-        "6. Keep each completion option concise, limiting it to a single line or only a few lines."
-        ;; claude is slower and expensive, 2 items are enough.
-        "7. Provide at most 2 completion items.")
+      (:template ,minuet-default-system-template
+       :prompt ,minuet-default-prompt
+       :guidelines ,minuet-default-guidelines
+       :n-completions-template ,minuet-default-n-completion-template)
       :few_shots ,minuet-default-fewshots
       :optional nil)
     "config options for Minuet Claude provider")
@@ -98,9 +110,10 @@ fib(5)
 (defvar minuet-openai-options
     `(:model "gpt-4o-mini"
       :system
-      ,(concat
-        minuet-default-prompt
-        minuet-default-guidelines)
+      (:template ,minuet-default-system-template
+       :prompt ,minuet-default-prompt
+       :guidelines ,minuet-default-guidelines
+       :n-completions-template ,minuet-default-n-completion-template)
       :few_shots ,minuet-default-fewshots
       :max_tokens nil
       :optional nil)
@@ -108,7 +121,6 @@ fib(5)
 
 (defvar minuet-codestral-options
     '(:model "codestral-latest"
-      :n_completions 1
       :optional (:max_tokens 128
                  :stop ["\n\n"]))
     "config options for Minuet Codestral provider")
@@ -117,9 +129,11 @@ fib(5)
     `(:end_point "https://api.mistral.ai/v1/chat/completions"
       :api_key "MISTRAL_API_KEY"
       :model "codestral-mamba-latest"
-      :system ,(concat
-                minuet-default-prompt
-                minuet-default-guidelines)
+      :system
+      (:template ,minuet-default-system-template
+       :prompt ,minuet-default-prompt
+       :guidelines ,minuet-default-guidelines
+       :n-completions-template ,minuet-default-n-completion-template)
       :few_shots ,minuet-default-fewshots
       :optional nil)
     "config options for Minuet OpenAI compatible provider")
@@ -127,9 +141,10 @@ fib(5)
 (defvar minuet-gemini-options
     `(:model "gemini-1.5-flash-latest"
       :system
-      ,(concat
-        minuet-default-prompt
-        minuet-default-guidelines)
+      (:template ,minuet-default-system-template
+       :prompt ,minuet-default-prompt
+       :guidelines ,minuet-default-guidelines
+       :n-completions-template ,minuet-default-n-completion-template)
       :few_shots ,minuet-default-fewshots
       :optional nil)
     ;; (:generationConfig
@@ -283,9 +298,37 @@ If OVERRIDE-KEY is provided, then use OVERRIDE-KEY as the key in the plist."
      items (seq-filter #'identity items))
     items)
 
+(defun minuet--make-system-prompt (template &optional n-completions)
+    (let* ((tmpl (plist-get template :template))
+           (n-completions (or n-completions minuet-n-completions 1))
+           (n-completions-template (plist-get template :n-completions-template))
+           (n-completions-template (if (stringp n-completions-template)
+                                           (format n-completions-template (or minuet-n-completions 1))
+                                       "")))
+        (setq tmpl (replace-regexp-in-string "{{{:n-completions-template}}}"
+                                             n-completions-template
+                                             tmpl))
+        (map-do
+         (lambda (k v)
+             (when (and (not (equal k :template))
+                        (not (equal k :n-completions-template))
+                        (stringp v))
+                 (setq tmpl
+                       (replace-regexp-in-string
+                        (concat "{{{" (symbol-name k) "}}}")
+                        v
+                        tmpl))))
+         template)
+        ;; replace placeholders that are not replaced
+        (setq tmpl (replace-regexp-in-string "{{{.*}}}"
+                                             ""
+                                             tmpl))
+        tmpl
+        ))
+
 (defun minuet--codestral-complete (context callback)
     (let ((try 0)
-          (total-try (plist-get minuet-codestral-options :n_completions))
+          (total-try (or minuet-n-completions 1))
           (options (copy-tree minuet-codestral-options))
           completion-items)
         (dotimes (_ total-try)
@@ -328,7 +371,7 @@ If OVERRIDE-KEY is provided, then use OVERRIDE-KEY as the key in the plist."
                                 :model ,(plist-get options :model)
                                 :messages ,(vconcat
                                             `((:role "system"
-                                               :content ,(plist-get options :system))
+                                               :content ,(minuet--make-system-prompt (plist-get options :system)))
                                               ,@(plist-get options :few_shots)
                                               (:role "user"
                                                :content ,(concat
@@ -375,7 +418,7 @@ If OVERRIDE-KEY is provided, then use OVERRIDE-KEY as the key in the plist."
         :body (json-serialize (let ((options (copy-tree minuet-claude-options)))
                                   `(,@(plist-get options :optional)
                                     :model ,(plist-get options :model)
-                                    :system ,(plist-get options :system)
+                                    :system ,(minuet--make-system-prompt (plist-get options :system))
                                     :max_tokens ,(plist-get options :max_tokens)
                                     :messages ,(vconcat
                                                 `(,@(plist-get options :few_shots)
@@ -421,7 +464,7 @@ If OVERRIDE-KEY is provided, then use OVERRIDE-KEY as the key in the plist."
                                         [(:text ,(plist-get shot :content))]))
                                   few_shots)))
                    `(,@(plist-get options :optional)
-                     :system_instruction (:parts (:text ,(plist-get options :system)))
+                     :system_instruction (:parts (:text ,(minuet--make-system-prompt (plist-get options :system))))
                      :contents ,(vconcat
                                  `(,@few_shots
                                    (:role "user"
