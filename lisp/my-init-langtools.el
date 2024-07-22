@@ -1,7 +1,7 @@
 ;;; my-init-langtools.el -*- lexical-binding: t; -*-
 
 (straight-use-package 'citre)
-(straight-use-package 'eglot)
+(straight-use-package '(eglot :type built-in))
 (straight-use-package 'consult-eglot)
 (straight-use-package 'edit-indirect)
 (straight-use-package 'code-cells)
