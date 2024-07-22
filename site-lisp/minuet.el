@@ -99,30 +99,28 @@ fib(5)
     `(:model "claude-3-5-sonnet-20240620"
       :max_tokens 512
       :system
-      (:template ,minuet-default-system-template
-       :prompt ,minuet-default-prompt
-       :guidelines ,minuet-default-guidelines
-       :n-completions-template ,minuet-default-n-completion-template)
-      :few_shots ,minuet-default-fewshots
+      (:template minuet-default-system-template
+       :prompt minuet-default-prompt
+       :guidelines minuet-default-guidelines
+       :n-completions-template minuet-default-n-completion-template)
+      :few_shots minuet-default-fewshots
       :optional nil)
     "config options for Minuet Claude provider")
 
 (defvar minuet-openai-options
     `(:model "gpt-4o-mini"
       :system
-      (:template ,minuet-default-system-template
-       :prompt ,minuet-default-prompt
-       :guidelines ,minuet-default-guidelines
-       :n-completions-template ,minuet-default-n-completion-template)
-      :few_shots ,minuet-default-fewshots
-      :max_tokens nil
+      (:template minuet-default-system-template
+       :prompt minuet-default-prompt
+       :guidelines minuet-default-guidelines
+       :n-completions-template minuet-default-n-completion-template)
+      :few_shots minuet-default-fewshots
       :optional nil)
     "config options for Minuet OpenAI provider")
 
 (defvar minuet-codestral-options
     '(:model "codestral-latest"
-      :optional (:max_tokens 128
-                 :stop ["\n\n"]))
+      :optional nil)
     "config options for Minuet Codestral provider")
 
 (defvar minuet-openai-compatible-options
@@ -130,22 +128,22 @@ fib(5)
       :api_key "MISTRAL_API_KEY"
       :model "codestral-mamba-latest"
       :system
-      (:template ,minuet-default-system-template
-       :prompt ,minuet-default-prompt
-       :guidelines ,minuet-default-guidelines
-       :n-completions-template ,minuet-default-n-completion-template)
-      :few_shots ,minuet-default-fewshots
+      (:template minuet-default-system-template
+       :prompt minuet-default-prompt
+       :guidelines minuet-default-guidelines
+       :n-completions-template minuet-default-n-completion-template)
+      :few_shots minuet-default-fewshots
       :optional nil)
     "config options for Minuet OpenAI compatible provider")
 
 (defvar minuet-gemini-options
     `(:model "gemini-1.5-flash-latest"
       :system
-      (:template ,minuet-default-system-template
-       :prompt ,minuet-default-prompt
-       :guidelines ,minuet-default-guidelines
-       :n-completions-template ,minuet-default-n-completion-template)
-      :few_shots ,minuet-default-fewshots
+      (:template minuet-default-system-template
+       :prompt minuet-default-prompt
+       :guidelines minuet-default-guidelines
+       :n-completions-template minuet-default-n-completion-template)
+      :few_shots minuet-default-fewshots
       :optional nil)
     ;; (:generationConfig
     ;;  (:stopSequences nil
@@ -153,14 +151,25 @@ fib(5)
     ;;   :topP 0.8))
     "config options for Minuet Gemini provider")
 
-(defun minuet-set-optional-options (options key val)
-    "Set the value of KEY in the :optional field of OPTIONS to VAL. If
-VAL is nil, then remove KEY from OPTIONS."
-    (if val
-            (setf (plist-get options :optional)
-                  (plist-put (plist-get options :optional) key val))
-        (setf (plist-get options :optional)
-              (map-delete (plist-get options :optional) key))))
+(defun minuet-set-optional-options (options key val &optional field)
+    "Set the value of KEY in the FIELD of OPTIONS to VAL. If FIELD is
+not provided, it defaults to :optional. If VAL is nil, then
+remove KEY from OPTIONS. This helper function simplifies
+setting values in a two-level nested plist structure."
+    (let ((field (or field :optional)))
+        (if val
+                (setf (plist-get options field)
+                      (plist-put (plist-get options field) key val))
+            (setf (plist-get options field)
+                  (map-delete (plist-get options field) key)))))
+
+(defun minuet--eval-value (value)
+    "If value is a function (either lambda or a callable symbol), eval
+the function (with no argument) and return the result. Else if value
+is a symbol, return its value. Else return itself."
+    (cond ((functionp value) (funcall value))
+          ((boundp value) (symbol-value value))
+          (t value)))
 
 (defun minuet--log (message &optional message-p)
     "Log minuet messages into `minuet-buffer-name'. Also print the message when MESSAGE-P is t."
@@ -300,8 +309,10 @@ If OVERRIDE-KEY is provided, then use OVERRIDE-KEY as the key in the plist."
 
 (defun minuet--make-system-prompt (template &optional n-completions)
     (let* ((tmpl (plist-get template :template))
+           (tmpl (minuet--eval-value tmpl))
            (n-completions (or n-completions minuet-n-completions 1))
            (n-completions-template (plist-get template :n-completions-template))
+           (n-completions-template (minuet--eval-value n-completions-template))
            (n-completions-template (if (stringp n-completions-template)
                                            (format n-completions-template (or minuet-n-completions 1))
                                        "")))
@@ -310,6 +321,7 @@ If OVERRIDE-KEY is provided, then use OVERRIDE-KEY as the key in the plist."
                                              tmpl))
         (map-do
          (lambda (k v)
+             (setq v (minuet--eval-value v))
              (when (and (not (equal k :template))
                         (not (equal k :n-completions-template))
                         (stringp v))
@@ -372,7 +384,7 @@ If OVERRIDE-KEY is provided, then use OVERRIDE-KEY as the key in the plist."
                                 :messages ,(vconcat
                                             `((:role "system"
                                                :content ,(minuet--make-system-prompt (plist-get options :system)))
-                                              ,@(plist-get options :few_shots)
+                                              ,@(minuet--eval-value (plist-get options :few_shots))
                                               (:role "user"
                                                :content ,(concat
                                                           (plist-get context :additional)
@@ -421,7 +433,7 @@ If OVERRIDE-KEY is provided, then use OVERRIDE-KEY as the key in the plist."
                                     :system ,(minuet--make-system-prompt (plist-get options :system))
                                     :max_tokens ,(plist-get options :max_tokens)
                                     :messages ,(vconcat
-                                                `(,@(plist-get options :few_shots)
+                                                `(,@(minuet--eval-value (plist-get options :few_shots))
                                                   (:role "user"
                                                    :content ,(concat
                                                               (plist-get context :additional)
@@ -455,7 +467,7 @@ If OVERRIDE-KEY is provided, then use OVERRIDE-KEY as the key in the plist."
         :timeout minuet-request-timeout
         :body (json-serialize
                (let* ((options (copy-tree minuet-gemini-options))
-                      (few_shots (plist-get options :few_shots))
+                      (few_shots (minuet--eval-value (plist-get options :few_shots)))
                       (few_shots (mapcar
                                   (lambda (shot)
                                       `(:role
