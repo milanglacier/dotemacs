@@ -183,8 +183,11 @@
      :states 'insert
      "M-y" #'minuet-completion-in-region)
     :config
-    (plist-put minuet-codestral-options :n_completions 3)
+    (setq minuet-provider 'gemini)
+    (minuet-set-optional-options minuet-gemini-options :generationConfig '(:maxOutputTokens 256))
+
     (minuet-set-optional-options minuet-codestral-options :max_tokens 128)
+    (minuet-set-optional-options minuet-codestral-options :stop ["\n\n"])
     (minuet-set-optional-options minuet-codestral-options :top_p 0.9)
     )
 
