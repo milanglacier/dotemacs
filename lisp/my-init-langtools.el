@@ -1,7 +1,7 @@
 ;;; my-init-langtools.el -*- lexical-binding: t; -*-
 
 (straight-use-package 'citre)
-(straight-use-package 'eglot)
+(straight-use-package '(eglot :type built-in))
 (straight-use-package 'consult-eglot)
 (straight-use-package 'edit-indirect)
 (straight-use-package 'code-cells)
@@ -181,7 +181,15 @@
     :init
     (general-define-key
      :states 'insert
-     "M-y" #'minuet-completion-in-region))
+     "M-y" #'minuet-completion-in-region)
+    :config
+    (setq minuet-provider 'gemini)
+    (minuet-set-optional-options minuet-gemini-options :generationConfig '(:maxOutputTokens 256))
+
+    (minuet-set-optional-options minuet-codestral-options :max_tokens 128)
+    (minuet-set-optional-options minuet-codestral-options :stop ["\n\n"])
+    (minuet-set-optional-options minuet-codestral-options :top_p 0.9)
+    )
 
 (use-package treesit
     :init

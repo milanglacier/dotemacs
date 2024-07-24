@@ -17,3 +17,5 @@ tramp
 elfeed
 tree-sitter/*
 codeium
+.ctags.d
+# citre stored temp configuration in this directory.

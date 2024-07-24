@@ -101,7 +101,7 @@
                      docker doc-view elisp-refs embark eldoc eshell
                      eww elfeed flymake grep help helpful ibuffer
                      imenu macrostep magit-sections magit magic-todos
-                     man markdown-mode mu4e notmuch org org-roam
+                     man markdown-mode mu4e org org-roam
                      osx-dictionary pdf python replace rg ripgrep
                      tab-bar term vertico vterm wdired wgrep which-key
                      xref xwidget)
@@ -223,14 +223,9 @@
      "C-q" #'evil-numbers/dec-at-pt ;; C-x is so important in emacs
      "g C-a" #'evil-numbers/inc-at-pt-incremental
      "g C-x" #'evil-numbers/dec-at-pt-incremental
-     "RET" #'er/expand-region
+     "g RET" #'er/expand-region
      "gs" #'evil-replace-with-register
      "g@" #'my/evil-apply-macro-line-by-line)
-
-    (my/leader
-        :states '(normal visual insert motion)
-        :keymaps 'override
-        "RET" #'er/expand-region)
 
     (general-define-key
      :states 'insert

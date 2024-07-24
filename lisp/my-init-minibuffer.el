@@ -22,7 +22,7 @@
 
     (my/find-map
         :keymaps 'override
-        :states '(motion normal)
+        :states '(motion normal emacs)
         "" '(:ignore t :which-key "find")
         "f" #'project-find-file
         "F" #'find-file
@@ -80,6 +80,13 @@
 (use-package marginalia
     :init
     (my/run-hook-once pre-command-hook marginalia-mode))
+
+(use-package nerd-icons-completion
+    :hook (marginalia-mode . nerd-icons-completion-marginalia-setup)
+    :config
+    ;; ;; See #12 in nerd-icons-completion repo.
+    ;; ;; TODO: Delete this temporary workaround until ned-icons-completion merges the patch.
+    (advice-add (compat-function completion-metadata-get) :around #'nerd-icons-completion-completion-metadata-get))
 
 (use-package consult
     :commands (evil-collection-consult-mark evil-collection-consult-jump-list)
