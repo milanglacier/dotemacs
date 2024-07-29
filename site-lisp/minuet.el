@@ -412,11 +412,11 @@ If OVERRIDE-KEY is provided, then use OVERRIDE-KEY as the key in the plist."
      context
      callback))
 
-(defun minuet--openai-complete-base (end-point api-key options context callback)
-    (plz 'post end-point
+(defun minuet--openai-complete-base (options context callback)
+    (plz 'post (plist-get options :end_point)
         :headers `(("Content-Type" . "application/json")
                    ("Accept" . "application/json")
-                   ("Authorization" . ,(concat "Bearer " api-key)))
+                   ("Authorization" . ,(concat "Bearer " (getenv (plist-get options :api_key)))))
         :timeout minuet-request-timeout
         :body (json-serialize `(,@(plist-get options :optional)
                                 :model ,(plist-get options :model)
@@ -450,13 +450,13 @@ If OVERRIDE-KEY is provided, then use OVERRIDE-KEY as the key in the plist."
 
 (defun minuet--openai-complete (context callback)
     (minuet--openai-complete-base
-     "https://api.openai.com/v1/chat/completions" (getenv "OPENAI_API_KEY")
-     (copy-tree minuet-openai-options) context callback))
+     (--> (copy-tree minuet-openai-options)
+          (plist-put it :end_point "https://api.openai.com/v1/chat/completions")
+          (plist-put it :api_key "OPENAI_API_KEY"))
+     context callback))
 
 (defun minuet--openai-compatible-complete (context callback)
     (minuet--openai-complete-base
-     (plist-get minuet-openai-compatible-options :end_point)
-     (getenv (plist-get minuet-openai-compatible-options :api_key))
      (copy-tree minuet-openai-compatible-options) context callback))
 
 (defun minuet--claude-complete (context callback)
