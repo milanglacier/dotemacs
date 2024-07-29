@@ -120,6 +120,8 @@ fib(5)
 
 (defvar minuet-codestral-options
     '(:model "codestral-latest"
+      :end_point "https://codestral.mistral.ai/v1/fim/completions"
+      :api_key "CODESTRAL_API_KEY"
       :optional nil)
     "config options for Minuet Codestral provider")
 
@@ -276,7 +278,7 @@ If OVERRIDE-KEY is provided, then use OVERRIDE-KEY as the key in the plist."
         (not (equal var ""))))
 
 (defun minuet--codestral-available-p ()
-    (minuet--check-env-var "CODESTRAL_API_KEY"))
+    (minuet--check-env-var (plist-get minuet-codestral-options :api_key)))
 
 (defun minuet--openai-available-p ()
     (minuet--check-env-var "OPENAI_API_KEY"))
@@ -337,17 +339,16 @@ If OVERRIDE-KEY is provided, then use OVERRIDE-KEY as the key in the plist."
                                              tmpl))
         tmpl
         ))
-
-(defun minuet--codestral-complete (context callback)
+(defun minuet--openai-fim-complete-base (options get-text-fn context callback)
     (let ((try 0)
           (total-try (or minuet-n-completions 1))
-          (options (copy-tree minuet-codestral-options))
+          (name (plist-get options :name))
           completion-items)
         (dotimes (_ total-try)
-            (plz 'post "https://codestral.mistral.ai/v1/fim/completions"
+            (plz 'post (plist-get options :end_point)
                 :headers `(("Content-Type" . "application/json")
                            ("Accept" . "application/json")
-                           ("Authorization" . ,(concat "Bearer " (getenv "CODESTRAL_API_KEY"))))
+                           ("Authorization" . ,(concat "Bearer " (getenv (plist-get options :api_key)))))
                 :timeout minuet-request-timeout
                 :body (json-serialize `(,@(plist-get options :optional)
                                         :model ,(plist-get options :model)
@@ -356,22 +357,36 @@ If OVERRIDE-KEY is provided, then use OVERRIDE-KEY as the key in the plist."
                                                          (plist-get context :before-cursor))
                                         :suffix ,(plist-get context :after-cursor)))
                 :as 'string
-                :then (lambda (json)
-                          (setq try (1+ try))
-                          (when-let* ((json (condition-case err
-                                                    (json-parse-string json :object-type 'plist :array-type 'list)
-                                                (error (progn (minuet--log "Failed to parse Codestral API response") nil))))
-                                      (choices (or (plist-get json :choices)
-                                                   (progn (minuet--log "Codestral API returns no content") nil)))
-                                      (result (--> choices car (plist-get it :message) (plist-get it :content))))
-                              ;; insert the current result into the completion items list
-                              (push result completion-items)
-                              (when (>= try total-try)
-                                  (funcall callback completion-items))))
+                :then
+                (lambda (json)
+                    (setq try (1+ try))
+                    (when-let* ((json (condition-case err
+                                              (json-parse-string json :object-type 'plist :array-type 'list)
+                                          (error (progn (minuet--log (format "Failed to parse %s API response" name))
+                                                        nil))))
+                                (choices (or (plist-get json :choices)
+                                             (progn (minuet--log (format "%s API returns no content" name))
+                                                    nil)))
+                                (result (condition-case err
+                                                (funcall get-text-fn choices)
+                                            (error (progn (minuet--log (format "Failed to get text from %s" name))
+                                                          nil)))))
+                        ;; insert the current result into the completion items list
+                        (push result completion-items)
+                        (when (>= try total-try)
+                            (funcall callback completion-items))))
                 :else (lambda (err)
                           (setq try (1+ try))
                           (minuet--log "An error occured when sending request to Codestral")
                           (minuet--log err))))))
+
+(defun minuet--codestral-complete (context callback)
+    (minuet--openai-fim-complete-base
+     (plist-put (copy-tree minuet-codestral-options) :name "Codestral")
+     (lambda (choices)
+         (--> choices car (plist-get it :message) (plist-get it :content)))
+     context
+     callback))
 
 (defun minuet--openai-complete-base (end-point api-key options context callback)
     (plz 'post end-point
