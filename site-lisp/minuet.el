@@ -128,7 +128,7 @@ fib(5)
 (defvar minuet-openai-compatible-options
     `(:end_point "https://api.mistral.ai/v1/chat/completions"
       :api_key "MISTRAL_API_KEY"
-      :model "codestral-mamba-latest"
+      :model "open-mistral-nemo"
       :system
       (:template minuet-default-system-template
        :prompt minuet-default-prompt
