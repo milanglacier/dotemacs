@@ -138,6 +138,14 @@ fib(5)
       :optional nil)
     "config options for Minuet OpenAI compatible provider")
 
+(defvar minuet-openai-fim-compatible-options
+    '(:model "deepseek-coder"
+      :end_point "https://api.deepseek.com/beta/completions"
+      :api_key "DEEPSEEK_API_KEY"
+      :name "Deepseek"
+      :optional nil)
+    "config options for Minuet OpenAI FIM compatible provider")
+
 (defvar minuet-gemini-options
     `(:model "gemini-1.5-flash-latest"
       :system
@@ -293,6 +301,14 @@ If OVERRIDE-KEY is provided, then use OVERRIDE-KEY as the key in the plist."
                 (model (plist-get options :model)))
         (minuet--check-env-var env-var)))
 
+(defun minuet--openai-fim-compatible-available-p ()
+    (when-let* ((options minuet-openai-fim-compatible-options)
+                (env-var (plist-get options :api_key))
+                (name (plist-get options :name))
+                (end-point (plist-get options :end_point))
+                (model (plist-get options :model)))
+        (minuet--check-env-var env-var)))
+
 (defun minuet--gemini-available-p ()
     (minuet--check-env-var "GEMINI_API_KEY"))
 
@@ -377,7 +393,7 @@ If OVERRIDE-KEY is provided, then use OVERRIDE-KEY as the key in the plist."
                             (funcall callback completion-items))))
                 :else (lambda (err)
                           (setq try (1+ try))
-                          (minuet--log "An error occured when sending request to Codestral")
+                          (minuet--log (format "An error occured when sending request to %s" name))
                           (minuet--log err))))))
 
 (defun minuet--codestral-complete (context callback)
@@ -385,6 +401,14 @@ If OVERRIDE-KEY is provided, then use OVERRIDE-KEY as the key in the plist."
      (plist-put (copy-tree minuet-codestral-options) :name "Codestral")
      (lambda (choices)
          (--> choices car (plist-get it :message) (plist-get it :content)))
+     context
+     callback))
+
+(defun minuet--openai-fim-compatible-complete (context callback)
+    (minuet--openai-fim-complete-base
+     (copy-tree minuet-openai-fim-compatible-options)
+     (lambda (choices)
+         (--> choices car (plist-get it :text)))
      context
      callback))
 
