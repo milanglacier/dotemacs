@@ -80,7 +80,7 @@
  ("marginalia" . "7a7f3363d042d1bf43ae697f4401638ed18230a5")
  ("markdown-mode" . "8a7773f87733866a961ea4c518a4a2f283f21970")
  ("melpa" . "ae45333491f24e0ecb5945db6e929b56e737e260")
- ("nerd-icons-completion" . "c2db8557a3c1a9588d111f8c8e91cae96ee85010")
+ ("nerd-icons-completion" . "426a1d7c29a04ae8e6ae9b55b0559f11a1e8b420")
  ("nerd-icons-dired" . "c1c73488630cc1d19ce1677359f614122ae4c1b9")
  ("nerd-icons-ibuffer" . "16270e898abbba2bd810cbf97f999c6142863101")
  ("nerd-icons.el" . "4322290303f2e12efd5685a0d22d76ed76ec7349")

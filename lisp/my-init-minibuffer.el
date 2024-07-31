@@ -83,11 +83,7 @@
     (my/run-hook-once pre-command-hook marginalia-mode))
 
 (use-package nerd-icons-completion
-    :hook (marginalia-mode . nerd-icons-completion-marginalia-setup)
-    :config
-    ;; ;; See #12 in nerd-icons-completion repo.
-    ;; ;; TODO: Delete this temporary workaround until ned-icons-completion merges the patch.
-    (advice-add (compat-function completion-metadata-get) :around #'nerd-icons-completion-completion-metadata-get))
+    :hook (marginalia-mode . nerd-icons-completion-marginalia-setup))
 
 (use-package consult
     :commands (evil-collection-consult-mark evil-collection-consult-jump-list)
