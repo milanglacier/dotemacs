@@ -41,7 +41,6 @@
  ("embark" . "19a13e344e04bbf861eaa74491b23da52b398672")
  ("embrace.el" . "c7e748603151d7d91c237fd2d9cdf56e9f3b1ea8")
  ("evil" . "30ebe6df27c36fdf2ea3c82a916edec31acc2647")
- ("evil-ReplaceWithRegister" . "91cc7bf21a94703c441cc9212214075b226b7f67")
  ("evil-anzu" . "d1e98ee6976437164627542909a25c6946497899")
  ("evil-args" . "a8151556f63c9d45d0c44c8a7ef9e5a542f3cdc7")
  ("evil-collection" . "28d64031ff58871828a0dec25ef437beb9371337")
