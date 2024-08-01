@@ -114,5 +114,15 @@
              ("“" . "”"))))
         (evil-textobj-anyblock--make-textobj beg end type count t)))
 
+(evil-define-operator evil-replace-with-register (count beg end type register)
+    "Replacing an existing text with the contents of a register"
+    :move-point nil
+    (interactive "<vc><R><x>")
+    (setq count (or count 1))
+        (if (eq type 'block)
+                (evil-visual-paste count register)
+            (delete-region beg end)
+            (evil-paste-before count register)))
+
 (provide 'my-evil-autoloads)
 ;;; my-evil-autoloads ends here
