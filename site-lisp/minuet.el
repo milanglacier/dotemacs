@@ -21,7 +21,7 @@
 (defvar minuet-buffer-name "*minuet*" "The basename for minuet buffers")
 (defvar minuet-provider 'codestral "The provider of minuet completion")
 (defvar minuet-context-window 12800 "the maximum total characters of the context before and after cursor")
-(defvar minuet-context-ratio 0.6
+(defvar minuet-context-ratio 0.75
     "when the total characters exceed the context window, the ratio of
 context before cursor and after cursor, the larger the ratio the more
 context before cursor will be used.")
@@ -226,12 +226,14 @@ is a symbol, return its value. Else return itself."
            (context-after-cursor (buffer-substring-no-properties point point-max)))
         ;; use some heuristic to decide the context length of before cursor and after cursor
         (when (>= (+ n-chars-before n-chars-after) minuet-context-window)
-            (cond ((< n-chars-before (* 0.5 minuet-context-window))
-                   ;; at the very beginning of the file
+            (cond ((< n-chars-before (* minuet-context-window minuet-context-window))
+                   ;; If the context length before cursor does not exceed the maximum
+                   ;; size, we include the full content before the cursor.
                    (setq context-after-cursor
                          (substring context-after-cursor 0 (- minuet-context-window n-chars-before))))
-                  ((< n-chars-after (* 0.5 minuet-context-window))
-                   ;; at the very end of the file
+                  ((< n-chars-after (* (- 1 minuet-context-window) minuet-context-window))
+                   ;; if the context length after cursor does not exceed the maximum
+                   ;; size, we include the full content after the cursor.
                    (setq context-before-cursor
                          (substring context-before-cursor (- (+ n-chars-before n-chars-after)
                                                              minuet-context-window))))
