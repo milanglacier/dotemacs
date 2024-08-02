@@ -226,12 +226,12 @@ is a symbol, return its value. Else return itself."
            (context-after-cursor (buffer-substring-no-properties point point-max)))
         ;; use some heuristic to decide the context length of before cursor and after cursor
         (when (>= (+ n-chars-before n-chars-after) minuet-context-window)
-            (cond ((< n-chars-before (* minuet-context-window minuet-context-window))
+            (cond ((< n-chars-before (* minuet-context-ratio minuet-context-window))
                    ;; If the context length before cursor does not exceed the maximum
                    ;; size, we include the full content before the cursor.
                    (setq context-after-cursor
                          (substring context-after-cursor 0 (- minuet-context-window n-chars-before))))
-                  ((< n-chars-after (* (- 1 minuet-context-window) minuet-context-window))
+                  ((< n-chars-after (* (- 1 minuet-context-ratio) minuet-context-window))
                    ;; if the context length after cursor does not exceed the maximum
                    ;; size, we include the full content after the cursor.
                    (setq context-before-cursor
