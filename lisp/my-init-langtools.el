@@ -184,7 +184,10 @@
      "M-y" #'minuet-completion-in-region)
     :config
     (setq minuet-provider 'gemini)
-    (minuet-set-optional-options minuet-gemini-options :generationConfig '(:maxOutputTokens 256))
+    (minuet-set-optional-options minuet-gemini-options
+                                 :generationConfig
+                                 '(:maxOutputTokens 256
+                                   :topP 0.9))
 
     (minuet-set-optional-options minuet-codestral-options :max_tokens 128)
     (minuet-set-optional-options minuet-codestral-options :stop ["\n\n"])
