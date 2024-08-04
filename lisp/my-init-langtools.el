@@ -188,6 +188,16 @@
                                  :generationConfig
                                  '(:maxOutputTokens 256
                                    :topP 0.9))
+    (minuet-set-optional-options minuet-gemini-options
+                                 :safetySettings
+                                 [(:category "HARM_CATEGORY_DANGEROUS_CONTENT"
+                                   :threshold "BLOCK_NONE")
+                                  (:category "HARM_CATEGORY_HATE_SPEECH"
+                                   :threshold "BLOCK_NONE")
+                                  (:category "HARM_CATEGORY_HARASSMENT"
+                                   :threshold "BLOCK_NONE")
+                                  (:category "HARM_CATEGORY_SEXUALLY_EXPLICIT"
+                                   :threshold "BLOCK_NONE")])
 
     (minuet-set-optional-options minuet-codestral-options :max_tokens 128)
     (minuet-set-optional-options minuet-codestral-options :stop ["\n\n"])
