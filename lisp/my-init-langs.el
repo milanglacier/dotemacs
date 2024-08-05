@@ -182,7 +182,9 @@
 (use-package go-ts-mode
     :config
     (add-hook 'go-ts-mode-hook (my/setq-locally tab-width 4))
-    (add-hook 'go-ts-mode-hook #'eglot-ensure))
+    (add-hook 'go-ts-mode-hook #'eglot-ensure)
+    (my/setq-on-hook go-ts-mode-hook evil-ts-function "\\(?:\\(?:function\\|method\\)_declaration\\)")
+    (my/setq-on-hook go-ts-mode-hook evil-ts-class "struct_type"))
 
 (use-package rust-ts-mode
     :config

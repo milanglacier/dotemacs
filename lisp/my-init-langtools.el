@@ -184,7 +184,20 @@
      "M-y" #'minuet-completion-in-region)
     :config
     (setq minuet-provider 'gemini)
-    (minuet-set-optional-options minuet-gemini-options :generationConfig '(:maxOutputTokens 256))
+    (minuet-set-optional-options minuet-gemini-options
+                                 :generationConfig
+                                 '(:maxOutputTokens 256
+                                   :topP 0.9))
+    (minuet-set-optional-options minuet-gemini-options
+                                 :safetySettings
+                                 [(:category "HARM_CATEGORY_DANGEROUS_CONTENT"
+                                   :threshold "BLOCK_NONE")
+                                  (:category "HARM_CATEGORY_HATE_SPEECH"
+                                   :threshold "BLOCK_NONE")
+                                  (:category "HARM_CATEGORY_HARASSMENT"
+                                   :threshold "BLOCK_NONE")
+                                  (:category "HARM_CATEGORY_SEXUALLY_EXPLICIT"
+                                   :threshold "BLOCK_NONE")])
 
     (minuet-set-optional-options minuet-codestral-options :max_tokens 128)
     (minuet-set-optional-options minuet-codestral-options :stop ["\n\n"])
@@ -208,20 +221,20 @@
             (java       . ("https://github.com/tree-sitter/tree-sitter-java.git"))
             (javascript . ("https://github.com/tree-sitter/tree-sitter-javascript"))
             (json . ("https://github.com/tree-sitter/tree-sitter-json"))
-            (lua . ("https://github.com/Azganoth/tree-sitter-lua"))
+            (lua . ("https://github.com/MunifTanjim/tree-sitter-lua"))
             (make . ("https://github.com/alemuller/tree-sitter-make"))
-            (markdown . ("https://github.com/MDeiml/tree-sitter-markdown" nil "tree-sitter-markdown/src"))
+            (markdown . ("https://github.com/tree-sitter-grammars/tree-sitter-markdown" nil "tree-sitter-markdown/src"))
             (ocaml . ("https://github.com/tree-sitter/tree-sitter-ocaml" nil "ocaml/src"))
             (org . ("https://github.com/milisims/tree-sitter-org"))
             (python . ("https://github.com/tree-sitter/tree-sitter-python"))
-            (php . ("https://github.com/tree-sitter/tree-sitter-php"))
+            (php . ("https://github.com/tree-sitter/tree-sitter-php" nil "php/src"))
             (typescript . ("https://github.com/tree-sitter/tree-sitter-typescript" nil "typescript/src"))
             (tsx . ("https://github.com/tree-sitter/tree-sitter-typescript" nil "tsx/src"))
             (ruby . ("https://github.com/tree-sitter/tree-sitter-ruby"))
             (rust . ("https://github.com/tree-sitter/tree-sitter-rust"))
             (sql . ("https://github.com/derekstride/tree-sitter-sql" "gh-pages"))
             (vue . ("https://github.com/merico-dev/tree-sitter-vue"))
-            (yaml . ("https://github.com/ikatyang/tree-sitter-yaml"))
+            (yaml . ("https://github.com/tree-sitter-grammars/tree-sitter-yaml"))
             (toml . ("https://github.com/tree-sitter/tree-sitter-toml"))
             (zig . ("https://github.com/GrayJack/tree-sitter-zig")))
 

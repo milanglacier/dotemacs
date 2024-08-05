@@ -21,7 +21,7 @@
 (defvar minuet-buffer-name "*minuet*" "The basename for minuet buffers")
 (defvar minuet-provider 'codestral "The provider of minuet completion")
 (defvar minuet-context-window 12800 "the maximum total characters of the context before and after cursor")
-(defvar minuet-context-ratio 0.6
+(defvar minuet-context-ratio 0.75
     "when the total characters exceed the context window, the ratio of
 context before cursor and after cursor, the larger the ratio the more
 context before cursor will be used.")
@@ -120,13 +120,15 @@ fib(5)
 
 (defvar minuet-codestral-options
     '(:model "codestral-latest"
+      :end_point "https://codestral.mistral.ai/v1/fim/completions"
+      :api_key "CODESTRAL_API_KEY"
       :optional nil)
     "config options for Minuet Codestral provider")
 
 (defvar minuet-openai-compatible-options
     `(:end_point "https://api.mistral.ai/v1/chat/completions"
       :api_key "MISTRAL_API_KEY"
-      :model "codestral-mamba-latest"
+      :model "open-mistral-nemo"
       :system
       (:template minuet-default-system-template
        :prompt minuet-default-prompt
@@ -135,6 +137,14 @@ fib(5)
       :few_shots minuet-default-fewshots
       :optional nil)
     "config options for Minuet OpenAI compatible provider")
+
+(defvar minuet-openai-fim-compatible-options
+    '(:model "deepseek-coder"
+      :end_point "https://api.deepseek.com/beta/completions"
+      :api_key "DEEPSEEK_API_KEY"
+      :name "Deepseek"
+      :optional nil)
+    "config options for Minuet OpenAI FIM compatible provider")
 
 (defvar minuet-gemini-options
     `(:model "gemini-1.5-flash-latest"
@@ -216,12 +226,14 @@ is a symbol, return its value. Else return itself."
            (context-after-cursor (buffer-substring-no-properties point point-max)))
         ;; use some heuristic to decide the context length of before cursor and after cursor
         (when (>= (+ n-chars-before n-chars-after) minuet-context-window)
-            (cond ((< n-chars-before (* 0.5 minuet-context-window))
-                   ;; at the very beginning of the file
+            (cond ((< n-chars-before (* minuet-context-ratio minuet-context-window))
+                   ;; If the context length before cursor does not exceed the maximum
+                   ;; size, we include the full content before the cursor.
                    (setq context-after-cursor
                          (substring context-after-cursor 0 (- minuet-context-window n-chars-before))))
-                  ((< n-chars-after (* 0.5 minuet-context-window))
-                   ;; at the very end of the file
+                  ((< n-chars-after (* (- 1 minuet-context-ratio) minuet-context-window))
+                   ;; if the context length after cursor does not exceed the maximum
+                   ;; size, we include the full content after the cursor.
                    (setq context-before-cursor
                          (substring context-before-cursor (- (+ n-chars-before n-chars-after)
                                                              minuet-context-window))))
@@ -238,11 +250,43 @@ is a symbol, return its value. Else return itself."
           :after-cursor ,context-after-cursor
           :additional ,(format "%s\n%s" (minuet--add-language-comment) (minuet--add-tab-comment)))))
 
-(defun minuet-encode-options (options key &optional override-key)
-    "If the value of KEY from OPTIONS is not nil, then create a plist with KEY and its VALUE, otherwise return nil.
-If OVERRIDE-KEY is provided, then use OVERRIDE-KEY as the key in the plist."
-    (if-let ((value (plist-get options key)))
-            `(,(or override-key key) ,value)))
+(defun minuet--stream-decode (response get-text-fn)
+    (setq response (split-string response "[\r]?\n"))
+    (let (result)
+        (dolist (line response)
+            (if-let* ((json (condition-case err
+                                    (json-parse-string
+                                     (replace-regexp-in-string "^data: " "" line)
+                                     :object-type 'plist :array-type 'list)
+                                (error nil)))
+                      (text (condition-case err
+                                    (funcall get-text-fn json)
+                                (error nil))))
+                    (when (and (stringp text)
+                               (not (equal text "")))
+                        (setq result `(,@result ,text)))))
+        (setq result (apply #'concat result))
+        (if (equal result "")
+                (progn (minuet--log (format "Minuet returns no text for streaming: %s" response))
+                       nil)
+            result)))
+
+(defmacro minuet--make-process-stream-filter (response)
+    "store the data into responses which is a plain list"
+    `(lambda (proc text)
+         (funcall #'internal-default-process-filter proc text)
+         ;; (setq ,response (append ,response (list text)))
+         (push text ,response)))
+
+(defmacro minuet--with-temp-response (&rest body)
+    "Execute BODY with a temporary response collection.
+This macro creates a local variable `--response--' that can be used
+to collect process output within the BODY. It's designed to work in
+conjunction with `minuet--make-process-stream-filter`.
+The `--response--` variable is initialized as an empty list and can
+be used to accumulate text output from a process. After execution,
+`--response--` will contain the collected responses in reverse order."
+    `(let (--response--) ,@body))
 
 ;;;###autoload
 (defun minuet-completion-in-region ()
@@ -276,7 +320,7 @@ If OVERRIDE-KEY is provided, then use OVERRIDE-KEY as the key in the plist."
         (not (equal var ""))))
 
 (defun minuet--codestral-available-p ()
-    (minuet--check-env-var "CODESTRAL_API_KEY"))
+    (minuet--check-env-var (plist-get minuet-codestral-options :api_key)))
 
 (defun minuet--openai-available-p ()
     (minuet--check-env-var "OPENAI_API_KEY"))
@@ -287,6 +331,14 @@ If OVERRIDE-KEY is provided, then use OVERRIDE-KEY as the key in the plist."
 (defun minuet--openai-compatible-available-p ()
     (when-let* ((options minuet-openai-compatible-options)
                 (env-var (plist-get options :api_key))
+                (end-point (plist-get options :end_point))
+                (model (plist-get options :model)))
+        (minuet--check-env-var env-var)))
+
+(defun minuet--openai-fim-compatible-available-p ()
+    (when-let* ((options minuet-openai-fim-compatible-options)
+                (env-var (plist-get options :api_key))
+                (name (plist-get options :name))
                 (end-point (plist-get options :end_point))
                 (model (plist-get options :model)))
         (minuet--check-env-var env-var)))
@@ -338,176 +390,241 @@ If OVERRIDE-KEY is provided, then use OVERRIDE-KEY as the key in the plist."
         tmpl
         ))
 
-(defun minuet--codestral-complete (context callback)
+(defun minuet--openai-fim-complete-base (options get-text-fn context callback)
     (let ((try 0)
           (total-try (or minuet-n-completions 1))
-          (options (copy-tree minuet-codestral-options))
+          (name (plist-get options :name))
           completion-items)
         (dotimes (_ total-try)
-            (plz 'post "https://codestral.mistral.ai/v1/fim/completions"
-                :headers `(("Content-Type" . "application/json")
-                           ("Accept" . "application/json")
-                           ("Authorization" . ,(concat "Bearer " (getenv "CODESTRAL_API_KEY"))))
-                :timeout minuet-request-timeout
-                :body (json-serialize `(,@(plist-get options :optional)
-                                        :model ,(plist-get options :model)
-                                        :prompt ,(format "%s\n%s"
-                                                         (plist-get context :additional)
-                                                         (plist-get context :before-cursor))
-                                        :suffix ,(plist-get context :after-cursor)))
-                :as 'string
-                :then (lambda (json)
-                          (setq try (1+ try))
-                          (when-let* ((json (condition-case err
-                                                    (json-parse-string json :object-type 'plist :array-type 'list)
-                                                (error (progn (minuet--log "Failed to parse Codestral API response") nil))))
-                                      (choices (or (plist-get json :choices)
-                                                   (progn (minuet--log "Codestral API returns no content") nil)))
-                                      (result (--> choices car (plist-get it :message) (plist-get it :content))))
-                              ;; insert the current result into the completion items list
-                              (push result completion-items)
-                              (when (>= try total-try)
-                                  (funcall callback completion-items))))
-                :else (lambda (err)
-                          (setq try (1+ try))
-                          (minuet--log "An error occured when sending request to Codestral")
-                          (minuet--log err))))))
-
-(defun minuet--openai-complete-base (end-point api-key options context callback)
-    (plz 'post end-point
-        :headers `(("Content-Type" . "application/json")
-                   ("Accept" . "application/json")
-                   ("Authorization" . ,(concat "Bearer " api-key)))
-        :timeout minuet-request-timeout
-        :body (json-serialize `(,@(plist-get options :optional)
-                                :model ,(plist-get options :model)
-                                :messages ,(vconcat
-                                            `((:role "system"
-                                               :content ,(minuet--make-system-prompt (plist-get options :system)))
-                                              ,@(minuet--eval-value (plist-get options :few_shots))
-                                              (:role "user"
-                                               :content ,(concat
+            (minuet--with-temp-response
+             (plz 'post (plist-get options :end_point)
+                 :headers `(("Content-Type" . "application/json")
+                            ("Accept" . "application/json")
+                            ("Authorization" . ,(concat "Bearer " (getenv (plist-get options :api_key)))))
+                 :timeout minuet-request-timeout
+                 :body (json-serialize `(,@(plist-get options :optional)
+                                         :stream t
+                                         :model ,(plist-get options :model)
+                                         :prompt ,(format "%s\n%s"
                                                           (plist-get context :additional)
-                                                          "\n<beginCode>\n"
-                                                          (plist-get context :before-cursor)
-                                                          "<cursorPosition>"
-                                                          (plist-get context :after-cursor)
-                                                          "<endCode>"))))))
-        :as 'string
-        :then
-        (lambda (json)
-            (when-let* ((json (condition-case err
-                                      (json-parse-string json :object-type 'plist :array-type 'list)
-                                  (error (progn (minuet--log "Failed to parse OpenAI API response") nil))))
-                        (choices (or (plist-get json :choices)
-                                     (progn (minuet--log "OpenAI API returns no content") nil)))
-                        (result (--> choices car (plist-get it :message) (plist-get it :content)))
-                        (completion-items (minuet--initial-process-completion-items-default result)))
-                ;; insert the current result into the completion items list
-                (funcall callback completion-items)))
-        :else (lambda (err)
-                  (minuet--log "An error occured when sending request to OpenAI")
-                  (minuet--log err))))
+                                                          (plist-get context :before-cursor))
+                                         :suffix ,(plist-get context :after-cursor)))
+                 :as 'string
+                 :filter (minuet--make-process-stream-filter --response--)
+                 :then
+                 (lambda (json)
+                     (setq try (1+ try))
+                     (when-let* ((result (minuet--stream-decode json get-text-fn)))
+                         ;; insert the current result into the completion items list
+                         (push result completion-items)
+                         (when (>= try total-try)
+                             (funcall callback completion-items))))
+                 :else
+                 (lambda (err)
+                     (setq try (1+ try))
+                     (if (equal (car (plz-error-curl-error err)) 28)
+                             (when-let* ((response --response--)
+                                         (response (nreverse --response--))
+                                         (response (apply #'concat response))
+                                         (result (minuet--stream-decode response get-text-fn)))
+                                 (minuet--log (format "%s Request timeout" name))
+                                 (push result completion-items)
+                                 (when (>= try total-try)
+                                     (funcall callback completion-items)))
+                         (minuet--log (format "An error occured when sending request to %s" name))
+                         (minuet--log err))))))))
+
+(defun minuet--codestral-complete (context callback)
+    (minuet--openai-fim-complete-base
+     (plist-put (copy-tree minuet-codestral-options) :name "Codestral")
+     #'minuet--openai-get-text-fn
+     context
+     callback))
+
+(defun minuet--openai-fim-compatible-complete (context callback)
+    (minuet--openai-fim-complete-base
+     (copy-tree minuet-openai-fim-compatible-options)
+     #'minuet--openai-fim-get-text-fn
+     context
+     callback))
+
+(defun minuet--openai-fim-get-text-fn (json)
+    (--> json
+         (plist-get it :choices)
+         car
+         (plist-get it :text)))
+
+(defun minuet--openai-get-text-fn (json)
+    (--> json
+         (plist-get it :choices)
+         car
+         (plist-get it :delta)
+         (plist-get it :content)))
+
+(defun minuet--openai-complete-base (options context callback)
+    (minuet--with-temp-response
+     (plz 'post (plist-get options :end_point)
+         :headers `(("Content-Type" . "application/json")
+                    ("Accept" . "application/json")
+                    ("Authorization" . ,(concat "Bearer " (getenv (plist-get options :api_key)))))
+         :timeout minuet-request-timeout
+         :body (json-serialize `(,@(plist-get options :optional)
+                                 :stream t
+                                 :model ,(plist-get options :model)
+                                 :messages ,(vconcat
+                                             `((:role "system"
+                                                :content ,(minuet--make-system-prompt (plist-get options :system)))
+                                               ,@(minuet--eval-value (plist-get options :few_shots))
+                                               (:role "user"
+                                                :content ,(concat
+                                                           (plist-get context :additional)
+                                                           "\n<beginCode>\n"
+                                                           (plist-get context :before-cursor)
+                                                           "<cursorPosition>"
+                                                           (plist-get context :after-cursor)
+                                                           "<endCode>"))))))
+         :as 'string
+         :filter (minuet--make-process-stream-filter --response--)
+         :then
+         (lambda (json)
+             (when-let* ((result (minuet--stream-decode json #'minuet--openai-get-text-fn))
+                         (completion-items (minuet--initial-process-completion-items-default result)))
+                 ;; insert the current result into the completion items list
+                 (funcall callback completion-items)))
+         :else (lambda (err)
+                   ;; we want to collect the partial compleetion items when request timeout
+                   (if (equal (car (plz-error-curl-error err)) 28)
+                           (when-let* ((response --response--)
+                                       (response (nreverse --response--))
+                                       (response (apply #'concat response))
+                                       (result (minuet--stream-decode response #'minuet--openai-get-text-fn))
+                                       (completion-items (minuet--initial-process-completion-items-default result)))
+                               (minuet--log "OpenAI Request timeout")
+                               (funcall callback completion-items))
+                       (minuet--log "An error occured when sending request to OpenAI")
+                       (minuet--log err))))))
 
 (defun minuet--openai-complete (context callback)
     (minuet--openai-complete-base
-     "https://api.openai.com/v1/chat/completions" (getenv "OPENAI_API_KEY")
-     (copy-tree minuet-openai-options) context callback))
+     (--> (copy-tree minuet-openai-options)
+          (plist-put it :end_point "https://api.openai.com/v1/chat/completions")
+          (plist-put it :api_key "OPENAI_API_KEY"))
+     context callback))
 
 (defun minuet--openai-compatible-complete (context callback)
     (minuet--openai-complete-base
-     (plist-get minuet-openai-compatible-options :end_point)
-     (getenv (plist-get minuet-openai-compatible-options :api_key))
      (copy-tree minuet-openai-compatible-options) context callback))
 
+(defun minuet--claude-get-text-fn (json)
+    (--> json
+         (plist-get it :delta)
+         (plist-get it :text)))
+
 (defun minuet--claude-complete (context callback)
-    (plz 'post "https://api.anthropic.com/v1/messages"
-        :headers `(("Content-Type" . "application/json")
-                   ("Accept" . "application/json")
-                   ("x-api-key" . ,(getenv "ANTHROPIC_API_KEY"))
-                   ("anthropic-version" . "2023-06-01"))
-        :timeout minuet-request-timeout
-        :body (json-serialize (let ((options (copy-tree minuet-claude-options)))
-                                  `(,@(plist-get options :optional)
-                                    :model ,(plist-get options :model)
-                                    :system ,(minuet--make-system-prompt (plist-get options :system))
-                                    :max_tokens ,(plist-get options :max_tokens)
-                                    :messages ,(vconcat
-                                                `(,@(minuet--eval-value (plist-get options :few_shots))
-                                                  (:role "user"
-                                                   :content ,(concat
-                                                              (plist-get context :additional)
-                                                              "\n<beginCode>\n"
-                                                              (plist-get context :before-cursor)
-                                                              "<cursorPosition>"
-                                                              (plist-get context :after-cursor)
-                                                              "<endCode>")))))))
-        :as 'string
-        :then
-        (lambda (json)
-            (when-let* ((json (condition-case err
-                                      (json-parse-string json :object-type 'plist :array-type 'list)
-                                  (error (progn (minuet--log "Failed to parse Claude API response") nil))))
-                        (content (or (plist-get json :content)
-                                     (progn (minuet--log "Claude API returns no content") nil)))
-                        (result (--> content car (plist-get it :text)))
-                        (completion-items (minuet--initial-process-completion-items-default result)))
-                ;; insert the current result into the completion items list
-                (funcall callback completion-items)))
-        :else (lambda (err)
-                  (minuet--log "An error occured when sending request to Claude")
-                  (minuet--log err))))
+    (minuet--with-temp-response
+     (plz 'post "https://api.anthropic.com/v1/messages"
+         :headers `(("Content-Type" . "application/json")
+                    ("Accept" . "application/json")
+                    ("x-api-key" . ,(getenv "ANTHROPIC_API_KEY"))
+                    ("anthropic-version" . "2023-06-01"))
+         :timeout minuet-request-timeout
+         :body (json-serialize (let ((options (copy-tree minuet-claude-options)))
+                                   `(,@(plist-get options :optional)
+                                     :stream t
+                                     :model ,(plist-get options :model)
+                                     :system ,(minuet--make-system-prompt (plist-get options :system))
+                                     :max_tokens ,(plist-get options :max_tokens)
+                                     :messages ,(vconcat
+                                                 `(,@(minuet--eval-value (plist-get options :few_shots))
+                                                   (:role "user"
+                                                    :content ,(concat
+                                                               (plist-get context :additional)
+                                                               "\n<beginCode>\n"
+                                                               (plist-get context :before-cursor)
+                                                               "<cursorPosition>"
+                                                               (plist-get context :after-cursor)
+                                                               "<endCode>")))))))
+         :as 'string
+         :filter (minuet--make-process-stream-filter --response--)
+         :then
+         (lambda (json)
+             (when-let* ((result (minuet--stream-decode json #'minuet--claude-get-text-fn))
+                         (completion-items (minuet--initial-process-completion-items-default result)))
+                 ;; insert the current result into the completion items list
+                 (funcall callback completion-items)))
+         :else (lambda (err)
+                   ;; we want to collect the partial compleetion items when request timeout
+                   (if (equal (car (plz-error-curl-error err)) 28)
+                           (when-let* ((response --response--)
+                                       (response (nreverse --response--))
+                                       (response (apply #'concat response))
+                                       (result (minuet--stream-decode response #'minuet--claude-get-text-fn))
+                                       (completion-items (minuet--initial-process-completion-items-default result)))
+                               (minuet--log "Claude Request timeout")
+                               (funcall callback completion-items))
+                       (minuet--log "An error occured when sending request to Claude")
+                       (minuet--log err))))))
+
+(defun minuet--gemini-get-text-fn (json)
+    (--> json
+         (plist-get it :candidates)
+         car
+         (plist-get it :content)
+         (plist-get it :parts)
+         car
+         (plist-get it :text)))
 
 (defun minuet--gemini-complete (context callback)
-    (plz 'post (format "https://generativelanguage.googleapis.com/v1beta/models/%s:generateContent?key=%s"
-                       (plist-get minuet-gemini-options :model)
-                       (getenv "GEMINI_API_KEY"))
-        :headers `(("Content-Type" . "application/json")
-                   ("Accept" . "application/json"))
-        :timeout minuet-request-timeout
-        :body (json-serialize
-               (let* ((options (copy-tree minuet-gemini-options))
-                      (few_shots (minuet--eval-value (plist-get options :few_shots)))
-                      (few_shots (mapcar
-                                  (lambda (shot)
-                                      `(:role
-                                        ,(if (equal (plist-get shot :role) "user") "user" "model")
-                                        :parts
-                                        [(:text ,(plist-get shot :content))]))
-                                  few_shots)))
-                   `(,@(plist-get options :optional)
-                     :system_instruction (:parts (:text ,(minuet--make-system-prompt (plist-get options :system))))
-                     :contents ,(vconcat
-                                 `(,@few_shots
-                                   (:role "user"
-                                    :parts [(:text
-                                             ,(concat
-                                               (plist-get context :additional)
-                                               "\n<beginCode>\n"
-                                               (plist-get context :before-cursor)
-                                               "<cursorPosition>"
-                                               (plist-get context :after-cursor)
-                                               "<endCode>"))]))))))
-        :as 'string
-        :then
-        (lambda (json)
-            (when-let* ((json (condition-case err
-                                      (json-parse-string json :object-type 'plist :array-type 'list)
-                                  (error (progn (minuet--log "Failed to parse Gemini API response") nil))))
-                        (candidates (or (plist-get json :candidates)
-                                        (progn (minuet--log "Gemini API returns no content") nil)))
-                        (result (--> candidates
-                                     car
-                                     (plist-get it :content)
-                                     (plist-get it :parts)
-                                     car
-                                     (plist-get it :text)))
-                        (completion-items (minuet--initial-process-completion-items-default result)))
-                ;; insert the current result into the completion items list
-                (funcall callback completion-items)))
-        :else (lambda (err)
-                  (minuet--log "An error occured when sending request to Gemini")
-                  (minuet--log err))))
+    (minuet--with-temp-response
+     (plz 'post (format "https://generativelanguage.googleapis.com/v1beta/models/%s:streamGenerateContent?alt=sse&key=%s"
+                        (plist-get minuet-gemini-options :model)
+                        (getenv "GEMINI_API_KEY"))
+         :headers `(("Content-Type" . "application/json")
+                    ("Accept" . "application/json"))
+         :timeout minuet-request-timeout
+         :body (json-serialize
+                (let* ((options (copy-tree minuet-gemini-options))
+                       (few_shots (minuet--eval-value (plist-get options :few_shots)))
+                       (few_shots (mapcar
+                                   (lambda (shot)
+                                       `(:role
+                                         ,(if (equal (plist-get shot :role) "user") "user" "model")
+                                         :parts
+                                         [(:text ,(plist-get shot :content))]))
+                                   few_shots)))
+                    `(,@(plist-get options :optional)
+                      :system_instruction (:parts (:text ,(minuet--make-system-prompt (plist-get options :system))))
+                      :contents ,(vconcat
+                                  `(,@few_shots
+                                    (:role "user"
+                                     :parts [(:text
+                                              ,(concat
+                                                (plist-get context :additional)
+                                                "\n<beginCode>\n"
+                                                (plist-get context :before-cursor)
+                                                "<cursorPosition>"
+                                                (plist-get context :after-cursor)
+                                                "<endCode>"))]))))))
+         :as 'string
+         :filter (minuet--make-process-stream-filter --response--)
+         :then
+         (lambda (json)
+             (when-let* ((result (minuet--stream-decode json #'minuet--gemini-get-text-fn))
+                         (completion-items (minuet--initial-process-completion-items-default result)))
+                 ;; insert the current result into the completion items list
+                 (funcall callback completion-items)))
+         :else (lambda (err)
+                   ;; we want to collect the partial compleetion items when request timeout
+                   (if (equal (car (plz-error-curl-error err)) 28)
+                           (when-let* ((response --response--)
+                                       (response (nreverse --response--))
+                                       (response (apply #'concat response))
+                                       (result (minuet--stream-decode response #'minuet--gemini-get-text-fn))
+                                       (completion-items (minuet--initial-process-completion-items-default result)))
+                               (minuet--log "Gemini Request timeout")
+                               (funcall callback completion-items))
+                       (minuet--log "An error occured when sending request to Gemini")
+                       (minuet--log err))))))
 
 (provide 'minuet)
 ;;; minuet.el ends here

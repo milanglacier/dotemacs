@@ -12,7 +12,6 @@
 (straight-use-package 'evil-exchange)
 (straight-use-package 'evil-nerd-commenter)
 (straight-use-package 'evil-visualstar)
-(straight-use-package 'evil-replace-with-register)
 (straight-use-package 'evil-args)
 (straight-use-package 'evil-lion)
 (straight-use-package 'evil-vimish-fold)
