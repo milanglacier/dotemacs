@@ -92,6 +92,7 @@
 (use-package eglot
     :init
     (setq eglot-stay-out-of '(company)
+          eglot-autoshutdown t
           eglot-workspace-configuration
           '(:basedpyright.analysis (:useLibraryCodeForTypes t :diagnosticMode "workspace" :autoSearchPaths t)
             ;; NOTE: I was thinking `python.analysis' should be a
