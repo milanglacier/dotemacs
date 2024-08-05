@@ -284,6 +284,18 @@ is a symbol, return its value. Else return itself."
                 (response (apply #'concat response)))
         (minuet--stream-decode response get-text-fn)))
 
+(defun minuet--handle-chat-completion-timeout (err response get-text-fn name callback)
+    "Handle the timeout error for chat completion. This function will decode and send the partial complete response to the callback,
+and log the error"
+    (if (equal (car (plz-error-curl-error err)) 28)
+            (progn
+                (minuet--log (format "%s Request timeout" name))
+                (when-let* ((result (minuet--stream-decode-raw response get-text-fn))
+                            (completion-items (minuet--initial-process-completion-items-default result)))
+                    (funcall callback completion-items)))
+        (minuet--log (format "An error occured when sending request to %s" name))
+        (minuet--log err)))
+
 (defmacro minuet--with-temp-response (&rest body)
     "Execute BODY with a temporary response collection.
 This macro creates a local variable `--response--' that can be used
@@ -429,9 +441,10 @@ be used to accumulate text output from a process. After execution,
                  (lambda (err)
                      (setq try (1+ try))
                      (if (equal (car (plz-error-curl-error err)) 28)
-                             (when-let* ((result (minuet--stream-decode-raw --response-- get-text-fn)))
+                             (progn
                                  (minuet--log (format "%s Request timeout" name))
-                                 (push result completion-items)
+                                 (when-let* ((result (minuet--stream-decode-raw --response-- get-text-fn)))
+                                     (push result completion-items))
                                  (when (>= try total-try)
                                      (funcall callback completion-items)))
                          (minuet--log (format "An error occured when sending request to %s" name))
@@ -494,15 +507,10 @@ be used to accumulate text output from a process. After execution,
                          (completion-items (minuet--initial-process-completion-items-default result)))
                  ;; insert the current result into the completion items list
                  (funcall callback completion-items)))
-         :else (lambda (err)
-                   ;; we want to collect the partial compleetion items when request timeout
-                   (if (equal (car (plz-error-curl-error err)) 28)
-                           (when-let* ((result (minuet--stream-decode-raw --response-- #'minuet--openai-get-text-fn))
-                                       (completion-items (minuet--initial-process-completion-items-default result)))
-                               (minuet--log "OpenAI Request timeout")
-                               (funcall callback completion-items))
-                       (minuet--log "An error occured when sending request to OpenAI")
-                       (minuet--log err))))))
+         :else
+         (lambda (err)
+             (minuet--handle-chat-completion-timeout
+              err --response-- #'minuet--openai-get-text-fn "OpenAI" callback)))))
 
 (defun minuet--openai-complete (context callback)
     (minuet--openai-complete-base
@@ -552,15 +560,10 @@ be used to accumulate text output from a process. After execution,
                          (completion-items (minuet--initial-process-completion-items-default result)))
                  ;; insert the current result into the completion items list
                  (funcall callback completion-items)))
-         :else (lambda (err)
-                   ;; we want to collect the partial compleetion items when request timeout
-                   (if (equal (car (plz-error-curl-error err)) 28)
-                           (when-let* ((result (minuet--stream-decode-raw --response-- #'minuet--claude-get-text-fn))
-                                       (completion-items (minuet--initial-process-completion-items-default result)))
-                               (minuet--log "Claude Request timeout")
-                               (funcall callback completion-items))
-                       (minuet--log "An error occured when sending request to Claude")
-                       (minuet--log err))))))
+         :else
+         (lambda (err)
+             (minuet--handle-chat-completion-timeout
+              err --response-- #'minuet--claude-get-text-fn "Claude" callback)))))
 
 (defun minuet--gemini-get-text-fn (json)
     (--> json
@@ -610,15 +613,10 @@ be used to accumulate text output from a process. After execution,
                          (completion-items (minuet--initial-process-completion-items-default result)))
                  ;; insert the current result into the completion items list
                  (funcall callback completion-items)))
-         :else (lambda (err)
-                   ;; we want to collect the partial compleetion items when request timeout
-                   (if (equal (car (plz-error-curl-error err)) 28)
-                           (when-let* ((result (minuet--stream-decode-raw --response-- #'minuet--gemini-get-text-fn))
-                                       (completion-items (minuet--initial-process-completion-items-default result)))
-                               (minuet--log "Gemini Request timeout")
-                               (funcall callback completion-items))
-                       (minuet--log "An error occured when sending request to Gemini")
-                       (minuet--log err))))))
+         :else
+         (lambda (err)
+             (minuet--handle-chat-completion-timeout
+              err --response-- #'minuet--gemini-get-text-fn "Gemini" callback)))))
 
 (provide 'minuet)
 ;;; minuet.el ends here
