@@ -278,6 +278,12 @@ is a symbol, return its value. Else return itself."
          ;; (setq ,response (append ,response (list text)))
          (push text ,response)))
 
+(defun minuet--stream-decode-raw (response get-text-fn)
+    "Decode the raw stream stored in the temp variable create by `minuet--make-process-stream-filter'"
+    (when-let* ((response (nreverse response))
+                (response (apply #'concat response)))
+        (minuet--stream-decode response get-text-fn)))
+
 (defmacro minuet--with-temp-response (&rest body)
     "Execute BODY with a temporary response collection.
 This macro creates a local variable `--response--' that can be used
@@ -423,10 +429,7 @@ be used to accumulate text output from a process. After execution,
                  (lambda (err)
                      (setq try (1+ try))
                      (if (equal (car (plz-error-curl-error err)) 28)
-                             (when-let* ((response --response--)
-                                         (response (nreverse --response--))
-                                         (response (apply #'concat response))
-                                         (result (minuet--stream-decode response get-text-fn)))
+                             (when-let* ((result (minuet--stream-decode-raw --response-- get-text-fn)))
                                  (minuet--log (format "%s Request timeout" name))
                                  (push result completion-items)
                                  (when (>= try total-try)
@@ -494,10 +497,7 @@ be used to accumulate text output from a process. After execution,
          :else (lambda (err)
                    ;; we want to collect the partial compleetion items when request timeout
                    (if (equal (car (plz-error-curl-error err)) 28)
-                           (when-let* ((response --response--)
-                                       (response (nreverse --response--))
-                                       (response (apply #'concat response))
-                                       (result (minuet--stream-decode response #'minuet--openai-get-text-fn))
+                           (when-let* ((result (minuet--stream-decode-raw --response-- #'minuet--openai-get-text-fn))
                                        (completion-items (minuet--initial-process-completion-items-default result)))
                                (minuet--log "OpenAI Request timeout")
                                (funcall callback completion-items))
@@ -555,10 +555,7 @@ be used to accumulate text output from a process. After execution,
          :else (lambda (err)
                    ;; we want to collect the partial compleetion items when request timeout
                    (if (equal (car (plz-error-curl-error err)) 28)
-                           (when-let* ((response --response--)
-                                       (response (nreverse --response--))
-                                       (response (apply #'concat response))
-                                       (result (minuet--stream-decode response #'minuet--claude-get-text-fn))
+                           (when-let* ((result (minuet--stream-decode-raw --response-- #'minuet--claude-get-text-fn))
                                        (completion-items (minuet--initial-process-completion-items-default result)))
                                (minuet--log "Claude Request timeout")
                                (funcall callback completion-items))
@@ -616,10 +613,7 @@ be used to accumulate text output from a process. After execution,
          :else (lambda (err)
                    ;; we want to collect the partial compleetion items when request timeout
                    (if (equal (car (plz-error-curl-error err)) 28)
-                           (when-let* ((response --response--)
-                                       (response (nreverse --response--))
-                                       (response (apply #'concat response))
-                                       (result (minuet--stream-decode response #'minuet--gemini-get-text-fn))
+                           (when-let* ((result (minuet--stream-decode-raw --response-- #'minuet--gemini-get-text-fn))
                                        (completion-items (minuet--initial-process-completion-items-default result)))
                                (minuet--log "Gemini Request timeout")
                                (funcall callback completion-items))
