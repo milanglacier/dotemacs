@@ -285,8 +285,9 @@ is a symbol, return its value. Else return itself."
         (minuet--stream-decode response get-text-fn)))
 
 (defun minuet--handle-chat-completion-timeout (err response get-text-fn name callback)
-    "Handle the timeout error for chat completion. This function will decode and send the partial complete response to the callback,
-and log the error"
+    "Handle the timeout error for chat completion.  This function will
+decode and send the partial complete response to the callback,and log
+the error"
     (if (equal (car (plz-error-curl-error err)) 28)
             (progn
                 (minuet--log (format "%s Request timeout" name))
@@ -300,10 +301,10 @@ and log the error"
     "Execute BODY with a temporary response collection.
 This macro creates a local variable `--response--' that can be used
 to collect process output within the BODY. It's designed to work in
-conjunction with `minuet--make-process-stream-filter`.
-The `--response--` variable is initialized as an empty list and can
+conjunction with `minuet--make-process-stream-filter'.
+The `--response--' variable is initialized as an empty list and can
 be used to accumulate text output from a process. After execution,
-`--response--` will contain the collected responses in reverse order."
+`--response--' will contain the collected responses in reverse order."
     `(let (--response--) ,@body))
 
 ;;;###autoload
