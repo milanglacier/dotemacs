@@ -184,7 +184,7 @@
      :states 'insert
      "M-y" #'minuet-completion-in-region)
     :config
-    (setq minuet-provider 'openai-compatible)
+    (setq minuet-provider 'gemini)
 
     (minuet-set-optional-options minuet-gemini-options
                                  :generationConfig
