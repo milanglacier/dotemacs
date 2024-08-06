@@ -184,7 +184,8 @@
      :states 'insert
      "M-y" #'minuet-completion-in-region)
     :config
-    (setq minuet-provider 'gemini)
+    (setq minuet-provider 'openai-compatible)
+
     (minuet-set-optional-options minuet-gemini-options
                                  :generationConfig
                                  '(:maxOutputTokens 256
@@ -200,9 +201,14 @@
                                   (:category "HARM_CATEGORY_SEXUALLY_EXPLICIT"
                                    :threshold "BLOCK_NONE")])
 
-    (minuet-set-optional-options minuet-codestral-options :max_tokens 128)
+    (dolist (provider (list minuet-openai-options
+                            minuet-codestral-options
+                            minuet-openai-compatible-options
+                            minuet-openai-fim-compatible-options))
+        (minuet-set-optional-options provider :max_tokens 256)
+        (minuet-set-optional-options provider :top_p 0.9))
+
     (minuet-set-optional-options minuet-codestral-options :stop ["\n\n"])
-    (minuet-set-optional-options minuet-codestral-options :top_p 0.9)
     )
 
 (use-package treesit
