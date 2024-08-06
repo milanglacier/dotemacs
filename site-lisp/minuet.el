@@ -126,9 +126,9 @@ fib(5)
     "config options for Minuet Codestral provider")
 
 (defvar minuet-openai-compatible-options
-    `(:end_point "https://api.mistral.ai/v1/chat/completions"
-      :api_key "MISTRAL_API_KEY"
-      :model "open-mistral-nemo"
+    `(:end_point "https://api.groq.com/openai/v1/chat/completions"
+      :api_key "GROQ_API_KEY"
+      :model "llama-3.1-70b-versatile"
       :system
       (:template minuet-default-system-template
        :prompt minuet-default-prompt
