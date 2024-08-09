@@ -42,9 +42,12 @@ specified, as this parameter serves only as a prompt guideline.")
 provide code suggestions based on the user's input. The user's code will be
 enclosed in markers:
 
-- `<beginCode>`: Start of the code context
+- `<contextAfterCursor>`: Code context after the cursor
 - `<cursorPosition>`: Current cursor location
-- `<endCode>`: End of the code context
+- `<contextBeforeCursor>`: Code context before the cursor
+
+Note that the user's code will be prompted in reverse order: first the code
+after the cursor, then the code before the cursor.
 "
     "The default prompt for minuet completion")
 
@@ -71,12 +74,12 @@ enclosed in markers:
 (defvar minuet-default-fewshots
     `((:role "user"
        :content "# language: python
-<beginCode>
-def fibonacci(n):
-    <cursorPosition>
+<contextAfterCursor>
 
 fib(5)
-<endCode>")
+<contextBeforeCursor>
+def fibonacci(n):
+    <cursorPosition>")
       (:role "assistant"
        :content "    '''
     Recursive Fibonacci implementation
@@ -249,6 +252,15 @@ is a symbol, return its value. Else return itself."
         `(:before-cursor ,context-before-cursor
           :after-cursor ,context-after-cursor
           :additional ,(format "%s\n%s" (minuet--add-language-comment) (minuet--add-tab-comment)))))
+
+(defun minuet--make-chat-llm-shot (context)
+    (concat
+     (plist-get context :additional)
+     "\n<contextAfterCursor>\n"
+     (plist-get context :after-cursor)
+     "\n<contextBeforeCursor>\n"
+     (plist-get context :before-cursor)
+     "<cursorPosition>"))
 
 (defun minuet--stream-decode (response get-text-fn)
     (setq response (split-string response "[\r]?\n"))
@@ -493,13 +505,7 @@ be used to accumulate text output from a process. After execution,
                                                 :content ,(minuet--make-system-prompt (plist-get options :system)))
                                                ,@(minuet--eval-value (plist-get options :few_shots))
                                                (:role "user"
-                                                :content ,(concat
-                                                           (plist-get context :additional)
-                                                           "\n<beginCode>\n"
-                                                           (plist-get context :before-cursor)
-                                                           "<cursorPosition>"
-                                                           (plist-get context :after-cursor)
-                                                           "<endCode>"))))))
+                                                :content ,(minuet--make-chat-llm-shot context))))))
          :as 'string
          :filter (minuet--make-process-stream-filter --response--)
          :then
@@ -546,13 +552,7 @@ be used to accumulate text output from a process. After execution,
                                      :messages ,(vconcat
                                                  `(,@(minuet--eval-value (plist-get options :few_shots))
                                                    (:role "user"
-                                                    :content ,(concat
-                                                               (plist-get context :additional)
-                                                               "\n<beginCode>\n"
-                                                               (plist-get context :before-cursor)
-                                                               "<cursorPosition>"
-                                                               (plist-get context :after-cursor)
-                                                               "<endCode>")))))))
+                                                    :content ,(minuet--make-chat-llm-shot context)))))))
          :as 'string
          :filter (minuet--make-process-stream-filter --response--)
          :then
@@ -598,14 +598,7 @@ be used to accumulate text output from a process. After execution,
                       :contents ,(vconcat
                                   `(,@few_shots
                                     (:role "user"
-                                     :parts [(:text
-                                              ,(concat
-                                                (plist-get context :additional)
-                                                "\n<beginCode>\n"
-                                                (plist-get context :before-cursor)
-                                                "<cursorPosition>"
-                                                (plist-get context :after-cursor)
-                                                "<endCode>"))]))))))
+                                     :parts [(:text ,(minuet--make-chat-llm-shot context))]))))))
          :as 'string
          :filter (minuet--make-process-stream-filter --response--)
          :then
