@@ -123,14 +123,14 @@ def fibonacci(n):
 
 (defvar minuet-codestral-options
     '(:model "codestral-latest"
-      :end_point "https://codestral.mistral.ai/v1/fim/completions"
-      :api_key "CODESTRAL_API_KEY"
+      :end-point "https://codestral.mistral.ai/v1/fim/completions"
+      :api-key "CODESTRAL_API_KEY"
       :optional nil)
     "config options for Minuet Codestral provider")
 
 (defvar minuet-openai-compatible-options
-    `(:end_point "https://api.groq.com/openai/v1/chat/completions"
-      :api_key "GROQ_API_KEY"
+    `(:end-point "https://api.groq.com/openai/v1/chat/completions"
+      :api-key "GROQ_API_KEY"
       :model "llama-3.1-70b-versatile"
       :system
       (:template minuet-default-system-template
@@ -143,8 +143,8 @@ def fibonacci(n):
 
 (defvar minuet-openai-fim-compatible-options
     '(:model "deepseek-coder"
-      :end_point "https://api.deepseek.com/beta/completions"
-      :api_key "DEEPSEEK_API_KEY"
+      :end-point "https://api.deepseek.com/beta/completions"
+      :api-key "DEEPSEEK_API_KEY"
       :name "Deepseek"
       :optional nil)
     "config options for Minuet OpenAI FIM compatible provider")
@@ -351,7 +351,7 @@ be used to accumulate text output from a process. After execution,
         (not (equal var ""))))
 
 (defun minuet--codestral-available-p ()
-    (minuet--check-env-var (plist-get minuet-codestral-options :api_key)))
+    (minuet--check-env-var (plist-get minuet-codestral-options :api-key)))
 
 (defun minuet--openai-available-p ()
     (minuet--check-env-var "OPENAI_API_KEY"))
@@ -361,16 +361,16 @@ be used to accumulate text output from a process. After execution,
 
 (defun minuet--openai-compatible-available-p ()
     (when-let* ((options minuet-openai-compatible-options)
-                (env-var (plist-get options :api_key))
-                (end-point (plist-get options :end_point))
+                (env-var (plist-get options :api-key))
+                (end-point (plist-get options :end-point))
                 (model (plist-get options :model)))
         (minuet--check-env-var env-var)))
 
 (defun minuet--openai-fim-compatible-available-p ()
     (when-let* ((options minuet-openai-fim-compatible-options)
-                (env-var (plist-get options :api_key))
+                (env-var (plist-get options :api-key))
                 (name (plist-get options :name))
-                (end-point (plist-get options :end_point))
+                (end-point (plist-get options :end-point))
                 (model (plist-get options :model)))
         (minuet--check-env-var env-var)))
 
@@ -428,10 +428,10 @@ be used to accumulate text output from a process. After execution,
           completion-items)
         (dotimes (_ total-try)
             (minuet--with-temp-response
-             (plz 'post (plist-get options :end_point)
+             (plz 'post (plist-get options :end-point)
                  :headers `(("Content-Type" . "application/json")
                             ("Accept" . "application/json")
-                            ("Authorization" . ,(concat "Bearer " (getenv (plist-get options :api_key)))))
+                            ("Authorization" . ,(concat "Bearer " (getenv (plist-get options :api-key)))))
                  :timeout minuet-request-timeout
                  :body (json-serialize `(,@(plist-get options :optional)
                                          :stream t
@@ -492,10 +492,10 @@ be used to accumulate text output from a process. After execution,
 
 (defun minuet--openai-complete-base (options context callback)
     (minuet--with-temp-response
-     (plz 'post (plist-get options :end_point)
+     (plz 'post (plist-get options :end-point)
          :headers `(("Content-Type" . "application/json")
                     ("Accept" . "application/json")
-                    ("Authorization" . ,(concat "Bearer " (getenv (plist-get options :api_key)))))
+                    ("Authorization" . ,(concat "Bearer " (getenv (plist-get options :api-key)))))
          :timeout minuet-request-timeout
          :body (json-serialize `(,@(plist-get options :optional)
                                  :stream t
@@ -522,8 +522,8 @@ be used to accumulate text output from a process. After execution,
 (defun minuet--openai-complete (context callback)
     (minuet--openai-complete-base
      (--> (copy-tree minuet-openai-options)
-          (plist-put it :end_point "https://api.openai.com/v1/chat/completions")
-          (plist-put it :api_key "OPENAI_API_KEY"))
+          (plist-put it :end-point "https://api.openai.com/v1/chat/completions")
+          (plist-put it :api-key "OPENAI_API_KEY"))
      context callback))
 
 (defun minuet--openai-compatible-complete (context callback)
