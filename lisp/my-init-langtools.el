@@ -259,7 +259,9 @@
             (sh-mode         . bash-ts-mode)
             (typescript-mode . typescript-ts-mode)
             (rust-mode       . rust-ts-mode)
-            (go-mode         . go-ts-mode)))
+            (go-mode         . go-ts-mode))
+
+          treesit-font-lock-level 4)
 
     (add-to-list 'auto-mode-alist '("CMakeLists\\'" . cmake-ts-mode))
     (add-to-list 'auto-mode-alist '("Dockerfile\\'" . dockerfile-ts-mode))
