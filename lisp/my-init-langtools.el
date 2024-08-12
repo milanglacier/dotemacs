@@ -216,7 +216,7 @@
     (setq treesit-language-source-alist
           '((bash "https://github.com/tree-sitter/tree-sitter-bash")
             (c "https://github.com/tree-sitter/tree-sitter-c")
-            (cpp "https://github.com/tree-sitter/tree-sitter-cpp")
+            (cpp "https://github.com/tree-sitter/tree-sitter-cpp" "v0.22.0")
             (css "https://github.com/tree-sitter/tree-sitter-css")
             (cmake "https://github.com/uyha/tree-sitter-cmake")
             (csharp "https://github.com/tree-sitter/tree-sitter-c-sharp.git")
