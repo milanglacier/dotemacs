@@ -3,7 +3,7 @@
 ;; Author: Milan Glacier <dev@milanglacier.com>
 ;; Maintainer: Milan Glacier <dev@milanglacier.com>
 ;; Version: 0.1
-;; Package-Requires: ((emacs "29") ("plz" "0.9"))
+;; Package-Requires: ((emacs "29") (plz "0.9") (dash "2.19.1"))
 
 ;;; Commentary:
 ;; This package implements an AI-powered code completion tool for Emacs. It
