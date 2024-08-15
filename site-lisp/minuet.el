@@ -220,6 +220,20 @@ is a symbol, return its value. Else return itself."
      append (list (car (split-string item "\n"))
                   item)))
 
+(defun minuet--remove-spaces (items)
+    "Remove trailing and leading spaces in each item in items"
+    ;; emacs use \\` and \\' to match the beginning/end of the string,
+    ;; ^ and $ are used to match bol or eol
+    (setq items (mapcar (lambda (x)
+                            (if (or (equal x "")
+                                    (string-match "\\`[\s\t\n]+\\'" x))
+                                    nil
+                                (setq x (replace-regexp-in-string "[\s\t\n]+\\'" "" x)
+                                      x (replace-regexp-in-string "\\`[\s\t\n]+" "" x))))
+                        items)
+          items (seq-filter #'identity items))
+    items)
+
 (defun minuet--get-context ()
     (let* ((point (point))
            (n-chars-before point)
@@ -304,7 +318,8 @@ the error"
             (progn
                 (minuet--log (format "%s Request timeout" name))
                 (when-let* ((result (minuet--stream-decode-raw response get-text-fn))
-                            (completion-items (minuet--initial-process-completion-items-default result)))
+                            (completion-items (minuet--parse-completion-itmes-default result))
+                            (completion-items (minuet--remove-spaces completion-items)))
                     (funcall callback completion-items)))
         (minuet--log (format "An error occured when sending request to %s" name))
         (minuet--log err)))
@@ -338,12 +353,7 @@ be used to accumulate text output from a process. After execution,
                          (setq items (if minuet-add-single-line-entry
                                              (minuet--add-single-line-entry items)
                                          items)
-                               items (-distinct items)
-                               items (mapcar
-                                      (lambda (x)
-                                          ;; . matches any chars except newline, so we have to also include newline in the group
-                                          (replace-regexp-in-string "^\\([\s\n\t]*\\)\\(.\\|\n\\)*$" "" x nil nil 1))
-                                      items))
+                               items (-distinct items))
                          (completion-in-region (point) (point) items))))))
 
 (defun minuet--check-env-var (env-var)
@@ -377,18 +387,8 @@ be used to accumulate text output from a process. After execution,
 (defun minuet--gemini-available-p ()
     (minuet--check-env-var "GEMINI_API_KEY"))
 
-(defun minuet--initial-process-completion-items-default (items)
-    (setq
-     items (split-string items "<endCompletion>")
-     items (mapcar (lambda (x)
-                       (if (or (equal x "")
-                               (string-match "^[\s\t\n]+$" x))
-                               nil
-                           (setq x (replace-regexp-in-string "\n$" "" x)
-                                 x (replace-regexp-in-string "^\n+" "" x))))
-                   items)
-     items (seq-filter #'identity items))
-    items)
+(defun minuet--parse-completion-itmes-default (items)
+    (split-string items "<endCompletion>"))
 
 (defun minuet--make-system-prompt (template &optional n-completions)
     (let* ((tmpl (plist-get template :template))
@@ -449,6 +449,7 @@ be used to accumulate text output from a process. After execution,
                          ;; insert the current result into the completion items list
                          (push result completion-items)
                          (when (>= try total-try)
+                             (setq completion-items (minuet--remove-spaces completion-items))
                              (funcall callback completion-items))))
                  :else
                  (lambda (err)
@@ -459,6 +460,7 @@ be used to accumulate text output from a process. After execution,
                                  (when-let* ((result (minuet--stream-decode-raw --response-- get-text-fn)))
                                      (push result completion-items))
                                  (when (>= try total-try)
+                                     (setq completion-items (minuet--remove-spaces completion-items))
                                      (funcall callback completion-items)))
                          (minuet--log (format "An error occured when sending request to %s" name))
                          (minuet--log err))))))))
@@ -511,7 +513,8 @@ be used to accumulate text output from a process. After execution,
          :then
          (lambda (json)
              (when-let* ((result (minuet--stream-decode json #'minuet--openai-get-text-fn))
-                         (completion-items (minuet--initial-process-completion-items-default result)))
+                         (completion-items (minuet--parse-completion-itmes-default result))
+                         (completion-items (minuet--remove-spaces completion-items)))
                  ;; insert the current result into the completion items list
                  (funcall callback completion-items)))
          :else
@@ -558,7 +561,8 @@ be used to accumulate text output from a process. After execution,
          :then
          (lambda (json)
              (when-let* ((result (minuet--stream-decode json #'minuet--claude-get-text-fn))
-                         (completion-items (minuet--initial-process-completion-items-default result)))
+                         (completion-items (minuet--parse-completion-itmes-default result))
+                         (completion-items (minuet--remove-spaces completion-items)))
                  ;; insert the current result into the completion items list
                  (funcall callback completion-items)))
          :else
@@ -604,8 +608,8 @@ be used to accumulate text output from a process. After execution,
          :then
          (lambda (json)
              (when-let* ((result (minuet--stream-decode json #'minuet--gemini-get-text-fn))
-                         (completion-items (minuet--initial-process-completion-items-default result)))
-                 ;; insert the current result into the completion items list
+                         (completion-items (minuet--parse-completion-itmes-default result))
+                         (completion-items (minuet--remove-spaces completion-items)))
                  (funcall callback completion-items)))
          :else
          (lambda (err)
