@@ -102,10 +102,10 @@
      "gs" 'notmuch-search-stash-map
      )
 
-
     ;; I usually don't archive email, so I delete all the keymaps related to archive
     (general-define-key
      :states 'visual
+     :keymaps 'notmuch-search-mode-map
      "-" #'notmuch-search-remove-tag
      "+" #'notmuch-search-add-tag
      "K" #'notmuch-tag-jump ; apply +tags with popup menu to select to selected messages, <C-u> to apply -tags.
