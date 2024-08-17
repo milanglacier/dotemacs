@@ -88,6 +88,7 @@
         "s" #'my~radian-send-region-operator
         "r" '(:ignore t :which-key "repl")
         "rs" #'my~radian-start
+        "rh" #'my~radian-hide-window
         "v" '(:ignore t :which-key "view")
         "vh" #'my/ess-toggle-view-httpgd)
 
@@ -126,6 +127,7 @@
         "s" #'my~ipython-send-region-operator
         "r" '(:ignore t :which-key "REPL")
         "rs" #'my~ipython-start
+        "rh" #'my~ipython-hide-window
         "v" '(:ignore t :which-key "view")
         "vh" #'my/python-toggle-view-local-html
         "'" #'my~python-edit-sql)
@@ -170,6 +172,7 @@
         :keymaps 'markdown-mode-map
         "r" '(:ignore t :which-key "repl")
         "rs" #'my/markdown-run-repl
+        "rh" #'my/markdown-hide-window
         "s" #'my/markdown-send-region)
 
     (add-hook 'markdown-mode-hook #'eglot-ensure)

@@ -58,10 +58,23 @@ With an prefix \\[universal-argument], make this python session global
     "Run the REPL depending on the context (i.e. the language of the
 code block)"
     (interactive)
-    (pcase (markdown-code-block-lang)
-        ("r" (call-interactively #'run-ess-r))
-        ("R" (call-interactively #'run-ess-r))
+    ;; `markd-code-block-lang' will move point to the begin of the
+    ;; code block, so we `save-excursion'
+    (pcase (save-excursion (markdown-code-block-lang))
+        ("r" (call-interactively #'my~radian-start))
+        ("R" (call-interactively #'my~radian-start))
         ("python" (call-interactively #'my~ipython-start))
+        (x "No associated REPL found!")))
+
+;;;###autoload
+(defun my/markdown-hide-window()
+    "Close the REPL window denpending on the context (i.e. the
+language of the code block)."
+    (interactive)
+    (pcase (save-excursion (markdown-code-block-lang))
+        ("r" (call-interactively #'my~radian-hide-window))
+        ("R" (call-interactively #'#'my~radian-hide-window))
+        ("python" (call-interactively #'my~ipython-hide-window))
         (x "No associated REPL found!")))
 
 ;;;###autoload (autoload #'my/markdown-send-region "my-langs-autoloads" nil t)
@@ -69,9 +82,9 @@ code block)"
     "Send region to the REPL depending on the context (i.e. the
 language of the code block)"
     (interactive "<r>P")
-    (pcase (markdown-code-block-lang)
-        ("r" (my/send-region-to-ess beg end))
-        ("R" (my/send-region-to-ess beg end))
+    (pcase (save-excursion (markdown-code-block-lang))
+        ("r" ((my~radian-send-region-operator beg end session)))
+        ("R" ((my~radian-send-region-operator beg end session)))
         ("python" (my~ipython-send-region-operator beg end session))
         (x "No associated REPL found!")))
 

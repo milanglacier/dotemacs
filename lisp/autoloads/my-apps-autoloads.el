@@ -166,7 +166,8 @@ otherwise use the existed one"
 
 The REPL session will be created via vterm. The schema includes three
 functions, the function to start the repl, the function to send the
-region and the corresponding operator.
+region and the corresponding operator, and the function to hide the
+REPL window if it exists.
 
 REPL-NAME is a string, REPL-CMD is a form evaluated to a string. ARGS
 is a plist, the following properties are supported:
@@ -192,6 +193,7 @@ at run time by setting the generated variable
     (let ((start-func-name (intern (concat "my~" repl-name "-start")))
           (send-region-func-name (intern (concat "my~" repl-name "-send-region")))
           (send-region-operator-name (intern (concat "my~" repl-name "-send-region-operator")))
+          (hide-window-func-name (intern (concat "my~" repl-name "-hide-window")))
           (bracketed-paste-p (plist-get args :bracketed-paste-p))
           (start-pattern (or (plist-get args :start-pattern) ""))
           (end-pattern (or (plist-get args :end-pattern) "\r"))
@@ -256,6 +258,18 @@ that number" send-region-func-name repl-name)
                  :move-point nil
                  (interactive "<r>P")
                  (,send-region-func-name beg end session))
+
+             (defun ,hide-window-func-name (&optional arg)
+                 ,(format
+                   "hide the %s window. With numeric prefix argument, hide
+the window with that number as a suffix." repl-name)
+                 (interactive "P")
+                 (when-let* ((vterm-buffer-name
+                              (if arg (format "*%s*<%d>" ,repl-name arg)
+                                  (format "*%s*" ,repl-name)))
+                             (buf (get-buffer vterm-buffer-name))
+                             (vterm-buffer-window (get-buffer-window buf)))
+                     (delete-window vterm-buffer-window)))
 
              )))
 
