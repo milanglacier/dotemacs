@@ -71,12 +71,15 @@
      "TAB" #'notmuch-show-next-button
      "S-TAB" #'notmuch-show-previous-button
      "RET" #'notmuch-show-toggle-message
-     "zo" #'my~notmuch-show-open-entire-thread ; show all messages in current threads
-     "zc" #'my~notmuch-show-close-entire-thred ; hide all messages in current threads
      "SPC SPC" 'notmuch-show-part-map
      "gs" 'notmuch-show-stash-map
      )
 
+    (add-to-list 'evil-fold-list
+                 '((notmuch-show-mode)
+                   :open-all my~notmuch-show-open-entire-thread
+                   :close-all my~notmuch-show-close-entire-thred
+                   :toggle notmuch-show-toggle-message))
 
     ;; I usually don't archive email, so I delete all the keymaps related to archive
     (general-define-key
