@@ -182,6 +182,12 @@
     (advice-add #'evil-indent :around #'my/save-excursion-before-indenting)
 
     (general-define-key
+     :states '(motion normal visual)
+     ;; vanilla emacs uses `C--' to input negative prefix. In evil
+     ;; mode we can directly uses -.
+     "-" #'negative-argument)
+
+    (general-define-key
      :states 'visual
      "@" #'my/evil-apply-macro-line-by-line
      "Z" #'evil-snipe-S)
