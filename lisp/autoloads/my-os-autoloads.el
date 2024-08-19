@@ -25,11 +25,7 @@
                         [mouse-6] #'scroll-down-line
                         [mouse-5] #'scroll-up-line
                         [mouse-7] #'scroll-up-line)
-    (menu-bar-mode -1)
-    ;; BUG: in tty while menu-bar is not displayed, however it is
-    ;; still there, that is, when you try to use mouse to click the
-    ;; region, they pops up something which suggests its existence.
-    ;; Have to turn off it again.
+
     (xclip-mode 1))
 
 ;;;###autoload
