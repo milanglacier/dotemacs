@@ -6,7 +6,7 @@
 (straight-use-package 'edit-indirect)
 (straight-use-package 'code-cells)
 (straight-use-package 'reformatter)
-(straight-use-package '(dape :host github :repo "svaante/dape"))
+(straight-use-package 'dape)
 
 (straight-use-package 'plz) ; used for minuet
 
