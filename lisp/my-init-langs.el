@@ -130,11 +130,11 @@
         "rh" #'my~ipython-hide-window
         "v" '(:ignore t :which-key "view")
         "vh" #'my/python-toggle-view-local-html
-        "'" #'my~python-edit-sql)
+        "'" #'my~edit-src)
 
     (general-define-key
         :keymaps 'python-ts-mode-map
-        "C-c '" #'my~python-edit-sql)
+        "C-c '" #'my~edit-src)
 
     (add-to-list 'display-buffer-alist
                  `("^\\*ipython"

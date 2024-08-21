@@ -226,25 +226,36 @@ language of the code block)"
                       (config-file-exists (file-exists-p config-file)))
               `("--config" ,config-file)))
 
-(defun my:treesit-python-get-sql-range ()
+(defun my:edit-src-treesit-get-string-range ()
     (let ((node (treesit-node-at (point)))
-          (query "((string_content)
-                   @sql
-                   (#match \"^[ \\t\\n]*--\\s*[sS][qQ][lL]\" @sql))
-                  ((string_content)
-                   @sql
-                   (#match \"^[ \\t\\n]*/\\*.*[sS][qQ][lL].*\\*/\" @sql))"))
+          (query "((string_content) @str)"))
         (treesit-query-range node query)))
 
+(defvar my$edit-src-hook-guess-mode-functions '(my:edit-src-detect-sql)
+    "Hooks to detect the mode of the temporary buffer for
+edit-src. These functions take one argument which is the content
+of the temp buffer.")
+
+(defun my:edit-src-detect-sql (content)
+    (cond
+     ((string-match "\\`[ \t\n]*--[ \t]*[sS][qQ][lL]" content) 'sql-mode)
+     ((string-match "\\`[ \t\n]*/\\*.*[sS][qQ][lL].*\\*/" content) 'sql-mode)
+     (t nil)))
+
 ;;;###autoload
-(defun my~python-edit-sql ()
-    "Edit the embedded sql code within a separate buffer."
+(defun my~edit-src ()
+    "Edit the embedded code within a separate buffer."
     (interactive)
     (require 'edit-indirect)
-    (when-let* ((edit-indirect-guess-mode-function (lambda (&rest _) (sql-mode)))
-                (range (my:treesit-python-get-sql-range))
+    (when-let* ((range (my:edit-src-treesit-get-string-range))
                 (beg (caar range))
-                (end (cdar range)))
+                (end (cdar range))
+                (content (buffer-substring-no-properties beg end))
+                (edit-indirect-guess-mode-function
+                 (lambda (&rest _)
+                     (funcall
+                      (or (run-hook-with-args-until-success 'my$edit-src-hook-guess-mode-functions content)
+                          'normal-mode)))))
         (edit-indirect-region beg end t)))
 
 (provide 'my-langs-autoloads)

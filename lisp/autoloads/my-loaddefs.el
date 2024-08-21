@@ -235,6 +235,9 @@ With an prefix \\[universal-argument], make this python session global
 (autoload 'my/markdown-run-repl "my-langs-autoloads" "\
 Run the REPL depending on the context (i.e. the language of the
 code block)" t)
+(autoload 'my/markdown-hide-window "my-langs-autoloads" "\
+Close the REPL window denpending on the context (i.e. the
+language of the code block)." t)
  (autoload #'my/markdown-send-region "my-langs-autoloads" nil t)
 (autoload 'my~conda-activate "my-langs-autoloads" "\
 Activate a conda environment.
@@ -257,9 +260,9 @@ This command deactivates the current poetry virtual environment." t)
  (autoload #'yapf-format-buffer "my-langs-autoloads" nil t)
  (autoload #'black-format-buffer "my-langs-autoloads" nil t)
  (autoload #'sql-formatter-format-buffer "my-langs-autoloads" nil t)
-(autoload 'my~python-edit-sql "my-langs-autoloads" "\
-Edit the embedded sql code within a separate buffer." t)
-(register-definition-prefixes "my-langs-autoloads" '("my$" "my/" "my:treesit-python-get-sql-range"))
+(autoload 'my~edit-src "my-langs-autoloads" "\
+Edit the embedded code within a separate buffer." t)
+(register-definition-prefixes "my-langs-autoloads" '("my$" "my/" "my:edit-src-"))
 
 
 ;;; Generated autoloads from my-langtools-autoloads.el
