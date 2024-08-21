@@ -509,16 +509,16 @@ be used to accumulate text output from a process. After execution,
                              (progn
                                  (minuet--log (format "%s Request timeout" name))
                                  (when-let ((result (minuet--stream-decode-raw --response-- get-text-fn)))
-                                     (push result completion-items))
-                                 (when (>= try total-try)
-                                     (setq completion-items
-                                           (minuet--filter-context-sequence-in-items
-                                            completion-items
-                                            context))
-                                     (setq completion-items (minuet--remove-spaces completion-items))
-                                     (funcall callback completion-items)))
+                                     (push result completion-items)))
                          (minuet--log (format "An error occured when sending request to %s" name))
-                         (minuet--log err))))))))
+                         (minuet--log err))
+                     (when (>= try total-try)
+                         (setq completion-items
+                               (minuet--filter-context-sequence-in-items
+                                completion-items
+                                context))
+                         (setq completion-items (minuet--remove-spaces completion-items))
+                         (funcall callback completion-items))))))))
 
 (defun minuet--codestral-complete (context callback)
     (minuet--openai-fim-complete-base
