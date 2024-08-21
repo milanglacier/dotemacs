@@ -207,7 +207,7 @@ is a symbol, return its value. Else return itself."
 (defun minuet--add-tab-comment ()
     (if-let* ((language-p (derived-mode-p 'prog-mode 'text-mode 'conf-mode))
               (commentstring (format "%s %%s%s"
-                                     (or comment-start "#")
+                                     (or (replace-regexp-in-string "^%" "%%" comment-start) "#")
                                      (or comment-end ""))))
             (if indent-tabs-mode
                     (format commentstring "indentation: use \t for a tab")
@@ -220,7 +220,7 @@ is a symbol, return its value. Else return itself."
               (mode (replace-regexp-in-string "-ts-mode" "" mode))
               (mode (replace-regexp-in-string "-mode" "" mode))
               (commentstring (format "%s %%s%s"
-                                     (or comment-start "#")
+                                     (or (replace-regexp-in-string "^%" "%%" comment-start) "#")
                                      (or comment-end ""))))
             (format commentstring (concat "language: " mode))
         ""))
