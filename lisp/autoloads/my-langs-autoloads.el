@@ -230,10 +230,10 @@ language of the code block)"
     (let ((node (treesit-node-at (point)))
           (query "((string_content)
                    @sql
-                   (#match \"^\\s*--[sS][qQ][lL]\" @sql))
+                   (#match \"^[ \\t\\n]*--\\s*[sS][qQ][lL]\" @sql))
                   ((string_content)
                    @sql
-                   (#match \"^\\s*/\\*.*[sS][qQ][lL].*\\*/\" @sql))"))
+                   (#match \"^[ \\t\\n]*/\\*.*[sS][qQ][lL].*\\*/\" @sql))"))
         (treesit-query-range node query)))
 
 ;;;###autoload
@@ -241,10 +241,10 @@ language of the code block)"
     "Edit the embedded sql code within a separate buffer."
     (interactive)
     (require 'edit-indirect)
-    (when-let ((edit-indirect-guess-mode-function (lambda (&rest _) (sql-mode)))
-               (range (my:treesit-python-get-sql-range))
-               (beg (caar range))
-               (end (cdar range)))
+    (when-let* ((edit-indirect-guess-mode-function (lambda (&rest _) (sql-mode)))
+                (range (my:treesit-python-get-sql-range))
+                (beg (caar range))
+                (end (cdar range)))
         (edit-indirect-region beg end t)))
 
 (provide 'my-langs-autoloads)
