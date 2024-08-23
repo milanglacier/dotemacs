@@ -118,7 +118,7 @@ def fibonacci(n):
        :prompt minuet-default-prompt
        :guidelines minuet-default-guidelines
        :n-completions-template minuet-default-n-completion-template)
-      :few_shots minuet-default-fewshots
+      :fewshots minuet-default-fewshots
       :optional nil)
     "config options for Minuet Claude provider")
 
@@ -129,7 +129,7 @@ def fibonacci(n):
        :prompt minuet-default-prompt
        :guidelines minuet-default-guidelines
        :n-completions-template minuet-default-n-completion-template)
-      :few_shots minuet-default-fewshots
+      :fewshots minuet-default-fewshots
       :optional nil)
     "config options for Minuet OpenAI provider")
 
@@ -149,7 +149,7 @@ def fibonacci(n):
        :prompt minuet-default-prompt
        :guidelines minuet-default-guidelines
        :n-completions-template minuet-default-n-completion-template)
-      :few_shots minuet-default-fewshots
+      :fewshots minuet-default-fewshots
       :optional nil)
     "config options for Minuet OpenAI compatible provider")
 
@@ -168,7 +168,7 @@ def fibonacci(n):
        :prompt minuet-default-prompt
        :guidelines minuet-default-guidelines
        :n-completions-template minuet-default-n-completion-template)
-      :few_shots minuet-default-fewshots
+      :fewshots minuet-default-fewshots
       :optional nil)
     ;; (:generationConfig
     ;;  (:stopSequences nil
@@ -559,7 +559,7 @@ be used to accumulate text output from a process. After execution,
                                  :messages ,(vconcat
                                              `((:role "system"
                                                 :content ,(minuet--make-system-prompt (plist-get options :system)))
-                                               ,@(minuet--eval-value (plist-get options :few_shots))
+                                               ,@(minuet--eval-value (plist-get options :fewshots))
                                                (:role "user"
                                                 :content ,(minuet--make-chat-llm-shot context))))))
          :as 'string
@@ -610,7 +610,7 @@ be used to accumulate text output from a process. After execution,
                                      :system ,(minuet--make-system-prompt (plist-get options :system))
                                      :max_tokens ,(plist-get options :max_tokens)
                                      :messages ,(vconcat
-                                                 `(,@(minuet--eval-value (plist-get options :few_shots))
+                                                 `(,@(minuet--eval-value (plist-get options :fewshots))
                                                    (:role "user"
                                                     :content ,(minuet--make-chat-llm-shot context)))))))
          :as 'string
@@ -649,18 +649,18 @@ be used to accumulate text output from a process. After execution,
          :timeout minuet-request-timeout
          :body (json-serialize
                 (let* ((options (copy-tree minuet-gemini-options))
-                       (few_shots (minuet--eval-value (plist-get options :few_shots)))
-                       (few_shots (mapcar
-                                   (lambda (shot)
-                                       `(:role
-                                         ,(if (equal (plist-get shot :role) "user") "user" "model")
-                                         :parts
-                                         [(:text ,(plist-get shot :content))]))
-                                   few_shots)))
+                       (fewshots (minuet--eval-value (plist-get options :fewshots)))
+                       (fewshots (mapcar
+                                  (lambda (shot)
+                                      `(:role
+                                        ,(if (equal (plist-get shot :role) "user") "user" "model")
+                                        :parts
+                                        [(:text ,(plist-get shot :content))]))
+                                  fewshots)))
                     `(,@(plist-get options :optional)
                       :system_instruction (:parts (:text ,(minuet--make-system-prompt (plist-get options :system))))
                       :contents ,(vconcat
-                                  `(,@few_shots
+                                  `(,@fewshots
                                     (:role "user"
                                      :parts [(:text ,(minuet--make-chat-llm-shot context))]))))))
          :as 'string
