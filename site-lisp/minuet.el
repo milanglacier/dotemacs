@@ -118,7 +118,7 @@ def fibonacci(n):
        :prompt minuet-default-prompt
        :guidelines minuet-default-guidelines
        :n-completions-template minuet-default-n-completion-template)
-      :few_shots minuet-default-fewshots
+      :fewshots minuet-default-fewshots
       :optional nil)
     "config options for Minuet Claude provider")
 
@@ -129,7 +129,7 @@ def fibonacci(n):
        :prompt minuet-default-prompt
        :guidelines minuet-default-guidelines
        :n-completions-template minuet-default-n-completion-template)
-      :few_shots minuet-default-fewshots
+      :fewshots minuet-default-fewshots
       :optional nil)
     "config options for Minuet OpenAI provider")
 
@@ -149,7 +149,7 @@ def fibonacci(n):
        :prompt minuet-default-prompt
        :guidelines minuet-default-guidelines
        :n-completions-template minuet-default-n-completion-template)
-      :few_shots minuet-default-fewshots
+      :fewshots minuet-default-fewshots
       :optional nil)
     "config options for Minuet OpenAI compatible provider")
 
@@ -168,7 +168,7 @@ def fibonacci(n):
        :prompt minuet-default-prompt
        :guidelines minuet-default-guidelines
        :n-completions-template minuet-default-n-completion-template)
-      :few_shots minuet-default-fewshots
+      :fewshots minuet-default-fewshots
       :optional nil)
     ;; (:generationConfig
     ;;  (:stopSequences nil
@@ -207,7 +207,7 @@ is a symbol, return its value. Else return itself."
 (defun minuet--add-tab-comment ()
     (if-let* ((language-p (derived-mode-p 'prog-mode 'text-mode 'conf-mode))
               (commentstring (format "%s %%s%s"
-                                     (or comment-start "#")
+                                     (or (replace-regexp-in-string "^%" "%%" comment-start) "#")
                                      (or comment-end ""))))
             (if indent-tabs-mode
                     (format commentstring "indentation: use \t for a tab")
@@ -220,7 +220,7 @@ is a symbol, return its value. Else return itself."
               (mode (replace-regexp-in-string "-ts-mode" "" mode))
               (mode (replace-regexp-in-string "-mode" "" mode))
               (commentstring (format "%s %%s%s"
-                                     (or comment-start "#")
+                                     (or (replace-regexp-in-string "^%" "%%" comment-start) "#")
                                      (or comment-end ""))))
             (format commentstring (concat "language: " mode))
         ""))
@@ -389,8 +389,7 @@ be used to accumulate text output from a process. After execution,
     (let ((current-buffer (current-buffer))
           (available-p-fn (intern (format "minuet--%s-available-p" minuet-provider)))
           (complete-fn (intern (format "minuet--%s-complete" minuet-provider)))
-          (context (minuet--get-context))
-          (point (point)))
+          (context (minuet--get-context)))
         (unless (funcall available-p-fn)
             (minuet--log (format "Minuet provider %s is not available" minuet-provider))
             (error "Minuet provider %s is not available" minuet-provider))
@@ -509,16 +508,16 @@ be used to accumulate text output from a process. After execution,
                              (progn
                                  (minuet--log (format "%s Request timeout" name))
                                  (when-let ((result (minuet--stream-decode-raw --response-- get-text-fn)))
-                                     (push result completion-items))
-                                 (when (>= try total-try)
-                                     (setq completion-items
-                                           (minuet--filter-context-sequence-in-items
-                                            completion-items
-                                            context))
-                                     (setq completion-items (minuet--remove-spaces completion-items))
-                                     (funcall callback completion-items)))
+                                     (push result completion-items)))
                          (minuet--log (format "An error occured when sending request to %s" name))
-                         (minuet--log err))))))))
+                         (minuet--log err))
+                     (when (>= try total-try)
+                         (setq completion-items
+                               (minuet--filter-context-sequence-in-items
+                                completion-items
+                                context))
+                         (setq completion-items (minuet--remove-spaces completion-items))
+                         (funcall callback completion-items))))))))
 
 (defun minuet--codestral-complete (context callback)
     (minuet--openai-fim-complete-base
@@ -560,7 +559,7 @@ be used to accumulate text output from a process. After execution,
                                  :messages ,(vconcat
                                              `((:role "system"
                                                 :content ,(minuet--make-system-prompt (plist-get options :system)))
-                                               ,@(minuet--eval-value (plist-get options :few_shots))
+                                               ,@(minuet--eval-value (plist-get options :fewshots))
                                                (:role "user"
                                                 :content ,(minuet--make-chat-llm-shot context))))))
          :as 'string
@@ -611,7 +610,7 @@ be used to accumulate text output from a process. After execution,
                                      :system ,(minuet--make-system-prompt (plist-get options :system))
                                      :max_tokens ,(plist-get options :max_tokens)
                                      :messages ,(vconcat
-                                                 `(,@(minuet--eval-value (plist-get options :few_shots))
+                                                 `(,@(minuet--eval-value (plist-get options :fewshots))
                                                    (:role "user"
                                                     :content ,(minuet--make-chat-llm-shot context)))))))
          :as 'string
@@ -650,18 +649,18 @@ be used to accumulate text output from a process. After execution,
          :timeout minuet-request-timeout
          :body (json-serialize
                 (let* ((options (copy-tree minuet-gemini-options))
-                       (few_shots (minuet--eval-value (plist-get options :few_shots)))
-                       (few_shots (mapcar
-                                   (lambda (shot)
-                                       `(:role
-                                         ,(if (equal (plist-get shot :role) "user") "user" "model")
-                                         :parts
-                                         [(:text ,(plist-get shot :content))]))
-                                   few_shots)))
+                       (fewshots (minuet--eval-value (plist-get options :fewshots)))
+                       (fewshots (mapcar
+                                  (lambda (shot)
+                                      `(:role
+                                        ,(if (equal (plist-get shot :role) "user") "user" "model")
+                                        :parts
+                                        [(:text ,(plist-get shot :content))]))
+                                  fewshots)))
                     `(,@(plist-get options :optional)
                       :system_instruction (:parts (:text ,(minuet--make-system-prompt (plist-get options :system))))
                       :contents ,(vconcat
-                                  `(,@few_shots
+                                  `(,@fewshots
                                     (:role "user"
                                      :parts [(:text ,(minuet--make-chat-llm-shot context))]))))))
          :as 'string
