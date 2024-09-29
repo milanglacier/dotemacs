@@ -133,6 +133,11 @@
           '((".*" (notmuch-apply-face (concat "+" tag) 'notmuch-tag-added)))
           )
 
+    (my/setq-on-hook notmuch-hello-mode-hook compile-command "mbsync -a; notmuch new;")
+    ;; run compile directly without prompting the command in minibuffer.
+    ;; HOLD: decide to use minibuffer prompt now.
+    ;; (add-hook 'notmuch-hello-mode-hook (my/setq-locally compilation-read-command nil))
+
     (org-msg-mode)
 
     )
