@@ -34,8 +34,9 @@
     (general-define-key
      :states 'normal
      :keymaps 'notmuch-hello-mode-map
-     "TAB" 'widget-forward
-     "S-TAB" 'widget-backward
+     "u" #'compile ;; update emails with mbsync and notmuch
+     "TAB" #'widget-forward
+     "S-TAB" #'widget-backward
      "RET" #'my~notmuch-hello-ret)
 
     ;; I usually don't archive email, so I delete all the keymaps related to archive
