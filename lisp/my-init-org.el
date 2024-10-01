@@ -79,7 +79,7 @@ within Emacs.")
           org-todo-keywords '((sequence "TODO(t)" "STRT(s)" "WAIT(w)" "HOLD(h)"
                                         "|" "DONE(d)" "KILL(k)"))
           ;; don't load those org modules that I never use
-          org-modules '(ol-doi ol-bbdb ol-bibtex ol-info ol-eww org-habit))
+          org-modules '(ol-doi ol-bbdb ol-bibtex ol-info ol-eww))
 
     ;; copied from doomemacs
     (setq org-refile-targets
@@ -404,6 +404,12 @@ within Emacs.")
      "gT" #'tab-bar-switch-to-prev-tab)
 
     )
+
+(use-package org-habit
+    :init
+    ;; show habits in recent days, not just today in agenda buffer
+    (setq org-habit-show-habits-only-for-today nil)
+    (add-to-list 'org-modules 'org-habit t))
 
 (use-package ob
     :init
