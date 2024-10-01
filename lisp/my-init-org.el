@@ -79,7 +79,7 @@ within Emacs.")
           org-todo-keywords '((sequence "TODO(t)" "STRT(s)" "WAIT(w)" "HOLD(h)"
                                         "|" "DONE(d)" "KILL(k)"))
           ;; don't load those org modules that I never use
-          org-modules '(ol-doi ol-bbdb ol-bibtex ol-info ol-eww))
+          org-modules '(ol-doi ol-bbdb ol-bibtex ol-info ol-eww org-habit))
 
     ;; copied from doomemacs
     (setq org-refile-targets
