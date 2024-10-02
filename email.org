@@ -3,7 +3,7 @@
 
 * Tools I used for my workflow
 
-My email workflow mainly consists of three parts:
+My email workflow mainly consists of the following parts:
 
 1. Email synchronizer (indexer): ~mbsync~ (or ~isync~, which is the same thing)
 2. Email Sender: ~msmtp~
@@ -11,8 +11,7 @@ My email workflow mainly consists of three parts:
 4. ~mutt_oauth2.py~ from [[https://github.com/muttmua/mutt/blob/master/contrib/mutt_oauth2.py][neomutt]] for oauth2 authentication with outlook email.
 
 For how those tools listed above work together, [[https://protesilaos.com/emacs/dotemacs#h:33151014-3621-4be6-9185-aacc34ee2d2c][Protesilaos Stavrou]]
-provides a great explanation. [[https://simondobson.org/2024/02/03/getting-email/][Simon Dobson]] provides a great tutorial
-on setting up oauth2 authentication for outlook email with mbsync.
+provides a great explanation.
 
 * Working with Other Email Clients (e.g., Mobile Email Apps)
 
@@ -146,6 +145,22 @@ passwordeval mutt_oauth2.py -t your/path/to/the/outlook/oauth/file
 # And your rest configs just works
 #+end_src
 
+** Use ~pass~ to manage the auth token (optional)
+
+Optionally, you can use ~pass~ to manage the auth token:
+
+#+begin_src bash
+mutt_oauth2.py -t your/path/to/the/outlook/oauth/file | pass insert -e mail/outlook/my.email.address@outlook.com
+#+end_src
+
+Then you can change the config file for ~mbsync~ and ~isync~ to use pass to get the tokens:
+
+#+begin_src bash
+# for mbsync
+PassCmd "pass show mail/outlook/my.email.address@outlook.com"
+# for msmtp
+passwordeval pass show mail/outlook/my.email.address@outlook.com
+#+end_src
 
 * Acknowledgement
 
