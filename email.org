@@ -1,0 +1,156 @@
+#+title: my email workflow with notmuch
+#+author: Milan Glacier
+
+* Tools I used for my workflow
+
+My email workflow mainly consists of three parts:
+
+1. Email synchronizer (indexer): ~mbsync~ (or ~isync~, which is the same thing)
+2. Email Sender: ~msmtp~
+3. Mail User Agent (MUA): ~notmuch~ and ~emacs~
+4. ~mutt_oauth2.py~ from [[https://github.com/muttmua/mutt/blob/master/contrib/mutt_oauth2.py][neomutt]] for oauth2 authentication with outlook email.
+
+For how those tools listed above work together, [[https://protesilaos.com/emacs/dotemacs#h:33151014-3621-4be6-9185-aacc34ee2d2c][Protesilaos Stavrou]]
+provides a great explanation. [[https://simondobson.org/2024/02/03/getting-email/][Simon Dobson]] provides a great tutorial
+on setting up oauth2 authentication for outlook email with mbsync.
+
+* Working with Other Email Clients (e.g., Mobile Email Apps)
+
+Notmuch is a tag-centric email client, but its tags don't usually sync
+up with IMAP folders. It also can't move emails between maildir
+folders (which are basically mailboxes in your email account) out of
+the box. This setup works fine if you only use Notmuch to read your
+emails. However, things can get messy if you're also using other email
+clients, like on your phone, and want everything to stay in sync
+across your devices.
+
+This section covers some handy workarounds, mainly focusing on moving
+emails between maildir folders. These tricks help sync changes with
+your email mailboxes, making it easier to use Notmuch alongside other
+email clients on different devices without things getting out of sync.
+
+* From ~mu4e~ to ~notmuch~
+
+As someone switching from ~mu4e~ to ~notmuch~, I've found that the
+resources I used to set up mu4e are still super helpful for
+configuring ~notmuch~. It's great that I can keep using ~mbsync~ for
+syncing my emails and msmtp for sending messages. These tools work
+just as well with ~notmuch~, making the transition much smoother.
+
+There are two primary reasons for my decision to transition. Firstly,
+mu4e's backward compatibility is horrible, with many plugins dependent
+on mu4e often breaking after major version updates. Secondly, notmuch
+offers a threaded conversation view, whereas mu4e only provides a
+threaded tree view. While I had implemented thread-folding in mu4e, it
+worked but the result was less than ideal. Even the official
+thread-folding feature introduced in mu4e 1.12 has numerous issues. In
+contrast, the conversation view in notmuch works great for threads.
+
+* Configure oauth2 support with outlook
+
+** Setup the mutt script for oauth2 authentication
+
+Outlook enforced oauth2 authentication for outlook email. See this
+[[https://support.microsoft.com/en-us/office/modern-authentication-methods-now-needed-to-continue-syncing-outlook-email-in-non-microsoft-email-apps-c5d65390-9676-4763-b41f-d7986499a90d][news]].
+
+I used the script from [[https://github.com/muttmua/mutt/blob/master/contrib/mutt_oauth2.py][neomutt]] for oauth2 authentication, with some
+modification in the patch below.
+
+#+begin_src diff
+diff --git a/mutt_oauth2.py b/bin/mutt_oauth2.py
+old mode 100644
+new mode 100755
+index c973b98..c296dff
+--- a/mutt_oauth2.py
++++ b/bin/mutt_oauth2.py
+@@ -45,7 +45,7 @@ import readline
+ # encryption and decryption pipes you prefer. They should read from standard
+ # input and write to standard output. The example values here invoke GPG,
+ # although won't work until an appropriate identity appears in the first line.
+-ENCRYPTION_PIPE = ['gpg', '--encrypt', '--recipient', 'YOUR_GPG_IDENTITY']
++ENCRYPTION_PIPE = ['gpg', '--encrypt', '--recipient', '<my@gpg.email.com>']
+ DECRYPTION_PIPE = ['gpg', '--decrypt']
+
+ registrations = {
+@@ -66,17 +66,17 @@ registrations = {
+         'authorize_endpoint': 'https://login.microsoftonline.com/common/oauth2/v2.0/authorize',
+         'devicecode_endpoint': 'https://login.microsoftonline.com/common/oauth2/v2.0/devicecode',
+         'token_endpoint': 'https://login.microsoftonline.com/common/oauth2/v2.0/token',
+-        'redirect_uri': 'https://login.microsoftonline.com/common/oauth2/nativeclient',
++        'redirect_uri': 'https://login.live.com/oauth20_desktop.srf', # use the redirect url of outlook instead of office365
+         'tenant': 'common',
+         'pop_endpoint': 'outlook.office365.com',
+-        'smtp_endpoint': 'smtp.office365.com',
++        'smtp_endpoint': 'smtp-mail.outlook.com',  # use the SMTP endpoint of outlook instead of office365
+         'sasl_method': 'XOAUTH2',
+         'scope': ('offline_access https://outlook.office.com/IMAP.AccessAsUser.All '
+                   'https://outlook.office.com/POP.AccessAsUser.All '
+                   'https://outlook.office.com/SMTP.Send'),
+-        'client_id': '',
+-        'client_secret': '',
++        'client_id': 'my app id, see the next section on how to register your own app',
++        'client_secret': ' ',
+     },
+ }
+#+end_src
+
+** Set up app registration in Azure
+
+To set up an app to sync emails, follow these steps:
+
+1. Sign up for an Azure account using your personal Outlook email or
+   preferred email address.
+
+2. After logging in to your Azure account, switch to the "default
+   directory" as new app registrations are currently restricted to
+   directories only.
+
+3. Follow the [[https://github.com/neomutt/neomutt/tree/main/contrib/oauth2#how-to-create-a-microsoft-registration][instruction]] provided by neomutt for your app configuration.
+
+** Fetch the authentication token with the mutt script
+
+#+begin_src bash
+mutt_oauth2.py mutt_oauth2.py --verbose --authorize -t your/path/to/the/oauth/file
+#+end_src
+
+This will open a wizard and you just need to follow the instruction to
+get it work. I used ~devicecode~ as the authflow, but the others should
+also work.
+
+
+** Configure mbsync
+
+Note: if you are using macOS, the ~mbsync~ installed from ~homebrew~ does
+not work with ~xoauth2~, following the instruction at this [[https://github.com/moriyoshi/cyrus-sasl-xoauth2/issues/9#issuecomment-2161796043][thread]] to
+build the ~mbsync~ from source.
+
+In your mbsync config file, configure your outlook email like this:
+
+#+begin_src bash
+IMAPAccount myPersonalOutlook
+PassCmd "mutt_oauth2.py -t your/path/to/the/outlook/oauth/file"
+AuthMechs XOAUTH2
+# And your rest configs just works
+#+end_src
+
+** Configure msmtp
+
+You are lucky that the ~msmtp~ installed from ~homebrew~ just works, no
+need to worry about building from source. Changing the following lines
+should be sufficient.
+
+#+begin_src bash
+account outlook
+auth xoauth2
+passwordeval mutt_oauth2.py -t your/path/to/the/outlook/oauth/file
+# And your rest configs just works
+#+end_src
+
+
+* Acknowledgement
+
+1. [[https://protesilaos.com/emacs/dotemacs#h:755e195b-9471-48c7-963b-33055969b4e2][Protesilaos Stavrou's notmuch configuration]]
+2. [[https://github.com/doomemacs/doomemacs][Doomemacs's mu4e configuration]]
+3. [[https://github.com/doomemacs/doomemacs][Doomemacs's notmuch configuration]]
+4. [[https://macowners.club/posts/email-emacs-mu4e-macos/][macowner's blog on mu4e config]]
+5. [[https://notmuchmail.org/pipermail/notmuch/2019/028956.html][Move mail script from notmuch mailing list]]
