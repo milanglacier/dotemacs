@@ -109,7 +109,7 @@ To set up an app to sync emails, follow these steps:
 ** Fetch the authentication token with the mutt script
 
 #+begin_src bash
-mutt_oauth2.py mutt_oauth2.py --verbose --authorize -t your/path/to/the/oauth/file
+mutt_oauth2.py --verbose --authorize -t your/path/to/the/oauth/file
 #+end_src
 
 A wizard will appear upon running the above command. Simply follow the
@@ -157,7 +157,7 @@ Optionally, you can use ~pass~ to manage the auth token:
 mutt_oauth2.py -t your/path/to/the/outlook/oauth/file | pass insert -e mail/outlook/my.email.address@outlook.com
 #+end_src
 
-Then you can change the config file for ~mbsync~ and ~isync~ to use pass to get the tokens:
+Then you can change the config file for ~mbsync~ and ~isync~ to use ~pass~ to get the tokens:
 
 #+begin_src bash
 # for mbsync
