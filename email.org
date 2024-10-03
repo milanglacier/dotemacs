@@ -112,10 +112,14 @@ To set up an app to sync emails, follow these steps:
 mutt_oauth2.py mutt_oauth2.py --verbose --authorize -t your/path/to/the/oauth/file
 #+end_src
 
-This will open a wizard and you just need to follow the instruction to
-get it work. I used ~devicecode~ as the authflow, but the others should
-also work.
+A wizard will appear upon running the above command. Simply follow the
+provided instructions to complete the setup. I opted for the
+~devicecode~ authflow, though alternative methods should also work.
 
+Please be aware that OAuth2 tokens have a limited lifespan and expire
+regularly. If you encounter issues with ~mbsync~, consider the
+possibility of token expiration. In such cases, you'll need to execute
+the aforementioned script again to obtain a fresh token.
 
 ** Configure mbsync
 
