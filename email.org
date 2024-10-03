@@ -5,13 +5,24 @@
 
 My email workflow mainly consists of the following parts:
 
-1. Email synchronizer (indexer): ~mbsync~ (or ~isync~, which is the same thing)
+1. Email synchronizer (indexer): ~mbsync~ (or ~isync~, they are the same thing)
 2. Email Sender: ~msmtp~
 3. Mail User Agent (MUA): ~notmuch~ and ~emacs~
 4. ~mutt_oauth2.py~ from [[https://github.com/muttmua/mutt/blob/master/contrib/mutt_oauth2.py][neomutt]] for oauth2 authentication with outlook email.
 
-For how those tools listed above work together, [[https://protesilaos.com/emacs/dotemacs#h:33151014-3621-4be6-9185-aacc34ee2d2c][Protesilaos Stavrou]]
-provides a great explanation.
+For how ~mbsync + notmuch + msmtp~ above work together, [[https://protesilaos.com/emacs/dotemacs#h:33151014-3621-4be6-9185-aacc34ee2d2c][Protesilaos
+Stavrou]] provides a great explanation.
+
+I will not delve into the configuration of ~mbsync~ and ~msmtp~ here, as
+abundant resources are available across the internet. Instead, I'll
+focus on aspects less commonly discussed online: specifically, how to
+set up notmuch effectively and configure OAuth2 authentication with
+mbsync.
+
+This guide will address two key areas:
+
+1. My hacks on ~notmuch~ for efficient email management
+2. Configuring OAuth2 authentication for ~mbsync~
 
 * Working with Other Email Clients (e.g., Mobile Email Apps)
 
@@ -104,7 +115,13 @@ To set up an app to sync emails, follow these steps:
    directory" as new app registrations are currently restricted to
    directories only.
 
-3. Follow the [[https://github.com/neomutt/neomutt/tree/main/contrib/oauth2#how-to-create-a-microsoft-registration][instruction]] provided by neomutt for your app configuration.
+3. Follow the [[https://github.com/neomutt/neomutt/tree/main/contrib/oauth2#how-to-create-a-microsoft-registration][instruction]] provided by neomutt for your app
+   configuration. During the app configuration process, you'll find
+   the specified settings under the /Manage | Authentication/ and
+   /Manage | API permissions/ sidebars in your app portal. It's crucial
+   to enable access for IMAP, SMTP, POP, and other relevant scopes as
+   detailed in the mutt script under the /Manage | API permissions/
+   sidebar.
 
 ** Fetch the authentication token with the mutt script
 
@@ -112,9 +129,12 @@ To set up an app to sync emails, follow these steps:
 mutt_oauth2.py --verbose --authorize -t your/path/to/the/oauth/file
 #+end_src
 
-A wizard will appear upon running the above command. Simply follow the
-provided instructions to complete the setup. I opted for the
-~devicecode~ authflow, though alternative methods should also work.
+Upon executing the aforementioned command, a wizard will guide you
+through the setup process. Follow the on-screen instructions to
+proceed. I used the 'devicecode' authentication flow, although other
+options should also work. Once the setup is complete, the mutt script
+will encrypt the OAuth2 token and save it to
+=your/path/to/the/oauth/file=.
 
 Please be aware that OAuth2 tokens have a limited lifespan and expire
 regularly. If you encounter issues with ~mbsync~, consider the
@@ -123,9 +143,12 @@ the aforementioned script again to obtain a fresh token.
 
 ** Configure mbsync
 
-Note: if you are using macOS, the ~mbsync~ installed from ~homebrew~ does
+**Warning**: if you are using macOS, the ~mbsync~ installed from ~homebrew~ does
 not work with ~xoauth2~, following the instruction at this [[https://github.com/moriyoshi/cyrus-sasl-xoauth2/issues/9#issuecomment-2161796043][thread]] to
-build the ~mbsync~ from source.
+build the ~mbsync~ from source. I took my own hackish approach: I
+created a Docker container that runs mbsync with xoauth2 support. I
+then mounted my host machine's maildir folder to this container,
+allowing mbsync to access and sync my emails.
 
 In your mbsync config file, configure your outlook email like this:
 
