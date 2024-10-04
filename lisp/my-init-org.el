@@ -420,6 +420,12 @@ within Emacs.")
 
     )
 
+(use-package org-habit
+    :init
+    ;; show habits in recent days, not just today in agenda buffer
+    (setq org-habit-show-habits-only-for-today nil)
+    (add-to-list 'org-modules 'org-habit t))
+
 (use-package ob
     :init
     (setq org-src-preserve-indentation t

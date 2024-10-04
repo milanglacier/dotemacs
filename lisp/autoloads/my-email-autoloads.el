@@ -31,10 +31,12 @@
      "gR" #'notmuch-poll-and-refresh-this-buffer
      "J" #'notmuch-jump-search)
 
+    (defalias #'my~notmuch-update #'compile "Update emails with mbsync and notmuch using `compile'.")
+
     (general-define-key
      :states 'normal
      :keymaps 'notmuch-hello-mode-map
-     "u" #'compile ;; update emails with mbsync and notmuch
+     "u" #'my~notmuch-update ;; update emails with mbsync and notmuch
      "TAB" #'widget-forward
      "S-TAB" #'widget-backward
      "RET" #'my~notmuch-hello-ret)

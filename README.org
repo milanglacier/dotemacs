@@ -98,6 +98,12 @@ The right window displays the HTML slides using xwidget
 webkit. Preview slides in emacs without the need to open GUI browser
 anymore.
 
+* Email Setup
+
+I use ~notmuch~ as my email client. For a comprehensive overview of my
+email setup, please refer to the [[file:./email.org][email.org]] file
+located in the current directory.
+
 * TODOs
 ** [#B] Report ~org-capture~ bugs when inserting entries into table to upstream.
 ** [#B] Utilize the contextual information from previous code block when editing source block within markdown/org.
