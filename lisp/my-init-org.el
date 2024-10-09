@@ -407,8 +407,8 @@ within Emacs.")
 
 (use-package org-habit
     :init
-    ;; show habits in recent days, not just today in agenda buffer
-    (setq org-habit-show-habits-only-for-today nil)
+    ;; show habits only on today in agenda buffer
+    (setq org-habit-show-habits-only-for-today t)
     (add-to-list 'org-modules 'org-habit t))
 
 (use-package ob
