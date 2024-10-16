@@ -33,7 +33,6 @@
         "b" #'consult-buffer
         "p" #'project-switch-project
         "g" #'consult-ripgrep
-        "e" #'embark-act
         "j" #'evil-collection-consult-jump-list
         "m" #'evil-collection-consult-mark
         "i" #'consult-imenu
@@ -148,7 +147,7 @@
     (my/leader
         :keymaps 'override
         :states '(visual insert motion)
-        "a" #'embark-act)
+        "e" #'embark-act)
 
     :config
     (require 'consult))
