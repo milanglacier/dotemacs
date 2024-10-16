@@ -33,7 +33,7 @@
         "b" #'consult-buffer
         "p" #'project-switch-project
         "g" #'consult-ripgrep
-        "a" #'embark-act
+        "e" #'embark-act
         "j" #'evil-collection-consult-jump-list
         "m" #'evil-collection-consult-mark
         "i" #'consult-imenu
