@@ -198,12 +198,16 @@ at run time by setting the generated variable
           (start-pattern (or (plist-get args :start-pattern) ""))
           (end-pattern (or (plist-get args :end-pattern) "\r"))
           (str-process-func (or (plist-get args :str-process-func) ''identity))
+          (repl-cmd-name (intern (concat "my*" repl-name "-cmd")))
           (str-process-func-name (intern (concat "my*" repl-name "-str-process-func")))
           (bracketed-paste-p-name (intern (concat "my*" repl-name "-use-bracketed-paste-mode")))
           (start-pattern-name (intern (concat "my*" repl-name "-start-pattern")))
           (end-pattern-name (intern (concat "my*" repl-name "-end-pattern"))))
 
         `(progn
+
+             (defvar ,repl-cmd-name ,repl-cmd
+                 ,(format "The shell command for the %s REPL." repl-name))
 
              (defvar ,str-process-func-name ,str-process-func
                  ,(format "The function to process the string before sending it to the %s REPL." repl-name))
@@ -227,7 +231,7 @@ switch to the session with that number as a suffix."
                  (interactive "P")
                  (require 'vterm)
                  (let ((vterm-buffer-name (format "*%s*" ,repl-name))
-                       (vterm-shell ,repl-cmd)
+                       (vterm-shell ,repl-cmd-name)
                        (repl-buffer)
                        (repl-buffer-exist-p
                         (get-buffer
