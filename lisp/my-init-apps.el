@@ -101,7 +101,7 @@
 
     )
 
-;; aichat (a chatgpt REPL) integration
+;; aichat (a LLM based chat REPL) integration
 (add-to-list 'display-buffer-alist
              `("\\*aichat\\*"
                (display-buffer-in-side-window display-buffer-reuse-window)
@@ -110,12 +110,12 @@
                (side . ,(alist-get 'aichat my/side-window-sides))
                (slot . ,(alist-get 'aichat my/side-window-slots))))
 
-(general-create-definer my/chatgpt-map
+(general-create-definer my/chat-map
     :prefix "SPC c"
     :non-normal-prefix "M-SPC c"
-    :prefix-map 'my/chatgpt-map)
+    :prefix-map 'my/chat-map)
 
-(my/chatgpt-map
+(my/chat-map
     :keymaps 'override
     :states '(normal insert motion visual)
     "s" #'my~aichat-start
