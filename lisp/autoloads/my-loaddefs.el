@@ -131,10 +131,7 @@ otherwise use the existed one
 
 (fn &optional NEW-SESSION)" t)
 (autoload 'my:pdf-midnight-mode-maybe "my-apps-autoloads")
- (autoload #'my~aichat-start "my-apps-autoloads" nil t)
- (autoload #'my~ipython-start "my-apps-autoloads" nil t)
- (autoload #'my~radian-start "my-apps-autoloads" nil t)
-(register-definition-prefixes "my-apps-autoloads" '("my%create-vterm-repl-schema" "my/"))
+(register-definition-prefixes "my-apps-autoloads" '("my/"))
 
 
 ;;; Generated autoloads from my-colorscheme-autoloads.el

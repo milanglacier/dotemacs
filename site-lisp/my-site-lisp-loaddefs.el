@@ -26,6 +26,43 @@ Read a tag from minibuffer and jump to the tag.
 (autoload 'minuet-completion-in-region "minuet" "\
 Complete code in region with LLM." t)
 (register-definition-prefixes "minuet" '("minuet-"))
+
+
+;;; Generated autoloads from vterm-repl.el
+
+(autoload 'vterm-repl-create-schema "vterm-repl" "\
+create a REPL schema.
+
+The REPL session will be created via vterm. The schema includes three
+functions, the function to start the repl, the function to send the
+region and the corresponding operator, and the function to hide the
+REPL window if it exists.
+
+REPL-NAME is a string, REPL-CMD is a form evaluated to a string. ARGS
+is a plist, the following properties are supported:
+
+:bracketed-paste-p whether send the string with bracketed paste mode,
+the default value is nil.  You can change the behavior at run time by
+setting the generated variable
+`my*REPL-NAME-use-bracketed-paste-mode'.
+
+:start-pattern the first string to send to the REPl before sending the
+region. The default is ''.  You can change the behavior at run time by
+setting the generated variable `my*REPL-NAME-start-pattern'.
+
+:end-pattern the last string to send to the REPL after sending the
+region. The default is '\\r'.  You can change the behavior at run time
+by setting the generated variable `my*REPL-NAME-end-pattern'.
+
+:str-process-func the function to process the string before sending it
+to the REPL.  The default is `identity'. You can change the behavior
+at run time by setting the generated variable
+`my*REPL-NAME-str-process-func'.
+
+(fn REPL-NAME REPL-CMD &rest ARGS)" nil t)
+ (autoload #'vterm-repl~aichat-start "vterm-repl" nil t)
+ (autoload #'vterm-repl~ipython-start "vterm-repl" nil t)
+ (autoload #'vterm-repl~radian-start "vterm-repl" nil t)
 
 ;;; End of scraped data
 

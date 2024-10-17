@@ -85,10 +85,10 @@
     (my/localleader
         :keymaps 'ess-mode-map
         :states '(normal visual motion insert)
-        "s" #'my~radian-send-region-operator
+        "s" #'vterm-repl~radian-send-region-operator
         "r" '(:ignore t :which-key "repl")
-        "rs" #'my~radian-start
-        "rh" #'my~radian-hide-window
+        "rs" #'vterm-repl~radian-start
+        "rh" #'vterm-repl~radian-hide-window
         "v" '(:ignore t :which-key "view")
         "vh" #'my/ess-toggle-view-httpgd)
 
@@ -124,10 +124,10 @@
     (my/localleader
         :keymaps 'python-ts-mode-map
         :states '(normal visual insert motion)
-        "s" #'my~ipython-send-region-operator
+        "s" #'vterm-repl~ipython-send-region-operator
         "r" '(:ignore t :which-key "REPL")
-        "rs" #'my~ipython-start
-        "rh" #'my~ipython-hide-window
+        "rs" #'vterm-repl~ipython-start
+        "rh" #'vterm-repl~ipython-hide-window
         "v" '(:ignore t :which-key "view")
         "vh" #'my/python-toggle-view-local-html
         "'" #'my~edit-src)
