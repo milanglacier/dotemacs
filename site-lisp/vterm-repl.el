@@ -3,7 +3,7 @@
 ;; Author: Milan Glacier <dev@milanglacier.com>
 ;; Maintainer: Milan Glacier <dev@milanglacier.com>
 ;; Version: 0.1
-;; Package-Requires: ((emacs "29") (vterm))
+;; Package-Requires: ((emacs "29") (vterm "0.0"))
 
 ;;; Commentary:
 
@@ -43,6 +43,7 @@ at run time by setting the generated variable
     (let ((start-func-name (intern (concat "vtr~" repl-name "-start")))
           (send-region-func-name (intern (concat "vtr~" repl-name "-send-region")))
           (send-region-operator-name (intern (concat "vtr~" repl-name "-send-region-operator")))
+          (send-string-func-name (intern (concat "vtr~" repl-name "-send-string")))
           (hide-window-func-name (intern (concat "vtr~" repl-name "-hide-window")))
           (bracketed-paste-p (plist-get args :bracketed-paste-p))
           (start-pattern (or (plist-get args :start-pattern) ""))
@@ -93,14 +94,24 @@ switch to the session with that number as a suffix."
                    "Send the region delimited by BEG and END to inferior %s.
 With numeric prefix argument, send region to the process associated
 with that number." repl-name)
+                 (interactive "r\nP")
+                 (let ((str (buffer-substring-no-properties beg end)))
+                     (,send-string-func-name str session)))
+
+             (defun ,send-string-func-name (string &optional session)
+                 ,(format
+                   "Send the string to inferior %s. When invoked
+interactively, prompt the user for input in the minibuffer.  With
+numeric prefix argument, send region to the process associated with
+that number." repl-name)
+                 (interactive "sinput your command: \nP")
                  (let ((repl-buffer-name
                         (if session
                                 (format "*%s*<%d>" ,repl-name session)
-                            (format "*%s*" ,repl-name)))
-                       (str (buffer-substring-no-properties beg end)))
+                            (format "*%s*" ,repl-name))))
                      (with-current-buffer repl-buffer-name
                          (vterm-send-string ,start-pattern-name)
-                         (vterm-send-string (funcall ,str-process-func-name str) ,bracketed-paste-p-name)
+                         (vterm-send-string string ,bracketed-paste-p-name)
                          (vterm-send-string ,end-pattern-name))))
 
              (evil-define-operator ,send-region-operator-name (beg end session)
