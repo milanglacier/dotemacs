@@ -61,9 +61,9 @@ code block)"
     ;; `markd-code-block-lang' will move point to the begin of the
     ;; code block, so we `save-excursion'
     (pcase (save-excursion (markdown-code-block-lang))
-        ("r" (call-interactively #'my~radian-start))
-        ("R" (call-interactively #'my~radian-start))
-        ("python" (call-interactively #'my~ipython-start))
+        ("r" (call-interactively #'vtr~radian-start))
+        ("R" (call-interactively #'vtr~radian-start))
+        ("python" (call-interactively #'vtr~ipython-start))
         (x "No associated REPL found!")))
 
 ;;;###autoload
@@ -72,9 +72,9 @@ code block)"
 language of the code block)."
     (interactive)
     (pcase (save-excursion (markdown-code-block-lang))
-        ("r" (call-interactively #'my~radian-hide-window))
-        ("R" (call-interactively #'#'my~radian-hide-window))
-        ("python" (call-interactively #'my~ipython-hide-window))
+        ("r" (call-interactively #'vtr~radian-hide-window))
+        ("R" (call-interactively #'#'vtr~radian-hide-window))
+        ("python" (call-interactively #'vtr~ipython-hide-window))
         (x "No associated REPL found!")))
 
 ;;;###autoload (autoload #'my/markdown-send-region "my-langs-autoloads" nil t)
@@ -83,9 +83,9 @@ language of the code block)."
 language of the code block)"
     (interactive "<r>P")
     (pcase (save-excursion (markdown-code-block-lang))
-        ("r" ((my~radian-send-region-operator beg end session)))
-        ("R" ((my~radian-send-region-operator beg end session)))
-        ("python" (my~ipython-send-region-operator beg end session))
+        ("r" (vtr~radian-send-region-operator beg end session))
+        ("R" (vtr~radian-send-region-operator beg end session))
+        ("python" (vtr~ipython-send-region-operator beg end session))
         (x "No associated REPL found!")))
 
 (defvar my$conda-current-env nil
