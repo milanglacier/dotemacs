@@ -30,7 +30,7 @@ Complete code in region with LLM." t)
 
 ;;; Generated autoloads from vterm-repl.el
 
-(autoload 'vterm-repl-create-schema "vterm-repl" "\
+(autoload 'vtr-create-schema "vterm-repl" "\
 create a REPL schema.
 
 The REPL session will be created via vterm. The schema includes three
@@ -60,9 +60,9 @@ at run time by setting the generated variable
 `my*REPL-NAME-str-process-func'.
 
 (fn REPL-NAME REPL-CMD &rest ARGS)" nil t)
- (autoload #'vterm-repl~aichat-start "vterm-repl" nil t)
- (autoload #'vterm-repl~ipython-start "vterm-repl" nil t)
- (autoload #'vterm-repl~radian-start "vterm-repl" nil t)
+ (autoload #'vtr~aichat-start "vterm-repl" nil t)
+ (autoload #'vtr~ipython-start "vterm-repl" nil t)
+ (autoload #'vtr~radian-start "vterm-repl" nil t)
 
 ;;; End of scraped data
 

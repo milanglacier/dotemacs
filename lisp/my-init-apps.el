@@ -118,9 +118,9 @@
 (my/chat-map
     :keymaps 'override
     :states '(normal insert motion visual)
-    "s" #'vterm-repl~aichat-start
-    "r" #'vterm-repl~aichat-send-region-operator
-    "h" #'vterm-repl~aichat-hide-window)
+    "s" #'vtr~aichat-start
+    "r" #'vtr~aichat-send-region-operator
+    "h" #'vtr~aichat-hide-window)
 
 (provide 'my-init-apps)
 ;;; my-init-apps.el ends here

@@ -11,7 +11,7 @@
 (require 'vterm)
 
 ;;;###autoload
-(defmacro vterm-repl-create-schema (repl-name repl-cmd &rest args)
+(defmacro vtr-create-schema (repl-name repl-cmd &rest args)
     "create a REPL schema.
 
 The REPL session will be created via vterm. The schema includes three
@@ -40,19 +40,19 @@ to the REPL.  The default is `identity'. You can change the behavior
 at run time by setting the generated variable
 `my*REPL-NAME-str-process-func'."
 
-    (let ((start-func-name (intern (concat "vterm-repl~" repl-name "-start")))
-          (send-region-func-name (intern (concat "vterm-repl~" repl-name "-send-region")))
-          (send-region-operator-name (intern (concat "vterm-repl~" repl-name "-send-region-operator")))
-          (hide-window-func-name (intern (concat "vterm-repl~" repl-name "-hide-window")))
+    (let ((start-func-name (intern (concat "vtr~" repl-name "-start")))
+          (send-region-func-name (intern (concat "vtr~" repl-name "-send-region")))
+          (send-region-operator-name (intern (concat "vtr~" repl-name "-send-region-operator")))
+          (hide-window-func-name (intern (concat "vtr~" repl-name "-hide-window")))
           (bracketed-paste-p (plist-get args :bracketed-paste-p))
           (start-pattern (or (plist-get args :start-pattern) ""))
           (end-pattern (or (plist-get args :end-pattern) "\r"))
           (str-process-func (or (plist-get args :str-process-func) ''identity))
-          (repl-cmd-name (intern (concat "vterm-repl*" repl-name "-cmd")))
-          (str-process-func-name (intern (concat "vterm-repl*" repl-name "-str-process-func")))
-          (bracketed-paste-p-name (intern (concat "vterm-repl*" repl-name "-use-bracketed-paste-mode")))
-          (start-pattern-name (intern (concat "vterm-repl*" repl-name "-start-pattern")))
-          (end-pattern-name (intern (concat "vterm-repl*" repl-name "-end-pattern"))))
+          (repl-cmd-name (intern (concat "vtr*" repl-name "-cmd")))
+          (str-process-func-name (intern (concat "vtr*" repl-name "-str-process-func")))
+          (bracketed-paste-p-name (intern (concat "vtr*" repl-name "-use-bracketed-paste-mode")))
+          (start-pattern-name (intern (concat "vtr*" repl-name "-start-pattern")))
+          (end-pattern-name (intern (concat "vtr*" repl-name "-end-pattern"))))
 
         `(progn
 
@@ -126,14 +126,14 @@ the window with that number as a suffix." repl-name)
 
              )))
 
-;;;###autoload (autoload #'vterm-repl~aichat-start "vterm-repl" nil t)
-(vterm-repl-create-schema "aichat" "aichat -s" :bracketed-paste-p t)
+;;;###autoload (autoload #'vtr~aichat-start "vterm-repl" nil t)
+(vtr-create-schema "aichat" "aichat -s" :bracketed-paste-p t)
 
-;;;###autoload (autoload #'vterm-repl~ipython-start "vterm-repl" nil t)
-(vterm-repl-create-schema "ipython" "ipython" :bracketed-paste-p t)
+;;;###autoload (autoload #'vtr~ipython-start "vterm-repl" nil t)
+(vtr-create-schema "ipython" "ipython" :bracketed-paste-p t)
 
-;;;###autoload (autoload #'vterm-repl~radian-start "vterm-repl" nil t)
-(vterm-repl-create-schema "radian" "radian" :bracketed-paste-p t :end-pattern "")
+;;;###autoload (autoload #'vtr~radian-start "vterm-repl" nil t)
+(vtr-create-schema "radian" "radian" :bracketed-paste-p t :end-pattern "")
 
 (provide 'vterm-repl)
 ;;; vterm-repl.el ends here
