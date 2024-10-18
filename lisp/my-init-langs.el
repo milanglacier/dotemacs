@@ -89,6 +89,7 @@
         "r" '(:ignore t :which-key "repl")
         "rs" #'vtr~radian-start
         "rh" #'vtr~radian-hide-window
+        "re" #'vtr~radian-send-string
         "v" '(:ignore t :which-key "view")
         "vh" #'my/ess-toggle-view-httpgd)
 
@@ -128,6 +129,7 @@
         "r" '(:ignore t :which-key "REPL")
         "rs" #'vtr~ipython-start
         "rh" #'vtr~ipython-hide-window
+        "re" #'vtr~ipython-send-string
         "v" '(:ignore t :which-key "view")
         "vh" #'my/python-toggle-view-local-html
         "'" #'my~edit-src)
