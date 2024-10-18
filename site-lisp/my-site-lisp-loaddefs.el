@@ -63,6 +63,12 @@ at run time by setting the generated variable
  (autoload #'vtr~aichat-start "vterm-repl" nil t)
  (autoload #'vtr~ipython-start "vterm-repl" nil t)
  (autoload #'vtr~radian-start "vterm-repl" nil t)
+
+
+;;; Generated autoloads from vterm-repl-aider.el
+
+ (autoload #'vtr~aider-start "vterm-repl-aider" nil t)
+(register-definition-prefixes "vterm-repl-aider" '("vtr-aider-"))
 
 ;;; End of scraped data
 

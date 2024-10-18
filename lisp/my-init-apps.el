@@ -123,5 +123,30 @@
     "r" #'vtr~aichat-send-region-operator
     "h" #'vtr~aichat-hide-window)
 
+
+;; aider (a llm based code assistant) integration
+(add-to-list 'display-buffer-alist
+             `("\\*aider\\*"
+               (display-buffer-reuse-window display-buffer-in-new-tab)))
+
+(general-create-definer my/aider-map
+    :prefix "SPC a"
+    :non-normal-prefix "M-SPC a"
+    :prefix-map 'my/aider-map)
+
+(my/aider-map
+    :keymaps 'override
+    :states '(normal insert motion visual)
+    "s" #'vtr~aider-start
+    "r" #'vtr~aider-send-region-operator
+    "h" #'vtr~aider-hide-window
+    "e" #'vtr-aider-prompt
+    "g" #'vtr-aider-set-prefix
+    "G" #'vtr-aider-remove-prefix
+    "y" #'vtr-aider-yes
+    "n" #'vtr-aider-no
+    "a" #'vtr-aider-abort
+    "q" #'vtr-aider-exit)
+
 (provide 'my-init-apps)
 ;;; my-init-apps.el ends here
