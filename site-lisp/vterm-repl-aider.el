@@ -162,7 +162,7 @@
 (defvaralias 'vtr-aider-prefix 'vtr*aider-start-pattern)
 
 (defun vtr-aider-set-prefix (prefix)
-    "set the `vtr*aider-start-pattern' which will be a prefix from `vtr-aider-prefixes'"
+    "set the `vtr-aider-prefix' which will be a prefix from `vtr-aider-prefixes'"
     (interactive
      (list (completing-read "The prefixes passed to aider: "
                             vtr-aider-prefixes
@@ -172,7 +172,7 @@
 
 
 (defun vtr-aider-remove-prefix ()
-    "remove the prefix from `vtr*aider-start-pattern'"
+    "remove the prefix from `vtr-aider-prefix'"
     (interactive)
     (setq vtr-aider-prefix ""))
 
