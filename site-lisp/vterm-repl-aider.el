@@ -190,31 +190,33 @@
     (interactive)
     (setq vtr*aider-cmd vtr-aider-cmd))
 
-(defun vtr-aider-prompt (prompt &optional session)
+(defun vtr-aider-prompt (prefix prompt &optional session)
   "Prompt AIDER with the given PROMPT verbatim.
-Override `vtr*aider-start-pattern' with an empty string to ensure verbatim input."
+Override `vtr-aider-prefix' to ensure verbatim input."
     (interactive
-     (list (completing-read ""
-                            vtr-aider-prefixes
-                            nil nil)
+     (list (completing-read "the aider command: " vtr-aider-prefixes nil t)
+           (read-string "enter your prompt: ")
            current-prefix-arg))
-    (let ((vtr-aider-prefix ""))
+    (let* ((prefix (or prefix ""))
+           (prompt (or prompt ""))
+           (vtr-aider-prefix
+           (if (equal prefix "") "" (concat prefix " "))))
         (vtr~aider-send-string prompt session)))
 
 (defun vtr-aider-yes (&optional session)
     (interactive "P")
-    (vtr-aider-prompt "y" session))
+    (vtr-aider-prompt nil "y" session))
 
 (defun vtr-aider-no (&optional session)
     (interactive "P")
-    (vtr-aider-prompt "n" session))
+    (vtr-aider-prompt nil "n" session))
 
 (defun vtr-aider-abort (&optional session)
     (interactive "P")
-    (vtr-aider-prompt "\C-c" session))
+    (vtr-aider-prompt nil "\C-c" session))
 
 (defun vtr-aider-exit (&optional session)
     (interactive "P")
-    (vtr-aider-prompt "\C-d" session))
+    (vtr-aider-prompt nil "\C-d" session))
 
 (provide 'vterm-repl-aider)
