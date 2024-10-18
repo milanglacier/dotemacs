@@ -159,6 +159,8 @@
                    :bracketed-paste-p t
                    :start-pattern "/ask ")
 
+(defvaralias 'vtr-aider-prefix 'vtr*aider-start-pattern)
+
 (defun vtr-aider-set-prefix (prefix)
     "set the `vtr*aider-start-pattern' which will be a prefix from `vtr-aider-prefixes'"
     (interactive
@@ -166,13 +168,13 @@
                             vtr-aider-prefixes
                             ;; require the prefix must be a member of `vtr-aider-prefixes'
                             nil t)))
-    (setq vtr*aider-start-pattern (if (equal prefix "") "" (concat prefix " "))))
+    (setq vtr-aider-prefix (if (equal prefix "") "" (concat prefix " "))))
 
 
 (defun vtr-aider-remove-prefix ()
     "remove the prefix from `vtr*aider-start-pattern'"
     (interactive)
-    (setq vtr*aider-start-pattern ""))
+    (setq vtr-aider-prefix ""))
 
 (defun vtr-aider-set-args (args)
     "set the arguments passed to aider"
@@ -196,7 +198,7 @@ Override `vtr*aider-start-pattern' with an empty string to ensure verbatim input
                             vtr-aider-prefixes
                             nil nil)
            current-prefix-arg))
-    (let ((vtr*aider-start-pattern ""))
+    (let ((vtr-aider-prefix ""))
         (vtr~aider-send-string prompt session)))
 
 (defun vtr-aider-yes (&optional session)
