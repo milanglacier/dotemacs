@@ -111,7 +111,10 @@ that number." repl-name)
                             (format "*%s*" ,repl-name))))
                      (with-current-buffer repl-buffer-name
                          (vterm-send-string ,start-pattern-name)
-                         (vterm-send-string string ,bracketed-paste-p-name)
+                         (vterm-send-string string
+                                            (if (string-match-p "\n" string)
+                                                    ,bracketed-paste-p-name
+                                                nil))
                          (vterm-send-string ,end-pattern-name))))
 
              (evil-define-operator ,send-region-operator-name (beg end session)
