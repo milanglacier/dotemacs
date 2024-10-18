@@ -119,6 +119,7 @@
     :keymaps 'override
     :states '(normal insert motion visual)
     "s" #'vtr~aichat-start
+    "e" #'vtr~aichat-send-string
     "r" #'vtr~aichat-send-region-operator
     "h" #'vtr~aichat-hide-window)
 
