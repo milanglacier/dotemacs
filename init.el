@@ -4,14 +4,14 @@
 (setq gc-cons-percentage 0.6)
 (setq gc-cons-threshold most-positive-fixnum)
 
-(defvar my/config-dir (file-name-concat user-emacs-directory "lisp")
+(defvar my/config-dir (file-name-concat user-emacs-directory "lisp" "config")
     "the directory of my configuration.")
-(defvar my/functions-dir (file-name-concat my/config-dir "autoloads")
-    "the directory of my lisp functions")
+(defvar my/lib-dir (file-name-concat user-emacs-directory "lisp" "lib")
+    "the directory of my library functions")
 (defvar my/site-lisp-dir (file-name-concat user-emacs-directory "site-lisp")
     "the directory of third-party lisp files.")
 
-(defvar my/autoloads-file (file-name-concat user-emacs-directory "generated-loaddefs" "my-loaddefs.el")
+(defvar my/autoloads-file (file-name-concat user-emacs-directory "generated-loaddefs" "lib-loaddefs.el")
     "the file of my generated autoload definitions")
 
 (defvar my/site-lisp-autoloads-file
@@ -19,7 +19,7 @@
     "the file of third-party autoloaded functions.")
 
 (push my/config-dir load-path)
-(push my/functions-dir load-path)
+(push my/lib-dir load-path)
 (push my/site-lisp-dir load-path)
 (setq custom-file (file-name-concat user-emacs-directory "custom.el"))
 
@@ -60,30 +60,30 @@
             (eval-print-last-sexp)))
     (load bootstrap-file nil 'nomessage))
 
-(load-file my/autoloads-file)
-(load-file my/site-lisp-autoloads-file)
+(load my/autoloads-file nil t) ;; don't show message
+(load my/site-lisp-autoloads-file nil t)
 
-(require 'my-init-utils)
-(require 'my-basics)
-(require 'my-init-ui)
-(require 'my-init-colorscheme)
-(require 'my-init-evil)
-(require 'my-init-completion)
-(require 'my-init-minibuffer)
-(require 'my-init-vcs)
-(require 'my-init-elisp)
-(require 'my-init-org)
-(require 'my-init-langs)
-(require 'my-init-langtools)
-(require 'my-init-os)
-(require 'my-init-apps)
-(require 'my-init-email)
-(require 'my-misc)
+(require 'config-utils)
+(require 'config-basics)
+(require 'config-ui)
+(require 'config-colorscheme)
+(require 'config-evil)
+(require 'config-completion)
+(require 'config-minibuffer)
+(require 'config-vcs)
+(require 'config-elisp)
+(require 'config-org)
+(require 'config-langs)
+(require 'config-langtools)
+(require 'config-os)
+(require 'config-apps)
+(require 'config-email)
+(require 'config-misc)
 
 ;; I personally HATE custom.el. But I don't think I have a better
 ;; place to store some temp file.
 (when (file-exists-p custom-file)
-    (load custom-file))
+    (load custom-file nil t))
 
 (setq debug-on-error nil)
 
