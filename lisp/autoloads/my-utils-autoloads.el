@@ -6,7 +6,7 @@
 If AUTOLOADS-DIR is nil, use `my/autoloads-dir'. If AUTOLOADS-FILE is
 nil, use `my/autoloads-file'."
     (interactive)
-    (let ((autoloads-dir (or autoloads-dir my/autoloads-dir))
+    (let ((autoloads-dir (or autoloads-dir my/functions-dir))
           (autoloads-file (or autoloads-file my/autoloads-file)))
         (when (not (file-exists-p autoloads-file))
             (with-current-buffer (find-file-noselect
