@@ -7,15 +7,15 @@
 
 
 
-;;; Generated autoloads from ../lisp/autoloads/my-apps-autoloads.el
+;;; Generated autoloads from ../lisp/lib/lib-apps.el
 
-(autoload 'my/open-html-with-xwidget "../lisp/autoloads/my-apps-autoloads" "\
+(autoload 'my/open-html-with-xwidget "../lisp/lib/lib-apps" "\
 open local file (html) using xwidget,
 prefix with C-u to open the url with a new xwidget session
 
 (fn URL NEW-SESSION)" t)
- (autoload #'my/google-search-eww "my-apps-autoloads" nil t)
- (autoload #'my/google-search-xwidget "my-apps-autoloads" nil t)
+ (autoload #'my/google-search-eww "lib-apps" nil t)
+ (autoload #'my/google-search-xwidget "lib-apps" nil t)
 (defvar my/refresh-xwidget-after-eval-python-mode nil "\
 Non-nil if My/Refresh-Xwidget-After-Eval-Python mode is enabled.
 See the `my/refresh-xwidget-after-eval-python-mode' command
@@ -23,8 +23,8 @@ for a description of this minor mode.
 Setting this variable directly does not take effect;
 either customize it (see the info node `Easy Customization')
 or call the function `my/refresh-xwidget-after-eval-python-mode'.")
-(custom-autoload 'my/refresh-xwidget-after-eval-python-mode "../lisp/autoloads/my-apps-autoloads" nil)
-(autoload 'my/refresh-xwidget-after-eval-python-mode "../lisp/autoloads/my-apps-autoloads" "\
+(custom-autoload 'my/refresh-xwidget-after-eval-python-mode "../lisp/lib/lib-apps" nil)
+(autoload 'my/refresh-xwidget-after-eval-python-mode "../lisp/lib/lib-apps" "\
 After evaluating a python command, typically like
 
 `python-shell-send-defun', `python-shell-send-region', refreshing the
@@ -55,8 +55,8 @@ for a description of this minor mode.
 Setting this variable directly does not take effect;
 either customize it (see the info node `Easy Customization')
 or call the function `my/xwidget-side-window-mode'.")
-(custom-autoload 'my/xwidget-side-window-mode "../lisp/autoloads/my-apps-autoloads" nil)
-(autoload 'my/xwidget-side-window-mode "../lisp/autoloads/my-apps-autoloads" "\
+(custom-autoload 'my/xwidget-side-window-mode "../lisp/lib/lib-apps" nil)
+(autoload 'my/xwidget-side-window-mode "../lisp/lib/lib-apps" "\
 `xwidget-webkit-browse-url' doesn't respect
 
 `display-buffer-alist'.  This minor mode advises
@@ -87,8 +87,8 @@ for a description of this minor mode.
 Setting this variable directly does not take effect;
 either customize it (see the info node `Easy Customization')
 or call the function `my/xwidget-force-display-mode'.")
-(custom-autoload 'my/xwidget-force-display-mode "../lisp/autoloads/my-apps-autoloads" nil)
-(autoload 'my/xwidget-force-display-mode "../lisp/autoloads/my-apps-autoloads" "\
+(custom-autoload 'my/xwidget-force-display-mode "../lisp/lib/lib-apps" nil)
+(autoload 'my/xwidget-force-display-mode "../lisp/lib/lib-apps" "\
 `xwidget-webkit-browse-url' won't display its buffer in current
 
 frame when the xwidget session exists and no window is displaying that
@@ -112,52 +112,52 @@ The mode's hook is called both when the mode is enabled and when
 it is disabled.
 
 (fn &optional ARG)" t)
-(autoload 'my:elfeed-delete-window-after-kill-buffer "../lisp/autoloads/my-apps-autoloads" "\
+(autoload 'my:elfeed-delete-window-after-kill-buffer "../lisp/lib/lib-apps" "\
 
 
 (fn &rest ARGS)")
-(autoload 'my:elfeed-open-entry-via-xwidget "../lisp/autoloads/my-apps-autoloads" "\
+(autoload 'my:elfeed-open-entry-via-xwidget "../lisp/lib/lib-apps" "\
 if point is under a url, then open this url via `xwidget',
 otherwise open the current visited elfeed entry via `xwidget'.  If
 with a prefix \\[universal-argument] create a new `xwidget' session
 otherwise use the existed one
 
 (fn &optional NEW-SESSION)" t)
-(autoload 'my:elfeed-open-entry-via-eww "../lisp/autoloads/my-apps-autoloads" "\
+(autoload 'my:elfeed-open-entry-via-eww "../lisp/lib/lib-apps" "\
 if point is under a url, then open this url via `eww',
 otherwise open the current visited elfeed entry via `eww'.  If
 with a prefix \\[universal-argument] create a new `eww' session
 otherwise use the existed one
 
 (fn &optional NEW-SESSION)" t)
-(autoload 'my:pdf-midnight-mode-maybe "../lisp/autoloads/my-apps-autoloads")
-(register-definition-prefixes "../lisp/autoloads/my-apps-autoloads" '("my/"))
+(autoload 'my:pdf-midnight-mode-maybe "../lisp/lib/lib-apps")
+(register-definition-prefixes "../lisp/lib/lib-apps" '("my/"))
 
 
-;;; Generated autoloads from ../lisp/autoloads/my-colorscheme-autoloads.el
+;;; Generated autoloads from ../lisp/lib/lib-colorscheme.el
 
-(autoload 'my:theme-set-dynamically "../lisp/autoloads/my-colorscheme-autoloads" "\
+(autoload 'my:theme-set-dynamically "../lisp/lib/lib-colorscheme" "\
 Select a theme at random from `my$day-themes' or
 `my$night-themes', depending on the current time of day. The
 environment variable `CURRENT_BACKGROUND' can override current time.
 The time periods for day and night are specified by
 `my$day-to-night-o-clock' and `my$night-to-day-o-clock',
 respectively.")
-(register-definition-prefixes "../lisp/autoloads/my-colorscheme-autoloads" '("my$" "my:"))
+(register-definition-prefixes "../lisp/lib/lib-colorscheme" '("my$" "my:"))
 
 
-;;; Generated autoloads from ../lisp/autoloads/my-completion-autoloads.el
+;;; Generated autoloads from ../lisp/lib/lib-completion.el
 
-(autoload 'my/company-abort "../lisp/autoloads/my-completion-autoloads")
-(autoload 'my/company-completion-styles "../lisp/autoloads/my-completion-autoloads" "\
+(autoload 'my/company-abort "../lisp/lib/lib-completion")
+(autoload 'my/company-completion-styles "../lisp/lib/lib-completion" "\
 
 
 (fn CAPF-FN &rest ARGS)")
 
 
-;;; Generated autoloads from ../lisp/autoloads/my-elisp-autoloads.el
+;;; Generated autoloads from ../lisp/lib/lib-elisp.el
 
-(autoload 'my/helpful-display-buffer "../lisp/autoloads/my-elisp-autoloads" "\
+(autoload 'my/helpful-display-buffer "../lisp/lib/lib-elisp" "\
 If a helpful buffer window is already opened, should use it,
 don't occupy other window. Make sure it is a side window, such that
 when you press q and want to close the help window), this window will
@@ -165,108 +165,108 @@ be completely removed, i.e. the window won't be displayed showing
 other buffer.
 
 (fn BUF)")
-(autoload 'my/helpful-lookup-symbl-at-point "../lisp/autoloads/my-elisp-autoloads" nil t)
-(autoload 'my/elisp-loop-up-symbol "../lisp/autoloads/my-elisp-autoloads" "\
+(autoload 'my/helpful-lookup-symbl-at-point "../lisp/lib/lib-elisp" nil t)
+(autoload 'my/elisp-loop-up-symbol "../lisp/lib/lib-elisp" "\
 Look up for the symbol under point, if region is active, use
         the selected region as the symbol
 
 (fn BEG END)" t)
-(autoload 'my/elisp-setup "../lisp/autoloads/my-elisp-autoloads")
-(autoload 'my/lisp-indent-function "../lisp/autoloads/my-elisp-autoloads" "\
+(autoload 'my/elisp-setup "../lisp/lib/lib-elisp")
+(autoload 'my/lisp-indent-function "../lisp/lib/lib-elisp" "\
 A replacement for `lisp-indent-function'.
 
 Indents plists more sensibly. Adapted from
 https://emacs.stackexchange.com/questions/10230/how-to-indent-keywords-aligned
 
 (fn INDENT-POINT STATE)")
-(register-definition-prefixes "../lisp/autoloads/my-elisp-autoloads" '("my&emacs-lisp--face" "my/emacs-lisp-outline-level" "my:emacs-lisp-highlight-vars-and-faces"))
+(register-definition-prefixes "../lisp/lib/lib-elisp" '("my&emacs-lisp--face" "my/emacs-lisp-outline-level" "my:emacs-lisp-highlight-vars-and-faces"))
 
 
-;;; Generated autoloads from ../lisp/autoloads/my-email-autoloads.el
+;;; Generated autoloads from ../lisp/lib/lib-email.el
 
-(autoload 'my:notmuch-setup "../lisp/autoloads/my-email-autoloads" "\
+(autoload 'my:notmuch-setup "../lisp/lib/lib-email" "\
 Modified from `evil-collection-notmuch', but remove those keybindings I do not need. Especially for archiving.")
-(register-definition-prefixes "../lisp/autoloads/my-email-autoloads" '("my$notmuch-deleted-tags" "my:notmuch-" "my~notmuch-"))
+(register-definition-prefixes "../lisp/lib/lib-email" '("my$notmuch-deleted-tags" "my:notmuch-" "my~notmuch-"))
 
 
-;;; Generated autoloads from ../lisp/autoloads/my-evil-autoloads.el
+;;; Generated autoloads from ../lisp/lib/lib-evil.el
 
-(autoload 'my/save-excursion-before-indenting "../lisp/autoloads/my-evil-autoloads" "\
+(autoload 'my/save-excursion-before-indenting "../lisp/lib/lib-evil" "\
 
 
 (fn ORIGIN-FN &rest ARGS)")
- (autoload #'my/evil-apply-macro-line-by-line "my-evil-autoloads" nil t)
-(autoload 'my/define-and-bind-paren-text-object "../lisp/autoloads/my-evil-autoloads" "\
+ (autoload #'my/evil-apply-macro-line-by-line "lib-evil" nil t)
+(autoload 'my/define-and-bind-paren-text-object "../lisp/lib/lib-evil" "\
 
 
 (fn KEY START-REGEX END-REGEX)" nil t)
-(autoload 'my/define-and-bind-local-paren-text-object "../lisp/autoloads/my-evil-autoloads" "\
+(autoload 'my/define-and-bind-local-paren-text-object "../lisp/lib/lib-evil" "\
 
 
 (fn KEY START-REGEX END-REGEX HOOK)" nil t)
- (autoload #'my/previous-SCM-conflict-marker "my-evil-autoloads" nil t)
- (autoload #'my/next-SCM-conflict-marker "my-evil-autoloads" nil t)
- (autoload #'my:evil-textobj-anyblock-inner-quote "my-evil-autoloads" nil t)
- (autoload #'my:evil-apply-macro-line-by-line "my-evil-autoloads" nil t)
-(register-definition-prefixes "../lisp/autoloads/my-evil-autoloads" '("my/SCM-conflict-marker"))
+ (autoload #'my/previous-SCM-conflict-marker "lib-evil" nil t)
+ (autoload #'my/next-SCM-conflict-marker "lib-evil" nil t)
+ (autoload #'my:evil-textobj-anyblock-inner-quote "lib-evil" nil t)
+ (autoload #'my:evil-apply-macro-line-by-line "lib-evil" nil t)
+(register-definition-prefixes "../lisp/lib/lib-evil" '("my/SCM-conflict-marker"))
 
 
-;;; Generated autoloads from ../lisp/autoloads/my-langs-autoloads.el
+;;; Generated autoloads from ../lisp/lib/lib-langs.el
 
- (autoload #'my/send-region-to-ess "my-langs-autoloads" nil t)
- (autoload #'my/send-region-to-python "my-langs-autoloads" nil t)
-(autoload 'my/ess-toggle-view-httpgd "../lisp/autoloads/my-langs-autoloads" "\
+ (autoload #'my/send-region-to-ess "lib-langs" nil t)
+ (autoload #'my/send-region-to-python "lib-langs" nil t)
+(autoload 'my/ess-toggle-view-httpgd "../lisp/lib/lib-langs" "\
 Display the httpgd buffer if not displayed. If the buffer is
 displayed, close the window. If no httpgd buffer exists, ask to create
 it." t)
-(autoload 'my/python-toggle-view-local-html "../lisp/autoloads/my-langs-autoloads" "\
+(autoload 'my/python-toggle-view-local-html "../lisp/lib/lib-langs" "\
 Display the local html buffer if not displayed. If local html
 buffer is displayed, close the window. If no local html buffer exists,
 ask to create it." t)
-(autoload 'my/run-python "../lisp/autoloads/my-langs-autoloads" "\
+(autoload 'my/run-python "../lisp/lib/lib-langs" "\
 Run python in project root that is dedicated to current buffer.
 With an prefix \\[universal-argument], make this python session global
 (not dedicated to any buffer).
 
 (fn DEDICATED)" t)
-(autoload 'my/markdown-run-repl "../lisp/autoloads/my-langs-autoloads" "\
+(autoload 'my/markdown-run-repl "../lisp/lib/lib-langs" "\
 Run the REPL depending on the context (i.e. the language of the
 code block)" t)
-(autoload 'my/markdown-hide-window "../lisp/autoloads/my-langs-autoloads" "\
+(autoload 'my/markdown-hide-window "../lisp/lib/lib-langs" "\
 Close the REPL window denpending on the context (i.e. the
 language of the code block)." t)
- (autoload #'my/markdown-send-region "my-langs-autoloads" nil t)
-(autoload 'my~conda-activate "../lisp/autoloads/my-langs-autoloads" "\
+ (autoload #'my/markdown-send-region "lib-langs" nil t)
+(autoload 'my~conda-activate "../lisp/lib/lib-langs" "\
 Activate a conda environment.
 
 (fn &optional PATH)" t)
-(autoload 'my~conda-deactivate "../lisp/autoloads/my-langs-autoloads" "\
+(autoload 'my~conda-deactivate "../lisp/lib/lib-langs" "\
 Deactivate all the conda environments, including the base environment." t)
-(autoload 'my~python-venv-activate "../lisp/autoloads/my-langs-autoloads" "\
+(autoload 'my~python-venv-activate "../lisp/lib/lib-langs" "\
 This command activates a python virtual environment.
 
 (fn &optional PATH)" t)
-(autoload 'my~python-venv-deactivate "../lisp/autoloads/my-langs-autoloads" "\
+(autoload 'my~python-venv-deactivate "../lisp/lib/lib-langs" "\
 This command deactivates the current python virtual environment." t)
-(autoload 'my~poetry-venv-activate "../lisp/autoloads/my-langs-autoloads" "\
+(autoload 'my~poetry-venv-activate "../lisp/lib/lib-langs" "\
 This command activates a poetry virtual environment.
 
 (fn &optional PATH)" t)
-(autoload 'my~poetry-venv-deactivate "../lisp/autoloads/my-langs-autoloads" "\
+(autoload 'my~poetry-venv-deactivate "../lisp/lib/lib-langs" "\
 This command deactivates the current poetry virtual environment." t)
- (autoload #'yapf-format-buffer "my-langs-autoloads" nil t)
- (autoload #'black-format-buffer "my-langs-autoloads" nil t)
- (autoload #'sql-formatter-format-buffer "my-langs-autoloads" nil t)
-(autoload 'my~edit-src "../lisp/autoloads/my-langs-autoloads" "\
+ (autoload #'yapf-format-buffer "lib-langs" nil t)
+ (autoload #'black-format-buffer "lib-langs" nil t)
+ (autoload #'sql-formatter-format-buffer "lib-langs" nil t)
+(autoload 'my~edit-src "../lisp/lib/lib-langs" "\
 Edit the embedded code within a separate buffer." t)
-(register-definition-prefixes "../lisp/autoloads/my-langs-autoloads" '("my$" "my/" "my:edit-src-"))
+(register-definition-prefixes "../lisp/lib/lib-langs" '("my$" "my/" "my:edit-src-"))
 
 
-;;; Generated autoloads from ../lisp/autoloads/my-langtools-autoloads.el
+;;; Generated autoloads from ../lisp/lib/lib-langtools.el
 
-(autoload 'my/toggle-citre-eglot-capf "../lisp/autoloads/my-langtools-autoloads")
- (autoload #'my/eldoc-buffer-dwim "my-langtools-autoloads" nil t)
-(autoload 'my/xref-move-in-original-src-macro "../lisp/autoloads/my-langtools-autoloads" "\
+(autoload 'my/toggle-citre-eglot-capf "../lisp/lib/lib-langtools")
+ (autoload #'my/eldoc-buffer-dwim "lib-langtools" nil t)
+(autoload 'my/xref-move-in-original-src-macro "../lisp/lib/lib-langtools" "\
 There can only be one xref buffer. That is, if you find
 references of other symbol the previous one will be overwritten. The
 official `xref-next-line' `xref-next-group' only allows you to move
@@ -275,134 +275,134 @@ window. This macro creates funcs that allow you to move current window
 to next xref location.
 
 (fn FUNC)" nil t)
-(autoload 'my/markdown-src-lsp-setup "../lisp/autoloads/my-langtools-autoloads" "\
+(autoload 'my/markdown-src-lsp-setup "../lisp/lib/lib-langtools" "\
 eglot requires the buffer to be a file to be able to attach to
 the lsp. Thus the indirect buffer created by `edit-indirect' needs to
 be associated with a real file.")
-(autoload 'my/org-babel-lsp-setup "../lisp/autoloads/my-langtools-autoloads" "\
+(autoload 'my/org-babel-lsp-setup "../lisp/lib/lib-langtools" "\
 Support LANG in org source code block.
 
 (fn LANG)" nil t)
-(autoload 'my~treesit-install-all-language-grammar "../lisp/autoloads/my-langtools-autoloads" nil t)
-(autoload 'my~formatter "../lisp/autoloads/my-langtools-autoloads" "\
+(autoload 'my~treesit-install-all-language-grammar "../lisp/lib/lib-langtools" nil t)
+(autoload 'my~formatter "../lisp/lib/lib-langtools" "\
 If current LSP has a formatter, use it. Otherwise, use the
 reformatter according to the `major-mode-reformatter-plist'" t)
-(autoload 'my~dape-start-or-continue "../lisp/autoloads/my-langtools-autoloads" "\
+(autoload 'my~dape-start-or-continue "../lisp/lib/lib-langtools" "\
 Try `dape-continue' and fall back to `dape'." t)
-(autoload 'my:dape-keymap-setup "../lisp/autoloads/my-langtools-autoloads")
-(register-definition-prefixes "../lisp/autoloads/my-langtools-autoloads" '("major-mode-reformatter-plist"))
+(autoload 'my:dape-keymap-setup "../lisp/lib/lib-langtools")
+(register-definition-prefixes "../lisp/lib/lib-langtools" '("major-mode-reformatter-plist"))
 
 
-;;; Generated autoloads from ../lisp/autoloads/my-minibuffer-autoloads.el
+;;; Generated autoloads from ../lisp/lib/lib-minibuffer.el
 
-(autoload 'crm-indicator "../lisp/autoloads/my-minibuffer-autoloads" "\
+(autoload 'crm-indicator "../lisp/lib/lib-minibuffer" "\
 
 
 (fn ARGS)")
-(autoload 'my/completion-in-region "../lisp/autoloads/my-minibuffer-autoloads" "\
+(autoload 'my/completion-in-region "../lisp/lib/lib-minibuffer" "\
 
 
 (fn &rest ARGS)")
- (autoload #'my/evil-delete-in-wgrep "my-minibuffer-autoloads" nil t)
+ (autoload #'my/evil-delete-in-wgrep "lib-minibuffer" nil t)
 
 
-;;; Generated autoloads from ../lisp/autoloads/my-misc-autoloads.el
+;;; Generated autoloads from ../lisp/lib/lib-misc.el
 
-(autoload 'call-command-at-project-root "../lisp/autoloads/my-misc-autoloads" "\
+(autoload 'call-command-at-project-root "../lisp/lib/lib-misc" "\
 call command at project root, if no root is found, open at the default-directory
 
 (fn ORIG-FUN &rest ARGS)")
-(autoload 'wrap-command-at-project-root "../lisp/autoloads/my-misc-autoloads" "\
+(autoload 'wrap-command-at-project-root "../lisp/lib/lib-misc" "\
 create a new command that calls orig-cmd at project root, if no root is found, open at the default-directory
 
 (fn ORIG-CMD)")
-(autoload 'my/project-root-or-default-dir "../lisp/autoloads/my-misc-autoloads" "\
+(autoload 'my/project-root-or-default-dir "../lisp/lib/lib-misc" "\
 If a project root is found, return it. Otherwise return `default-directory'.")
-(autoload 'my~dired-find-file-other-tab "../lisp/autoloads/my-misc-autoloads" "\
+(autoload 'my~dired-find-file-other-tab "../lisp/lib/lib-misc" "\
 In Dired, visit this file or directory in another window." t)
-(autoload 'my/ibuffer-vc-setup "../lisp/autoloads/my-misc-autoloads")
-(autoload 'my:dired-subtree-toggle-nerd-icons "../lisp/autoloads/my-misc-autoloads")
-(register-definition-prefixes "../lisp/autoloads/my-misc-autoloads" '("my:dired-subtree-add-nerd-icons"))
+(autoload 'my/ibuffer-vc-setup "../lisp/lib/lib-misc")
+(autoload 'my:dired-subtree-toggle-nerd-icons "../lisp/lib/lib-misc")
+(register-definition-prefixes "../lisp/lib/lib-misc" '("my:dired-subtree-add-nerd-icons"))
 
 
-;;; Generated autoloads from ../lisp/autoloads/my-org-autoloads.el
+;;; Generated autoloads from ../lisp/lib/lib-org.el
 
-(autoload 'my/org-capture-bubble-tea-template "../lisp/autoloads/my-org-autoloads" "\
+(autoload 'my/org-capture-bubble-tea-template "../lisp/lib/lib-org" "\
 
 
 (fn LETTER DESC HEADINGS TEMPLATE &rest PROPERTIES)")
-(autoload 'my/org-agenda-visited-all-directories "../lisp/autoloads/my-org-autoloads" "\
+(autoload 'my/org-agenda-visited-all-directories "../lisp/lib/lib-org" "\
 Org agenda need to visted all files listed in `org-agenda-files'
 to create the view, which is expensive. By default I will only list a
 small portion of files to be searched.  This function searches all the
 files in the org-directory to create the org-agenda view" t)
-(autoload 'my/org-bubble-tea-get-end-of-play-time "../lisp/autoloads/my-org-autoloads" "\
+(autoload 'my/org-bubble-tea-get-end-of-play-time "../lisp/lib/lib-org" "\
 After clocking in to record the start time of playing with bubble tea,
 when clocking out, use this function to automatically update the table.
 
 (fn START)")
-(autoload 'my/exclude-org-agenda-buffers-from-recentf "../lisp/autoloads/my-org-autoloads" "\
+(autoload 'my/exclude-org-agenda-buffers-from-recentf "../lisp/lib/lib-org" "\
 Prevent `org-agenda' buffers from polluting recentf list.
 
 (fn OLD-FN &rest ARGS)")
-(autoload 'my/reload-org-agenda-buffers "../lisp/autoloads/my-org-autoloads" "\
+(autoload 'my/reload-org-agenda-buffers "../lisp/lib/lib-org" "\
 `org-agenda' creates incomplete `org-mode' buffers to boost its startup speed. Reload those buffers
 after `org-agenda' has finalized.")
-(autoload 'my/org-indent-maybe-h "../lisp/autoloads/my-org-autoloads" "\
+(autoload 'my/org-indent-maybe-h "../lisp/lib/lib-org" "\
 Indent the current item (header or item), if possible.
 Made for `org-tab-first-hook' in evil-mode." t)
-(autoload 'my/org-yas-expand-maybe-h "../lisp/autoloads/my-org-autoloads" "\
+(autoload 'my/org-yas-expand-maybe-h "../lisp/lib/lib-org" "\
 Expand a yasnippet snippet, if trigger exists at point or region is active.
 Made for `org-tab-first-hook'.")
-(autoload 'my/org-toggle-org-emphasis-markers "../lisp/autoloads/my-org-autoloads" "\
+(autoload 'my/org-toggle-org-emphasis-markers "../lisp/lib/lib-org" "\
 toggle emphasis markers" t)
-(autoload 'my/org-toggle-org-drawer "../lisp/autoloads/my-org-autoloads" "\
+(autoload 'my/org-toggle-org-drawer "../lisp/lib/lib-org" "\
 toggle hide drawer. This function is effective only after org 9.6." t)
-(register-definition-prefixes "../lisp/autoloads/my-org-autoloads" '("my/toggle-org-settings-wrapper"))
+(register-definition-prefixes "../lisp/lib/lib-org" '("my/toggle-org-settings-wrapper"))
 
 
-;;; Generated autoloads from ../lisp/autoloads/my-os-autoloads.el
+;;; Generated autoloads from ../lisp/lib/lib-os.el
 
-(autoload 'my/macos-cmd-w "../lisp/autoloads/my-os-autoloads" "\
+(autoload 'my/macos-cmd-w "../lisp/lib/lib-os" "\
 If there is only one tab, close emacs, otherwise close one tab" t)
-(autoload 'my/tty-setup "../lisp/autoloads/my-os-autoloads")
-(autoload 'my:server-setup "../lisp/autoloads/my-os-autoloads")
+(autoload 'my/tty-setup "../lisp/lib/lib-os")
+(autoload 'my:server-setup "../lisp/lib/lib-os")
 
 
-;;; Generated autoloads from ../lisp/autoloads/my-ui-autoloads.el
+;;; Generated autoloads from ../lisp/lib/lib-ui.el
 
-(autoload 'my/display-truncation-and-wrap-indicator-as-whitespace "../lisp/autoloads/my-ui-autoloads")
-(autoload 'my/tab-bar-go-to-tab-macro "../lisp/autoloads/my-ui-autoloads" "\
+(autoload 'my/display-truncation-and-wrap-indicator-as-whitespace "../lisp/lib/lib-ui")
+(autoload 'my/tab-bar-go-to-tab-macro "../lisp/lib/lib-ui" "\
 
 
 (fn NUMBER)" nil t)
-(autoload 'my/set-scratch-directory "../lisp/autoloads/my-ui-autoloads" "\
+(autoload 'my/set-scratch-directory "../lisp/lib/lib-ui" "\
 After creating a new tab, the default buffer to be displayed is
 scratch buffer whose directory is set to where emacs is initialized.
 Change it to the directory of previous buffer where `tab-bar-new-tab'
 is called.
 
 (fn OLD-FUN &rest ARGS)")
-(autoload 'my:font-set-small-mono-font "../lisp/autoloads/my-ui-autoloads" "\
+(autoload 'my:font-set-small-mono-font "../lisp/lib/lib-ui" "\
 Set the default font to a smaller sized font for current buffer.")
-(autoload 'my:font-set-small-variable-font "../lisp/autoloads/my-ui-autoloads" "\
+(autoload 'my:font-set-small-variable-font "../lisp/lib/lib-ui" "\
 Set the default font to a smaller sized font for current buffer.")
-(autoload 'my:welcome-screen-mode "../lisp/autoloads/my-ui-autoloads")
-(autoload 'my~refresh-verses "../lisp/autoloads/my-ui-autoloads" "\
+(autoload 'my:welcome-screen-mode "../lisp/lib/lib-ui")
+(autoload 'my~refresh-verses "../lisp/lib/lib-ui" "\
 refresh verses in the scratch buffer" t)
-(register-definition-prefixes "../lisp/autoloads/my-ui-autoloads" '("my$" "my:" "my~emacs-startup-time"))
+(register-definition-prefixes "../lisp/lib/lib-ui" '("my$" "my:" "my~emacs-startup-time"))
 
 
-;;; Generated autoloads from ../lisp/autoloads/my-utils-autoloads.el
+;;; Generated autoloads from ../lisp/lib/lib-utils.el
 
-(autoload 'my/update-all-autoloads "../lisp/autoloads/my-utils-autoloads" "\
+(autoload 'my/update-all-autoloads "../lisp/lib/lib-utils" "\
 Update all autoloads in the AUTOLOADS-DIR into the AUTOLOADS-FILE.
 If AUTOLOADS-DIR is nil, use `my/autoloads-dir'. If AUTOLOADS-FILE is
 nil, use `my/autoloads-file'.
 
 (fn &optional AUTOLOADS-DIR AUTOLOADS-FILE)" t)
-(autoload 'my/update-site-lisp-autoloads "../lisp/autoloads/my-utils-autoloads" nil t)
-(autoload 'my/run-hook-once "../lisp/autoloads/my-utils-autoloads" "\
+(autoload 'my/update-site-lisp-autoloads "../lisp/lib/lib-utils" nil t)
+(autoload 'my/run-hook-once "../lisp/lib/lib-utils" "\
 a wrapper to run a function (can be named or lambda) on a hook or
 a list of hooks only once.  When HOOKS is a list, only run FUNC once
 on the first hook. The rest hook will not run FUNC.
@@ -415,16 +415,16 @@ must be provided. Can be omitted if FUNC is a symbol.
 :func-args a list which is the rest args passed to FUNC.
 
 (fn HOOKS FUNC &rest ARGS)" nil t)
-(autoload 'my/advise-at-once "../lisp/autoloads/my-utils-autoloads" "\
+(autoload 'my/advise-at-once "../lisp/lib/lib-utils" "\
 a wrapper to advise a func only once
 
 (fn FUNC ADVICE WHERE &rest PROPS)" nil t)
-(autoload 'my/turn-off-mode "../lisp/autoloads/my-utils-autoloads" "\
+(autoload 'my/turn-off-mode "../lisp/lib/lib-utils" "\
 Create a function to turn off MODE. Useful for attaching on some
 hooks that will turn off MODE locally.
 
 (fn MODE)" nil t)
-(autoload 'my/setq-locally "../lisp/autoloads/my-utils-autoloads" "\
+(autoload 'my/setq-locally "../lisp/lib/lib-utils" "\
 Create a function that sets a local value to a variable (VAR)
 called VAL. This function is particularly useful for setting variables
 locally in certain hooks.
@@ -439,7 +439,7 @@ the hook more elegantly described, which proves to be useful for
 debugging purposes if you desire to scrutinize a hook value.
 
 (fn VAR VAL)" nil t)
-(autoload 'my/setq-on-hook "../lisp/autoloads/my-utils-autoloads" "\
+(autoload 'my/setq-on-hook "../lisp/lib/lib-utils" "\
 Create a function that sets VAR to VAL on a HOOK.
 
 If you want to set VAR to a simple VAL in multiple modes, use
@@ -452,16 +452,16 @@ in much nicer description of the hook. This is particularly helpful
 for debugging purposes when you want to examine a hook value.
 
 (fn HOOK VAR VAL)" nil t)
-(autoload 'my:load-packages-incrementally-setup "../lisp/autoloads/my-utils-autoloads" "\
+(autoload 'my:load-packages-incrementally-setup "../lisp/lib/lib-utils" "\
 Set up a idle timer to start idly load packages.")
-(register-definition-prefixes "../lisp/autoloads/my-utils-autoloads" '("my$" "my%call-func-respect-blocklist" "my:load-packages-incrementally"))
+(register-definition-prefixes "../lisp/lib/lib-utils" '("my$" "my%call-func-respect-blocklist" "my:load-packages-incrementally"))
 
 
-;;; Generated autoloads from ../lisp/autoloads/my-vcs-autoloads.el
+;;; Generated autoloads from ../lisp/lib/lib-vcs.el
 
-(autoload 'my/project-todos "../lisp/autoloads/my-vcs-autoloads" "\
+(autoload 'my/project-todos "../lisp/lib/lib-vcs" "\
 Find `hl-todo--regex' items in project using `consult-ripgrep'" t)
- (autoload #'my~project-magit "my-vcs-autoloads" nil t)
+ (autoload #'my~project-magit "lib-vcs" nil t)
 
 ;;; End of scraped data
 
