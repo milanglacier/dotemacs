@@ -11,7 +11,7 @@
 (defvar my/site-lisp-dir (file-name-concat user-emacs-directory "site-lisp")
     "the directory of third-party lisp files.")
 
-(defvar my/autoloads-file (file-name-concat user-emacs-directory "generated-loaddefs" "my-loaddefs.el")
+(defvar my/autoloads-file (file-name-concat user-emacs-directory "generated-loaddefs" "lib-loaddefs.el")
     "the file of my generated autoload definitions")
 
 (defvar my/site-lisp-autoloads-file
@@ -60,8 +60,8 @@
             (eval-print-last-sexp)))
     (load bootstrap-file nil 'nomessage))
 
-(load my/autoloads-file)
-(load my/site-lisp-autoloads-file)
+(load my/autoloads-file nil t) ;; don't show message
+(load my/site-lisp-autoloads-file nil t)
 
 (require 'config-utils)
 (require 'config-basics)
@@ -83,7 +83,7 @@
 ;; I personally HATE custom.el. But I don't think I have a better
 ;; place to store some temp file.
 (when (file-exists-p custom-file)
-    (load custom-file))
+    (load custom-file nil t))
 
 (setq debug-on-error nil)
 
