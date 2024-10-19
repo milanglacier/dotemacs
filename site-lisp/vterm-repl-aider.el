@@ -162,7 +162,7 @@
 (defvaralias 'vtr-aider-prefix 'vtr*aider-start-pattern)
 
 (defun vtr-aider-set-prefix (prefix)
-    "set the `vtr-aider-prefix' which will be a prefix from `vtr-aider-prefixes'"
+    "set the `vtr-aider-prefix' which will be selected from `vtr-aider-prefixes'"
     (interactive
      (list (completing-read "The prefixes passed to aider: "
                             vtr-aider-prefixes
@@ -177,7 +177,7 @@
     (setq vtr-aider-prefix ""))
 
 (defun vtr-aider-set-args (args)
-    "set the arguments passed to aider"
+    "set the command line arguments to launcher aider"
     (interactive
      (list (completing-read "The arguments passed to aider: "
                             vtr-aider-available-args
@@ -191,7 +191,7 @@
     (setq vtr*aider-cmd vtr-aider-cmd))
 
 (defun vtr-aider-prompt (prefix prompt &optional session)
-  "Prompt AIDER with the given PROMPT verbatim.
+  "Prompt aider with the given PREFIX and PROMPT verbatim.
 Override `vtr-aider-prefix' to ensure verbatim input."
     (interactive
      (list (completing-read "the aider command: " vtr-aider-prefixes nil t)
