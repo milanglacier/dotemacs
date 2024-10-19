@@ -60,8 +60,8 @@
             (eval-print-last-sexp)))
     (load bootstrap-file nil 'nomessage))
 
-(load-file my/autoloads-file)
-(load-file my/site-lisp-autoloads-file)
+(load my/autoloads-file)
+(load my/site-lisp-autoloads-file)
 
 (require 'my-init-utils)
 (require 'my-basics)
