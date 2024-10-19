@@ -6,18 +6,20 @@
 
 (defvar my/config-dir (file-name-concat user-emacs-directory "lisp")
     "the directory of my configuration.")
-(defvar my/autoloads-dir (file-name-concat my/config-dir "autoloads")
-    "the directory of my autoloded functions.")
-(defvar my/autoloads-file (file-name-concat my/autoloads-dir "my-loaddefs.el")
-    "the file of my autoloded functions.")
+(defvar my/functions-dir (file-name-concat my/config-dir "autoloads")
+    "the directory of my lisp functions")
 (defvar my/site-lisp-dir (file-name-concat user-emacs-directory "site-lisp")
     "the directory of third-party lisp files.")
+
+(defvar my/autoloads-file (file-name-concat user-emacs-directory "generated-loaddefs" "my-loaddefs.el")
+    "the file of my generated autoload definitions")
+
 (defvar my/site-lisp-autoloads-file
-    (file-name-concat my/site-lisp-dir "my-site-lisp-loaddefs.el")
+    (file-name-concat user-emacs-directory "generated-loaddefs" "site-lisp-loaddefs.el")
     "the file of third-party autoloaded functions.")
 
 (push my/config-dir load-path)
-(push my/autoloads-dir load-path)
+(push my/functions-dir load-path)
 (push my/site-lisp-dir load-path)
 (setq custom-file (file-name-concat user-emacs-directory "custom.el"))
 
@@ -58,8 +60,8 @@
             (eval-print-last-sexp)))
     (load bootstrap-file nil 'nomessage))
 
-(require 'my-loaddefs)
-(require 'my-site-lisp-loaddefs)
+(load-file my/autoloads-file)
+(load-file my/site-lisp-autoloads-file)
 
 (require 'my-init-utils)
 (require 'my-basics)
