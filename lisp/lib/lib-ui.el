@@ -84,8 +84,8 @@ is called."
 
 (defvar mg-actions
     '((" New [T]heme      " . load-theme)
-      (" New [V]erse      " . my-refresh-verses)
-      (" [S]tartup Time   " . my-emacs-startup-time)
+      (" New [V]erse      " . mg-refresh-verses)
+      (" [S]tartup Time   " . mg-emacs-startup-time)
       (" Org [A]genda     " . org-agenda-list)
       (" Recent [F]iles   " . consult-recent-file)
       (" Recent [P]rojects" . project-switch-project))
@@ -110,7 +110,7 @@ is called."
               ((< width 200) (- width 10))
               (t (- width 15)))))
 
-(defun my-emacs-startup-time ()
+(defun mg-emacs-startup-time ()
     "measure the startup time until the welcome screen is displayed. More accurate than `emacs-init-time'"
     (interactive)
     (message (format "%f seconds"
@@ -131,22 +131,22 @@ is called."
                      append `(,(downcase key) ,action))))
         (apply #'general-define-key :keymaps 'local :states '(normal emacs) keymaps)))
 
-(defface my-verses
+(defface mg-verses
     '((((background light)) :foreground "#ed80b5" :slant italic)
       (((background dark)) :foreground "#a070b5" :slant italic))
     "the faces used for the verses")
 
-(defface my-verse-quotes
+(defface mg-verse-quotes
     '((((background light)) :foreground "#e8ae92")
       (((background dark)) :foreground "#ad7f2a"))
     "the faces used for the quote of verses")
 
-(defface my-welcome-screen-action
+(defface mg-welcome-screen-action
     '((((background light)) :foreground "#0398fc")
       (((background dark)) :foreground "#73915e"))
     "the faces used for the actions on the welcome screen")
 
-(defface my-welcome-screen-action-key
+(defface mg-welcome-screen-action-key
     '((((background light)) :foreground "#6b82e2")
       (((background dark)) :foreground "#cfe8a3"))
     "the faces used for the actions on the welcome screen")
@@ -187,11 +187,11 @@ is called."
 (defun mg--verses-add-font-lock ()
     (font-lock-add-keywords
      nil
-     '(("^ *\\([^\"]+\\)$" 1 'my-verses)
-       ("^ *\\(.+\\)$" 1 'my-verse-quotes)
-       ("^ *\\(.+\\)\\[" 1 'my-welcome-screen-action)
-       ("\\(\\[.*\\]\\)" 1 'my-welcome-screen-action-key)
-       ("\\]\\(.*\\)$" 1 'my-welcome-screen-action))))
+     '(("^ *\\([^\"]+\\)$" 1 'mg-verses)
+       ("^ *\\(.+\\)$" 1 'mg-verse-quotes)
+       ("^ *\\(.+\\)\\[" 1 'mg-welcome-screen-action)
+       ("\\(\\[.*\\]\\)" 1 'mg-welcome-screen-action-key)
+       ("\\]\\(.*\\)$" 1 'mg-welcome-screen-action))))
 
 ;;;###autoload
 (defun mg--welcome-screen-mode ()
@@ -199,7 +199,7 @@ is called."
     (add-hook 'emacs-startup-hook #'mg--set-welcome-screen-buffer)
     ;; when running emacs in server mode, cannot get the window
     ;; height/width at startup
-    (add-hook 'server-after-make-frame-hook #'my-refresh-verses))
+    (add-hook 'server-after-make-frame-hook #'mg-refresh-verses))
 
 (defun mg--set-welcome-screen-buffer ()
     (with-current-buffer "*scratch*"
@@ -210,7 +210,7 @@ is called."
     (setq mg--welcome-screen-setup-time (current-time)))
 
 ;;;###autoload
-(defun my-refresh-verses ()
+(defun mg-refresh-verses ()
     "refresh verses in the scratch buffer"
     (interactive)
     (with-current-buffer "*scratch*"

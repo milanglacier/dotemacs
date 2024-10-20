@@ -59,14 +59,14 @@
     (add-to-list 'project-switch-commands
                  '(vterm "vterm"))
     (add-to-list 'project-switch-commands
-                 '(my-project-magit "magit"))
+                 '(mg-project-magit "magit"))
 
     (remove-hook 'project-switch-commands '(project-vc-dir "VC-Dir"))
 
     (general-define-key
      :keymaps 'project-prefix-map
      "v" #'vterm
-     "m" #'my-project-magit)
+     "m" #'mg-project-magit)
 
     )
 
@@ -154,7 +154,7 @@
      :states '(normal insert motion visual)
      :keymaps 'dired-mode-map
      "TAB" #'dired-subtree-toggle
-     "g TAB" #'my-dired-find-file-other-tab)
+     "g TAB" #'mg-dired-find-file-other-tab)
 
     (mg-localleader
         :keymaps 'dired-mode-map

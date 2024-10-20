@@ -43,7 +43,7 @@ Intended to replace `lisp-outline-level'."
 
     (font-lock-add-keywords
      'emacs-lisp-mode
-     '((mg--emacs-lisp-highlight-vars-and-faces . my-emacs-lisp--face)))
+     '((mg--emacs-lisp-highlight-vars-and-faces . mg-emacs-lisp--face)))
 
     ;; copied from doomemacs
     (setq-local imenu-generic-expression
@@ -110,7 +110,7 @@ https://emacs.stackexchange.com/questions/10230/how-to-indent-keywords-aligned"
                          (method
                           (funcall method indent-point state))))))))
 
-(defvar my-emacs-lisp--face nil)
+(defvar mg-emacs-lisp--face nil)
 
 (defun mg--emacs-lisp-highlight-vars-and-faces (end)
     "Match defined variables and functions.
@@ -129,7 +129,7 @@ library/userland functions"
                                       ((eq symbol t) nil)
                                       ((keywordp symbol) nil)
                                       ((special-variable-p symbol)
-                                       (setq my-emacs-lisp--face 'font-lock-variable-name-face))
+                                       (setq mg-emacs-lisp--face 'font-lock-variable-name-face))
                                       ((and (fboundp symbol)
                                             (eq (char-before (match-beginning 0)) ?\()
                                             (not (memq (char-before (1- (match-beginning 0)))
@@ -141,7 +141,7 @@ library/userland functions"
                                                    (while (not (eq (setq unadvised (ad-get-orig-definition unaliased))
                                                                    (setq unaliased (indirect-function unadvised)))))
                                                    unaliased)
-                                               (setq my-emacs-lisp--face
+                                               (setq mg-emacs-lisp--face
                                                      (if (subrp unaliased)
                                                              'font-lock-constant-face
                                                          'font-lock-function-name-face))))))

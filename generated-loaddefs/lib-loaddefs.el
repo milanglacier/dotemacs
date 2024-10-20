@@ -179,14 +179,14 @@ Indents plists more sensibly. Adapted from
 https://emacs.stackexchange.com/questions/10230/how-to-indent-keywords-aligned
 
 (fn INDENT-POINT STATE)")
-(register-definition-prefixes "../lisp/lib/lib-elisp" '("mg-" "my-emacs-lisp--face"))
+(register-definition-prefixes "../lisp/lib/lib-elisp" '("mg-"))
 
 
 ;;; Generated autoloads from ../lisp/lib/lib-email.el
 
 (autoload 'mg--notmuch-setup "../lisp/lib/lib-email" "\
 Modified from `evil-collection-notmuch', but remove those keybindings I do not need. Especially for archiving.")
-(register-definition-prefixes "../lisp/lib/lib-email" '("mg-" "my-notmuch-"))
+(register-definition-prefixes "../lisp/lib/lib-email" '("mg-"))
 
 
 ;;; Generated autoloads from ../lisp/lib/lib-evil.el
@@ -236,28 +236,28 @@ code block)" t)
 Close the REPL window denpending on the context (i.e. the
 language of the code block)." t)
  (autoload #'mg-markdown-send-region "lib-langs" nil t)
-(autoload 'my-conda-activate "../lisp/lib/lib-langs" "\
+(autoload 'mg-conda-activate "../lisp/lib/lib-langs" "\
 Activate a conda environment.
 
 (fn &optional PATH)" t)
-(autoload 'my-conda-deactivate "../lisp/lib/lib-langs" "\
+(autoload 'mg-conda-deactivate "../lisp/lib/lib-langs" "\
 Deactivate all the conda environments, including the base environment." t)
-(autoload 'my-python-venv-activate "../lisp/lib/lib-langs" "\
+(autoload 'mg-python-venv-activate "../lisp/lib/lib-langs" "\
 This command activates a python virtual environment.
 
 (fn &optional PATH)" t)
-(autoload 'my-python-venv-deactivate "../lisp/lib/lib-langs" "\
+(autoload 'mg-python-venv-deactivate "../lisp/lib/lib-langs" "\
 This command deactivates the current python virtual environment." t)
-(autoload 'my-poetry-venv-activate "../lisp/lib/lib-langs" "\
+(autoload 'mg-poetry-venv-activate "../lisp/lib/lib-langs" "\
 This command activates a poetry virtual environment.
 
 (fn &optional PATH)" t)
-(autoload 'my-poetry-venv-deactivate "../lisp/lib/lib-langs" "\
+(autoload 'mg-poetry-venv-deactivate "../lisp/lib/lib-langs" "\
 This command deactivates the current poetry virtual environment." t)
  (autoload #'yapf-format-buffer "lib-langs" nil t)
  (autoload #'black-format-buffer "lib-langs" nil t)
  (autoload #'sql-formatter-format-buffer "lib-langs" nil t)
-(autoload 'my-edit-src "../lisp/lib/lib-langs" "\
+(autoload 'mg-edit-src "../lisp/lib/lib-langs" "\
 Edit the embedded code within a separate buffer." t)
 (register-definition-prefixes "../lisp/lib/lib-langs" '("mg-"))
 
@@ -283,14 +283,14 @@ be associated with a real file.")
 Support LANG in org source code block.
 
 (fn LANG)" nil t)
-(autoload 'my-treesit-install-all-language-grammar "../lisp/lib/lib-langtools" nil t)
-(autoload 'my-formatter "../lisp/lib/lib-langtools" "\
+(autoload 'mg-treesit-install-all-language-grammar "../lisp/lib/lib-langtools" nil t)
+(autoload 'mg-formatter "../lisp/lib/lib-langtools" "\
 If current LSP has a formatter, use it. Otherwise, use the
 reformatter according to the `major-mode-reformatter-plist'" t)
-(autoload 'my-dape-start-or-continue "../lisp/lib/lib-langtools" "\
+(autoload 'mg-dape-start-or-continue "../lisp/lib/lib-langtools" "\
 Try `dape-continue' and fall back to `dape'." t)
 (autoload 'mg--dape-keymap-setup "../lisp/lib/lib-langtools")
-(register-definition-prefixes "../lisp/lib/lib-langtools" '("major-mode-reformatter-plist" "mg-" "my-dape-info-goto-"))
+(register-definition-prefixes "../lisp/lib/lib-langtools" '("major-mode-reformatter-plist" "mg-"))
 
 
 ;;; Generated autoloads from ../lisp/lib/lib-minibuffer.el
@@ -318,7 +318,7 @@ create a new command that calls orig-cmd at project root, if no root is found, o
 (fn ORIG-CMD)")
 (autoload 'mg-project-root-or-default-dir "../lisp/lib/lib-misc" "\
 If a project root is found, return it. Otherwise return `default-directory'.")
-(autoload 'my-dired-find-file-other-tab "../lisp/lib/lib-misc" "\
+(autoload 'mg-dired-find-file-other-tab "../lisp/lib/lib-misc" "\
 In Dired, visit this file or directory in another window." t)
 (autoload 'mg-ibuffer-vc-setup "../lisp/lib/lib-misc")
 (autoload 'mg--dired-subtree-toggle-nerd-icons "../lisp/lib/lib-misc")
@@ -388,9 +388,9 @@ Set the default font to a smaller sized font for current buffer.")
 (autoload 'mg--font-set-small-variable-font "../lisp/lib/lib-ui" "\
 Set the default font to a smaller sized font for current buffer.")
 (autoload 'mg--welcome-screen-mode "../lisp/lib/lib-ui")
-(autoload 'my-refresh-verses "../lisp/lib/lib-ui" "\
+(autoload 'mg-refresh-verses "../lisp/lib/lib-ui" "\
 refresh verses in the scratch buffer" t)
-(register-definition-prefixes "../lisp/lib/lib-ui" '("mg-" "my-emacs-startup-time"))
+(register-definition-prefixes "../lisp/lib/lib-ui" '("mg-"))
 
 
 ;;; Generated autoloads from ../lisp/lib/lib-utils.el
@@ -454,14 +454,14 @@ for debugging purposes when you want to examine a hook value.
 (fn HOOK VAR VAL)" nil t)
 (autoload 'mg--load-packages-incrementally-setup "../lisp/lib/lib-utils" "\
 Set up a idle timer to start idly load packages.")
-(register-definition-prefixes "../lisp/lib/lib-utils" '("mg-" "my--call-func-respect-blocklist"))
+(register-definition-prefixes "../lisp/lib/lib-utils" '("mg-"))
 
 
 ;;; Generated autoloads from ../lisp/lib/lib-vcs.el
 
 (autoload 'mg-project-todos "../lisp/lib/lib-vcs" "\
 Find `hl-todo--regex' items in project using `consult-ripgrep'" t)
- (autoload #'my-project-magit "lib-vcs" nil t)
+ (autoload #'mg-project-magit "lib-vcs" nil t)
 
 ;;; End of scraped data
 

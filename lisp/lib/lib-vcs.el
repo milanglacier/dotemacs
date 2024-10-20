@@ -7,8 +7,8 @@
     (require 'hl-todo)
     (consult-ripgrep nil hl-todo--regexp))
 
-;;;###autoload (autoload #'my-project-magit "lib-vcs" nil t)
-(defalias #'my-project-magit (wrap-command-at-project-root #'magit)
+;;;###autoload (autoload #'mg-project-magit "lib-vcs" nil t)
+(defalias #'mg-project-magit (wrap-command-at-project-root #'magit)
     "open `magit' at project root.")
 
 (provide 'lib-vcs.el)

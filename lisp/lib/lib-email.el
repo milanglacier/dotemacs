@@ -31,15 +31,15 @@
      "gR" #'notmuch-poll-and-refresh-this-buffer
      "J" #'notmuch-jump-search)
 
-    (defalias #'my-notmuch-update #'compile "Update emails with mbsync and notmuch using `compile'.")
+    (defalias #'mg-notmuch-update #'compile "Update emails with mbsync and notmuch using `compile'.")
 
     (general-define-key
      :states 'normal
      :keymaps 'notmuch-hello-mode-map
-     "u" #'my-notmuch-update ;; update emails with mbsync and notmuch
+     "u" #'mg-notmuch-update ;; update emails with mbsync and notmuch
      "TAB" #'widget-forward
      "S-TAB" #'widget-backward
-     "RET" #'my-notmuch-hello-ret)
+     "RET" #'mg-notmuch-hello-ret)
 
     ;; I usually don't archive email, so I delete all the keymaps related to archive
     (general-define-key
@@ -58,7 +58,7 @@
      "cF" #'notmuch-show-forward-open-messages
      "zv" #'notmuch-tree-from-show-current-query ; like mu4e-conversation
      "<" #'notmuch-show-toggle-thread-indentation
-     "D" #'my-notmuch-search-toggle-deleted
+     "D" #'mg-notmuch-search-toggle-deleted
      "=" #'evil-collection-notmuch-show-toggle-flagged
      "H" #'notmuch-show-toggle-visibility-headers
      "gj" #'notmuch-show-next-open-message
@@ -80,8 +80,8 @@
 
     (add-to-list 'evil-fold-list
                  '((notmuch-show-mode)
-                   :open-all my-notmuch-show-open-entire-thread
-                   :close-all my-notmuch-show-close-entire-thred
+                   :open-all mg-notmuch-show-open-entire-thread
+                   :close-all mg-notmuch-show-close-entire-thred
                    :toggle notmuch-show-toggle-message))
 
     ;; I usually don't archive email, so I delete all the keymaps related to archive
@@ -94,7 +94,7 @@
      "O" #'notmuch-search-toggle-order
      "zv" #'notmuch-tree-from-search-current-query
      "*" #'notmuch-search-tag-all
-     "D" #'my-notmuch-search-toggle-deleted
+     "D" #'mg-notmuch-search-toggle-deleted
      "!" #'evil-collection-notmuch-search-toggle-unread
      "F" #'evil-collection-notmuch-search-toggle-flagged
      "q" #'notmuch-bury-or-kill-this-buffer
@@ -150,13 +150,13 @@
      )
     )
 
-(defun my-notmuch-hello-ret ()
+(defun mg-notmuch-hello-ret ()
     (interactive)
     (if (widget-field-at (point))
             (call-interactively #'widget-field-activate)
         (call-interactively #'widget-button-press)))
 
-(defun my-notmuch-search-toggle-deleted ()
+(defun mg-notmuch-search-toggle-deleted ()
     "Toggle deleted tag for message."
     (interactive)
     (evil-collection-notmuch-toggle-tag mg-notmuch-deleted-tags "search" 'notmuch-search-next-thread))
@@ -198,13 +198,13 @@
                     (apply orig-format string objects))))
         (apply fn args)))
 
-(defun my-notmuch-show-open-entire-thread ()
+(defun mg-notmuch-show-open-entire-thread ()
     "Show all messages in current thread."
     (interactive)
     (let ((current-prefix-arg nil))
         (notmuch-show-open-or-close-all)))
 
-(defun my-notmuch-show-close-entire-thred ()
+(defun mg-notmuch-show-close-entire-thred ()
     "Hide all messages in current thread."
     (interactive)
     (let ((current-prefix-arg t))

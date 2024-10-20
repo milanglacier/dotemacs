@@ -92,14 +92,14 @@ within Emacs.")
           org-refile-use-outline-path 'file
           org-outline-path-complete-in-steps nil)
 
-    (defface my-org-todo-active '((t :inherit (bold font-lock-constant-face org-todo))) "")
-    (defface my-org-todo-onhold '((t :inherit (bold warning org-todo))) "")
-    (defface my-org-todo-cancel '((t :inherit (bold error org-todo))) "")
+    (defface mg-org-todo-active '((t :inherit (bold font-lock-constant-face org-todo))) "")
+    (defface mg-org-todo-onhold '((t :inherit (bold warning org-todo))) "")
+    (defface mg-org-todo-cancel '((t :inherit (bold error org-todo))) "")
 
-    (setq org-todo-keyword-faces '(("STRT" . my-org-todo-active)
-                                   ("WAIT" . my-org-todo-onhold)
-                                   ("HOLD" . my-org-todo-onhold)
-                                   ("KILL" . my-org-todo-cancel)))
+    (setq org-todo-keyword-faces '(("STRT" . mg-org-todo-active)
+                                   ("WAIT" . mg-org-todo-onhold)
+                                   ("HOLD" . mg-org-todo-onhold)
+                                   ("KILL" . mg-org-todo-cancel)))
 
     :config
     (evil-set-initial-state 'org-agenda-mode 'motion)
@@ -107,7 +107,7 @@ within Emacs.")
     (add-hook 'org-tab-first-hook #'mg-org-indent-maybe-h)
     (add-hook 'org-tab-first-hook #'mg-org-yas-expand-maybe-h)
 
-    (add-hook 'org-mode-hook (my--call-func-respect-blocklist eglot-ensure))
+    (add-hook 'org-mode-hook (mg--call-func-respect-blocklist eglot-ensure))
 
     (mg-define-and-bind-local-paren-text-object "/" "/" "/" org-mode-hook)
     (mg-define-and-bind-local-paren-text-object "*" "*" "*" org-mode-hook)

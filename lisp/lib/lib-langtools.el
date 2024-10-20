@@ -84,9 +84,9 @@ be associated with a real file."
 (defmacro mg-org-babel-lsp-setup (lang)
     "Support LANG in org source code block."
     (let* ((edit-pre (intern (format "org-babel-edit-prep:%s" lang)))
-           (my-setup (intern (format "mg-lsp-setup-for--%s" (symbol-name edit-pre)))))
+           (mg-setup (intern (format "mg-lsp-setup-for--%s" (symbol-name edit-pre)))))
         `(progn
-             (defun ,my-setup (info)
+             (defun ,mg-setup (info)
                  (setq buffer-file-name
                        (or (->> info caddr (alist-get :file))
                            (file-name-concat default-directory "org-babel-src.tmp")))
@@ -95,13 +95,13 @@ be associated with a real file."
                          (eglot-ensure))))
 
              (if (fboundp #',edit-pre)
-                     (advice-add #',edit-pre :after #',my-setup)
+                     (advice-add #',edit-pre :after #',mg-setup)
                  (progn
                      (defun ,edit-pre (info)
-                         (,my-setup info)))))))
+                         (,mg-setup info)))))))
 
 ;;;###autoload
-(defun my-treesit-install-all-language-grammar ()
+(defun mg-treesit-install-all-language-grammar ()
     (interactive)
     (mapc #'treesit-install-language-grammar (mapcar #'car treesit-language-source-alist)))
 
@@ -112,7 +112,7 @@ be associated with a real file."
     "A plist of major modes and their corresponding reformatters.")
 
 ;;;###autoload
-(defun my-formatter ()
+(defun mg-formatter ()
     "If current LSP has a formatter, use it. Otherwise, use the
 reformatter according to the `major-mode-reformatter-plist'"
     (interactive)
@@ -123,7 +123,7 @@ reformatter according to the `major-mode-reformatter-plist'"
             (call-interactively formatter))))
 
 ;;;###autoload
-(defun my-dape-start-or-continue ()
+(defun mg-dape-start-or-continue ()
     "Try `dape-continue' and fall back to `dape'."
     (interactive)
     (require 'dape)
@@ -131,11 +131,11 @@ reformatter according to the `major-mode-reformatter-plist'"
             (call-interactively #'dape-continue)
         (error (call-interactively #'dape))))
 
-(defun my-dape-info-goto-prev-tab  ()
+(defun mg-dape-info-goto-prev-tab  ()
     (interactive)
     (dape--info-buffer-tab t))
 
-(defun my-dape-info-goto-next-tab  ()
+(defun mg-dape-info-goto-next-tab  ()
     (interactive)
     (dape--info-buffer-tab))
 
@@ -143,7 +143,7 @@ reformatter according to the `major-mode-reformatter-plist'"
 (defun mg--dape-keymap-setup ()
     (general-define-key
      :keymaps 'local
-     "<f5>" #'my-dape-start-or-continue
+     "<f5>" #'mg-dape-start-or-continue
      "<S-f5>" #'dape-quit
      "<f6>" #'dape-pause
      "<f9>" #'dape-breakpoint-toggle

@@ -145,7 +145,7 @@
           evil-ex-hl-update-delay 0.1)
 
     ;; NOTE: `evil-mode' must be enabled here.  otherwise those
-    ;; autoloaded function will try to load `my-evil-autoloads' before
+    ;; autoloaded function will try to load `mg-evil-autoloads' before
     ;; evil is loaded, which results in error since I used macros from
     ;; `evil' there. The reason may be that `eval-after-load' form
     ;; needs to evaluate macros before the execution. And I defined an

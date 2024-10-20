@@ -4,12 +4,12 @@
 (straight-use-package 'general)
 
 (general-create-definer mg-leader
-    ;; :prefix my-leader
+    ;; :prefix mg-leader
     :prefix "SPC"
     :non-normal-prefix "M-SPC")
 
 (general-create-definer mg-localleader
-    ;; :prefix my-leader
+    ;; :prefix mg-leader
     :prefix "SPC SPC"
     :non-normal-prefix "M-SPC M-SPC")
 

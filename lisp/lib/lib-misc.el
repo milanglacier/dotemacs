@@ -22,7 +22,7 @@
         default-directory))
 
 ;;;###autoload
-(defun my-dired-find-file-other-tab ()
+(defun mg-dired-find-file-other-tab ()
     "In Dired, visit this file or directory in another window."
     (interactive)
     (dired--find-file #'find-file-other-tab (dired-get-file-for-visit)))

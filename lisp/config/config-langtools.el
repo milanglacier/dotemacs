@@ -133,7 +133,7 @@
      :keymaps 'eglot-mode-map
      :states '(normal insert motion visual)
      "" '(:ignore t :which-key "lsp")
-     "f" #'my-formatter
+     "f" #'mg-formatter
      "s" #'consult-eglot-symbols
      "a" #'eglot-code-actions
      "e" #'consult-flymake
@@ -302,8 +302,8 @@
      :states 'normal
      "RET" #'dape-info-scope-watch-dwim
      "TAB" #'dape-info-scope-toggle
-     "]]" #'my-dape-info-goto-prev-tab
-     "[[" #'my-dape-info-goto-prev-tab)
+     "]]" #'mg-dape-info-goto-prev-tab
+     "[[" #'mg-dape-info-goto-prev-tab)
 
 
     (general-define-key

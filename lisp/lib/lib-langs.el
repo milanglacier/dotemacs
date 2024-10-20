@@ -92,10 +92,10 @@ language of the code block)"
     "The path to the current conda environment.")
 
 ;;;###autoload
-(defun my-conda-activate (&optional path)
+(defun mg-conda-activate (&optional path)
     "Activate a conda environment."
     (interactive)
-    (my-conda-deactivate)
+    (mg-conda-deactivate)
 
     (if (executable-find "conda")
             (let ((conda-info (json-parse-string (shell-command-to-string "conda info --json")
@@ -124,7 +124,7 @@ language of the code block)"
         (message "conda not found")))
 
 ;;;###autoload
-(defun my-conda-deactivate ()
+(defun mg-conda-deactivate ()
     "Deactivate all the conda environments, including the base environment."
     (interactive)
     (if (executable-find "conda")
@@ -148,11 +148,11 @@ language of the code block)"
     "The path to the current python venv environment.")
 
 ;;;###autoload
-(defun my-python-venv-activate (&optional path)
+(defun mg-python-venv-activate (&optional path)
     "This command activates a python virtual environment."
     (interactive "Dselect a python venv: ")
 
-    (my-python-venv-deactivate)
+    (mg-python-venv-deactivate)
 
     ;; if the path contains trailing "bin" or "bin/", remove it
     (let (pyvenv-current-env)
@@ -172,7 +172,7 @@ language of the code block)"
         (message "Activating python venv: %s" path)))
 
 ;;;###autoload
-(defun my-python-venv-deactivate ()
+(defun mg-python-venv-deactivate ()
     "This command deactivates the current python virtual environment."
     (interactive)
     (when-let ((pyvenv-current-env (and (not (equal (getenv "VIRTUAL_ENV") ""))
@@ -188,7 +188,7 @@ language of the code block)"
 
 
 ;;;###autoload
-(defun my-poetry-venv-activate (&optional path)
+(defun mg-poetry-venv-activate (&optional path)
     "This command activates a poetry virtual environment."
     (interactive (list
                   (completing-read
@@ -198,13 +198,13 @@ language of the code block)"
                                        (process-lines "poetry" "env" "list" "--full-path"))
                        (error (error "current project is not a poetry project or poetry is not installed!")))
                    nil t)))
-    (my-python-venv-activate (replace-regexp-in-string " (Activated)$" "" path)))
+    (mg-python-venv-activate (replace-regexp-in-string " (Activated)$" "" path)))
 
 ;;;###autoload
-(defun my-poetry-venv-deactivate ()
+(defun mg-poetry-venv-deactivate ()
     "This command deactivates the current poetry virtual environment."
     (interactive)
-    (my-python-venv-deactivate))
+    (mg-python-venv-deactivate))
 
 
 ;;;###autoload (autoload #'yapf-format-buffer "lib-langs" nil t)
@@ -243,7 +243,7 @@ of the temp buffer.")
      (t nil)))
 
 ;;;###autoload
-(defun my-edit-src ()
+(defun mg-edit-src ()
     "Edit the embedded code within a separate buffer."
     (interactive)
     (require 'edit-indirect)

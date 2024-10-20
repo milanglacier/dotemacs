@@ -132,11 +132,11 @@
         "re" #'vtr~ipython-send-string
         "v" '(:ignore t :which-key "view")
         "vh" #'mg-python-toggle-view-local-html
-        "'" #'my-edit-src)
+        "'" #'mg-edit-src)
 
     (general-define-key
         :keymaps 'python-ts-mode-map
-        "C-c '" #'my-edit-src)
+        "C-c '" #'mg-edit-src)
 
     (add-to-list 'display-buffer-alist
                  `("^\\*ipython"
@@ -210,4 +210,4 @@
         "f" #'sql-formatter-format-buffer))
 
 (provide 'config-langs)
-;;; my-init-langs.el ends here
+;;; config-langs.el ends here

@@ -163,7 +163,7 @@ in the current directory.
   the package specifications for exact details if you choose to leverage
   a package manager-built Emacs.
 - A separate installation is required for Treesitter grammar. You can
-  execute the command `M-x my-treesit-install-all-language-grammar` to
+  execute the command `M-x mg-treesit-install-all-language-grammar` to
   install all the language grammars that are currently in use.
 
 # Discussion

@@ -154,11 +154,11 @@ becomes beneficial when used with a hook. For instance, you may wish
 to activate `eglot' while using `org-mode', but prefer not to enable
 `eglot' when `org-msg-edit-mode' is activated.")
 
-(defmacro my--call-func-respect-blocklist (func)
+(defmacro mg--call-func-respect-blocklist (func)
     "Calling FUNC only when all the forms associated with FUNC in
 `mg-function-predicate-blocklist' evalutes to nil."
     (let ((func-with-blocklist
-           (intern (format "my*%s-with-blocklist" (symbol-name func)))))
+           (intern (format "mg*%s-with-blocklist" (symbol-name func)))))
         `(if (fboundp #',func-with-blocklist)
                  #',func-with-blocklist
              (defun ,func-with-blocklist ()
