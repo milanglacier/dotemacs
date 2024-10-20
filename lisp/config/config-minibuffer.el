@@ -14,14 +14,14 @@
 
 (use-package vertico
     :init
-    (my/run-hook-once pre-command-hook vertico-mode)
+    (mg-run-hook-once pre-command-hook vertico-mode)
 
-    (general-create-definer my/find-map
+    (general-create-definer mg-find-map
         :prefix "SPC f"
         :non-normal-prefix "M-SPC f"
-        :prefix-map 'my/find-map)
+        :prefix-map 'mg-find-map)
 
-    (my/find-map
+    (mg-find-map
         :keymaps 'override
         :states '(motion normal emacs)
         "" '(:ignore t :which-key "find")
@@ -47,7 +47,7 @@
           vertico-count 17
           vertico-cycle t)
 
-    (setq-default completion-in-region-function #'my/completion-in-region)
+    (setq-default completion-in-region-function #'mg-completion-in-region)
 
     ;; Cleans up path when moving directories with shadowed paths syntax, e.g.
     ;; cleans ~/foo/bar/// to /, and ~/foo/bar/~/ to ~/.
@@ -79,7 +79,7 @@
 
 (use-package marginalia
     :init
-    (my/run-hook-once pre-command-hook marginalia-mode))
+    (mg-run-hook-once pre-command-hook marginalia-mode))
 
 (use-package nerd-icons-completion
     :hook (marginalia-mode . nerd-icons-completion-marginalia-setup))
@@ -144,7 +144,7 @@
      "C-c C-e" #'embark-export
      "C-c C-l" #'embark-collect)
 
-    (my/leader
+    (mg-leader
         :keymaps 'override
         :states '(visual insert motion)
         "e" #'embark-act)
@@ -159,7 +159,7 @@
 
     (general-define-key
      :keymaps 'wgrep-mode-map
-     [remap evil-delete] #'my/evil-delete-in-wgrep))
+     [remap evil-delete] #'mg-evil-delete-in-wgrep))
 
 (provide 'config-minibuffer)
 ;;; config-minibuffer.el ends here

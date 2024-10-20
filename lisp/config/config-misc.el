@@ -21,14 +21,14 @@
 ;; automatically remove trailing whitespaces
 (use-package ws-butler
     :init
-    (my/run-hook-once pre-command-hook ws-butler-global-mode)
+    (mg-run-hook-once pre-command-hook ws-butler-global-mode)
 
     :config
     (setq ws-butler-keep-whitespace-before-point nil))
 
 (use-package elec-pair
     :init
-    (my/run-hook-once evil-insert-state-entry-hook electric-pair-mode)
+    (mg-run-hook-once evil-insert-state-entry-hook electric-pair-mode)
 
     :config
     ;; more conservative on whether should also insert ) when typing
@@ -41,14 +41,14 @@
 
 (use-package savehist
     :init
-    (my/run-hook-once pre-command-hook savehist-mode)
+    (mg-run-hook-once pre-command-hook savehist-mode)
     :config
     (setq savehist-save-minibuffer-history t
           savehist-autosave-interval nil))
 
 (use-package recentf
     :init
-    (my/run-hook-once pre-command-hook recentf-mode)
+    (mg-run-hook-once pre-command-hook recentf-mode)
     :config
     (setq recentf-max-saved-items 200))
 
@@ -59,20 +59,20 @@
     (add-to-list 'project-switch-commands
                  '(vterm "vterm"))
     (add-to-list 'project-switch-commands
-                 '(my~project-magit "magit"))
+                 '(my-project-magit "magit"))
 
     (remove-hook 'project-switch-commands '(project-vc-dir "VC-Dir"))
 
     (general-define-key
      :keymaps 'project-prefix-map
      "v" #'vterm
-     "m" #'my~project-magit)
+     "m" #'my-project-magit)
 
     )
 
 (use-package vterm
     :init
-    (my/open-map
+    (mg-open-map
         :keymaps 'override
         :states '(normal insert motion)
         "t" #'vterm)
@@ -88,24 +88,24 @@
                    (display-buffer-in-side-window)
                    (window-height . 0.4)
                    (window-width .0.5)
-                   (slot . ,(alist-get 'vterm my/side-window-slots))))
+                   (slot . ,(alist-get 'vterm mg-side-window-slots))))
 
     (general-define-key
      :keymaps 'vterm-mode-map
      "C-c <escape>" #'vterm-send-escape)
 
-    (add-hook 'vterm-mode-hook (my/setq-locally confirm-kill-processes nil))
+    (add-hook 'vterm-mode-hook (mg-setq-locally confirm-kill-processes nil))
     ;; From doomemacs: Prevent premature horizontal scrolling
-    (add-hook 'vterm-mode-hook (my/setq-locally hscroll-margin 0))
+    (add-hook 'vterm-mode-hook (mg-setq-locally hscroll-margin 0))
     )
 
 (use-package auto-revert
     :init
-    (my/run-hook-once pre-command-hook global-auto-revert-mode))
+    (mg-run-hook-once pre-command-hook global-auto-revert-mode))
 
 (use-package ibuffer-vc
     :init
-    (add-hook 'ibuffer-hook #'my/ibuffer-vc-setup))
+    (add-hook 'ibuffer-hook #'mg-ibuffer-vc-setup))
 
 (use-package nerd-icons-ibuffer
     :hook (ibuffer-mode . nerd-icons-ibuffer-mode))
@@ -128,7 +128,7 @@
           image-dired-thumb-size 150)
 
     :config
-    (add-hook 'dired-mode-hook #'my/display-truncation-and-wrap-indicator-as-whitespace)
+    (add-hook 'dired-mode-hook #'mg-display-truncation-and-wrap-indicator-as-whitespace)
 
     ;; adapted from doomemacs
     (if IS-MAC
@@ -154,9 +154,9 @@
      :states '(normal insert motion visual)
      :keymaps 'dired-mode-map
      "TAB" #'dired-subtree-toggle
-     "g TAB" #'my~dired-find-file-other-tab)
+     "g TAB" #'my-dired-find-file-other-tab)
 
-    (my/localleader
+    (mg-localleader
         :keymaps 'dired-mode-map
         :states '(normal insert motion)
         "i" #'wdired-change-to-wdired-mode
@@ -170,35 +170,35 @@
 
 (use-package nerd-icons-dired
     :hook ((dired-mode . nerd-icons-dired-mode)
-           (nerd-icons-dired-mode . my:dired-subtree-toggle-nerd-icons)))
+           (nerd-icons-dired-mode . mg--dired-subtree-toggle-nerd-icons)))
 
 (use-package dired-sidebar
     :init
     (setq dired-sidebar-display-alist
           `((window-width . 0.25)
-            (side . ,(alist-get 'dired-sidebar my/side-window-sides))
-            (slot . ,(alist-get 'dired-sidebar my/side-window-slots)))
+            (side . ,(alist-get 'dired-sidebar mg-side-window-sides))
+            (slot . ,(alist-get 'dired-sidebar mg-side-window-slots)))
           dired-sidebar-resize-on-open nil
           dired-sidebar-window-fixed nil
           dired-sidebar-subtree-line-prefix ""
           dired-sidebar-theme 'nerd
           dired-sidebar-use-custom-modeline nil)
-    (my/find-map
+    (mg-find-map
         :states '(normal insert motion visual)
         :keymaps 'override
         "d" #'dired-sidebar-toggle-sidebar)
 
     :config
-    (add-hook 'dired-sidebar-mode-hook #'my:font-set-small-mono-font))
+    (add-hook 'dired-sidebar-mode-hook #'mg--font-set-small-mono-font))
 
-(my/leader
+(mg-leader
     :keymaps 'override
     :states '(visual insert motion normal)
     "u" #'universal-argument
     "-" #'negative-argument
     "h" '(:keymap help-map :which-key "help"))
 
-(my/toggle-map
+(mg-toggle-map
     :keymaps 'override
     :states '(motion insert normal)
     "v" #'visual-line-mode

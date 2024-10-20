@@ -18,13 +18,13 @@
      [remap describe-key] #'helpful-key
      [remap describe-symbol] #'helpful-symbol)
 
-    (setq helpful-switch-buffer-function #'my/helpful-display-buffer)
+    (setq helpful-switch-buffer-function #'mg-helpful-display-buffer)
 
     :config
     (general-define-key
      :keymaps 'helpful-mode-map
      :states '(motion normal)
-     "K" #'my/helpful-lookup-symbl-at-point))
+     "K" #'mg-helpful-lookup-symbl-at-point))
 
 (use-package elisp-demos
     :init
@@ -33,22 +33,22 @@
 
 (use-package elisp-mode
     :init
-    (add-hook 'emacs-lisp-mode-hook #'my/elisp-setup)
+    (add-hook 'emacs-lisp-mode-hook #'mg-elisp-setup)
 
     :config
-    (my/define-and-bind-local-paren-text-object "`" "`" "'" emacs-lisp-mode-hook)
+    (mg-define-and-bind-local-paren-text-object "`" "`" "'" emacs-lisp-mode-hook)
 
     (setq lisp-body-indent 4
-          lisp-indent-function #'my/lisp-indent-function)
+          lisp-indent-function #'mg-lisp-indent-function)
 
-    (add-hook 'emacs-lisp-mode-hook (my/setq-locally tab-width 4))
+    (add-hook 'emacs-lisp-mode-hook (mg-setq-locally tab-width 4))
 
     (general-define-key
      :states '(motion visual normal)
      :keymaps 'emacs-lisp-mode-map
-     "K" #'my/elisp-loop-up-symbol)
+     "K" #'mg-elisp-loop-up-symbol)
 
-    (my/localleader
+    (mg-localleader
         :keymaps 'emacs-lisp-mode-map
         :states '(motion visual insert normal)
         "m" #'macrostep-expand

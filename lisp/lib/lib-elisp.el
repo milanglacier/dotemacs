@@ -1,7 +1,7 @@
 ;;; lib-elisp.el -*- lexical-binding: t; -*-
 
 ;;;###autoload
-(defun my/helpful-display-buffer (buf)
+(defun mg-helpful-display-buffer (buf)
     "If a helpful buffer window is already opened, should use it,
 don't occupy other window. Make sure it is a side window, such that
 when you press q and want to close the help window), this window will
@@ -12,38 +12,38 @@ other buffer."
                          (window-width . 0.5)
                          ;; if there are multiple side window
                          ;; prefer the helpful window to the relatively left position
-                         (slot . ,(alist-get 'helpful my/side-window-slots)))))
+                         (slot . ,(alist-get 'helpful mg-side-window-slots)))))
 
 ;;;###autoload
-(defun my/helpful-lookup-symbl-at-point ()
+(defun mg-helpful-lookup-symbl-at-point ()
     (interactive)
     (helpful-symbol (symbol-at-point)))
 
 ;;;###autoload
-(defun my/elisp-loop-up-symbol (beg end)
+(defun mg-elisp-loop-up-symbol (beg end)
     "Look up for the symbol under point, if region is active, use
         the selected region as the symbol" (interactive "r")
     (if (use-region-p)
             (helpful-symbol (intern (buffer-substring beg end)))
         (helpful-symbol (symbol-at-point))))
 
-(defun my/emacs-lisp-outline-level ()
+(defun mg-emacs-lisp-outline-level ()
     "Return outline level for comment at point.
 Intended to replace `lisp-outline-level'."
     (- (match-end 1) (match-beginning 1)))
 
 ;;;###autoload
-(defun my/elisp-setup ()
+(defun mg-elisp-setup ()
     ;; referenced from doomemacs
 
     (setq-local outline-regexp "[ \t]*;;;\\(;*\\**\\) [^ \t\n]"
-                outline-level #'my/emacs-lisp-outline-level)
+                outline-level #'mg-emacs-lisp-outline-level)
     (outline-minor-mode)
     (highlight-quoted-mode)
 
     (font-lock-add-keywords
      'emacs-lisp-mode
-     '((my:emacs-lisp-highlight-vars-and-faces . my&emacs-lisp--face)))
+     '((mg--emacs-lisp-highlight-vars-and-faces . my-emacs-lisp--face)))
 
     ;; copied from doomemacs
     (setq-local imenu-generic-expression
@@ -62,7 +62,7 @@ Intended to replace `lisp-outline-level'."
 
 ;;;copied from doomemacs
 ;;;###autoload
-(defun my/lisp-indent-function (indent-point state)
+(defun mg-lisp-indent-function (indent-point state)
     "A replacement for `lisp-indent-function'.
 
 Indents plists more sensibly. Adapted from
@@ -110,9 +110,9 @@ https://emacs.stackexchange.com/questions/10230/how-to-indent-keywords-aligned"
                          (method
                           (funcall method indent-point state))))))))
 
-(defvar my&emacs-lisp--face nil)
+(defvar my-emacs-lisp--face nil)
 
-(defun my:emacs-lisp-highlight-vars-and-faces (end)
+(defun mg--emacs-lisp-highlight-vars-and-faces (end)
     "Match defined variables and functions.
 
 Functions are differentiated into special forms, built-in functions and
@@ -129,7 +129,7 @@ library/userland functions"
                                       ((eq symbol t) nil)
                                       ((keywordp symbol) nil)
                                       ((special-variable-p symbol)
-                                       (setq my&emacs-lisp--face 'font-lock-variable-name-face))
+                                       (setq my-emacs-lisp--face 'font-lock-variable-name-face))
                                       ((and (fboundp symbol)
                                             (eq (char-before (match-beginning 0)) ?\()
                                             (not (memq (char-before (1- (match-beginning 0)))
@@ -141,7 +141,7 @@ library/userland functions"
                                                    (while (not (eq (setq unadvised (ad-get-orig-definition unaliased))
                                                                    (setq unaliased (indirect-function unadvised)))))
                                                    unaliased)
-                                               (setq my&emacs-lisp--face
+                                               (setq my-emacs-lisp--face
                                                      (if (subrp unaliased)
                                                              'font-lock-constant-face
                                                          'font-lock-function-name-face))))))

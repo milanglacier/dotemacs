@@ -1,9 +1,9 @@
 ;;; lib-org.el -*- lexical-binding: t; -*-
 
 ;;;###autoload
-(defun my/org-capture-bubble-tea-template (letter desc headings template &rest properties)
+(defun mg-org-capture-bubble-tea-template (letter desc headings template &rest properties)
     `(,letter ,desc table-line
-              (file+olp ,my/org-capture-bubble-tea-live-file ,@headings)
+              (file+olp ,mg-org-capture-bubble-tea-live-file ,@headings)
               ,template ,@properties :unnarrowed t))
 ;; HACK: here without `:unnarrowed t', the org-capture will
 ;; automatically insert a new line after the table. That is, if you
@@ -19,7 +19,7 @@
 ;; mailing-list.
 
 ;;;###autoload
-(defun my/org-agenda-visited-all-directories ()
+(defun mg-org-agenda-visited-all-directories ()
     "Org agenda need to visted all files listed in `org-agenda-files'
 to create the view, which is expensive. By default I will only list a
 small portion of files to be searched.  This function searches all the
@@ -37,7 +37,7 @@ files in the org-directory to create the org-agenda view"
         (call-interactively #'org-agenda)))
 
 ;;;###autoload
-(defun my/org-bubble-tea-get-end-of-play-time (start)
+(defun mg-org-bubble-tea-get-end-of-play-time (start)
     "After clocking in to record the start time of playing with bubble tea,
 when clocking out, use this function to automatically update the table."
     (save-excursion
@@ -56,13 +56,13 @@ when clocking out, use this function to automatically update the table."
             (buffer-substring-no-properties start-of-end-time end-of-end-time))))
 
 ;;;###autoload
-(defun my/exclude-org-agenda-buffers-from-recentf (old-fn &rest args)
+(defun mg-exclude-org-agenda-buffers-from-recentf (old-fn &rest args)
     "Prevent `org-agenda' buffers from polluting recentf list."
     (let ((recentf-exclude '("\\.org\\'")))
         (apply old-fn args)))
 
 ;;;###autoload
-(defun my/reload-org-agenda-buffers ()
+(defun mg-reload-org-agenda-buffers ()
     "`org-agenda' creates incomplete `org-mode' buffers to boost its startup speed. Reload those buffers
 after `org-agenda' has finalized."
     (run-with-idle-timer
@@ -75,7 +75,7 @@ after `org-agenda' has finalized."
 
 ;; Copied and simplified from doomemacs
 ;;;###autoload
-(defun my/org-indent-maybe-h ()
+(defun mg-org-indent-maybe-h ()
     "Indent the current item (header or item), if possible.
 Made for `org-tab-first-hook' in evil-mode."
     (interactive)
@@ -109,7 +109,7 @@ Made for `org-tab-first-hook' in evil-mode."
 
 ;; Copied and simplified from doomemacs
 ;;;###autoload
-(defun my/org-yas-expand-maybe-h ()
+(defun mg-org-yas-expand-maybe-h ()
     "Expand a yasnippet snippet, if trigger exists at point or region is active.
 Made for `org-tab-first-hook'."
     (let ((major-mode (cond ((org-in-src-block-p t)
@@ -133,21 +133,21 @@ Made for `org-tab-first-hook'."
                (yas-insert-snippet)
                t))))
 
-(defun my/toggle-org-settings-wrapper (org-marker)
+(defun mg-toggle-org-settings-wrapper (org-marker)
     (set org-marker (not (eval org-marker)))
     (org-mode))
 
 ;;;###autoload
-(defun my/org-toggle-org-emphasis-markers ()
+(defun mg-org-toggle-org-emphasis-markers ()
     "toggle emphasis markers"
     (interactive)
-    (my/toggle-org-settings-wrapper 'org-hide-emphasis-markers))
+    (mg-toggle-org-settings-wrapper 'org-hide-emphasis-markers))
 
 ;;;###autoload
-(defun my/org-toggle-org-drawer ()
+(defun mg-org-toggle-org-drawer ()
     "toggle hide drawer. This function is effective only after org 9.6."
     (interactive)
-    (my/toggle-org-settings-wrapper 'org-cycle-hide-drawer-startup))
+    (mg-toggle-org-settings-wrapper 'org-cycle-hide-drawer-startup))
 
 (provide 'lib-org)
 ;;; lib-org.el ends here

@@ -30,9 +30,9 @@
           company-selection-wrap-around t
           completion-ignore-case t)
 
-    (my/run-hook-once evil-insert-state-entry-hook global-company-mode)
-    (my/run-hook-once evil-insert-state-entry-hook company-tng-mode)
-    (my/setq-on-hook text-mode-hook
+    (mg-run-hook-once evil-insert-state-entry-hook global-company-mode)
+    (mg-run-hook-once evil-insert-state-entry-hook company-tng-mode)
+    (mg-setq-on-hook text-mode-hook
                      company-backends
                      '((company-files company-yasnippet company-capf :separate company-dabbrev)))
 
@@ -76,7 +76,7 @@
     (unless (display-graphic-p)
         ;; Don't persist company popups when switching back to normal mode.
         ;; `company-box' aborts on mode switch so it doesn't need this.
-        (add-hook 'evil-normal-state-entry-hook #'my/company-abort))
+        (add-hook 'evil-normal-state-entry-hook #'mg-company-abort))
 
     (when (display-graphic-p)
         (add-hook 'company-mode-hook #'company-box-mode))
@@ -96,7 +96,7 @@
      ;; manually invoke the completion
      "M-i" #'company-manual-begin)
 
-    (advice-add #'company-capf :around #'my/company-completion-styles)
+    (advice-add #'company-capf :around #'mg-company-completion-styles)
 
     (yas-global-mode))
 
@@ -104,7 +104,7 @@
     :config
     (setq company-box-max-candidates 50
           company-frontends '(company-tng-frontend company-box-frontend)
-          my$company-box-icons-alist
+          mg-company-box-icons-alist
           '((Unknown . "")
             (Text . "")
             (Method . "ƒ")
@@ -132,7 +132,7 @@
             (Operator . "󰆕")
             (TypeParameter . "")
             (Template . ""))
-          company-box-icons-alist 'my$company-box-icons-alist))
+          company-box-icons-alist 'mg-company-box-icons-alist))
 
 (use-package yasnippet
     :init

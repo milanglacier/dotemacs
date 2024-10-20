@@ -1,7 +1,7 @@
 ;;; lib-os.el -*- lexical-binding: t; -*-
 
 ;;;###autoload
-(defun my/macos-cmd-w ()
+(defun mg-macos-cmd-w ()
     "If there is only one tab, close emacs, otherwise close one tab"
     (interactive)
     (if (> (length (tab-bar-tabs)) 1)
@@ -9,7 +9,7 @@
         (evil-quit-all)))
 
 ;;;###autoload
-(defun my/tty-setup ()
+(defun mg-tty-setup ()
 
     ;; Some terminals offer two different cursors: a "visible" static cursor and a
     ;; "very visible" blinking one. By default, Emacs uses the very visible cursor
@@ -29,7 +29,7 @@
     (xclip-mode 1))
 
 ;;;###autoload
-(defun my:server-setup ()
+(defun mg--server-setup ()
     (setenv "EMACS_SERVER" server-name))
 
 (provide 'lib-os)

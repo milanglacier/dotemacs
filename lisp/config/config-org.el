@@ -8,25 +8,25 @@
 (straight-use-package 'ox-clip)
 (straight-use-package 'org-download)
 
-(defvar my$jupyter-want-integration t
+(defvar mg-jupyter-want-integration t
     "Enable jupyter integration. which entails configuring it as an
 org-babel backend and allowing for direct editing of Jupyter notebooks
 within Emacs.")
 
 (use-package org
     :init
-    (setq my$load-incrementally-packages
+    (setq mg-load-incrementally-packages
           (append
-           my$load-incrementally-packages
+           mg-load-incrementally-packages
            '(org-macs org-compat org-faces org-entities
                       org-list org-pcomplete org-src org-footnote org-macro ob org org-agenda
                       org-capture)))
 
-    (my/open-map
+    (mg-open-map
         :states '(normal motion visual insert)
         :keymaps 'override
         "a" #'org-agenda
-        "A" #'my/org-agenda-visited-all-directories
+        "A" #'mg-org-agenda-visited-all-directories
         "c" #'org-capture
         "o" #'org-clock-goto)
 
@@ -92,25 +92,25 @@ within Emacs.")
           org-refile-use-outline-path 'file
           org-outline-path-complete-in-steps nil)
 
-    (defface my&org-todo-active '((t :inherit (bold font-lock-constant-face org-todo))) "")
-    (defface my&org-todo-onhold '((t :inherit (bold warning org-todo))) "")
-    (defface my&org-todo-cancel '((t :inherit (bold error org-todo))) "")
+    (defface my-org-todo-active '((t :inherit (bold font-lock-constant-face org-todo))) "")
+    (defface my-org-todo-onhold '((t :inherit (bold warning org-todo))) "")
+    (defface my-org-todo-cancel '((t :inherit (bold error org-todo))) "")
 
-    (setq org-todo-keyword-faces '(("STRT" . my&org-todo-active)
-                                   ("WAIT" . my&org-todo-onhold)
-                                   ("HOLD" . my&org-todo-onhold)
-                                   ("KILL" . my&org-todo-cancel)))
+    (setq org-todo-keyword-faces '(("STRT" . my-org-todo-active)
+                                   ("WAIT" . my-org-todo-onhold)
+                                   ("HOLD" . my-org-todo-onhold)
+                                   ("KILL" . my-org-todo-cancel)))
 
     :config
     (evil-set-initial-state 'org-agenda-mode 'motion)
     (add-to-list 'org-file-apps '(remote . emacs))
-    (add-hook 'org-tab-first-hook #'my/org-indent-maybe-h)
-    (add-hook 'org-tab-first-hook #'my/org-yas-expand-maybe-h)
+    (add-hook 'org-tab-first-hook #'mg-org-indent-maybe-h)
+    (add-hook 'org-tab-first-hook #'mg-org-yas-expand-maybe-h)
 
-    (add-hook 'org-mode-hook (my%call-func-respect-blocklist eglot-ensure))
+    (add-hook 'org-mode-hook (my--call-func-respect-blocklist eglot-ensure))
 
-    (my/define-and-bind-local-paren-text-object "/" "/" "/" org-mode-hook)
-    (my/define-and-bind-local-paren-text-object "*" "*" "*" org-mode-hook)
+    (mg-define-and-bind-local-paren-text-object "/" "/" "/" org-mode-hook)
+    (mg-define-and-bind-local-paren-text-object "*" "*" "*" org-mode-hook)
 
     (general-define-key
      :states 'normal
@@ -122,7 +122,7 @@ within Emacs.")
      [remap consult-imenu] #'consult-org-heading)
 
     ;; copied from doom emacs
-    (my/localleader
+    (mg-localleader
         :states '(normal insert motion visual)
         :keymaps 'org-mode-map
         "RET" #'er/expand-region
@@ -268,51 +268,51 @@ within Emacs.")
 
 (use-package org-capture
     :config
-    (setq my/org-capture-todo-file (file-name-concat "capture" "todo.org")
-          my/org-capture-notes-file (file-name-concat "capture" "notes.org")
-          my/org-capture-english-note-file (file-name-concat "capture" "english.org")
-          my/org-capture-bubble-tea-live-file (file-name-concat "capture" "bubble-tea.org"))
+    (setq mg-org-capture-todo-file (file-name-concat "capture" "todo.org")
+          mg-org-capture-notes-file (file-name-concat "capture" "notes.org")
+          mg-org-capture-english-note-file (file-name-concat "capture" "english.org")
+          mg-org-capture-bubble-tea-live-file (file-name-concat "capture" "bubble-tea.org"))
 
     (setq org-capture-templates
           `(("t" "Personal todo" entry
-             (file ,my/org-capture-todo-file)
+             (file ,mg-org-capture-todo-file)
              "* TODO %?%^g\nSCHEDULED: %t" :prepend t)
             ("n" "Personal notes" entry
-             (file ,my/org-capture-notes-file)
+             (file ,mg-org-capture-notes-file)
              "* %u %?\n%i\n%a" :prepend t)
             ("i" "clock in(start a timer)" entry
-             (file ,my/org-capture-todo-file)
+             (file ,mg-org-capture-todo-file)
              "* TODO %?%^g\nSCHEDULED: %t"
              :clock-in t :clock-keep t :prepend t)
 
             ("e" "English notes")
             ("em" "Manually fill" entry
-             (file+olp+datetree ,my/org-capture-english-note-file)
+             (file+olp+datetree ,mg-org-capture-english-note-file)
              "* %^{prompt}\n%i\n\n%a\n:explanation:\n%?\n:END:")
             ("ew" "quick fill with word and sentence under point" entry
-             (file+olp+datetree ,my/org-capture-english-note-file)
+             (file+olp+datetree ,mg-org-capture-english-note-file)
              ,(concat "* %(with-current-buffer (org-capture-get :original-buffer) (current-word))"
                       "\n%(with-current-buffer (org-capture-get :original-buffer) (thing-at-point 'sentence t))"
                       "\n\n%a\n:explanation:\n%?\n:END:"))
             ("er" "quick fill with selected region and sentence under point" entry
-             (file+olp+datetree ,my/org-capture-english-note-file)
+             (file+olp+datetree ,mg-org-capture-english-note-file)
              ,(concat "* %i"
                       "\n%(with-current-buffer (org-capture-get :original-buffer) (thing-at-point 'sentence t))"
                       "\n\n%a\n:explanation:\n%?\n:END:"))
 
             ("b" "bubble tea")
-            ,(my/org-capture-bubble-tea-template "bf" "feed food" '("feed food") "|%U|Taste%?|||||")
-            ,(my/org-capture-bubble-tea-template "bp" "poop" '("poop") "|%U|Indoor%?|||||")
-            ,(my/org-capture-bubble-tea-template "bP" "play" '("play") "|%U|Street Walk%?|||||"
+            ,(mg-org-capture-bubble-tea-template "bf" "feed food" '("feed food") "|%U|Taste%?|||||")
+            ,(mg-org-capture-bubble-tea-template "bp" "poop" '("poop") "|%U|Indoor%?|||||")
+            ,(mg-org-capture-bubble-tea-template "bP" "play" '("play") "|%U|Street Walk%?|||||"
                                                  :clock-in t :clock-keep t)
-            ,(my/org-capture-bubble-tea-template "be" "eye mucus" '("clean" "eye mucus") "|%U%?||")
-            ,(my/org-capture-bubble-tea-template "bE" "ear clean" '("clean" "ear clean") "|%U%?||")
-            ,(my/org-capture-bubble-tea-template "bb" "bath" '("clean" "bath") "|%U%?||")
-            ,(my/org-capture-bubble-tea-template "bt" "trim coat" '("clean" "trim coat") "|%U%?||")
-            ,(my/org-capture-bubble-tea-template "bg" "grooming" '("clean" "grooming") "|%U%?||")
-            ,(my/org-capture-bubble-tea-template "bn" "nailing" '("clean" "nailing") "|%U%?||")
-            ,(my/org-capture-bubble-tea-template "bB" "brushing teeth" '("clean" "brushing teeth") "|%U%?||")
-            ,(my/org-capture-bubble-tea-template "bs" "symptom" '("symptom") "|%U|Vomit%?|||")
+            ,(mg-org-capture-bubble-tea-template "be" "eye mucus" '("clean" "eye mucus") "|%U%?||")
+            ,(mg-org-capture-bubble-tea-template "bE" "ear clean" '("clean" "ear clean") "|%U%?||")
+            ,(mg-org-capture-bubble-tea-template "bb" "bath" '("clean" "bath") "|%U%?||")
+            ,(mg-org-capture-bubble-tea-template "bt" "trim coat" '("clean" "trim coat") "|%U%?||")
+            ,(mg-org-capture-bubble-tea-template "bg" "grooming" '("clean" "grooming") "|%U%?||")
+            ,(mg-org-capture-bubble-tea-template "bn" "nailing" '("clean" "nailing") "|%U%?||")
+            ,(mg-org-capture-bubble-tea-template "bB" "brushing teeth" '("clean" "brushing teeth") "|%U%?||")
+            ,(mg-org-capture-bubble-tea-template "bs" "symptom" '("symptom") "|%U|Vomit%?|||")
 
             ;; TODO: add doomemacs's project org capture template.
             ))
@@ -323,8 +323,8 @@ within Emacs.")
     (add-hook 'org-after-refile-insert-hook #'save-buffer)
 
     ;; ltex-ls (via eglot) and citre has compatability issue with org-capture-mode
-    (add-hook 'org-capture-mode-hook (my/turn-off-mode flymake-mode))
-    (my/setq-on-hook org-capture-mode-hook
+    (add-hook 'org-capture-mode-hook (mg-turn-off-mode flymake-mode))
+    (mg-setq-on-hook org-capture-mode-hook
                      completion-at-point-functions
                      '(pcomplete-completions-at-point t))
     )
@@ -368,10 +368,10 @@ within Emacs.")
                                  (lambda (x) (file-name-concat org-directory x))
                                  '("capture" "work" "roam"))))
 
-    (advice-add #'org-get-agenda-file-buffer :around #'my/exclude-org-agenda-buffers-from-recentf)
-    (add-hook 'org-agenda-finalize-hook #'my/reload-org-agenda-buffers)
+    (advice-add #'org-get-agenda-file-buffer :around #'mg-exclude-org-agenda-buffers-from-recentf)
+    (add-hook 'org-agenda-finalize-hook #'mg-reload-org-agenda-buffers)
 
-    (my/localleader
+    (mg-localleader
         :states '(normal insert visual motion)
         :keymaps 'org-agenda-mode-map
         "d" '(:ignore t :which-key "ddl")
@@ -417,7 +417,7 @@ within Emacs.")
           org-edit-src-content-indentation 0
           org-src-tab-acts-natively t
           ;; The confliction of `evil-want-C-i-jump' and `org-mode' is
-          ;; fixed by the hack of `my/org-indent-maybe-h'
+          ;; fixed by the hack of `mg-org-indent-maybe-h'
           org-confirm-babel-evaluate nil
           org-link-elisp-confirm-function nil
           ;; Show src buffer in popup, and don't monopolize the frame
@@ -440,13 +440,13 @@ within Emacs.")
                              (shell . t)
                              (python . t))))
 
-        (when my$jupyter-want-integration
+        (when mg-jupyter-want-integration
             (push '(jupyter . t) org-babel-langs))
 
         (org-babel-do-load-languages 'org-babel-load-languages
                                      org-babel-langs)
 
-        (when my$jupyter-want-integration
+        (when mg-jupyter-want-integration
             (setf (alist-get "jupyter-python" org-src-lang-modes) 'python-ts))
         )
 
@@ -454,16 +454,16 @@ within Emacs.")
     ;; it seems that it uses the language identifer associate with
     ;; this block to query the `org-babel-execute:xxx' function.
     (defalias #'org-babel-execute:r #'org-babel-execute:R)
-    (my/org-babel-lsp-setup "R")
-    (my/org-babel-lsp-setup "python")
-    (when my$jupyter-want-integration
+    (mg-org-babel-lsp-setup "R")
+    (mg-org-babel-lsp-setup "python")
+    (when mg-jupyter-want-integration
         ;; `org-babel-edit-prep:jupyter-python' (or other jupyter
         ;; kernels) will not be available at now, instead it will be
         ;; created as alias at the runtime after the kernel specs are
         ;; fetched. Since `org-babel-execute:jupyter-python' is just
         ;; an alias of `org-babel-execute:jupyter', we can just advice
         ;; `org-babel-execute:jupyter' here.
-        (my/org-babel-lsp-setup "jupyter"))
+        (mg-org-babel-lsp-setup "jupyter"))
 
     ;; TODO: update `org-babel-python-command' in accordance to `python-shell-interpreter'
     ;; and `python-shell-interpreter-args'
@@ -537,9 +537,9 @@ within Emacs.")
         (setq org-appear-autosubmarkers t)))
 
 (use-package ob-jupyter
-    :when my$jupyter-want-integration
+    :when mg-jupyter-want-integration
     :init
-    (push 'zmq my$load-incrementally-packages)
+    (push 'zmq mg-load-incrementally-packages)
     :config
     (delq :text/html jupyter-org-mime-types))
 

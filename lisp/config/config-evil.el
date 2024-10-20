@@ -58,7 +58,7 @@
 
 (use-package evil-vimish-fold
     :init
-    (my/toggle-map
+    (mg-toggle-map
         :states '(motion insert normal)
         :keymaps 'override
         "f" '(:ignore t :which-key "fold")
@@ -70,11 +70,11 @@
 
 (use-package better-jumper
     :config
-    (general-create-definer my/jump-map
+    (general-create-definer mg-jump-map
         :prefix "SPC j"
         :non-normal-prefix "M-SPC j"
-        :prefix-map 'my/jump-map)
-    (my/jump-map
+        :prefix-map 'mg-jump-map)
+    (mg-jump-map
         :states '(motion insert normal)
         :keymaps 'override
         "" '(:ignore t :which-key "jump")
@@ -179,7 +179,7 @@
     ;; situations, I could still go to doom for references.
 
     ;; save-excursion before making indentation
-    (advice-add #'evil-indent :around #'my/save-excursion-before-indenting)
+    (advice-add #'evil-indent :around #'mg-save-excursion-before-indenting)
 
     (general-define-key
      :states '(motion normal visual)
@@ -189,7 +189,7 @@
 
     (general-define-key
      :states 'visual
-     "@" #'my/evil-apply-macro-line-by-line
+     "@" #'mg-evil-apply-macro-line-by-line
      "Z" #'evil-snipe-S)
 
     (general-define-key
@@ -203,8 +203,8 @@
      "[q" #'previous-error
      "[b" #'evil-prev-buffer
      "]b" #'evil-next-buffer
-     "[n" #'my/previous-SCM-conflict-marker
-     "]n" #'my/next-SCM-conflict-marker
+     "[n" #'mg-previous-SCM-conflict-marker
+     "]n" #'mg-next-SCM-conflict-marker
      "]f" #'treesit-beginning-of-defun
      "[f" #'treesit-end-of-defun
      "]s" #'treesit-beginning-of-thing
@@ -230,7 +230,7 @@
      "g C-x" #'evil-numbers/dec-at-pt-incremental
      "g RET" #'er/expand-region
      "gs" #'evil-replace-with-register
-     "g@" #'my/evil-apply-macro-line-by-line)
+     "g@" #'mg-evil-apply-macro-line-by-line)
 
     (general-define-key
      :states 'insert
@@ -244,7 +244,7 @@
      :keymaps 'in
      ;; TODO: configure emacs-lisp mode to use space as args delimiter.
      "a" #'evil-inner-arg
-     "q" #'my:evil-textobj-anyblock-inner-quote
+     "q" #'mg--evil-textobj-anyblock-inner-quote
      "#" #'evilnc-inner-commenter
      "i" #'evil-indent-plus-i-indent
      "j" #'evil-indent-plus-i-indent-up-down
@@ -257,7 +257,7 @@
     (general-define-key
      :keymaps 'out
      "a" #'evil-outer-arg
-     "q" #'my:evil-textobj-anyblock-outer-quote
+     "q" #'mg--evil-textobj-anyblock-outer-quote
      "#" #'evilnc-outer-commenter
      "i" #'evil-indent-plus-i-indent
      "j" #'evil-indent-plus-i-indent-up-down
@@ -266,10 +266,10 @@
      "C" #'evil-ts-text-obj-class
      "f" #'evil-ts-text-obj-fun)
 
-    (my/define-and-bind-paren-text-object "$" "\\$" "\\$")
-    (my/define-and-bind-paren-text-object "|" "|" "|")
-    (my/define-and-bind-paren-text-object "=" "=" "=")
-    (my/define-and-bind-paren-text-object "~" "~" "~")
+    (mg-define-and-bind-paren-text-object "$" "\\$" "\\$")
+    (mg-define-and-bind-paren-text-object "|" "|" "|")
+    (mg-define-and-bind-paren-text-object "=" "=" "=")
+    (mg-define-and-bind-paren-text-object "~" "~" "~")
 
     (general-define-key
      :keymaps '(evil-ex-completion-map evil-ex-search-keymap)
@@ -280,22 +280,22 @@
      "C-f" #'forward-char
      "C-a" #'move-beginning-of-line)
 
-    (my/open-map
+    (mg-open-map
         :keymaps 'override
         :states '(motion visual insert normal)
         ":" #'evil-command-window-ex)
 
-    (my/toggle-map
+    (mg-toggle-map
         :keymaps 'override
         :states '(motion insert normal)
         "h" #'evil-ex-nohighlight)
 
-    (general-create-definer my/window-map
+    (general-create-definer mg-window-map
         :prefix "SPC w"
         :non-normal-prefix "M-SPC w"
-        :prefix-map 'my/window-map)
+        :prefix-map 'mg-window-map)
 
-    (my/window-map
+    (mg-window-map
         :states '(motion insert normal)
         :keymaps 'override
         "" '(:ignore t :which-key "window")
@@ -328,12 +328,12 @@
         "K" #'evil-window-move-very-top
         "L" #'evil-window-move-far-right)
 
-    (general-create-definer my/buffer-map
+    (general-create-definer mg-buffer-map
         :prefix "SPC b"
         :non-normal-prefix "M-SPC b"
-        :prefix-map 'my/buffer-map)
+        :prefix-map 'mg-buffer-map)
 
-    (my/buffer-map
+    (mg-buffer-map
         :states '(motion insert normal)
         :keymaps 'override
         "" '(:ignore t :which-key "buffer")

@@ -4,23 +4,23 @@
 (setq gc-cons-percentage 0.6)
 (setq gc-cons-threshold most-positive-fixnum)
 
-(defvar my/config-dir (file-name-concat user-emacs-directory "lisp" "config")
+(defvar mg-config-dir (file-name-concat user-emacs-directory "lisp" "config")
     "the directory of my configuration.")
-(defvar my/lib-dir (file-name-concat user-emacs-directory "lisp" "lib")
+(defvar mg-lib-dir (file-name-concat user-emacs-directory "lisp" "lib")
     "the directory of my library functions")
-(defvar my/site-lisp-dir (file-name-concat user-emacs-directory "site-lisp")
+(defvar mg-site-lisp-dir (file-name-concat user-emacs-directory "site-lisp")
     "the directory of third-party lisp files.")
 
-(defvar my/autoloads-file (file-name-concat user-emacs-directory "generated-loaddefs" "lib-loaddefs.el")
+(defvar mg-autoloads-file (file-name-concat user-emacs-directory "generated-loaddefs" "lib-loaddefs.el")
     "the file of my generated autoload definitions")
 
-(defvar my/site-lisp-autoloads-file
+(defvar mg-site-lisp-autoloads-file
     (file-name-concat user-emacs-directory "generated-loaddefs" "site-lisp-loaddefs.el")
     "the file of third-party autoloaded functions.")
 
-(push my/config-dir load-path)
-(push my/lib-dir load-path)
-(push my/site-lisp-dir load-path)
+(push mg-config-dir load-path)
+(push mg-lib-dir load-path)
+(push mg-site-lisp-dir load-path)
 (setq custom-file (file-name-concat user-emacs-directory "custom.el"))
 
 (setq use-package-expand-minimally t
@@ -60,8 +60,8 @@
             (eval-print-last-sexp)))
     (load bootstrap-file nil 'nomessage))
 
-(load my/autoloads-file nil t) ;; don't show message
-(load my/site-lisp-autoloads-file nil t)
+(load mg-autoloads-file nil t) ;; don't show message
+(load mg-site-lisp-autoloads-file nil t)
 
 (require 'config-utils)
 (require 'config-basics)

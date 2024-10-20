@@ -4,14 +4,14 @@
 (straight-use-package 'diff-hl)
 (straight-use-package 'hl-todo)
 
-(general-create-definer my/git-map
+(general-create-definer mg-git-map
     :prefix "SPC g"
     :non-normal-prefix "M-SPC g"
-    :prefix-map 'my/git-map)
+    :prefix-map 'mg-git-map)
 
 (use-package magit
     :init
-    (my/git-map
+    (mg-git-map
         :states '(normal insert visual insert)
         :keymaps 'override
         "" '(:ignore t :which-key "git")
@@ -49,7 +49,7 @@
            (text-mode . diff-hl-mode))
 
     :init
-    (my/git-map
+    (mg-git-map
         :states '(normal insert visual insert)
         :keymaps 'override
         "r" #'diff-hl-revert-hunk
@@ -80,10 +80,10 @@
            (conf-mode . hl-todo-mode))
     :init
     (setq hl-todo-highlight-punctuation ":")
-    (my/git-map
+    (mg-git-map
         :states '(normal insert visual insert)
         :keymaps 'override
-        "t" #'my/project-todos)
+        "t" #'mg-project-todos)
     )
 
 (provide 'config-vcs)

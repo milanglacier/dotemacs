@@ -1,22 +1,22 @@
 ;;; lib-ui.el -*- lexical-binding: t; -*-
 
 ;;;###autoload
-(defun my/display-truncation-and-wrap-indicator-as-whitespace ()
+(defun mg-display-truncation-and-wrap-indicator-as-whitespace ()
     (when (not (char-table-p buffer-display-table))
         (setq buffer-display-table (make-display-table)))
     (set-display-table-slot buffer-display-table 'truncation 32)
     (set-display-table-slot buffer-display-table 'wrap 32))
 
 ;;;###autoload
-(defmacro my/tab-bar-go-to-tab-macro (number)
-    (let ((fun (intern (format "my/tab-bar-go-to-tab-%d" number))))
+(defmacro mg-tab-bar-go-to-tab-macro (number)
+    (let ((fun (intern (format "mg-tab-bar-go-to-tab-%d" number))))
         `(defun ,fun ()
              ,(format "go to tab %d" number)
              (interactive)
              (tab-bar-select-tab ,number))))
 
 ;;;###autoload
-(defun my/set-scratch-directory (old-fun &rest args)
+(defun mg-set-scratch-directory (old-fun &rest args)
     "After creating a new tab, the default buffer to be displayed is
 scratch buffer whose directory is set to where emacs is initialized.
 Change it to the directory of previous buffer where `tab-bar-new-tab'
@@ -25,20 +25,20 @@ is called."
         (apply old-fun args)
         (setq-local default-directory current-dir)))
 
-(defun my:tab-bar-new-buffer ()
+(defun mg--tab-bar-new-buffer ()
     (get-buffer-create "*scratch*"))
 
 ;;;###autoload
-(defun my:font-set-small-mono-font ()
+(defun mg--font-set-small-mono-font ()
     "Set the default font to a smaller sized font for current buffer."
     (face-remap-add-relative 'default :height 140))
 
 ;;;###autoload
-(defun my:font-set-small-variable-font ()
+(defun mg--font-set-small-variable-font ()
     "Set the default font to a smaller sized font for current buffer."
     (face-remap-add-relative 'default :height 140 :family "Bookerly"))
 
-(defvar my$header-verses
+(defvar mg-header-verses
     '(("Bright star, would I were steadfast as thee art!"
        " John Keats")
       ("For clattering parrots to launch their fleet at sunrise"
@@ -60,7 +60,7 @@ is called."
        " 《云中君》"))
     "the verses displayed on the top of `initial-scratch-message'")
 
-(defvar my$foot-verses
+(defvar mg-foot-verses
     '(("Whispers antiphonal in the azure swing..."
        " Hart Crane")
       ("In the drumming world that dampens your tired eyes"
@@ -82,44 +82,44 @@ is called."
        " 《山鬼》"))
     "the verses displayed on the bottom of `initial-scratch-message'")
 
-(defvar my$actions
+(defvar mg-actions
     '((" New [T]heme      " . load-theme)
-      (" New [V]erse      " . my~refresh-verses)
-      (" [S]tartup Time   " . my~emacs-startup-time)
+      (" New [V]erse      " . my-refresh-verses)
+      (" [S]tartup Time   " . my-emacs-startup-time)
       (" Org [A]genda     " . org-agenda-list)
       (" Recent [F]iles   " . consult-recent-file)
       (" Recent [P]rojects" . project-switch-project))
     "the actions to be displayed on the welcome screen")
 
-(defun my:empty-lines-between-sections ()
+(defun mg--empty-lines-between-sections ()
     (let ((height (window-height)))
         (cond ((< height 40) 3)
               ((< height 50) 8)
               (t 10))))
 
-(defun my:top-lines-padding (content-length)
+(defun mg--top-lines-padding (content-length)
     (let* ((height (window-height))
            (paddings (ceiling (* (- height content-length) 0.5)))
            (paddings (max 0 paddings)))
         (cl-loop for i from 1 to paddings concat "\n")))
 
-(defun my:right-margin-when-centering-margin ()
+(defun mg--right-margin-when-centering-margin ()
     "The absolute symmetry is in fact less aesthetically pleasing than a slight leftward skew."
     (let ((width (window-width)))
         (cond ((< width 100) width)
               ((< width 200) (- width 10))
               (t (- width 15)))))
 
-(defun my~emacs-startup-time ()
+(defun my-emacs-startup-time ()
     "measure the startup time until the welcome screen is displayed. More accurate than `emacs-init-time'"
     (interactive)
     (message (format "%f seconds"
-                     (max (float-time (time-subtract my:welcome-screen-setup-time before-init-time))
+                     (max (float-time (time-subtract mg--welcome-screen-setup-time before-init-time))
                           (float-time (time-subtract after-init-time before-init-time))))))
 
-(defun my:welcome-screen-set-keymap ()
-    (let* ((action-strings (mapcar #'car my$actions))
-           (actions (mapcar #'cdr my$actions))
+(defun mg--welcome-screen-set-keymap ()
+    (let* ((action-strings (mapcar #'car mg-actions))
+           (actions (mapcar #'cdr mg-actions))
            (keys (mapcar (lambda (x)
                              (when-let ((pos (string-search "[" x)))
                                  (substring x (1+ pos) (+ 2 pos))))
@@ -131,33 +131,33 @@ is called."
                      append `(,(downcase key) ,action))))
         (apply #'general-define-key :keymaps 'local :states '(normal emacs) keymaps)))
 
-(defface my&verses
+(defface my-verses
     '((((background light)) :foreground "#ed80b5" :slant italic)
       (((background dark)) :foreground "#a070b5" :slant italic))
     "the faces used for the verses")
 
-(defface my&verse-quotes
+(defface my-verse-quotes
     '((((background light)) :foreground "#e8ae92")
       (((background dark)) :foreground "#ad7f2a"))
     "the faces used for the quote of verses")
 
-(defface my&welcome-screen-action
+(defface my-welcome-screen-action
     '((((background light)) :foreground "#0398fc")
       (((background dark)) :foreground "#73915e"))
     "the faces used for the actions on the welcome screen")
 
-(defface my&welcome-screen-action-key
+(defface my-welcome-screen-action-key
     '((((background light)) :foreground "#6b82e2")
       (((background dark)) :foreground "#cfe8a3"))
     "the faces used for the actions on the welcome screen")
 
-(defun my:generate-initial-messages ()
-    (let* ((head-verse (nth (random (length my$header-verses))
-                            my$header-verses))
-           (foot-verse (nth (random (length my$foot-verses))
-                            my$foot-verses))
-           (action-strings (mapcar #'car my$actions))
-           (n-lines-between-section (my:empty-lines-between-sections))
+(defun mg--generate-initial-messages ()
+    (let* ((head-verse (nth (random (length mg-header-verses))
+                            mg-header-verses))
+           (foot-verse (nth (random (length mg-foot-verses))
+                            mg-foot-verses))
+           (action-strings (mapcar #'car mg-actions))
+           (n-lines-between-section (mg--empty-lines-between-sections))
            ;; require one additionl \n inserted at the end of other sections.
            (lines-between-sections
             (cl-loop for i from 1 to (1+ n-lines-between-section) concat "\n"))
@@ -165,10 +165,10 @@ is called."
                               (length foot-verse)
                               (length action-strings)
                               (* 2 n-lines-between-section)))
-           (top-paddings (my:top-lines-padding content-length)))
-        (setq head-verse (mapconcat #'my:center-a-line head-verse "\n"))
-        (setq action-strings (mapconcat #'my:center-a-line action-strings "\n"))
-        (setq foot-verse (mapconcat #'my:center-a-line foot-verse "\n"))
+           (top-paddings (mg--top-lines-padding content-length)))
+        (setq head-verse (mapconcat #'mg--center-a-line head-verse "\n"))
+        (setq action-strings (mapconcat #'mg--center-a-line action-strings "\n"))
+        (setq foot-verse (mapconcat #'mg--center-a-line foot-verse "\n"))
         (concat top-paddings
                 head-verse
                 lines-between-sections
@@ -176,60 +176,60 @@ is called."
                 lines-between-sections
                 foot-verse)))
 
-(defun my:center-a-line (x)
+(defun mg--center-a-line (x)
     "center one line of verse or action string"
     (let ((spaces-to-be-inserted
-           (/ (- (my:right-margin-when-centering-margin) (string-width x))
+           (/ (- (mg--right-margin-when-centering-margin) (string-width x))
               2)))
         (concat (cl-loop for i from 1 to spaces-to-be-inserted concat " ")
                 x)))
 
-(defun my:verses-add-font-lock ()
+(defun mg--verses-add-font-lock ()
     (font-lock-add-keywords
      nil
-     '(("^ *\\([^\"]+\\)$" 1 'my&verses)
-       ("^ *\\(.+\\)$" 1 'my&verse-quotes)
-       ("^ *\\(.+\\)\\[" 1 'my&welcome-screen-action)
-       ("\\(\\[.*\\]\\)" 1 'my&welcome-screen-action-key)
-       ("\\]\\(.*\\)$" 1 'my&welcome-screen-action))))
+     '(("^ *\\([^\"]+\\)$" 1 'my-verses)
+       ("^ *\\(.+\\)$" 1 'my-verse-quotes)
+       ("^ *\\(.+\\)\\[" 1 'my-welcome-screen-action)
+       ("\\(\\[.*\\]\\)" 1 'my-welcome-screen-action-key)
+       ("\\]\\(.*\\)$" 1 'my-welcome-screen-action))))
 
 ;;;###autoload
-(defun my:welcome-screen-mode ()
+(defun mg--welcome-screen-mode ()
     (setq initial-scratch-message nil)
-    (add-hook 'emacs-startup-hook #'my:set-welcome-screen-buffer)
+    (add-hook 'emacs-startup-hook #'mg--set-welcome-screen-buffer)
     ;; when running emacs in server mode, cannot get the window
     ;; height/width at startup
-    (add-hook 'server-after-make-frame-hook #'my~refresh-verses))
+    (add-hook 'server-after-make-frame-hook #'my-refresh-verses))
 
-(defun my:set-welcome-screen-buffer ()
+(defun mg--set-welcome-screen-buffer ()
     (with-current-buffer "*scratch*"
-        (insert (my:generate-initial-messages))
-        (my:verses-add-font-lock)
+        (insert (mg--generate-initial-messages))
+        (mg--verses-add-font-lock)
         (setq-local mode-line-format nil)
-        (my:welcome-screen-set-keymap))
-    (setq my:welcome-screen-setup-time (current-time)))
+        (mg--welcome-screen-set-keymap))
+    (setq mg--welcome-screen-setup-time (current-time)))
 
 ;;;###autoload
-(defun my~refresh-verses ()
+(defun my-refresh-verses ()
     "refresh verses in the scratch buffer"
     (interactive)
     (with-current-buffer "*scratch*"
         (erase-buffer)
-        (insert (my:generate-initial-messages))))
+        (insert (mg--generate-initial-messages))))
 
-(defvar my$tab-bar-tab-name-open "")
-(defvar my$tab-bar-tab-name-close "")
-(defvar my$tab-bar-group-name-open " ")
-(defvar my$tab-bar-group-name-close " ")
+(defvar mg-tab-bar-tab-name-open "")
+(defvar mg-tab-bar-tab-name-close "")
+(defvar mg-tab-bar-group-name-open " ")
+(defvar mg-tab-bar-group-name-close " ")
 
-(defun my:tab-bar-tab-name-format (tab i)
+(defun mg--tab-bar-tab-name-format (tab i)
     "This is a slightly modified version of
 `tab-bar-tab-name-format-default', which is the default value of
 `tab-bar-tab-name-format', except that it adds two symbols indicating
 the tab more distinguisably."
     (let ((current-p (eq (car tab) 'current-tab)))
         (propertize
-         (concat my$tab-bar-tab-name-open
+         (concat mg-tab-bar-tab-name-open
                  (if tab-bar-tab-hints (format "%d " i) "")
                  (alist-get 'name tab)
                  (or (and tab-bar-close-button-show
@@ -237,19 +237,19 @@ the tab more distinguisably."
                                    (if current-p 'non-selected 'selected)))
                           tab-bar-close-button)
                      "")
-                 my$tab-bar-tab-name-close)
+                 mg-tab-bar-tab-name-close)
          'face (funcall tab-bar-tab-face-function tab))))
 
-(defun my:tab-bar-tab-group-format (tab i &optional current-p)
+(defun mg--tab-bar-tab-group-format (tab i &optional current-p)
     "This is a slightly modified version of
 `tab-bar-tab-group-format-default', which is the default value of
 `tab-bar-tab-group-format', except that it adds two symbols indicating
 the group more distinguisably."
     (propertize
-     (concat my$tab-bar-group-name-open
+     (concat mg-tab-bar-group-name-open
              (if tab-bar-tab-hints (format "%d " i) "")
              (funcall tab-bar-tab-group-function tab)
-             my$tab-bar-group-name-close)
+             mg-tab-bar-group-name-close)
      'face (if current-p 'tab-bar-tab-group-current 'tab-bar-tab-group-inactive)))
 
 (provide 'lib-ui)

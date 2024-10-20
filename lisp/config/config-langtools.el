@@ -15,12 +15,12 @@
     (require 'citre-config)
     (setq citre-tags-completion-case-sensitive nil)
 
-    (add-hook 'emacs-lisp-mode-hook (my/setq-locally citre-enable-imenu-integration nil))
-    (add-hook 'emacs-lisp-mode-hook (my/setq-locally citre-enable-capf-integration nil))
-    (add-hook 'emacs-lisp-mode-hook (my/setq-locally citre-enable-xref-integration nil))
-    (add-hook 'org-mode-hook (my/setq-locally citre-enable-imenu-integration nil))
-    (add-hook 'org-mode-hook (my/setq-locally citre-enable-capf-integration nil))
-    (add-hook 'markdown-mode-hook (my/setq-locally citre-enable-imenu-integration nil))
+    (add-hook 'emacs-lisp-mode-hook (mg-setq-locally citre-enable-imenu-integration nil))
+    (add-hook 'emacs-lisp-mode-hook (mg-setq-locally citre-enable-capf-integration nil))
+    (add-hook 'emacs-lisp-mode-hook (mg-setq-locally citre-enable-xref-integration nil))
+    (add-hook 'org-mode-hook (mg-setq-locally citre-enable-imenu-integration nil))
+    (add-hook 'org-mode-hook (mg-setq-locally citre-enable-capf-integration nil))
+    (add-hook 'markdown-mode-hook (mg-setq-locally citre-enable-imenu-integration nil))
 
     :config
 
@@ -35,7 +35,7 @@
      :states '(normal motion visual)
      "C-w ]" #'citre-peek)
 
-    (my/find-map
+    (mg-find-map
         :keymaps 'citre-mode-map
         :states '(normal insert motion)
         "t" #'consult-citre) ;; find tags
@@ -81,7 +81,7 @@
                    (display-buffer-reuse-window display-buffer-in-side-window)
                    (window-width . 0.5)
                    (window-height . 0.4)
-                   (slot . ,(alist-get 'eldoc my/side-window-slots))))
+                   (slot . ,(alist-get 'eldoc mg-side-window-slots))))
     ;; the major mode of eldoc buffer is special-mode.
     (general-define-key
      :states '(normal motion)
@@ -114,7 +114,7 @@
     (add-to-list 'eglot-server-programs '((org-mode markdown-mode) "efm-langserver"))
 
     (add-hook
-     'eglot-managed-mode-hook #'my/toggle-citre-eglot-capf)
+     'eglot-managed-mode-hook #'mg-toggle-citre-eglot-capf)
 
     ;; NOTE: THIS IS REALLY IMPORTANT!
     ;; when you register evil keymaps for a minor mode keymap you MUST
@@ -122,18 +122,18 @@
     ;; have to make a state transistion to make them become effective.
     (add-hook 'eglot-managed-mode-hook #'evil-normalize-keymaps)
     (add-hook 'eglot-managed-mode-hook
-              (my/setq-locally eldoc-documentation-function #'eldoc-documentation-compose))
+              (mg-setq-locally eldoc-documentation-function #'eldoc-documentation-compose))
 
-    (general-create-definer my/lsp-map
+    (general-create-definer mg-lsp-map
         :prefix "SPC l"
         :non-normal-prefix "M-SPC l"
-        :prefix-map 'my/lsp-map)
+        :prefix-map 'mg-lsp-map)
 
-    (my/lsp-map
+    (mg-lsp-map
      :keymaps 'eglot-mode-map
      :states '(normal insert motion visual)
      "" '(:ignore t :which-key "lsp")
-     "f" #'my~formatter
+     "f" #'my-formatter
      "s" #'consult-eglot-symbols
      "a" #'eglot-code-actions
      "e" #'consult-flymake
@@ -150,12 +150,12 @@
      "] d" #'flymake-goto-next-error
      "[ d" #'flymake-goto-prev-error
      ;; jump to next/prev location containing the references.
-     "[ r" (my/xref-move-in-original-src-macro xref-prev-line)
-     "] r" (my/xref-move-in-original-src-macro xref-next-line)
+     "[ r" (mg-xref-move-in-original-src-macro xref-prev-line)
+     "] r" (mg-xref-move-in-original-src-macro xref-next-line)
      ;; jump to next/prev file containing the references.
-     "[ R" (my/xref-move-in-original-src-macro xref-prev-group)
-     "] R" (my/xref-move-in-original-src-macro xref-next-group)
-     "K" #'my/eldoc-buffer-dwim
+     "[ R" (mg-xref-move-in-original-src-macro xref-prev-group)
+     "] R" (mg-xref-move-in-original-src-macro xref-next-group)
+     "K" #'mg-eldoc-buffer-dwim
      "gd" #'xref-find-definitions
      "gr" #'xref-find-references)
 
@@ -163,7 +163,7 @@
 
 (use-package edit-indiret
     :init
-    (add-hook 'edit-indirect-after-creation-hook #'my/markdown-src-lsp-setup)
+    (add-hook 'edit-indirect-after-creation-hook #'mg-markdown-src-lsp-setup)
     (add-to-list 'display-buffer-alist
                  '("\\*edit-indirect"
                    (display-buffer-at-bottom)
@@ -288,11 +288,11 @@
     (setq dape-repl-use-shorthand t
           dape-key-prefix nil)
 
-    (add-hook 'python-ts-mode-hook #'my:dape-keymap-setup)
-    (add-hook 'go-ts-mode-hook #'my:dape-keymap-setup)
+    (add-hook 'python-ts-mode-hook #'mg--dape-keymap-setup)
+    (add-hook 'go-ts-mode-hook #'mg--dape-keymap-setup)
 
     :config
-    (my/leader
+    (mg-leader
         :keymaps 'override
         :states '(normal insert visual)
         "d" '(:keymap dape-global-map :which-key "DAP"))
@@ -302,8 +302,8 @@
      :states 'normal
      "RET" #'dape-info-scope-watch-dwim
      "TAB" #'dape-info-scope-toggle
-     "]]" #'my~dape-info-goto-prev-tab
-     "[[" #'my~dape-info-goto-prev-tab)
+     "]]" #'my-dape-info-goto-prev-tab
+     "[[" #'my-dape-info-goto-prev-tab)
 
 
     (general-define-key

@@ -7,8 +7,8 @@
 (set-display-table-slot standard-display-table 'truncation 32)
 (set-display-table-slot standard-display-table 'wrap 32)
 
-(add-hook 'prog-mode-hook #'my/display-truncation-and-wrap-indicator-as-whitespace)
-(add-hook 'text-mode-hook #'my/display-truncation-and-wrap-indicator-as-whitespace)
+(add-hook 'prog-mode-hook #'mg-display-truncation-and-wrap-indicator-as-whitespace)
+(add-hook 'text-mode-hook #'mg-display-truncation-and-wrap-indicator-as-whitespace)
 ;; by default when a long line is truncated, emacs displays
 ;; a "$" sign at the border of window, which is ugly,
 ;; replace "$" with " "
@@ -36,7 +36,7 @@
     :hook ((prog-mode text-mode conf-mode) . display-line-numbers-mode)
     :init
     (setq display-line-numbers-type t)
-    (my/toggle-map
+    (mg-toggle-map
         :keymaps 'override
         :states '(motion insert normal)
         "n" #'display-line-numbers-mode)
@@ -47,7 +47,7 @@
     (setq whitespace-style '(face tabs tab-mark trailing))
     :hook ((prog-mode text-mode conf-mode) . whitespace-mode))
 
-(defvar my/side-window-slots
+(defvar mg-side-window-slots
     '((helpful . 1) ;; 0 is the default
       (vterm . -1)
       (eldoc . 1)
@@ -64,7 +64,7 @@ this is for configuring `display-buffer-in-side-window',
 configuring this would avoid buffer swallows other buffer's window
 if they are side window.")
 
-(defvar my/side-window-sides
+(defvar mg-side-window-sides
     '((helpful . bottom) ;;bottom is the default
       (vterm . bottom)
       (eldoc . bottom)
@@ -100,7 +100,7 @@ if they are side window.")
           ;; resulting in directory pollution. Set this option to a
           ;; function that creates a buffer and avoid associating it
           ;; with a file.
-          tab-bar-new-tab-choice #'my:tab-bar-new-buffer
+          tab-bar-new-tab-choice #'mg--tab-bar-new-buffer
           tab-bar-tab-hints t
           tab-bar-new-button-show nil
           tab-bar-separator " "
@@ -110,15 +110,15 @@ if they are side window.")
           ;; tab bar does not automatically resize, to keep the
           ;; tab-bar ui consistent.
           tab-bar-format '(tab-bar-format-tabs-groups)
-          tab-bar-tab-name-format-function #'my:tab-bar-tab-name-format
-          tab-bar-tab-group-format-function #'my:tab-bar-tab-group-format)
+          tab-bar-tab-name-format-function #'mg--tab-bar-tab-name-format
+          tab-bar-tab-group-format-function #'mg--tab-bar-tab-group-format)
 
-    (general-create-definer my/tab-map
+    (general-create-definer mg-tab-map
         :prefix "SPC TAB"
         :non-normal-prefix "M-SPC TAB"
-        :prefix-map 'my/tab-map)
+        :prefix-map 'mg-tab-map)
 
-    (my/tab-map
+    (mg-tab-map
         :states '(motion insert normal emacs)
         :keymaps 'override
         "" '(:ignore t :which-key "Tab")
@@ -136,19 +136,19 @@ if they are side window.")
         "h" #'tab-bar-move-tab-backward ;; move tab to the left
         "g" #'tab-bar-change-tab-group ;; make group
         "TAB" #'tab-bar-switch-to-tab
-        "1" (my/tab-bar-go-to-tab-macro 1)
-        "2" (my/tab-bar-go-to-tab-macro 2)
-        "3" (my/tab-bar-go-to-tab-macro 3)
-        "4" (my/tab-bar-go-to-tab-macro 4)
-        "5" (my/tab-bar-go-to-tab-macro 5)
-        "6" (my/tab-bar-go-to-tab-macro 6)
-        "7" (my/tab-bar-go-to-tab-macro 7)
-        "8" (my/tab-bar-go-to-tab-macro 8)
-        "9" (my/tab-bar-go-to-tab-macro 9))
+        "1" (mg-tab-bar-go-to-tab-macro 1)
+        "2" (mg-tab-bar-go-to-tab-macro 2)
+        "3" (mg-tab-bar-go-to-tab-macro 3)
+        "4" (mg-tab-bar-go-to-tab-macro 4)
+        "5" (mg-tab-bar-go-to-tab-macro 5)
+        "6" (mg-tab-bar-go-to-tab-macro 6)
+        "7" (mg-tab-bar-go-to-tab-macro 7)
+        "8" (mg-tab-bar-go-to-tab-macro 8)
+        "9" (mg-tab-bar-go-to-tab-macro 9))
 
-    (my/run-hook-once pre-command-hook tab-bar-history-mode)
+    (mg-run-hook-once pre-command-hook tab-bar-history-mode)
 
-    (advice-add #'tab-bar-new-tab :around #'my/set-scratch-directory)
+    (advice-add #'tab-bar-new-tab :around #'mg-set-scratch-directory)
 
     )
 
@@ -169,19 +169,19 @@ if they are side window.")
           doom-modeline-default-eol-type (cond (IS-MAC 2)
                                                (IS-WINDOWS 1)
                                                (0)))
-    (my/run-hook-once (minibuffer-setup-hook find-file-hook special-mode-hook) doom-modeline-mode)
+    (mg-run-hook-once (minibuffer-setup-hook find-file-hook special-mode-hook) doom-modeline-mode)
     )
 
 (use-package which-key
     :init
-    (my/run-hook-once pre-command-hook which-key-mode)
+    (mg-run-hook-once pre-command-hook which-key-mode)
 
     :config
     (setq which-key-idle-delay 1
           which-key-popup-type 'minibuffer)
     )
 
-(my:welcome-screen-mode)
+(mg--welcome-screen-mode)
 
 (provide 'config-ui)
 ;;; config-ui.el ends here

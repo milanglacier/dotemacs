@@ -31,42 +31,42 @@
                    (display-buffer-reuse-window display-buffer-in-side-window)
                    (window-width . 0.5)
                    (window-height . 0.4)
-                   (slot . ,(alist-get 'R my/side-window-slots))))
+                   (slot . ,(alist-get 'R mg-side-window-slots))))
 
     (add-to-list 'display-buffer-alist
                  `("^\\*radian"
                    (display-buffer-reuse-window display-buffer-in-side-window)
                    (window-width . 0.5)
                    (window-height . 0.4)
-                   (slot . ,(alist-get 'R my/side-window-slots))))
+                   (slot . ,(alist-get 'R mg-side-window-slots))))
 
     (add-to-list 'display-buffer-alist
                  `("^\\*R Dired"
                    (display-buffer-reuse-window display-buffer-in-side-window)
                    (window-width . 0.33)
                    (window-height . 0.4)
-                   (side . ,(alist-get 'Rdired my/side-window-sides))
-                   (slot . ,(alist-get 'Rdired my/side-window-slots))))
+                   (side . ,(alist-get 'Rdired mg-side-window-sides))
+                   (slot . ,(alist-get 'Rdired mg-side-window-slots))))
 
     (add-to-list 'display-buffer-alist
                  `("^\\*R Watch"
                    (display-buffer-reuse-window display-buffer-in-side-window)
                    (window-width . 0.33)
                    (window-height . 0.4)
-                   (side . ,(alist-get 'RWatch my/side-window-sides))
-                   (slot . ,(alist-get 'RWatch my/side-window-slots))))
+                   (side . ,(alist-get 'RWatch mg-side-window-sides))
+                   (slot . ,(alist-get 'RWatch mg-side-window-slots))))
 
     (add-to-list 'display-buffer-alist
                  `("^\\*help\\[R\\]"
                    (display-buffer-reuse-window display-buffer-in-side-window)
                    (window-width . 0.5)
                    (window-height . 0.4)
-                   (slot . ,(alist-get 'Rhelp my/side-window-slots))))
+                   (slot . ,(alist-get 'Rhelp mg-side-window-slots))))
 
     (evil-set-initial-state 'ess-r-help-mode 'normal)
 
-    (my/define-and-bind-local-paren-text-object " c" "# %%" "# %%" ess-r-mode-hook)
-    (my/define-and-bind-local-paren-text-object "m" "# COMMAND ----------" "# COMMAND ----------" ess-r-mode-hook)
+    (mg-define-and-bind-local-paren-text-object " c" "# %%" "# %%" ess-r-mode-hook)
+    (mg-define-and-bind-local-paren-text-object "m" "# COMMAND ----------" "# COMMAND ----------" ess-r-mode-hook)
 
     (setq ess-R-font-lock-keywords
           '((ess-R-fl-keyword:keywords . t)
@@ -82,7 +82,7 @@
             (ess-fl-keyword:= . t)
             (ess-R-fl-keyword:F&T . t)))
 
-    (my/localleader
+    (mg-localleader
         :keymaps 'ess-mode-map
         :states '(normal visual motion insert)
         "s" #'vtr~radian-send-region-operator
@@ -91,23 +91,23 @@
         "rh" #'vtr~radian-hide-window
         "re" #'vtr~radian-send-string
         "v" '(:ignore t :which-key "view")
-        "vh" #'my/ess-toggle-view-httpgd)
+        "vh" #'mg-ess-toggle-view-httpgd)
 
     (general-define-key
         :keymaps 'ess-mode-map
-        "C-c r" #'my/send-region-to-ess)
+        "C-c r" #'mg-send-region-to-ess)
 
-    (my/setq-on-hook ess-r-mode-hook company-backends
+    (mg-setq-on-hook ess-r-mode-hook company-backends
                      '((company-files company-yasnippet company-capf
                                       company-R-args company-R-objects
                                       :separate company-dabbrev-code)))
 
-    (add-hook 'ess-r-mode-hook (my/setq-locally eglot-stay-out-of '(company imenu)))
+    (add-hook 'ess-r-mode-hook (mg-setq-locally eglot-stay-out-of '(company imenu)))
     (add-hook 'ess-r-mode-hook #'eglot-ensure)
-    (add-hook 'ess-r-mode-hook (my/setq-locally tab-width 4))
+    (add-hook 'ess-r-mode-hook (mg-setq-locally tab-width 4))
     (when (and (display-graphic-p)
                (featurep 'xwidget-internal))
-        (add-hook 'ess-r-mode-hook #'my/xwidget-side-window-mode))
+        (add-hook 'ess-r-mode-hook #'mg-xwidget-side-window-mode))
 
     )
 
@@ -117,12 +117,12 @@
 
     :config
     (add-hook 'python-ts-mode-hook #'eglot-ensure)
-    (add-hook 'python-ts-mode-hook (my/setq-locally tab-width 4))
+    (add-hook 'python-ts-mode-hook (mg-setq-locally tab-width 4))
 
-    (my/define-and-bind-local-paren-text-object " c" "# %%" "# %%" python-ts-mode-hook)
-    (my/define-and-bind-local-paren-text-object "m" "# COMMAND ----------" "# COMMAND ----------" python-ts-mode-hook)
+    (mg-define-and-bind-local-paren-text-object " c" "# %%" "# %%" python-ts-mode-hook)
+    (mg-define-and-bind-local-paren-text-object "m" "# COMMAND ----------" "# COMMAND ----------" python-ts-mode-hook)
 
-    (my/localleader
+    (mg-localleader
         :keymaps 'python-ts-mode-map
         :states '(normal visual insert motion)
         "s" #'vtr~ipython-send-region-operator
@@ -131,24 +131,24 @@
         "rh" #'vtr~ipython-hide-window
         "re" #'vtr~ipython-send-string
         "v" '(:ignore t :which-key "view")
-        "vh" #'my/python-toggle-view-local-html
-        "'" #'my~edit-src)
+        "vh" #'mg-python-toggle-view-local-html
+        "'" #'my-edit-src)
 
     (general-define-key
         :keymaps 'python-ts-mode-map
-        "C-c '" #'my~edit-src)
+        "C-c '" #'my-edit-src)
 
     (add-to-list 'display-buffer-alist
                  `("^\\*ipython"
                    (display-buffer-reuse-window display-buffer-in-side-window)
                    (window-width . 0.5)
                    (window-height . 0.4)
-                   (slot . ,(alist-get 'python my/side-window-slots))))
+                   (slot . ,(alist-get 'python mg-side-window-slots))))
 
     (when (and (display-graphic-p)
                (featurep 'xwidget-internal))
-        (add-hook 'python-ts-mode-hook #'my/xwidget-side-window-mode)
-        (add-hook 'python-ts-mode-hook #'my/refresh-xwidget-after-eval-python-mode))
+        (add-hook 'python-ts-mode-hook #'mg-xwidget-side-window-mode)
+        (add-hook 'python-ts-mode-hook #'mg-refresh-xwidget-after-eval-python-mode))
 
     )
 
@@ -167,15 +167,15 @@
      :keymaps 'markdown-mode-map
      "TAB" #'markdown-cycle)
 
-    (my/define-and-bind-local-paren-text-object "c" "```.+$" "^```$" markdown-mode-hook)
+    (mg-define-and-bind-local-paren-text-object "c" "```.+$" "^```$" markdown-mode-hook)
 
-    (my/localleader
+    (mg-localleader
         :states '(normal insert visual motion)
         :keymaps 'markdown-mode-map
         "r" '(:ignore t :which-key "repl")
-        "rs" #'my/markdown-run-repl
-        "rh" #'my/markdown-hide-window
-        "s" #'my/markdown-send-region)
+        "rs" #'mg-markdown-run-repl
+        "rh" #'mg-markdown-hide-window
+        "s" #'mg-markdown-send-region)
 
     (add-hook 'markdown-mode-hook #'eglot-ensure)
 
@@ -186,10 +186,10 @@
 
 (use-package go-ts-mode
     :config
-    (add-hook 'go-ts-mode-hook (my/setq-locally tab-width 4))
+    (add-hook 'go-ts-mode-hook (mg-setq-locally tab-width 4))
     (add-hook 'go-ts-mode-hook #'eglot-ensure)
-    (my/setq-on-hook go-ts-mode-hook evil-ts-function "\\(?:\\(?:function\\|method\\)_declaration\\)")
-    (my/setq-on-hook go-ts-mode-hook evil-ts-class "struct_type"))
+    (mg-setq-on-hook go-ts-mode-hook evil-ts-function "\\(?:\\(?:function\\|method\\)_declaration\\)")
+    (mg-setq-on-hook go-ts-mode-hook evil-ts-class "struct_type"))
 
 (use-package rust-ts-mode
     :config
@@ -201,10 +201,10 @@
     (setq sqlind-basic-offset 4)
 
     :config
-    (add-hook 'sql-mode-hook (my/setq-locally tab-width 4))
-    (my/define-and-bind-local-paren-text-object "m" "-- COMMAND ----------" "-- COMMAND ----------" sql-mode-hook)
+    (add-hook 'sql-mode-hook (mg-setq-locally tab-width 4))
+    (mg-define-and-bind-local-paren-text-object "m" "-- COMMAND ----------" "-- COMMAND ----------" sql-mode-hook)
 
-    (my/localleader
+    (mg-localleader
         :keymaps 'sql-mode-map
         :states '(normal visual motion insert)
         "f" #'sql-formatter-format-buffer))

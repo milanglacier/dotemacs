@@ -31,7 +31,6 @@ title: Blazingly fast, robust, all-around emacs configuration
 - [Discussion](#discussion)
 - [Notes](#notes)
   - [Startup speed](#startup-speed)
-  - [Naming conventions (WIP)](#naming-conventions-wip)
   - [Corfu or Company?](#corfu-or-company)
 
 If you're currently reading this README file in Markdown format, it has
@@ -164,7 +163,7 @@ in the current directory.
   the package specifications for exact details if you choose to leverage
   a package manager-built Emacs.
 - A separate installation is required for Treesitter grammar. You can
-  execute the command `M-x my~treesit-install-all-language-grammar` to
+  execute the command `M-x my-treesit-install-all-language-grammar` to
   install all the language grammars that are currently in use.
 
 # Discussion
@@ -186,26 +185,6 @@ cannot properly measure your real startup time. Packages loaded at
 they are loaded during your startup anyway. Using these hooks only skews
 `(emacs-init-time)` and does not accurately reflect startup time. This
 configuration is honest and truly lazy loads packages.
-
-## Naming conventions (WIP)
-
-- A symbol prefixed with `my:` indicates it is a function.
-
-- A symbol prefixed with `my$` indicates it is a variable.
-
-- A symbol prefixed with `my%` indicates it is a macro.
-
-- A symbol prefixed with `my~` indicates it is a mode or an interactive
-  command.
-
-  (This also means that the derivative variables defined by a mode are
-  also prefixed with `my~`, e.g. `my~foo-mode-hook`).
-
-- A symbol prefixed with `my*` indicates it is generated via closure or
-  macro.
-
-- A symbol prefixed with `my&` indicates it is a special symbol like
-  faces.
 
 ## Corfu or Company?
 

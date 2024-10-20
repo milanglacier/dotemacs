@@ -3,32 +3,32 @@
 (straight-use-package 'use-package)
 (straight-use-package 'general)
 
-(general-create-definer my/leader
+(general-create-definer mg-leader
     ;; :prefix my-leader
     :prefix "SPC"
     :non-normal-prefix "M-SPC")
 
-(general-create-definer my/localleader
+(general-create-definer mg-localleader
     ;; :prefix my-leader
     :prefix "SPC SPC"
     :non-normal-prefix "M-SPC M-SPC")
 
-(my/leader
+(mg-leader
     "SPC" '(:ignore t :which-key "Local Leader")
     "o" '(:ignore t :which-key "Open")
     "t" '(:ignore t :which-key "toggle"))
 
-(general-create-definer my/open-map
+(general-create-definer mg-open-map
     :prefix "SPC o"
     :non-normal-prefix "M-SPC o"
-    :prefix-map 'my/open-map)
+    :prefix-map 'mg-open-map)
 
-(general-create-definer my/toggle-map
+(general-create-definer mg-toggle-map
     :prefix "SPC t"
     :non-normal-prefix "M-SPC t"
-    :prefix-map 'my/toggle-map)
+    :prefix-map 'mg-toggle-map)
 
-(add-hook 'emacs-startup-hook #'my:load-packages-incrementally-setup)
+(add-hook 'emacs-startup-hook #'mg--load-packages-incrementally-setup)
 
 (provide 'config-utils)
 ;;; config-utils.el ends here
