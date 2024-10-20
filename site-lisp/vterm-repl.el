@@ -25,20 +25,20 @@ is a plist, the following properties are supported:
 :bracketed-paste-p whether send the string with bracketed paste mode,
 the default value is nil.  You can change the behavior at run time by
 setting the generated variable
-`my*REPL-NAME-use-bracketed-paste-mode'.
+`vtr*REPL-NAME-use-bracketed-paste-mode'.
 
 :start-pattern the first string to send to the REPl before sending the
 region. The default is ''.  You can change the behavior at run time by
-setting the generated variable `my*REPL-NAME-start-pattern'.
+setting the generated variable `vtr*REPL-NAME-start-pattern'.
 
 :end-pattern the last string to send to the REPL after sending the
 region. The default is '\\r'.  You can change the behavior at run time
-by setting the generated variable `my*REPL-NAME-end-pattern'.
+by setting the generated variable `vtr*REPL-NAME-end-pattern'.
 
 :str-process-func the function to process the string before sending it
 to the REPL.  The default is `identity'. You can change the behavior
 at run time by setting the generated variable
-`my*REPL-NAME-str-process-func'."
+`vtr*REPL-NAME-str-process-func'."
 
     (let ((start-func-name (intern (concat "vtr~" repl-name "-start")))
           (send-region-func-name (intern (concat "vtr~" repl-name "-send-region")))
