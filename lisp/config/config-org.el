@@ -275,12 +275,12 @@ within Emacs.")
 
     (add-hook 'org-capture-mode-hook
               ;; completion popup in small screen is annoying
-              (defun my/disable-company ()
+              (defun mg-disable-company ()
                   (company-mode -1)))
 
     (add-hook 'org-capture-mode-hook
               ;; completion popup in small screen is annoying
-              (defun my/disable-truncate-lines ()
+              (defun mg-disable-truncate-lines ()
                   (toggle-truncate-lines 1)))
     :config
     (setq mg-org-capture-todo-file (file-name-concat "capture" "todo.org")
