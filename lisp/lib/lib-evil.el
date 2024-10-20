@@ -1,12 +1,12 @@
 ;;; lib-evil.el -*- lexical-binding: t; -*-
 
 ;;;###autoload
-(defun my/save-excursion-before-indenting (origin-fn &rest args)
+(defun mg-save-excursion-before-indenting (origin-fn &rest args)
     (save-excursion (apply origin-fn args)))
 
 ;; copied from doomemacs
-;;;###autoload (autoload #'my/evil-apply-macro-line-by-line "lib-evil" nil t)
-(evil-define-operator my/evil-apply-macro-line-by-line (beg end)
+;;;###autoload (autoload #'mg-evil-apply-macro-line-by-line "lib-evil" nil t)
+(evil-define-operator mg-evil-apply-macro-line-by-line (beg end)
     "Apply macro to each line."
     :move-point nil
     (interactive "<r>")
@@ -35,9 +35,9 @@
 ;; URL `https://stackoverflow.com/questions/18102004/emacs-evil-mode-how-to-create-a-new-text-object-to-select-words-with-any-non-sp'
 ;; NOTE: `make-symbol' will create new symbols even with the same name (they are different symbols)
 ;;;###autoload
-(defmacro my/define-and-bind-paren-text-object (key start-regex end-regex)
-    (let ((inner-name (gensym (concat "my/inner-" start-regex "-" end-regex "-text-obj")))
-          (outer-name (gensym (concat "my/outer-" start-regex "-" end-regex "-text-obj"))))
+(defmacro mg-define-and-bind-paren-text-object (key start-regex end-regex)
+    (let ((inner-name (gensym (concat "mg-inner-" start-regex "-" end-regex "-text-obj")))
+          (outer-name (gensym (concat "mg-outer-" start-regex "-" end-regex "-text-obj"))))
         `(progn
              (evil-define-text-object ,inner-name (count &optional beg end type)
                  (evil-select-paren ,start-regex ,end-regex beg end type count nil))
@@ -47,10 +47,10 @@
              (define-key evil-outer-text-objects-map ,key ',outer-name))))
 
 ;;;###autoload
-(defmacro my/define-and-bind-local-paren-text-object (key start-regex end-regex hook)
-    (let ((inner-name (gensym (concat "my/inner-" start-regex "-" end-regex "-text-obj")))
-          (outer-name (gensym (concat "my/outer-" start-regex "-" end-regex "-text-obj")))
-          (lambda-name (gensym (concat "my/lambda-" start-regex "-" end-regex "-text-obj"))))
+(defmacro mg-define-and-bind-local-paren-text-object (key start-regex end-regex hook)
+    (let ((inner-name (gensym (concat "mg-inner-" start-regex "-" end-regex "-text-obj")))
+          (outer-name (gensym (concat "mg-outer-" start-regex "-" end-regex "-text-obj")))
+          (lambda-name (gensym (concat "mg-lambda-" start-regex "-" end-regex "-text-obj"))))
         `(add-hook ',hook
                    (defun ,lambda-name ()
                        (evil-define-text-object ,inner-name (count &optional beg end type)
@@ -63,35 +63,35 @@
                        (define-key evil-visual-state-local-map ,(concat "a" key) ',outer-name)))))
 
 ;;;referenced from evil-collection-unimpaired.
-(defconst my/SCM-conflict-marker "^\\(@@@ .* @@@\\|[<=>]\\{7\\}\\)"
+(defconst mg-SCM-conflict-marker "^\\(@@@ .* @@@\\|[<=>]\\{7\\}\\)"
     "A regexp to match SCM conflict marker.")
 
 ;;;referenced from evil-collection-unimpaired.
-;;;###autoload (autoload #'my/previous-SCM-conflict-marker "lib-evil" nil t)
-(evil-define-motion my/previous-SCM-conflict-marker (count)
+;;;###autoload (autoload #'mg-previous-SCM-conflict-marker "lib-evil" nil t)
+(evil-define-motion mg-previous-SCM-conflict-marker (count)
     "Go to the previous SCM conflict marker or diff/patch hunk."
     :jump t
-    (my/next-SCM-conflict-marker (- (or count 1))))
+    (mg-next-SCM-conflict-marker (- (or count 1))))
 
 ;;;referenced from evil-collection-unimpaired.
-;;;###autoload (autoload #'my/next-SCM-conflict-marker "lib-evil" nil t)
-(evil-define-motion my/next-SCM-conflict-marker (count)
+;;;###autoload (autoload #'mg-next-SCM-conflict-marker "lib-evil" nil t)
+(evil-define-motion mg-next-SCM-conflict-marker (count)
     "Go to the next SCM conflict marker or diff/patch hunk."
     :jump t
     (evil-motion-loop (dir (or count 1))
         (cond
          ((> dir 0)
           (forward-line 1)
-          (when (not (search-forward-regexp my/SCM-conflict-marker nil t))
+          (when (not (search-forward-regexp mg-SCM-conflict-marker nil t))
               (forward-line -1))
           (move-beginning-of-line nil))
          (t
-          (search-backward-regexp my/SCM-conflict-marker nil t)
+          (search-backward-regexp mg-SCM-conflict-marker nil t)
           (move-beginning-of-line nil)))))
 
 ;;; shout out to `URL' https://github.com/noctuid/evil-textobj-anyblock#creating-more-specific-text-objects
-;;;###autoload (autoload #'my:evil-textobj-anyblock-inner-quote "lib-evil" nil t)
-(evil-define-text-object my:evil-textobj-anyblock-inner-quote
+;;;###autoload (autoload #'mg--evil-textobj-anyblock-inner-quote "lib-evil" nil t)
+(evil-define-text-object mg--evil-textobj-anyblock-inner-quote
     (count &optional beg end type)
     "Select the closest outer quote."
     (require 'evil-textobj-anyblock)
@@ -102,8 +102,8 @@
              ("“" . "”"))))
         (evil-textobj-anyblock--make-textobj beg end type count nil)))
 
-;;;###autoload (autoload #'my:evil-apply-macro-line-by-line "lib-evil" nil t)
-(evil-define-text-object my:evil-textobj-anyblock-outer-quote
+;;;###autoload (autoload #'mg--evil-apply-macro-line-by-line "lib-evil" nil t)
+(evil-define-text-object mg--evil-textobj-anyblock-outer-quote
     (count &optional beg end type)
     "Select the closest outer quote."
     (require 'evil-textobj-anyblock)

@@ -10,22 +10,22 @@
     (setq eww-search-prefix "http://www.google.com/search?q=")
 
     :config
-    (my/localleader
+    (mg-localleader
         :states '(normal motion visual)
         :keymaps 'eww-mode-map
         "y" #'eww-copy-page-url
         ;; get the url of current visiting page
-        "g" #'my/google-search-eww))
+        "g" #'mg-google-search-eww))
 
 (use-package xwidget
     :init
-    (setq my/xwidget-side-window-display
+    (setq mg-xwidget-side-window-display
           `("\\*xwidget"
             (display-buffer-in-side-window display-buffer-reuse-window)
             (window-width . 0.33)
             (window-height . 0.5)
-            (side . ,(alist-get 'xwidget-plot my/side-window-sides))
-            (slot . ,(alist-get 'xwidget-plot my/side-window-slots))))
+            (side . ,(alist-get 'xwidget-plot mg-side-window-sides))
+            (slot . ,(alist-get 'xwidget-plot mg-side-window-slots))))
     )
 
 (use-package elfeed
@@ -33,7 +33,7 @@
     (setq elfeed-db-directory (expand-file-name "elfeed" user-emacs-directory)
           elfeed-enclosure-default-dir (expand-file-name "closures" elfeed-db-directory))
 
-    (my/open-map
+    (mg-open-map
         :states '(normal insert motion visual)
         :keymaps 'override
         "w" #'elfeed)
@@ -51,21 +51,21 @@
     (general-define-key
      :states 'normal
      :keymaps 'elfeed-show-mode-map
-     "gw" #'my:elfeed-open-entry-via-eww
-     "gW" #'my:elfeed-open-entry-via-xwidget)
+     "gw" #'mg--elfeed-open-entry-via-eww
+     "gW" #'mg--elfeed-open-entry-via-xwidget)
 
-    (my/localleader
+    (mg-localleader
         :keymaps 'elfeed-show-mode-map
         :states '(normal motion visual)
-        "g" #'my/google-search-eww
-        "G" #'my/google-search-xwidget)
+        "g" #'mg-google-search-eww
+        "G" #'mg-google-search-xwidget)
 
 
     ;; `elfeed-kill-buffer' only kills the buffer, but won't delete
     ;; the window. This is not an ideal behavior since you typically
     ;; what to hit `q' to delete the window displaying the news after
     ;; you have finished reading.
-    (advice-add #'elfeed-kill-buffer :after #'my:elfeed-delete-window-after-kill-buffer)
+    (advice-add #'elfeed-kill-buffer :after #'mg--elfeed-delete-window-after-kill-buffer)
     )
 
 (use-package elfeed-org
@@ -92,12 +92,12 @@
     (add-to-list 'display-buffer-alist
                  `("\\*[oO]utline.*pdf\\*"
                    (display-buffer-in-side-window display-buffer-reuse-window)
-                   (side . ,(alist-get 'pdf-outline my/side-window-sides))
+                   (side . ,(alist-get 'pdf-outline mg-side-window-sides))
                    (window-width . 0.3)))
 
-    (add-hook 'pdf-outline-buffer-mode-hook #'my:font-set-small-variable-font)
-    (add-hook 'pdf-view-mode-hook (my/setq-locally evil-normal-state-cursor nil))
-    (add-hook 'pdf-view-mode-hook #'my:pdf-midnight-mode-maybe)
+    (add-hook 'pdf-outline-buffer-mode-hook #'mg--font-set-small-variable-font)
+    (add-hook 'pdf-view-mode-hook (mg-setq-locally evil-normal-state-cursor nil))
+    (add-hook 'pdf-view-mode-hook #'mg--pdf-midnight-mode-maybe)
 
     )
 
@@ -107,15 +107,15 @@
                (display-buffer-in-side-window display-buffer-reuse-window)
                (window-width . 0.5)
                (window-height 0.5)
-               (side . ,(alist-get 'aichat my/side-window-sides))
-               (slot . ,(alist-get 'aichat my/side-window-slots))))
+               (side . ,(alist-get 'aichat mg-side-window-sides))
+               (slot . ,(alist-get 'aichat mg-side-window-slots))))
 
-(general-create-definer my/chat-map
+(general-create-definer mg-chat-map
     :prefix "SPC c"
     :non-normal-prefix "M-SPC c"
-    :prefix-map 'my/chat-map)
+    :prefix-map 'mg-chat-map)
 
-(my/chat-map
+(mg-chat-map
     :keymaps 'override
     :states '(normal insert motion visual)
     "s" #'vtr~aichat-start
@@ -129,12 +129,12 @@
              `("\\*aider\\*"
                (display-buffer-reuse-window display-buffer-in-new-tab)))
 
-(general-create-definer my/aider-map
+(general-create-definer mg-aider-map
     :prefix "SPC a"
     :non-normal-prefix "M-SPC a"
-    :prefix-map 'my/aider-map)
+    :prefix-map 'mg-aider-map)
 
-(my/aider-map
+(mg-aider-map
     :keymaps 'override
     :states '(normal insert motion visual)
     "s" #'vtr~aider-start

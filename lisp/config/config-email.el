@@ -12,7 +12,7 @@
 
 (use-package consult-notmuch
     :init
-    (my/open-map
+    (mg-open-map
         :states '(normal insert motion visual)
         :keymaps 'override
         "M" #'consult-notmuch))
@@ -20,7 +20,7 @@
 (use-package notmuch
     :commands notmuch
     :init
-    (my/open-map
+    (mg-open-map
         :states '(normal insert motion visual)
         :keymaps 'override
         "m" #'notmuch)
@@ -41,7 +41,7 @@
 
     :config
     ;; modified from evil-collection-notmuch, only remove keybindings that I don't need.
-    (my:notmuch-setup)
+    (mg--notmuch-setup)
 
     ;; this file loads my user name and email account, a.k.a set the
     ;; variables `notmuch-identities' something similar to this
@@ -52,14 +52,14 @@
 
     ;; Give email buffers a sane name so they can be targeted via
     ;; `display-buffer-alist'.
-    (advice-add #'notmuch-search-show-thread :around #'my:notmuch-search-show-thread)
+    (advice-add #'notmuch-search-show-thread :around #'mg--notmuch-search-show-thread)
 
     ;; Ensure proper truncation of all fields in notmuch search
     ;; results. Notmuch only truncated long strings for the "authors"
     ;; field. This advice extends truncation to all fields, including
     ;; "subjects". It guarantees that format strings like "%-80s" will
     ;; limit output to 80 characters
-    (advice-add #'notmuch-search-insert-field :around #'my:notmuch-ensure-field-truncation)
+    (advice-add #'notmuch-search-insert-field :around #'mg--notmuch-ensure-field-truncation)
 
     ;; always latest messages display at top
     (setq-default notmuch-search-oldest-first nil)
@@ -74,7 +74,7 @@
           notmuch-fcc-dirs nil ; don't save sent messages. The remove server will do this for me
           notmuch-archive-tags '("+action-archive")
           notmuch-draft-tags '("+drafts")
-          my$notmuch-deleted-tags "action-delete"
+          mg-notmuch-deleted-tags "action-delete"
           ;; call `notmuch-tag-jump', in the popup menu, press this key will reverse the tagging operation
           notmuch-tag-jump-reverse-key "K"
           notmuch-always-prompt-for-sender t ;; prompts for sender when forwarding message
@@ -133,10 +133,10 @@
           '((".*" (notmuch-apply-face (concat "+" tag) 'notmuch-tag-added)))
           )
 
-    (my/setq-on-hook notmuch-hello-mode-hook compile-command "mbsync -a; notmuch new;")
+    (mg-setq-on-hook notmuch-hello-mode-hook compile-command "mbsync -a; notmuch new;")
     ;; run compile directly without prompting the command in minibuffer.
     ;; HOLD: decide to use minibuffer prompt now.
-    ;; (add-hook 'notmuch-hello-mode-hook (my/setq-locally compilation-read-command nil))
+    ;; (add-hook 'notmuch-hello-mode-hook (mg-setq-locally compilation-read-command nil))
 
     (org-msg-mode)
 
@@ -161,12 +161,12 @@
 (\\(?:attached\\|enclosed\\))\\|\
 \\(?:attached\\|enclosed\\)[ \t\n]\\(?:for\\|is\\)[ \t\n]")
 
-    (add-to-list 'my$function-predicate-blocklist
+    (add-to-list 'mg-function-predicate-blocklist
                  '(eglot-ensure (derived-mode-p 'org-msg-edit-mode)))
 
     :config
-    (add-hook 'org-msg-edit-mode-hook (my/turn-off-mode diff-hl-mode))
-    (my/setq-on-hook org-msg-edit-mode-hook company-backends
+    (add-hook 'org-msg-edit-mode-hook (mg-turn-off-mode diff-hl-mode))
+    (mg-setq-on-hook org-msg-edit-mode-hook company-backends
                      `(notmuch-company ,@company-backends))
     )
 

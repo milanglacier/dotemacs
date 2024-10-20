@@ -4,28 +4,28 @@
 (straight-use-package 'spacemacs-theme)
 (straight-use-package 'ef-themes)
 
-(setq my$day-themes
+(setq mg-day-themes
       '(doom-solarized-light
         spacemacs-light
         doom-one-light
         ef-tritanopia-light
         ef-cyprus
         ef-light)
-      my$night-themes
+      mg-night-themes
       '(spacemacs-dark
         doom-one
         doom-nord-aurora
         doom-opera))
 
 (when (display-graphic-p)
-    (push 'modus-vivendi my$night-themes)
-    (push 'modus-operandi my$day-themes)
-    (push 'ef-dark my$night-themes))
+    (push 'modus-vivendi mg-night-themes)
+    (push 'modus-operandi mg-day-themes)
+    (push 'ef-dark mg-night-themes))
 
-(my:theme-set-dynamically)
+(mg--theme-set-dynamically)
 
 (use-package doom-themes-ext-org
-    :if (string-match-p "doom" (symbol-name my$selected-theme))
+    :if (string-match-p "doom" (symbol-name mg-selected-theme))
     :after org
     :demand t)
 

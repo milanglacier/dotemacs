@@ -10,15 +10,15 @@
           (cdr args)))
 
 ;;;###autoload
-(defun my/completion-in-region (&rest args)
+(defun mg-completion-in-region (&rest args)
     (apply (if vertico-mode
                    #'consult-completion-in-region
                #'completion--in-region)
            args))
 
 ;; copied from doomemacs
-;;;###autoload (autoload #'my/evil-delete-in-wgrep "lib-minibuffer" nil t)
-(evil-define-operator my/evil-delete-in-wgrep (beg end type register yank-handler)
+;;;###autoload (autoload #'mg-evil-delete-in-wgrep "lib-minibuffer" nil t)
+(evil-define-operator mg-evil-delete-in-wgrep (beg end type register yank-handler)
     "A wrapper around `evil-delete' for `wgrep' buffers that will invoke
 `wgrep-mark-deletion' on lines you try to delete."
     (interactive "<R><x><y>")
