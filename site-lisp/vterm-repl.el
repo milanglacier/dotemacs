@@ -6,6 +6,11 @@
 ;; Package-Requires: ((emacs "29") (vterm "0.0"))
 
 ;;; Commentary:
+;; This package provides a set of macros and functions to create and
+;; manage REPL sessions using vterm in Emacs. It allows for creating
+;; custom REPL schemas with functionalities such as starting, sending
+;; code, and hiding REPL windows. This is useful for integrating
+;; terminal-based REPLs with Emacs efficiently.
 
 ;;; Code:
 (require 'vterm)
