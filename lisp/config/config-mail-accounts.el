@@ -1,1 +1,1 @@
-../../../dotfiles/config/my-mail-accounts.el
+../../../dotfiles/config/config-mail-accounts.el
