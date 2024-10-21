@@ -29,9 +29,6 @@ title: Blazingly fast, robust, all-around emacs configuration
     `emacs-lisp-mode`.](#c-configure-evil-args-to-use-spaces-as-argument-delimiter-for-emacs-lisp-mode.)
 - [Prerequisites](#prerequisites)
 - [Discussion](#discussion)
-- [Notes](#notes)
-  - [Startup speed](#startup-speed)
-  - [Corfu or Company?](#corfu-or-company)
 
 If you're currently reading this README file in Markdown format, it has
 been generated through `org-export`, from its original org format. For
@@ -171,26 +168,3 @@ in the current directory.
 - It is recommended to use the mailing list
   `~northyear/.emacs.d-devel@lists.sr.ht`.
 - Alternatively, you are also welcome to open a Github issue.
-
-# Notes
-
-## Startup speed
-
-Startup speed is measured using `(emacs-init-time)`.
-
-However, note that this metric may fool you. If you load some packages
-in `emacs-startup-hook` or `after-init-hook`, then `(emacs-init-time)`
-cannot properly measure your real startup time. Packages loaded at
-`emacs-start-hook` and `after-init-hook` are actually not lazy loaded;
-they are loaded during your startup anyway. Using these hooks only skews
-`(emacs-init-time)` and does not accurately reflect startup time. This
-configuration is honest and truly lazy loads packages.
-
-## Corfu or Company?
-
-`Corfu` is a sleek and minimalistic auto-completion UI that uses only
-`completion-at-point-functions` as its backend. The GUI experience with
-`corfu` is delightful, providing a refreshing and intuitive interface.
-However, to maintain full compatibility with TTY, I continue to use
-`company` as the auto-completion frontend until `corfu`'s TTY
-integration is complete.

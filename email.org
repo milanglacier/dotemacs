@@ -24,7 +24,7 @@ This guide will address two key areas:
 1. My hacks on ~notmuch~ for efficient email management
 2. Configuring OAuth2 authentication for ~mbsync~
 
-* Working with Other Email Clients (e.g., Mobile Email Apps)
+* Syncing Notmuch Tags with IMAP Folders: Workarounds for Cross-Device Email Management
 
 Notmuch is a tag-centric email client, but its tags don't usually sync
 up with IMAP folders. It also can't move emails between maildir
@@ -38,23 +38,6 @@ This section covers some handy workarounds, mainly focusing on moving
 emails between maildir folders. These tricks help sync changes with
 your email mailboxes, making it easier to use Notmuch alongside other
 email clients on different devices without things getting out of sync.
-
-* From ~mu4e~ to ~notmuch~
-
-As someone switching from ~mu4e~ to ~notmuch~, I've found that the
-resources I used to set up mu4e are still super helpful for
-configuring ~notmuch~. It's great that I can keep using ~mbsync~ for
-syncing my emails and msmtp for sending messages. These tools work
-just as well with ~notmuch~, making the transition much smoother.
-
-There are two primary reasons for my decision to transition. Firstly,
-mu4e's backward compatibility is horrible, with many plugins dependent
-on mu4e often breaking after major version updates. Secondly, notmuch
-offers a threaded conversation view, whereas mu4e only provides a
-threaded tree view. While I had implemented thread-folding in mu4e, it
-worked but the result was less than ideal. Even the official
-thread-folding feature introduced in mu4e 1.12 has numerous issues. In
-contrast, the conversation view in notmuch works great for threads.
 
 * Configure oauth2 support with outlook
 
@@ -173,6 +156,23 @@ auth xoauth2
 passwordeval mutt_oauth2.py -t your/path/to/the/outlook/oauth/file
 # And your rest configs just works
 #+end_src
+
+* From ~mu4e~ to ~notmuch~
+
+As someone switching from ~mu4e~ to ~notmuch~, I've found that the
+resources I used to set up mu4e are still super helpful for
+configuring ~notmuch~. It's great that I can keep using ~mbsync~ for
+syncing my emails and msmtp for sending messages. These tools work
+just as well with ~notmuch~, making the transition much smoother.
+
+There are two primary reasons for my decision to transition. Firstly,
+mu4e's backward compatibility is horrible, with many plugins dependent
+on mu4e often breaking after major version updates. Secondly, notmuch
+offers a threaded conversation view, whereas mu4e only provides a
+threaded tree view. While I had implemented thread-folding in mu4e, it
+worked but the result was less than ideal. Even the official
+thread-folding feature introduced in mu4e 1.12 has numerous issues. In
+contrast, the conversation view in notmuch works great for threads.
 
 * Acknowledgement
 
