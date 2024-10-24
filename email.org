@@ -100,10 +100,10 @@ To set up an app to sync emails, follow these steps:
 
 3. Follow the [[https://github.com/neomutt/neomutt/tree/main/contrib/oauth2#how-to-create-a-microsoft-registration][instruction]] provided by neomutt for your app
    configuration. During the app configuration process, you'll find
-   the specified settings under the /Manage | Authentication/ and
-   /Manage | API permissions/ sidebars in your app portal. It's crucial
+   the specified settings under the =Manage | Authentication= and
+   =Manage | API permissions= sidebars in your app portal. It's crucial
    to enable access for IMAP, SMTP, POP, and other relevant scopes as
-   detailed in the mutt script under the /Manage | API permissions/
+   detailed in the mutt script under the =Manage | API permissions=
    sidebar.
 
 ** Fetch the authentication token with the mutt script
