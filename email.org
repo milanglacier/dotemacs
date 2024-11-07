@@ -131,9 +131,14 @@ command again to obtain a fresh token.
 does not work with ~xoauth2~, following the instruction at this
 [[https://github.com/moriyoshi/cyrus-sasl-xoauth2/issues/9#issuecomment-2161796043][thread]]
 to build the ~mbsync~ from source. I took my own hackish approach: I
-created a Docker container that runs mbsync with xoauth2 support. I then
-mounted my host machine's maildir folder to this container, allowing mbsync
-to access and sync my emails.
+created a Docker container that runs mbsync with xoauth2 support. I
+then mounted my host machine's maildir folder to this container,
+allowing mbsync to access and sync my emails. The Docker container is
+based on Ubuntu and includes the following installed packages:
+
+#+begin_src example
+isync libsasl2-modules-kdexoauth2 ca-certificates openssl libsasl2-modules python3
+#+end_src
 
 In your mbsync config file, configure your outlook email like this:
 
