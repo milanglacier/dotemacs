@@ -26,7 +26,8 @@
                         [mouse-5] #'scroll-up-line
                         [mouse-7] #'scroll-up-line)
 
-    (xclip-mode 1))
+    (xclip-mode 1)
+    (message "To synchronize clipboards across remote sessions, enable `global-clipetty-mode'."))
 
 ;;;###autoload
 (defun mg--server-setup ()

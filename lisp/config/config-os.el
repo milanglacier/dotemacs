@@ -1,6 +1,8 @@
 ;;; config-os.el -*- lexical-binding: t; -*-
 
 (straight-use-package 'xclip)
+;; synchronize clipboards across remote sessions
+(straight-use-package 'clipetty)
 (straight-use-package 'evil-terminal-cursor-changer)
 
 (when IS-MAC
