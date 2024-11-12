@@ -5,6 +5,7 @@
  ("better-jumper" . "b1bf7a3c8cb820d942a0305e0e6412ef369f819c")
  ("cape" . "74c3501ecd19ec9af0d30c16c10ded47dc995ffa")
  ("citre" . "2c8284d3eb2651b0a27e3bbfe6d278b05b95f79d")
+ ("clipetty" . "01b39044b9b65fa4ea7d3166f8b1ffab6f740362")
  ("code-cells.el" . "35e68b9d80b216924820e1393bf98ba5b6722edb")
  ("company-box" . "c4f2e243fba03c11e46b1600b124e036f2be7691")
  ("company-mode" . "0ae7c293112248a0c36377d6859a95d216ae5e96")
