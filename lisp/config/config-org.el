@@ -1,7 +1,7 @@
 ;;; config-org.el -*- lexical-binding: t; -*-
 
 (straight-use-package '(org :type built-in))
-(straight-use-package 'evil-org)
+(straight-use-package '(evil-org-mode :host github :repo "doomelpa/evil-org-mode"))
 (straight-use-package 'org-appear)
 (straight-use-package 'jupyter)
 (straight-use-package 'org-re-reveal)
