@@ -143,7 +143,7 @@ def fibonacci(n):
 (defvar minuet-openai-compatible-options
     `(:end-point "https://api.groq.com/openai/v1/chat/completions"
       :api-key "GROQ_API_KEY"
-      :model "llama-3.1-70b-versatile"
+      :model "llama-3.3-70b-versatile"
       :system
       (:template minuet-default-system-template
        :prompt minuet-default-prompt

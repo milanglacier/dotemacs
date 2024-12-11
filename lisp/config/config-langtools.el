@@ -208,7 +208,7 @@
 
     (plist-put minuet-openai-compatible-options :end-point "https://api.fireworks.ai/inference/v1/chat/completions")
     (plist-put minuet-openai-compatible-options :api-key "FIREWORKS_API_KEY")
-    (plist-put minuet-openai-compatible-options :model "accounts/fireworks/models/llama-v3p1-70b-instruct")
+    (plist-put minuet-openai-compatible-options :model "accounts/fireworks/models/llama-v3p3-70b-instruct")
 
     (dolist (provider (list minuet-openai-options
                             minuet-codestral-options
