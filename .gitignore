@@ -21,3 +21,4 @@ codeium
 # citre stored temp configuration in this directory.
 lsp-bridge
 .aider*
+ELPA
