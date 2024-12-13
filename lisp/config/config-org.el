@@ -330,7 +330,7 @@ within Emacs.")
     )
 
 (use-package evil-org-agenda
-    :demand t
+    :hook (org-agenda-mode . evil-org-agenda-mode)
     :after org-agenda
     :config
     (evil-org-agenda-set-keys)
