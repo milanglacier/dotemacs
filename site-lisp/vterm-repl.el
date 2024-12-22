@@ -86,7 +86,10 @@ switch to the session with that number as a suffix."
                    repl-name repl-name)
                  (interactive "P")
                  (let ((vterm-buffer-name (format "*%s*" ,repl-name))
-                       (vterm-shell ,repl-cmd-name)
+                       (vterm-shell
+                        (if (functionp ,repl-cmd-name)
+                                (funcall ,repl-cmd-name)
+                            ,repl-cmd-name))
                        (repl-buffer)
                        (repl-buffer-exist-p
                         (get-buffer
