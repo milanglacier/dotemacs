@@ -127,7 +127,8 @@
 ;; aider (a llm based code assistant) integration
 (add-to-list 'display-buffer-alist
              `("\\*aider\\*"
-               (display-buffer-reuse-window display-buffer-in-new-tab)))
+               (display-buffer-in-tab)
+               (tab-name . mg--get-tab-name)))
 
 (general-create-definer mg-aider-map
     :prefix "SPC a"

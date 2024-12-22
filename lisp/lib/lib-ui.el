@@ -252,5 +252,12 @@ the group more distinguisably."
              mg-tab-bar-group-name-close)
      'face (if current-p 'tab-bar-tab-group-current 'tab-bar-tab-group-inactive)))
 
+(defun mg--get-tab-name (buffer alist)
+    "Retrieve the name of a tab associated with a BUFFER.  This
+function is intended for use with `display-buffer-in-tab'.  The
+behavior is straightforward: if a tab already exists with the same
+name as the BUFFER, it is reused; otherwise, a new tab is created."
+    (buffer-name buffer))
+
 (provide 'lib-ui)
 ;;; lib-ui ends here
