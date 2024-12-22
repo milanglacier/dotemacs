@@ -72,11 +72,12 @@ after the cursor, then the code before the cursor.
 4. Return completions separated by the marker <endCompletion>.
 5. The returned message will be further parsed and processed. DO NOT include
    additional comments or markdown code block fences. Return the result directly.
-6. Keep each completion option concise, limiting it to a single line or a few lines."
+6. Keep each completion option concise, limiting it to a single line or a few lines.
+7. Create entirely new code completion that DO NOT REPEAT OR COPY any user's existing code around <cursorPosition>."
     "The default guidelines for minuet completion")
 
 (defvar minuet-default-n-completion-template
-    "7. Provide at most %d completion items."
+    "8. Provide at most %d completion items."
     "The default prompt for minuet for number of completions request.")
 
 (defvar minuet-default-system-template
