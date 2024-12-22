@@ -61,7 +61,8 @@
     "the available command prefixes used by aider")
 
 (defvar vtr-aider-available-args
-    '("--model"
+    '("--watch-files"
+      "--model"
       "--opus"
       "--sonnet"
       "--4"
@@ -148,14 +149,23 @@
       "--suggest-shell-commands"
       "--no-suggest-shell-commands"
       "--voice-format"
-      "--voice-language")
+      "--voice-language"
+      "--multiline")
     "the available command arguments used by aider")
 
 (defvar vtr-aider-cmd "aider" "the command used to start the aider")
+(defvar vtr-aider-args "--watch-files" "the arguments used to start the aider")
+
+(defun vtr-aider-full-command ()
+    "Return the full aider command with the args"
+    (concat vtr-aider-cmd
+            (if (stringp vtr-aider-args)
+                    (concat " " vtr-aider-args)
+                "")))
 
 ;;;###autoload (autoload #'vtr~aider-start "vterm-repl-aider" nil t)
 (vtr-create-schema "aider"
-                   vtr-aider-cmd
+                   #'vtr-aider-full-command
                    :bracketed-paste-p t
                    :start-pattern "/ask ")
 
@@ -166,7 +176,8 @@
     (interactive
      (list (completing-read "The prefixes passed to aider: "
                             vtr-aider-prefixes
-                            ;; require the prefix must be a member of `vtr-aider-prefixes'
+                            ;; require the prefix must be a member of
+                            ;; `vtr-aider-prefixes'
                             nil t)))
     (setq vtr-aider-prefix (if (equal prefix "") "" (concat prefix " "))))
 
@@ -181,9 +192,10 @@
     (interactive
      (list (completing-read "The arguments passed to aider: "
                             vtr-aider-available-args
-                            ;; require the argument must be a member of `vtr-aider-available-args'
+                            ;; do not require the argument must be a
+                            ;; member of `vtr-aider-available-args'
                             nil nil)))
-    (setq vtr*aider-cmd (concat vtr-aider-cmd " " args)))
+    (setq vtr-aider-args args))
 
 (defun vtr-aider-remove-args ()
     "remove the args from `vtr*aider-cmd'"
