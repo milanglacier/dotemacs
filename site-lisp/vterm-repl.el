@@ -24,8 +24,9 @@ functions, the function to start the repl, the function to send the
 region and the corresponding operator, and the function to hide the
 REPL window if it exists.
 
-REPL-NAME is a string, REPL-CMD is a form evaluated to a string. ARGS
-is a plist, the following properties are supported:
+REPL-NAME is a string, REPL-CMD is a string, a form evaluated to a
+string, or a function evaluated to a string. ARGS is a plist, the
+following properties are supported:
 
 :bracketed-paste-p whether send the string with bracketed paste mode,
 the default value is nil.  You can change the behavior at run time by
