@@ -355,10 +355,14 @@ within Emacs.")
           ;; always start on today
           org-agenda-start-on-weekday nil
           org-agenda-start-day "-3d"
-          org-agenda-inhibit-startup t
-          org-agenda-window-setup 'other-tab)
+          org-agenda-inhibit-startup t)
 
     :config
+
+    (add-to-list 'display-buffer-alist
+                 '("^\\*Org Agenda"
+                   (display-buffer-in-tab)
+                   (tab-name . mg--get-tab-name)))
 
     ;; org-agenda will visit all org files listed
     ;; in `org-agenda-files' to generate the org-agenda view.
