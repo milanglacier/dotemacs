@@ -355,7 +355,15 @@ within Emacs.")
           ;; always start on today
           org-agenda-start-on-weekday nil
           org-agenda-start-day "-3d"
-          org-agenda-inhibit-startup t)
+          org-agenda-inhibit-startup t
+          ;; NOTE: While I use `display-buffer-alist` to ensure the
+          ;; Org Agenda can reuse an existing tab (one already
+          ;; displaying the Org Agenda), this option remains
+          ;; important. When I press "q," the tab closes. Without this
+          ;; setting, pressing "q" causes the Org Agenda buffer to
+          ;; exit, but the tab remains open, showing a different
+          ;; buffer.
+          org-agenda-window-setup 'other-tab)
 
     :config
 
