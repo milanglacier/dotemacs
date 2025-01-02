@@ -53,6 +53,10 @@
     (setq recentf-max-saved-items 200))
 
 (use-package project
+    :init
+    ;; submodule should not be considered as part of parent project
+    (setq project-vc-merge-submodules nil)
+
     :config
     (add-to-list 'project-switch-commands
                  '(project-dired "Dired at root"))
