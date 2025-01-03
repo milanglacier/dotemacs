@@ -31,9 +31,12 @@
     :config
     (add-to-list 'display-buffer-alist
                  '("magit:" ;; the main magit dashboard
-                   ;; don't create new window if there is one magit window
-                   ;; and create new tab if there isn't one magit window.
-                   (display-buffer-in-tab)
+                   ;; If a magit window exists, use it instead of
+                   ;; creating a new one.  If no magit window exists,
+                   ;; create a new tab.  When a magit tab already
+                   ;; exists, display the magit buffer in that tab's
+                   ;; window, replacing any existing content.
+                   (display-buffer-in-tab display-buffer-same-window)
                    (tab-name . mg--get-tab-name)))
 
     (general-define-key
