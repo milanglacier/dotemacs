@@ -38,6 +38,7 @@
         "i" #'consult-imenu
         "I" #'consult-imenu-multi
         "l" #'consult-line
+        "R" #'vertico-suspend ; restore previous vertico minibuffer session
         "L" #'consult-line-multi)
 
     :config
@@ -45,7 +46,9 @@
 
     (setq vertico-resize nil
           vertico-count 17
-          vertico-cycle t)
+          vertico-cycle t
+          ;; in order to use vertico-suspend
+          enable-recursive-minibuffers t)
 
     (setq-default completion-in-region-function #'mg-completion-in-region)
 
@@ -60,6 +63,7 @@
      "C-k" #'kill-line
      "C-p" #'previous-line-or-history-element
      "C-n" #'next-line-or-history-element
+     "C-c C-s" #'vertico-suspend ; suspend current minibuffer session, type space f R to restore.
      "C-u" #'evil-delete-back-to-indentation)
 
     (general-define-key
