@@ -155,7 +155,7 @@ def fibonacci(n):
     "config options for Minuet OpenAI compatible provider")
 
 (defvar minuet-openai-fim-compatible-options
-    '(:model "deepseek-coder"
+    '(:model "deepseek-chat"
       :end-point "https://api.deepseek.com/beta/completions"
       :api-key "DEEPSEEK_API_KEY"
       :name "Deepseek"
