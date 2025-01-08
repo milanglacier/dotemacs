@@ -402,6 +402,9 @@ be used to accumulate text output from a process. After execution,
                                              (minuet--add-single-line-entry items)
                                          items)
                                items (-distinct items))
+                         ;; close current minibuffer session, if any
+                         (when (active-minibuffer-window)
+                             (abort-recursive-edit))
                          (completion-in-region (point) (point) items))))))
 
 (defun minuet--check-env-var (env-var)
@@ -470,8 +473,7 @@ be used to accumulate text output from a process. After execution,
         ))
 
 (defun minuet--openai-fim-complete-base (options get-text-fn context callback)
-    (let ((try 0)
-          (total-try (or minuet-n-completions 1))
+    (let ((total-try (or minuet-n-completions 1))
           (name (plist-get options :name))
           completion-items)
         (dotimes (_ total-try)
@@ -492,19 +494,16 @@ be used to accumulate text output from a process. After execution,
                  :filter (minuet--make-process-stream-filter --response--)
                  :then
                  (lambda (json)
-                     (setq try (1+ try))
                      (when-let ((result (minuet--stream-decode json get-text-fn)))
                          ;; insert the current result into the completion items list
                          (push result completion-items))
-                     (when (>= try total-try)
-                         (setq completion-items (minuet--filter-context-sequence-in-items
-                                                 completion-items
-                                                 context))
-                         (setq completion-items (minuet--remove-spaces completion-items))
-                         (funcall callback completion-items)))
+                     (setq completion-items (minuet--filter-context-sequence-in-items
+                                             completion-items
+                                             context))
+                     (setq completion-items (minuet--remove-spaces completion-items))
+                     (funcall callback completion-items))
                  :else
                  (lambda (err)
-                     (setq try (1+ try))
                      (if (equal (car (plz-error-curl-error err)) 28)
                              (progn
                                  (minuet--log (format "%s Request timeout" name))
@@ -512,13 +511,12 @@ be used to accumulate text output from a process. After execution,
                                      (push result completion-items)))
                          (minuet--log (format "An error occured when sending request to %s" name))
                          (minuet--log err))
-                     (when (>= try total-try)
-                         (setq completion-items
-                               (minuet--filter-context-sequence-in-items
-                                completion-items
-                                context))
-                         (setq completion-items (minuet--remove-spaces completion-items))
-                         (funcall callback completion-items))))))))
+                     (setq completion-items
+                           (minuet--filter-context-sequence-in-items
+                            completion-items
+                            context))
+                     (setq completion-items (minuet--remove-spaces completion-items))
+                     (funcall callback completion-items)))))))
 
 (defun minuet--codestral-complete (context callback)
     (minuet--openai-fim-complete-base
