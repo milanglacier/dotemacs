@@ -25,6 +25,7 @@
  ("diredfl" . "fe72d2e42ee18bf6228bba9d7086de4098f18a70")
  ("doom-modeline" . "9d6f0f9635ae722b6bd943a76e996f54443e373f")
  ("edit-indirect" . "82a28d8a85277cfe453af464603ea330eae41c05")
+ ("editorconfig-emacs" . "24f5b2b1cd4e37adc245fb59f7edeb6872a707a4")
  ("ef-themes" . "f1dc37987a42dc78c1f20cf1d65677d12f9fbc56")
  ("el-get" . "c5ab1b334e6d0e1afcfc203fe460faed10c3e1ae")
  ("elfeed" . "a39fb78e34ee25dc8baea83376f929d7c128344f")
