@@ -15,6 +15,8 @@
 (straight-use-package 'dired-git-info)
 (straight-use-package 'nerd-icons-dired)
 
+(straight-use-package 'editorconfig)
+
 (use-package hideshow
     :hook (prog-mode . hs-minor-mode))
 
@@ -194,6 +196,16 @@
 
     :config
     (add-hook 'dired-sidebar-mode-hook #'mg--font-set-small-mono-font))
+
+(use-package editorconfig
+    :init
+    (mg-run-hook-once pre-command-hook editorconfig-mode)
+
+    :config
+    (setq editorconfig-trim-whitespaces-mode 'ws-butler-mode)
+
+    (add-to-list 'editorconfig-exclude-regexps
+                 "\\.\\(zip\\|\\(doc\\|xls\\|ppt\\)x\\)\\'"))
 
 (mg-leader
     :keymaps 'override
