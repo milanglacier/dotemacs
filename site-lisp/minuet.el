@@ -402,6 +402,14 @@ be used to accumulate text output from a process. After execution,
                                              (minuet--add-single-line-entry items)
                                          items)
                                items (-distinct items))
+                         ;; When there is only one completion item,
+                         ;; the completion-in-region function
+                         ;; automatically inserts the text into the
+                         ;; buffer. We want to prevent this automatic
+                         ;; behavior to ensure users can dismiss the
+                         ;; completion item if desired.
+                         (when (length= items 1)
+                             (push "" items))
                          ;; close current minibuffer session, if any
                          (when (active-minibuffer-window)
                              (abort-recursive-edit))
