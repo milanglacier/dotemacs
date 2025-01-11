@@ -147,7 +147,10 @@
     "y" #'vtr-aider-yes
     "n" #'vtr-aider-no
     "a" #'vtr-aider-abort
-    "q" #'vtr-aider-exit)
+    "q" #'vtr-aider-exit
+    "ma" #'vtr-aider-ask-mode
+    "mA" #'vtr-aider-arch-mode
+    "mc" #'vtr-aider-code-mode)
 
 (provide 'config-apps)
 ;;; config-apps.el ends here

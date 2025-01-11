@@ -216,19 +216,42 @@ Override `vtr-aider-prefix' to ensure verbatim input."
         (vtr~aider-send-string prompt session)))
 
 (defun vtr-aider-yes (&optional session)
+    "Send \"y\" to aider"
     (interactive "P")
     (vtr-aider-prompt nil "y" session))
 
 (defun vtr-aider-no (&optional session)
+    "Send \"n\" to aider"
     (interactive "P")
     (vtr-aider-prompt nil "n" session))
 
 (defun vtr-aider-abort (&optional session)
+    "Send C-c to aider"
     (interactive "P")
     (vtr-aider-prompt nil "\C-c" session))
 
 (defun vtr-aider-exit (&optional session)
     (interactive "P")
     (vtr-aider-prompt nil "\C-d" session))
+
+(defun vtr-aider-paste (&optional session)
+    "Send \"/paste\" to aider"
+    (interactive "P")
+    (vtr-aider-prompt nil "/paste" session))
+
+(defun vtr-aider-ask-mode (&optional session)
+    "Send \"/ask\" to aider"
+    (interactive "P")
+    (vtr-aider-prompt nil "/ask" session))
+
+(defun vtr-aider-arch-mode (&optional session)
+    "Send \"/architect\" to aider"
+    (interactive "P")
+    (vtr-aider-prompt nil "/architect" session))
+
+(defun vtr-aider-code-mode (&optional session)
+    "Send \"/code\" to aider"
+    (interactive "P")
+    (vtr-aider-prompt nil "/code" session))
 
 (provide 'vterm-repl-aider)
