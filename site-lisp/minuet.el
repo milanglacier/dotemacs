@@ -69,7 +69,7 @@ If any function in this list returns non-nil, auto-suggestions will not be shown
     "Timer for debouncing auto-suggestions.")
 
 (defvar minuet-buffer-name "*minuet*" "The basename for minuet buffers")
-(defcustom minuet-provider 'codestral
+(defcustom minuet-provider 'openai-fim-compatible
     "The provider to use for code completion.
 Must be one of the supported providers: codestral, openai, claude, etc."
     :type '(choice (const :tag "Codestral" codestral)
