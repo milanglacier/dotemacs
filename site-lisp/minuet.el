@@ -18,6 +18,24 @@
     "Minuet group."
     :group 'applications)
 
+(defface minuet-suggestion-face
+    '((t :inherit shadow))
+    "Face used for displaying inline suggestions.")
+
+
+(defvar-local minuet--current-overlay nil
+    "Overlay used for displaying the current suggestion.")
+
+
+(defvar-local minuet--last-point nil
+    "Last known cursor position for suggestion overlay.")
+
+(defvar-local minuet--current-suggestions nil
+    "List of current completion suggestions.")
+
+(defvar-local minuet--current-suggestion-index 0
+    "Index of currently displayed suggestion.")
+
 (defvar minuet-buffer-name "*minuet*" "The basename for minuet buffers")
 (defvar minuet-provider 'codestral "The provider of minuet completion")
 (defvar minuet-context-window 12800 "the maximum total characters of the context before and after cursor")
@@ -196,6 +214,81 @@ is a symbol, return its value. Else return itself."
     (cond ((functionp value) (funcall value))
           ((boundp value) (symbol-value value))
           (t value)))
+
+(defun minuet--cleanup-suggestion ()
+    "Remove the current suggestion overlay."
+    (when minuet--current-overlay
+        (delete-overlay minuet--current-overlay)
+        (setq minuet--current-overlay nil))
+    (remove-hook 'post-command-hook #'minuet--check-cursor-moved t)
+    (setq minuet--last-point nil))
+
+(defun minuet--check-cursor-moved ()
+    "Check if cursor moved from last suggestion position."
+    (when (and minuet--last-point
+               (not (eq minuet--last-point (point))))
+        (minuet--cleanup-suggestion)))
+
+(defun minuet--display-suggestion (suggestions &optional index)
+    "Display suggestion from SUGGESTIONS at INDEX using an overlay at point."
+    (minuet--cleanup-suggestion)
+    (when suggestions
+        (let* ((index (or index 0))
+               (total (length suggestions))
+               (suggestion (nth index suggestions))
+               (ov (make-overlay (point) (point))))
+            (setq minuet--current-suggestions suggestions
+                  minuet--current-suggestion-index index
+                  minuet--last-point (point))
+            (add-hook 'post-command-hook #'minuet--check-cursor-moved nil t)
+            (overlay-put ov 'after-string
+                         (propertize (format "%s (%d/%d)"
+                                             suggestion
+                                             (1+ index)
+                                             total)
+                                     'face 'minuet-suggestion-face))
+            (overlay-put ov 'minuet t)
+            (setq minuet--current-overlay ov))))
+
+;;;###autoload
+(defun minuet-next-suggestion ()
+    "Cycle to next suggestion."
+    (interactive)
+    (when (and minuet--current-suggestions
+               minuet--current-overlay)
+        (let ((next-index (mod (1+ minuet--current-suggestion-index)
+                               (length minuet--current-suggestions))))
+            (minuet--display-suggestion minuet--current-suggestions next-index))))
+
+;;;###autoload
+(defun minuet-previous-suggestion ()
+    "Cycle to previous suggestion."
+    (interactive)
+    (when (and minuet--current-suggestions
+               minuet--current-overlay)
+        (let ((prev-index (mod (1- minuet--current-suggestion-index)
+                               (length minuet--current-suggestions))))
+            (minuet--display-suggestion minuet--current-suggestions prev-index))))
+
+;;;###autoload
+(defun minuet-show-suggestion ()
+    "Show code suggestion using overlay at point."
+    (interactive)
+    (minuet--cleanup-suggestion)
+    (let ((current-buffer (current-buffer))
+          (available-p-fn (intern (format "minuet--%s-available-p" minuet-provider)))
+          (complete-fn (intern (format "minuet--%s-complete" minuet-provider)))
+          (context (minuet--get-context)))
+        (unless (funcall available-p-fn)
+            (minuet--log (format "Minuet provider %s is not available" minuet-provider))
+            (error "Minuet provider %s is not available" minuet-provider))
+        (funcall complete-fn
+                 context
+                 (lambda (items)
+                     (setq items (-distinct items))
+                     (with-current-buffer current-buffer
+                         (when items
+                             (minuet--display-suggestion items 0)))))))
 
 (defun minuet--log (message &optional message-p)
     "Log minuet messages into `minuet-buffer-name'. Also print the message when MESSAGE-P is t."
@@ -382,6 +475,35 @@ The `--response--' variable is initialized as an empty list and can
 be used to accumulate text output from a process. After execution,
 `--response--' will contain the collected responses in reverse order."
     `(let (--response--) ,@body))
+
+;;;###autoload
+(defun minuet-accept-suggestion ()
+    "Accept the current overlay suggestion."
+    (interactive)
+    (when (and minuet--current-suggestions
+               minuet--current-overlay)
+        (let ((suggestion (nth minuet--current-suggestion-index
+                               minuet--current-suggestions)))
+            (minuet--cleanup-suggestion)
+            (insert suggestion))))
+
+;;;###autoload
+(defun minuet-dismiss-suggestion ()
+    "Dismiss the current overlay suggestion."
+    (interactive)
+    (minuet--cleanup-suggestion))
+
+;;;###autoload
+(defun minuet-accept-suggestion-line ()
+    "Accept only the first line of the current overlay suggestion."
+    (interactive)
+    (when (and minuet--current-suggestions
+               minuet--current-overlay)
+        (let* ((suggestion (nth minuet--current-suggestion-index
+                                minuet--current-suggestions))
+               (first-line (car (split-string suggestion "\n"))))
+            (minuet--cleanup-suggestion)
+            (insert first-line))))
 
 ;;;###autoload
 (defun minuet-completion-in-region ()
