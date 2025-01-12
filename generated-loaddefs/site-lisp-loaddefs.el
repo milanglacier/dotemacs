@@ -23,6 +23,18 @@ Read a tag from minibuffer and jump to the tag.
 
 ;;; Generated autoloads from ../site-lisp/minuet.el
 
+(autoload 'minuet-next-suggestion "../site-lisp/minuet" "\
+Cycle to next suggestion." t)
+(autoload 'minuet-previous-suggestion "../site-lisp/minuet" "\
+Cycle to previous suggestion." t)
+(autoload 'minuet-show-suggestion "../site-lisp/minuet" "\
+Show code suggestion using overlay at point." t)
+(autoload 'minuet-accept-suggestion "../site-lisp/minuet" "\
+Accept the current overlay suggestion." t)
+(autoload 'minuet-dismiss-suggestion "../site-lisp/minuet" "\
+Dismiss the current overlay suggestion." t)
+(autoload 'minuet-accept-suggestion-line "../site-lisp/minuet" "\
+Accept only the first line of the current overlay suggestion." t)
 (autoload 'minuet-completion-in-region "../site-lisp/minuet" "\
 Complete code in region with LLM." t)
 (register-definition-prefixes "../site-lisp/minuet" '("minuet-"))
@@ -38,8 +50,9 @@ functions, the function to start the repl, the function to send the
 region and the corresponding operator, and the function to hide the
 REPL window if it exists.
 
-REPL-NAME is a string, REPL-CMD is a form evaluated to a string. ARGS
-is a plist, the following properties are supported:
+REPL-NAME is a string, REPL-CMD is a string, a form evaluated to a
+string, or a function evaluated to a string. ARGS is a plist, the
+following properties are supported:
 
 :bracketed-paste-p whether send the string with bracketed paste mode,
 the default value is nil.  You can change the behavior at run time by
