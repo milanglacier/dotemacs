@@ -62,7 +62,7 @@ If any function in this list returns non-nil, auto-suggestions will not be shown
     "List of current active request processes for this buffer.")
 
 
-(defvar-local minuet--last-suggestion-time nil
+(defvar-local minuet--last-auto-suggestion-time nil
     "Timestamp of last auto-suggestion.")
 
 (defvar-local minuet--debounce-timer nil
@@ -883,8 +883,8 @@ be used to accumulate text output from a process. After execution,
 
 (defun minuet--maybe-show-suggestion ()
     "Show suggestion with debouncing and throttling."
-    (when (or (null minuet--last-suggestion-time)
-              (> (float-time (time-since minuet--last-suggestion-time))
+    (when (or (null minuet--last-auto-suggestion-time)
+              (> (float-time (time-since minuet--last-auto-suggestion-time))
                  minuet-auto-suggestion-throttle-delay))
         (when minuet--debounce-timer
             (cancel-timer minuet--debounce-timer))
@@ -896,7 +896,7 @@ be used to accumulate text output from a process. After execution,
                               (or (null minuet--auto-last-point)
                                   (not (eq minuet--auto-last-point (point))))
                               (not (run-hook-with-args-until-success 'minuet-auto-suggestion-block-functions)))
-                       (setq minuet--last-suggestion-time (current-time)
+                       (setq minuet--last-auto-suggestion-time (current-time)
                              minuet--auto-last-point (point))
                        (minuet-show-suggestion)))))))
 
