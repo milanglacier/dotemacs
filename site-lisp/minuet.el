@@ -275,21 +275,23 @@ is a symbol, return its value. Else return itself."
 (defun minuet-next-suggestion ()
     "Cycle to next suggestion."
     (interactive)
-    (when (and minuet--current-suggestions
-               minuet--current-overlay)
-        (let ((next-index (mod (1+ minuet--current-suggestion-index)
-                               (length minuet--current-suggestions))))
-            (minuet--display-suggestion minuet--current-suggestions next-index))))
+    (if (and minuet--current-suggestions
+             minuet--current-overlay)
+            (let ((next-index (mod (1+ minuet--current-suggestion-index)
+                                   (length minuet--current-suggestions))))
+                (minuet--display-suggestion minuet--current-suggestions next-index))
+        (minuet-show-suggestion)))
 
 ;;;###autoload
 (defun minuet-previous-suggestion ()
     "Cycle to previous suggestion."
     (interactive)
-    (when (and minuet--current-suggestions
+    (if (and minuet--current-suggestions
                minuet--current-overlay)
         (let ((prev-index (mod (1- minuet--current-suggestion-index)
                                (length minuet--current-suggestions))))
-            (minuet--display-suggestion minuet--current-suggestions prev-index))))
+            (minuet--display-suggestion minuet--current-suggestions prev-index))
+        (funcall minuet-show-suggestion)))
 
 ;;;###autoload
 (defun minuet-show-suggestion ()
