@@ -37,6 +37,27 @@ Dismiss the current overlay suggestion." t)
 Accept only the first line of the current overlay suggestion." t)
 (autoload 'minuet-completion-in-region "../site-lisp/minuet" "\
 Complete code in region with LLM." t)
+(autoload 'minuet-auto-suggestion-mode "../site-lisp/minuet" "\
+Toggle automatic code suggestions.
+
+When enabled, Minuet will automatically show suggestions while you type.
+
+This is a minor mode.  If called interactively, toggle the
+`Minuet-Auto-Suggestion mode' mode.  If the prefix argument is
+positive, enable the mode, and if it is zero or negative, disable
+the mode.
+
+If called from Lisp, toggle the mode if ARG is `toggle'.  Enable
+the mode if ARG is nil, omitted, or is a positive number.
+Disable the mode if ARG is a negative number.
+
+To check whether the minor mode is enabled in the current buffer,
+evaluate `minuet-auto-suggestion-mode'.
+
+The mode's hook is called both when the mode is enabled and when
+it is disabled.
+
+(fn &optional ARG)" t)
 (register-definition-prefixes "../site-lisp/minuet" '("minuet-"))
 
 

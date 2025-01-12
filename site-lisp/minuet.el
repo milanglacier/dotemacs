@@ -18,6 +18,24 @@
     "Minuet group."
     :group 'applications)
 
+
+(defcustom minuet-auto-suggestion-debounce-delay 0.2
+    "Debounce delay in seconds for auto-suggestions."
+    :type 'number
+    :group 'minuet)
+
+(defcustom minuet-auto-suggestion-block-functions '(minuet-evil-not-insert-state-p)
+    "List of functions that determine whether auto-suggestions should be blocked.
+Each function should return non-nil if auto-suggestions should be blocked.
+If any function in this list returns non-nil, auto-suggestions will not be shown."
+    :type '(repeat function)
+    :group 'minuet)
+
+(defcustom minuet-auto-suggestion-throttle-delay 1.0
+    "Minimum time in seconds between auto-suggestions."
+    :type 'number
+    :group 'minuet)
+
 (defface minuet-suggestion-face
     '((t :inherit shadow))
     "Face used for displaying inline suggestions.")
@@ -30,6 +48,10 @@
 (defvar-local minuet--last-point nil
     "Last known cursor position for suggestion overlay.")
 
+(defvar-local minuet--auto-last-point nil
+    "Last known cursor position for auto-suggestion.")
+
+
 (defvar-local minuet--current-suggestions nil
     "List of current completion suggestions.")
 
@@ -38,6 +60,13 @@
 
 (defvar-local minuet--current-requests nil
     "List of current active request processes for this buffer.")
+
+
+(defvar-local minuet--last-suggestion-time nil
+    "Timestamp of last auto-suggestion.")
+
+(defvar-local minuet--debounce-timer nil
+    "Timer for debouncing auto-suggestions.")
 
 (defvar minuet-buffer-name "*minuet*" "The basename for minuet buffers")
 (defvar minuet-provider 'codestral "The provider of minuet completion")
@@ -198,6 +227,13 @@ def fibonacci(n):
     ;;   :topP 0.8))
     "config options for Minuet Gemini provider")
 
+
+(defun minuet-evil-not-insert-state-p ()
+    "Return non-nil if evil is loaded and not in insert or emacs state."
+    (and (bound-and-true-p evil-local-mode)
+         (not (or (evil-insert-state-p)
+                  (evil-emacs-state-p)))))
+
 (defun minuet-set-optional-options (options key val &optional field)
     "Set the value of KEY in the FIELD of OPTIONS to VAL. If FIELD is
 not provided, it defaults to :optional. If VAL is nil, then
@@ -287,10 +323,10 @@ is a symbol, return its value. Else return itself."
     "Cycle to previous suggestion."
     (interactive)
     (if (and minuet--current-suggestions
-               minuet--current-overlay)
-        (let ((prev-index (mod (1- minuet--current-suggestion-index)
-                               (length minuet--current-suggestions))))
-            (minuet--display-suggestion minuet--current-suggestions prev-index))
+             minuet--current-overlay)
+            (let ((prev-index (mod (1- minuet--current-suggestion-index)
+                                   (length minuet--current-suggestions))))
+                (minuet--display-suggestion minuet--current-suggestions prev-index))
         (funcall minuet-show-suggestion)))
 
 ;;;###autoload
@@ -839,6 +875,49 @@ be used to accumulate text output from a process. After execution,
               (minuet--handle-chat-completion-timeout
                context err --response-- #'minuet--gemini-get-text-fn "Gemini" callback)))
       minuet--current-requests)))
+
+
+(defun minuet--setup-auto-suggestion ()
+    "Setup auto-suggestion with post-command-hook."
+    (add-hook 'post-command-hook #'minuet--maybe-show-suggestion nil t))
+
+(defun minuet--maybe-show-suggestion ()
+    "Show suggestion with debouncing and throttling."
+    (when (or (null minuet--last-suggestion-time)
+              (> (float-time (time-since minuet--last-suggestion-time))
+                 minuet-auto-suggestion-throttle-delay))
+        (when minuet--debounce-timer
+            (cancel-timer minuet--debounce-timer))
+        (setq minuet--debounce-timer
+              (run-with-timer
+               minuet-auto-suggestion-debounce-delay nil
+               (lambda ()
+                   (when (and (eq (window-buffer (selected-window)) (current-buffer))
+                              (or (null minuet--auto-last-point)
+                                  (not (eq minuet--auto-last-point (point))))
+                              (not (run-hook-with-args-until-success 'minuet-auto-suggestion-block-functions)))
+                       (setq minuet--last-suggestion-time (current-time)
+                             minuet--auto-last-point (point))
+                       (minuet-show-suggestion)))))))
+
+(defun minuet--cleanup-auto-suggestion ()
+    "Clean up auto-suggestion timers and hooks."
+    (remove-hook 'post-command-hook #'minuet--maybe-show-suggestion t)
+    (when minuet--debounce-timer
+        (cancel-timer minuet--debounce-timer)
+        (setq minuet--debounce-timer nil))
+    (setq minuet--auto-last-point nil))
+
+;;;###autoload
+(define-minor-mode minuet-auto-suggestion-mode
+    "Toggle automatic code suggestions.
+When enabled, Minuet will automatically show suggestions while you type."
+    :init-value nil
+    :lighter " Minuet"
+    :group 'minuet
+    (if minuet-auto-suggestion-mode
+            (minuet--setup-auto-suggestion)
+        (minuet--cleanup-auto-suggestion)))
 
 (provide 'minuet)
 ;;; minuet.el ends here
