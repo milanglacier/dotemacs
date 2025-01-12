@@ -36,6 +36,9 @@
 (defvar-local minuet--current-suggestion-index 0
     "Index of currently displayed suggestion.")
 
+(defvar-local minuet--current-requests nil
+    "List of current active request processes for this buffer.")
+
 (defvar minuet-buffer-name "*minuet*" "The basename for minuet buffers")
 (defvar minuet-provider 'codestral "The provider of minuet completion")
 (defvar minuet-context-window 12800 "the maximum total characters of the context before and after cursor")
@@ -215,40 +218,58 @@ is a symbol, return its value. Else return itself."
           ((boundp value) (symbol-value value))
           (t value)))
 
-(defun minuet--cleanup-suggestion ()
-    "Remove the current suggestion overlay."
+(defun minuet--cancel-requests ()
+    "Cancel all current minuet requests for this buffer."
+    (when minuet--current-requests
+        (dolist (proc minuet--current-requests)
+            (when (process-live-p proc)
+                (minuet--log (format "%s process killed" (prin1-to-string proc)))
+                (delete-process proc)))
+        (setq minuet--current-requests nil)))
+
+(defun minuet--cleanup-suggestion (&optional no-cancel)
+    "Remove the current suggestion overlay and cancel any pending requests unless NO-CANCEL is t."
+    (unless no-cancel
+        (minuet--cancel-requests))
     (when minuet--current-overlay
         (delete-overlay minuet--current-overlay)
         (setq minuet--current-overlay nil))
-    (remove-hook 'post-command-hook #'minuet--check-cursor-moved t)
+    (remove-hook 'post-command-hook #'minuet--on-cursor-moved t)
     (setq minuet--last-point nil))
 
-(defun minuet--check-cursor-moved ()
+(defun minuet--cursor-moved-p ()
     "Check if cursor moved from last suggestion position."
-    (when (and minuet--last-point
-               (not (eq minuet--last-point (point))))
+    (and minuet--last-point
+         (not (eq minuet--last-point (point)))))
+
+(defun minuet--on-cursor-moved ()
+    (when (minuet--cursor-moved-p)
         (minuet--cleanup-suggestion)))
 
 (defun minuet--display-suggestion (suggestions &optional index)
     "Display suggestion from SUGGESTIONS at INDEX using an overlay at point."
-    (minuet--cleanup-suggestion)
-    (when suggestions
-        (let* ((index (or index 0))
-               (total (length suggestions))
-               (suggestion (nth index suggestions))
-               (ov (make-overlay (point) (point))))
-            (setq minuet--current-suggestions suggestions
-                  minuet--current-suggestion-index index
-                  minuet--last-point (point))
-            (add-hook 'post-command-hook #'minuet--check-cursor-moved nil t)
-            (overlay-put ov 'after-string
-                         (propertize (format "%s (%d/%d)"
-                                             suggestion
-                                             (1+ index)
-                                             total)
-                                     'face 'minuet-suggestion-face))
-            (overlay-put ov 'minuet t)
-            (setq minuet--current-overlay ov))))
+    ;; we only cancel requests when cursor is moved. Because the
+    ;; completion items may be accumulated during multiple concurrent
+    ;; curl requests.
+    (minuet--cleanup-suggestion t)
+    (add-hook 'post-command-hook #'minuet--on-cursor-moved nil t)
+    (when-let* ((suggestions suggestions)
+                (cursor-not-moved (not (minuet--cursor-moved-p)))
+                (index (or index 0))
+                (total (length suggestions))
+                (suggestion (nth index suggestions))
+                (ov (make-overlay (point) (point))))
+        (setq minuet--current-suggestions suggestions
+              minuet--current-suggestion-index index
+              minuet--last-point (point))
+        (overlay-put ov 'after-string
+                     (propertize (format "%s (%d/%d)"
+                                         suggestion
+                                         (1+ index)
+                                         total)
+                                 'face 'minuet-suggestion-face))
+        (overlay-put ov 'minuet t)
+        (setq minuet--current-overlay ov)))
 
 ;;;###autoload
 (defun minuet-next-suggestion ()
@@ -275,6 +296,7 @@ is a symbol, return its value. Else return itself."
     "Show code suggestion using overlay at point."
     (interactive)
     (minuet--cleanup-suggestion)
+    (setq minuet--last-point (point))
     (let ((current-buffer (current-buffer))
           (available-p-fn (intern (format "minuet--%s-available-p" minuet-provider)))
           (complete-fn (intern (format "minuet--%s-complete" minuet-provider)))
@@ -287,7 +309,7 @@ is a symbol, return its value. Else return itself."
                  (lambda (items)
                      (setq items (-distinct items))
                      (with-current-buffer current-buffer
-                         (when items
+                         (when (and items (not (minuet--cursor-moved-p)))
                              (minuet--display-suggestion items 0)))))))
 
 (defun minuet--log (message &optional message-p)
@@ -608,45 +630,47 @@ be used to accumulate text output from a process. After execution,
           completion-items)
         (dotimes (_ total-try)
             (minuet--with-temp-response
-             (plz 'post (plist-get options :end-point)
-                 :headers `(("Content-Type" . "application/json")
-                            ("Accept" . "application/json")
-                            ("Authorization" . ,(concat "Bearer " (getenv (plist-get options :api-key)))))
-                 :timeout minuet-request-timeout
-                 :body (json-serialize `(,@(plist-get options :optional)
-                                         :stream t
-                                         :model ,(plist-get options :model)
-                                         :prompt ,(format "%s\n%s"
-                                                          (plist-get context :additional)
-                                                          (plist-get context :before-cursor))
-                                         :suffix ,(plist-get context :after-cursor)))
-                 :as 'string
-                 :filter (minuet--make-process-stream-filter --response--)
-                 :then
-                 (lambda (json)
-                     (when-let ((result (minuet--stream-decode json get-text-fn)))
-                         ;; insert the current result into the completion items list
-                         (push result completion-items))
-                     (setq completion-items (minuet--filter-context-sequence-in-items
-                                             completion-items
-                                             context))
-                     (setq completion-items (minuet--remove-spaces completion-items))
-                     (funcall callback completion-items))
-                 :else
-                 (lambda (err)
-                     (if (equal (car (plz-error-curl-error err)) 28)
-                             (progn
-                                 (minuet--log (format "%s Request timeout" name))
-                                 (when-let ((result (minuet--stream-decode-raw --response-- get-text-fn)))
-                                     (push result completion-items)))
-                         (minuet--log (format "An error occured when sending request to %s" name))
-                         (minuet--log err))
-                     (setq completion-items
-                           (minuet--filter-context-sequence-in-items
-                            completion-items
-                            context))
-                     (setq completion-items (minuet--remove-spaces completion-items))
-                     (funcall callback completion-items)))))))
+             (push
+              (plz 'post (plist-get options :end-point)
+                  :headers `(("Content-Type" . "application/json")
+                             ("Accept" . "application/json")
+                             ("Authorization" . ,(concat "Bearer " (getenv (plist-get options :api-key)))))
+                  :timeout minuet-request-timeout
+                  :body (json-serialize `(,@(plist-get options :optional)
+                                          :stream t
+                                          :model ,(plist-get options :model)
+                                          :prompt ,(format "%s\n%s"
+                                                           (plist-get context :additional)
+                                                           (plist-get context :before-cursor))
+                                          :suffix ,(plist-get context :after-cursor)))
+                  :as 'string
+                  :filter (minuet--make-process-stream-filter --response--)
+                  :then
+                  (lambda (json)
+                      (when-let ((result (minuet--stream-decode json get-text-fn)))
+                          ;; insert the current result into the completion items list
+                          (push result completion-items))
+                      (setq completion-items (minuet--filter-context-sequence-in-items
+                                              completion-items
+                                              context))
+                      (setq completion-items (minuet--remove-spaces completion-items))
+                      (funcall callback completion-items))
+                  :else
+                  (lambda (err)
+                      (if (equal (car (plz-error-curl-error err)) 28)
+                              (progn
+                                  (minuet--log (format "%s Request timeout" name))
+                                  (when-let ((result (minuet--stream-decode-raw --response-- get-text-fn)))
+                                      (push result completion-items)))
+                          (minuet--log (format "An error occured when sending request to %s" name))
+                          (minuet--log err))
+                      (setq completion-items
+                            (minuet--filter-context-sequence-in-items
+                             completion-items
+                             context))
+                      (setq completion-items (minuet--remove-spaces completion-items))
+                      (funcall callback completion-items)))
+              minuet--current-requests)))))
 
 (defun minuet--codestral-complete (context callback)
     (minuet--openai-fim-complete-base
@@ -677,36 +701,38 @@ be used to accumulate text output from a process. After execution,
 
 (defun minuet--openai-complete-base (options context callback)
     (minuet--with-temp-response
-     (plz 'post (plist-get options :end-point)
-         :headers `(("Content-Type" . "application/json")
-                    ("Accept" . "application/json")
-                    ("Authorization" . ,(concat "Bearer " (getenv (plist-get options :api-key)))))
-         :timeout minuet-request-timeout
-         :body (json-serialize `(,@(plist-get options :optional)
-                                 :stream t
-                                 :model ,(plist-get options :model)
-                                 :messages ,(vconcat
-                                             `((:role "system"
-                                                :content ,(minuet--make-system-prompt (plist-get options :system)))
-                                               ,@(minuet--eval-value (plist-get options :fewshots))
-                                               (:role "user"
-                                                :content ,(minuet--make-chat-llm-shot context))))))
-         :as 'string
-         :filter (minuet--make-process-stream-filter --response--)
-         :then
-         (lambda (json)
-             (when-let* ((result (minuet--stream-decode json #'minuet--openai-get-text-fn))
-                         (completion-items (minuet--parse-completion-itmes-default result))
-                         (completion-items (minuet--filter-context-sequence-in-items
-                                            completion-items
-                                            context))
-                         (completion-items (minuet--remove-spaces completion-items)))
-                 ;; insert the current result into the completion items list
-                 (funcall callback completion-items)))
-         :else
-         (lambda (err)
-             (minuet--handle-chat-completion-timeout
-              context err --response-- #'minuet--openai-get-text-fn "OpenAI" callback)))))
+     (push
+      (plz 'post (plist-get options :end-point)
+          :headers `(("Content-Type" . "application/json")
+                     ("Accept" . "application/json")
+                     ("Authorization" . ,(concat "Bearer " (getenv (plist-get options :api-key)))))
+          :timeout minuet-request-timeout
+          :body (json-serialize `(,@(plist-get options :optional)
+                                  :stream t
+                                  :model ,(plist-get options :model)
+                                  :messages ,(vconcat
+                                              `((:role "system"
+                                                 :content ,(minuet--make-system-prompt (plist-get options :system)))
+                                                ,@(minuet--eval-value (plist-get options :fewshots))
+                                                (:role "user"
+                                                 :content ,(minuet--make-chat-llm-shot context))))))
+          :as 'string
+          :filter (minuet--make-process-stream-filter --response--)
+          :then
+          (lambda (json)
+              (when-let* ((result (minuet--stream-decode json #'minuet--openai-get-text-fn))
+                          (completion-items (minuet--parse-completion-itmes-default result))
+                          (completion-items (minuet--filter-context-sequence-in-items
+                                             completion-items
+                                             context))
+                          (completion-items (minuet--remove-spaces completion-items)))
+                  ;; insert the current result into the completion items list
+                  (funcall callback completion-items)))
+          :else
+          (lambda (err)
+              (minuet--handle-chat-completion-timeout
+               context err --response-- #'minuet--openai-get-text-fn "OpenAI" callback)))
+      minuet--current-requests)))
 
 (defun minuet--openai-complete (context callback)
     (minuet--openai-complete-base
@@ -726,38 +752,40 @@ be used to accumulate text output from a process. After execution,
 
 (defun minuet--claude-complete (context callback)
     (minuet--with-temp-response
-     (plz 'post "https://api.anthropic.com/v1/messages"
-         :headers `(("Content-Type" . "application/json")
-                    ("Accept" . "application/json")
-                    ("x-api-key" . ,(getenv "ANTHROPIC_API_KEY"))
-                    ("anthropic-version" . "2023-06-01"))
-         :timeout minuet-request-timeout
-         :body (json-serialize (let ((options (copy-tree minuet-claude-options)))
-                                   `(,@(plist-get options :optional)
-                                     :stream t
-                                     :model ,(plist-get options :model)
-                                     :system ,(minuet--make-system-prompt (plist-get options :system))
-                                     :max_tokens ,(plist-get options :max_tokens)
-                                     :messages ,(vconcat
-                                                 `(,@(minuet--eval-value (plist-get options :fewshots))
-                                                   (:role "user"
-                                                    :content ,(minuet--make-chat-llm-shot context)))))))
-         :as 'string
-         :filter (minuet--make-process-stream-filter --response--)
-         :then
-         (lambda (json)
-             (when-let* ((result (minuet--stream-decode json #'minuet--claude-get-text-fn))
-                         (completion-items (minuet--parse-completion-itmes-default result))
-                         (completion-items (minuet--filter-context-sequence-in-items
-                                            completion-items
-                                            context))
-                         (completion-items (minuet--remove-spaces completion-items)))
-                 ;; insert the current result into the completion items list
-                 (funcall callback completion-items)))
-         :else
-         (lambda (err)
-             (minuet--handle-chat-completion-timeout
-              context err --response-- #'minuet--claude-get-text-fn "Claude" callback)))))
+     (push
+      (plz 'post "https://api.anthropic.com/v1/messages"
+          :headers `(("Content-Type" . "application/json")
+                     ("Accept" . "application/json")
+                     ("x-api-key" . ,(getenv "ANTHROPIC_API_KEY"))
+                     ("anthropic-version" . "2023-06-01"))
+          :timeout minuet-request-timeout
+          :body (json-serialize (let ((options (copy-tree minuet-claude-options)))
+                                    `(,@(plist-get options :optional)
+                                      :stream t
+                                      :model ,(plist-get options :model)
+                                      :system ,(minuet--make-system-prompt (plist-get options :system))
+                                      :max_tokens ,(plist-get options :max_tokens)
+                                      :messages ,(vconcat
+                                                  `(,@(minuet--eval-value (plist-get options :fewshots))
+                                                    (:role "user"
+                                                     :content ,(minuet--make-chat-llm-shot context)))))))
+          :as 'string
+          :filter (minuet--make-process-stream-filter --response--)
+          :then
+          (lambda (json)
+              (when-let* ((result (minuet--stream-decode json #'minuet--claude-get-text-fn))
+                          (completion-items (minuet--parse-completion-itmes-default result))
+                          (completion-items (minuet--filter-context-sequence-in-items
+                                             completion-items
+                                             context))
+                          (completion-items (minuet--remove-spaces completion-items)))
+                  ;; insert the current result into the completion items list
+                  (funcall callback completion-items)))
+          :else
+          (lambda (err)
+              (minuet--handle-chat-completion-timeout
+               context err --response-- #'minuet--claude-get-text-fn "Claude" callback)))
+      minuet--current-requests)))
 
 (defun minuet--gemini-get-text-fn (json)
     (--> json
@@ -770,43 +798,45 @@ be used to accumulate text output from a process. After execution,
 
 (defun minuet--gemini-complete (context callback)
     (minuet--with-temp-response
-     (plz 'post (format "https://generativelanguage.googleapis.com/v1beta/models/%s:streamGenerateContent?alt=sse&key=%s"
-                        (plist-get minuet-gemini-options :model)
-                        (getenv "GEMINI_API_KEY"))
-         :headers `(("Content-Type" . "application/json")
-                    ("Accept" . "application/json"))
-         :timeout minuet-request-timeout
-         :body (json-serialize
-                (let* ((options (copy-tree minuet-gemini-options))
-                       (fewshots (minuet--eval-value (plist-get options :fewshots)))
-                       (fewshots (mapcar
-                                  (lambda (shot)
-                                      `(:role
-                                        ,(if (equal (plist-get shot :role) "user") "user" "model")
-                                        :parts
-                                        [(:text ,(plist-get shot :content))]))
-                                  fewshots)))
-                    `(,@(plist-get options :optional)
-                      :system_instruction (:parts (:text ,(minuet--make-system-prompt (plist-get options :system))))
-                      :contents ,(vconcat
-                                  `(,@fewshots
-                                    (:role "user"
-                                     :parts [(:text ,(minuet--make-chat-llm-shot context))]))))))
-         :as 'string
-         :filter (minuet--make-process-stream-filter --response--)
-         :then
-         (lambda (json)
-             (when-let* ((result (minuet--stream-decode json #'minuet--gemini-get-text-fn))
-                         (completion-items (minuet--parse-completion-itmes-default result))
-                         (completion-items (minuet--filter-context-sequence-in-items
-                                            completion-items
-                                            context))
-                         (completion-items (minuet--remove-spaces completion-items)))
-                 (funcall callback completion-items)))
-         :else
-         (lambda (err)
-             (minuet--handle-chat-completion-timeout
-              context err --response-- #'minuet--gemini-get-text-fn "Gemini" callback)))))
+     (push
+      (plz 'post (format "https://generativelanguage.googleapis.com/v1beta/models/%s:streamGenerateContent?alt=sse&key=%s"
+                         (plist-get minuet-gemini-options :model)
+                         (getenv "GEMINI_API_KEY"))
+          :headers `(("Content-Type" . "application/json")
+                     ("Accept" . "application/json"))
+          :timeout minuet-request-timeout
+          :body (json-serialize
+                 (let* ((options (copy-tree minuet-gemini-options))
+                        (fewshots (minuet--eval-value (plist-get options :fewshots)))
+                        (fewshots (mapcar
+                                   (lambda (shot)
+                                       `(:role
+                                         ,(if (equal (plist-get shot :role) "user") "user" "model")
+                                         :parts
+                                         [(:text ,(plist-get shot :content))]))
+                                   fewshots)))
+                     `(,@(plist-get options :optional)
+                       :system_instruction (:parts (:text ,(minuet--make-system-prompt (plist-get options :system))))
+                       :contents ,(vconcat
+                                   `(,@fewshots
+                                     (:role "user"
+                                      :parts [(:text ,(minuet--make-chat-llm-shot context))]))))))
+          :as 'string
+          :filter (minuet--make-process-stream-filter --response--)
+          :then
+          (lambda (json)
+              (when-let* ((result (minuet--stream-decode json #'minuet--gemini-get-text-fn))
+                          (completion-items (minuet--parse-completion-itmes-default result))
+                          (completion-items (minuet--filter-context-sequence-in-items
+                                             completion-items
+                                             context))
+                          (completion-items (minuet--remove-spaces completion-items)))
+                  (funcall callback completion-items)))
+          :else
+          (lambda (err)
+              (minuet--handle-chat-completion-timeout
+               context err --response-- #'minuet--gemini-get-text-fn "Gemini" callback)))
+      minuet--current-requests)))
 
 (provide 'minuet)
 ;;; minuet.el ends here
