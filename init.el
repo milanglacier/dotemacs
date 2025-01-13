@@ -10,7 +10,7 @@
     "the directory of my library functions")
 (defvar mg-site-lisp-dir (file-name-concat user-emacs-directory "site-lisp")
     "the root directory of third-party lisp files.")
-(defvar mg-site-lisp-dirs `(,mg-site-lisp-dir ,(file-name-concat mg-site-lisp-dir "minuet"))
+(defvar mg-site-lisp-dirs `(,mg-site-lisp-dir)
     "the directories of third-party lisp files.")
 
 (defvar mg-autoloads-file (file-name-concat user-emacs-directory "generated-loaddefs" "lib-loaddefs.el")

@@ -21,46 +21,6 @@ Read a tag from minibuffer and jump to the tag.
 (register-definition-prefixes "../site-lisp/evil-ts" '("evil-ts-"))
 
 
-;;; Generated autoloads from ../site-lisp/minuet/minuet.el
-
-(autoload 'minuet-next-suggestion "../site-lisp/minuet/minuet" "\
-Cycle to next suggestion." t)
-(autoload 'minuet-previous-suggestion "../site-lisp/minuet/minuet" "\
-Cycle to previous suggestion." t)
-(autoload 'minuet-show-suggestion "../site-lisp/minuet/minuet" "\
-Show code suggestion using overlay at point." t)
-(autoload 'minuet-accept-suggestion "../site-lisp/minuet/minuet" "\
-Accept the current overlay suggestion." t)
-(autoload 'minuet-dismiss-suggestion "../site-lisp/minuet/minuet" "\
-Dismiss the current overlay suggestion." t)
-(autoload 'minuet-accept-suggestion-line "../site-lisp/minuet/minuet" "\
-Accept only the first line of the current overlay suggestion." t)
-(autoload 'minuet-completion-in-region "../site-lisp/minuet/minuet" "\
-Complete code in region with LLM." t)
-(autoload 'minuet-auto-suggestion-mode "../site-lisp/minuet/minuet" "\
-Toggle automatic code suggestions.
-
-When enabled, Minuet will automatically show suggestions while you type.
-
-This is a minor mode.  If called interactively, toggle the
-`Minuet-Auto-Suggestion mode' mode.  If the prefix argument is
-positive, enable the mode, and if it is zero or negative, disable
-the mode.
-
-If called from Lisp, toggle the mode if ARG is `toggle'.  Enable
-the mode if ARG is nil, omitted, or is a positive number.
-Disable the mode if ARG is a negative number.
-
-To check whether the minor mode is enabled in the current buffer,
-evaluate `minuet-auto-suggestion-mode'.
-
-The mode's hook is called both when the mode is enabled and when
-it is disabled.
-
-(fn &optional ARG)" t)
-(register-definition-prefixes "../site-lisp/minuet/minuet" '("minuet-"))
-
-
 ;;; Generated autoloads from ../site-lisp/vterm-repl.el
 
 (autoload 'vtr-create-schema "../site-lisp/vterm-repl" "\
