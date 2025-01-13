@@ -21,23 +21,23 @@ Read a tag from minibuffer and jump to the tag.
 (register-definition-prefixes "../site-lisp/evil-ts" '("evil-ts-"))
 
 
-;;; Generated autoloads from ../site-lisp/minuet.el
+;;; Generated autoloads from ../site-lisp/minuet/minuet.el
 
-(autoload 'minuet-next-suggestion "../site-lisp/minuet" "\
+(autoload 'minuet-next-suggestion "../site-lisp/minuet/minuet" "\
 Cycle to next suggestion." t)
-(autoload 'minuet-previous-suggestion "../site-lisp/minuet" "\
+(autoload 'minuet-previous-suggestion "../site-lisp/minuet/minuet" "\
 Cycle to previous suggestion." t)
-(autoload 'minuet-show-suggestion "../site-lisp/minuet" "\
+(autoload 'minuet-show-suggestion "../site-lisp/minuet/minuet" "\
 Show code suggestion using overlay at point." t)
-(autoload 'minuet-accept-suggestion "../site-lisp/minuet" "\
+(autoload 'minuet-accept-suggestion "../site-lisp/minuet/minuet" "\
 Accept the current overlay suggestion." t)
-(autoload 'minuet-dismiss-suggestion "../site-lisp/minuet" "\
+(autoload 'minuet-dismiss-suggestion "../site-lisp/minuet/minuet" "\
 Dismiss the current overlay suggestion." t)
-(autoload 'minuet-accept-suggestion-line "../site-lisp/minuet" "\
+(autoload 'minuet-accept-suggestion-line "../site-lisp/minuet/minuet" "\
 Accept only the first line of the current overlay suggestion." t)
-(autoload 'minuet-completion-in-region "../site-lisp/minuet" "\
+(autoload 'minuet-completion-in-region "../site-lisp/minuet/minuet" "\
 Complete code in region with LLM." t)
-(autoload 'minuet-auto-suggestion-mode "../site-lisp/minuet" "\
+(autoload 'minuet-auto-suggestion-mode "../site-lisp/minuet/minuet" "\
 Toggle automatic code suggestions.
 
 When enabled, Minuet will automatically show suggestions while you type.
@@ -58,7 +58,7 @@ The mode's hook is called both when the mode is enabled and when
 it is disabled.
 
 (fn &optional ARG)" t)
-(register-definition-prefixes "../site-lisp/minuet" '("minuet-"))
+(register-definition-prefixes "../site-lisp/minuet/minuet" '("minuet-"))
 
 
 ;;; Generated autoloads from ../site-lisp/vterm-repl.el

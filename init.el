@@ -9,7 +9,9 @@
 (defvar mg-lib-dir (file-name-concat user-emacs-directory "lisp" "lib")
     "the directory of my library functions")
 (defvar mg-site-lisp-dir (file-name-concat user-emacs-directory "site-lisp")
-    "the directory of third-party lisp files.")
+    "the root directory of third-party lisp files.")
+(defvar mg-site-lisp-dirs `(,mg-site-lisp-dir ,(file-name-concat mg-site-lisp-dir "minuet"))
+    "the directories of third-party lisp files.")
 
 (defvar mg-autoloads-file (file-name-concat user-emacs-directory "generated-loaddefs" "lib-loaddefs.el")
     "the file of my generated autoload definitions")
@@ -20,7 +22,7 @@
 
 (push mg-config-dir load-path)
 (push mg-lib-dir load-path)
-(push mg-site-lisp-dir load-path)
+(dolist (dir mg-site-lisp-dirs) (push dir load-path))
 (setq custom-file (file-name-concat user-emacs-directory "custom.el"))
 
 (setq use-package-expand-minimally t
