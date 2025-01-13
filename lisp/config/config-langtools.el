@@ -8,7 +8,8 @@
 (straight-use-package 'reformatter)
 (straight-use-package 'dape)
 
-(straight-use-package 'plz) ; used for minuet
+;; AI Code Completion
+(straight-use-package '(minuet :host github :repo "milanglacier/minuet-ai.el"))
 
 (use-package citre
     :init
