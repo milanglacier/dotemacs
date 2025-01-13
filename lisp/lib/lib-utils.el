@@ -17,7 +17,7 @@ nil, use `mg-autoloads-file'."
 ;;;###autoload
 (defun mg-update-site-lisp-autoloads ()
     (interactive)
-    (mg-update-all-autoloads mg-site-lisp-dir mg-site-lisp-autoloads-file))
+    (mg-update-all-autoloads mg-site-lisp-dirs mg-site-lisp-autoloads-file))
 
 ;;;###autoload
 (defmacro mg-run-hook-once (hooks func &rest args)
