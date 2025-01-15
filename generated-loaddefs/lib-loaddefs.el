@@ -139,7 +139,7 @@ otherwise use the existed one
 (autoload 'mg--theme-set-dynamically "../lisp/lib/lib-colorscheme" "\
 Select a theme at random from `mg-day-themes' or
 `mg-night-themes', depending on the current time of day. The
-environment variable `CURRENT_BACKGROUND' can override current time.
+environment variable `THEME_MODE' can override current time.
 The time periods for day and night are specified by
 `mg-day-to-night-o-clock' and `mg-night-to-day-o-clock',
 respectively.")
