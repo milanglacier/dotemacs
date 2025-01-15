@@ -48,7 +48,7 @@ of time remaining until the switch."
 (defun mg--theme-set-dynamically ()
     "Select a theme at random from `mg-day-themes' or
 `mg-night-themes', depending on the current time of day. The
-environment variable `CURRENT_BACKGROUND' can override current time.
+environment variable `THEME_MODE' can override current time.
 The time periods for day and night are specified by
 `mg-day-to-night-o-clock' and `mg-night-to-day-o-clock',
 respectively."
@@ -60,8 +60,8 @@ respectively."
                     'night-to-day
                 'day-to-night))
            (themes (cond
-                    ((equal (getenv "CURRENT_BACKGROUND") "day") mg-day-themes)
-                    ((equal (getenv "CURRENT_BACKGROUND") "night") mg-night-themes)
+                    ((equal (getenv "THEME_MODE") "day") mg-day-themes)
+                    ((equal (getenv "THEME_MODE") "night") mg-night-themes)
                     ((eq transition-direction 'night-to-day) mg-night-themes)
                     ((eq transition-direction 'day-to-night) mg-day-themes))))
         (mg--pickup-random-color-theme themes)
