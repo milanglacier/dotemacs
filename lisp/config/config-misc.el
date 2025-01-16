@@ -23,7 +23,7 @@
 ;; automatically remove trailing whitespaces
 (use-package ws-butler
     :init
-    (mg-run-hook-once pre-command-hook ws-butler-global-mode)
+    (mg-run-hook-once find-file-hook ws-butler-global-mode)
 
     :config
     (setq ws-butler-keep-whitespace-before-point nil))
@@ -199,7 +199,7 @@
 
 (use-package editorconfig
     :init
-    (mg-run-hook-once pre-command-hook editorconfig-mode)
+    (mg-run-hook-once find-file-hook editorconfig-mode)
     ;; don't let editorconfig modify `lisp-indent-offset'
     (setq editorconfig-lisp-use-default-indent t)
 
