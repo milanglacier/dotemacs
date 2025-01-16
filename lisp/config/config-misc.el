@@ -200,6 +200,8 @@
 (use-package editorconfig
     :init
     (mg-run-hook-once pre-command-hook editorconfig-mode)
+    ;; don't let editorconfig modify `lisp-indent-offset'
+    (setq editorconfig-lisp-use-default-indent t)
 
     :config
     (add-to-list 'editorconfig-exclude-regexps
