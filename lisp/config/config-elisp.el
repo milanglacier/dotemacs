@@ -38,10 +38,7 @@
     :config
     (mg-define-and-bind-local-paren-text-object "`" "`" "'" emacs-lisp-mode-hook)
 
-    (setq lisp-body-indent 4
-          lisp-indent-function #'mg-lisp-indent-function)
-
-    (add-hook 'emacs-lisp-mode-hook (mg-setq-locally tab-width 4))
+    (setq lisp-indent-function #'mg-lisp-indent-function)
 
     (general-define-key
      :states '(motion visual normal)
