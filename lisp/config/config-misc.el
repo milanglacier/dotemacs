@@ -202,8 +202,6 @@
     (mg-run-hook-once pre-command-hook editorconfig-mode)
 
     :config
-    (setq editorconfig-trim-whitespaces-mode 'ws-butler-mode)
-
     (add-to-list 'editorconfig-exclude-regexps
                  "\\.\\(zip\\|\\(doc\\|xls\\|ppt\\)x\\)\\'"))
 
