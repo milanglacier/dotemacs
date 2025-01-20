@@ -183,11 +183,11 @@
     :init
     (general-define-key
      :states 'insert
-     "M-y" #'minuet-show-suggestion
-     )
+     "M-y" #'minuet-complete-with-minibuffer
+     "M-'" #'minuet-next-suggestion)
 
     :config
-
+    (setq minuet-provider 'gemini)
 
     (general-define-key
      :keymaps 'minuet-active-mode-map
@@ -196,8 +196,6 @@
      "M-A" #'minuet-accept-suggestion
      "M-a" #'minuet-accept-suggestion-line
      "M-e" #'minuet-dismiss-suggestion)
-
-    (setq minuet-provider 'gemini)
 
     (minuet-set-optional-options minuet-gemini-options
                                  :generationConfig
