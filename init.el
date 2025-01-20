@@ -20,6 +20,10 @@
     (file-name-concat user-emacs-directory "generated-loaddefs" "site-lisp-loaddefs.el")
     "the file of third-party autoloaded functions.")
 
+(defvar mg-lockfile-path
+    (file-name-concat user-emacs-directory "straight" "versions" "default.el")
+    "the file of straight.el lockfile")
+
 (push mg-config-dir load-path)
 (push mg-lib-dir load-path)
 (dolist (dir mg-site-lisp-dirs) (push dir load-path))
@@ -31,13 +35,21 @@
       ;; Straight is my package manager, don't let package.el get
       ;; involved.
       use-package-always-defer t
+      ;; Store straight packages into ~/.local/share/emacs
+      straight-base-dir (let* ((xdg-data-home (getenv "XDG_DATA_HOME"))
+                               (xdg-data-home (or (and
+                                                   (not (string-empty-p xdg-data-home))
+                                                   xdg-data-home)
+                                                  "~/.local/share")))
+                            (file-name-concat xdg-data-home "emacs"))
+      straight-profiles `((nil . ,mg-lockfile-path))
       ;; This is a useful trick to speed up your startup time. Only
       ;; use `require' when it's necessary. By setting the
       ;; `use-package-always-defer' option to t, use-package won't
       ;; call `require' in all cases unless you explicitly include
       ;; :demand t'. This will prevent unnecessary package loading and
       ;; speed up your Emacs startup time.
-      straight-check-for-modifications nil ;;'(find-at-startup)
+      straight-check-for-modifications '(find-when-checking)
       ;; This is a useful trick to further optimize your startup
       ;; time. Instead of using `straight-check-for-modifications' to
       ;; check if a package has been modified, you can manually
@@ -51,7 +63,7 @@
 ;; URL: `https://github.com/radian-software/straight.el#getting-started'
 (defvar bootstrap-version)
 (let ((bootstrap-file
-       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+       (expand-file-name "straight/repos/straight.el/bootstrap.el" straight-base-dir))
       (bootstrap-version 6))
     (unless (file-exists-p bootstrap-file)
         (with-current-buffer
