@@ -36,12 +36,7 @@
       ;; involved.
       use-package-always-defer t
       ;; Store straight packages into ~/.local/share/emacs
-      straight-base-dir (let* ((xdg-data-home (getenv "XDG_DATA_HOME"))
-                               (xdg-data-home (or (and
-                                                   (not (string-empty-p xdg-data-home))
-                                                   xdg-data-home)
-                                                  "~/.local/share")))
-                            (file-name-concat xdg-data-home "emacs"))
+      straight-base-dir "~/.local/share/emacs"
       straight-profiles `((nil . ,mg-lockfile-path))
       ;; This is a useful trick to speed up your startup time. Only
       ;; use `require' when it's necessary. By setting the
