@@ -20,10 +20,6 @@
     (file-name-concat user-emacs-directory "generated-loaddefs" "site-lisp-loaddefs.el")
     "the file of third-party autoloaded functions.")
 
-(defvar mg-lockfile-path
-    (file-name-concat user-emacs-directory "straight" "versions" "default.el")
-    "the file of straight.el lockfile")
-
 (push mg-config-dir load-path)
 (push mg-lib-dir load-path)
 (dolist (dir mg-site-lisp-dirs) (push dir load-path))
@@ -35,9 +31,6 @@
       ;; Straight is my package manager, don't let package.el get
       ;; involved.
       use-package-always-defer t
-      ;; Store straight packages into ~/.local/share/emacs
-      straight-base-dir "~/.local/share/emacs"
-      straight-profiles `((nil . ,mg-lockfile-path))
       ;; This is a useful trick to speed up your startup time. Only
       ;; use `require' when it's necessary. By setting the
       ;; `use-package-always-defer' option to t, use-package won't
@@ -58,7 +51,7 @@
 ;; URL: `https://github.com/radian-software/straight.el#getting-started'
 (defvar bootstrap-version)
 (let ((bootstrap-file
-       (expand-file-name "straight/repos/straight.el/bootstrap.el" straight-base-dir))
+       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
       (bootstrap-version 6))
     (unless (file-exists-p bootstrap-file)
         (with-current-buffer
