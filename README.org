@@ -13,8 +13,7 @@ With TTY starting in 0.30 seconds on a MacBook Air (M1, 2020), 0.73
 seconds on a VPS with a 1-core CPU and 1 GB RAM, and 0.21 seconds on
 WSL with Intel i7 CPU and 32 GB RAM, TTY is exceptionally fast. The
 GUI is just as quick, starting in 0.44 seconds on Mac M1 and 0.30
-seconds on WSLg. For more information on startup speed, see [[*Startup
-speed]].
+seconds on WSLg.
 
 ** Robust
 
@@ -38,7 +37,7 @@ configuration.  Instead, it is "heavy" and feature rich, including:
 
 - A keybinding scheme centered around leader and localleader keys, powered by ~general~ and ~which-key~.
 
-- In-buffer autocompletion frontend based on ~company~ (see [[*Corfu or Company?]]).
+- In-buffer autocompletion frontend based on ~company~
 
 - Code completion and navigation based on ~eglot~ (LSP) and ~citre~ (Ctags).
 
@@ -123,6 +122,19 @@ located in the current directory.
 - A separate installation is required for Treesitter grammar.  You can
   execute the command ~M-x mg-treesit-install-all-language-grammar~ to
   install all the language grammars that are currently in use.
+
+* External Dependencies
+
+This configuration requires the following core dependencies:
+
+- A C compiler for building the treesitter grammar
+- universal-ctags
+- ripgrep
+
+There are also additional language-specific dependencies only required
+when working with specific languages. These typically include language
+servers, formatters, and linters. For instance, you would need
+~basedpyright~, ~debugpy~, ~black~, and ~ipython~ for python.
 
 * Discussion
 
