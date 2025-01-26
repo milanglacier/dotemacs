@@ -136,25 +136,14 @@
     :config
     (add-hook 'dired-mode-hook #'mg-display-truncation-and-wrap-indicator-as-whitespace)
 
-    ;; adapted from doomemacs
-    (if IS-MAC
-            (if (executable-find "gls")
-                    ;; Use GNU ls as `gls' from `coreutils' if available. Add `(setq
-                    ;; dired-use-ls-dired nil)' to your config to suppress the Dired warning
-                    ;; when not using GNU ls.
-                    (progn
-                        (setq insert-directory-program "gls")
-                        (setq dired-listing-switches "-ahl -v --group-directories-first"))
-                (setq dired-listing-switches "-ahl"))
-        (setq dired-listing-switches "-ahl -v --group-directories-first"))
+    (cond (IS-MAC (setq dired-listing-switches "-alh"))
+          (IS-LINUX (setq dired-listing-switches "-alh -v --group-directories-first")))
     ;; NOTE: BSD ls doesn't support -v or
-    ;; --group-directories-first. On remote server, -v or
-    ;; --group-directories-first may not supported
-    ;; (e.g. BSD server). You may need to use
-    ;; `file-remote-p' and `dired-mode-hook' to modify
-    ;; `dired-actual-switches' on the fly.  But since I
-    ;; never have a change to work with BSD server I don't
-    ;; want to additionally configure for it.
+    ;; --group-directories-first. On a BSD Server remote server.  You
+    ;; may need to use `file-remote-p' and `dired-mode-hook' to modify
+    ;; `dired-actual-switches' with remote detection.  But since I
+    ;; never have a change to work with BSD server I don't want to
+    ;; additionally configure for it.
 
     (general-define-key
      :states '(normal insert motion visual)
