@@ -189,6 +189,35 @@
     :config
     (setq minuet-provider 'gemini)
 
+
+    (defvar mg-minuet-gemini-prompt
+        "You are the backend of an AI-powered code completion engine. Your task is to
+provide code suggestions based on the user's input. The user's code will be
+enclosed in markers:
+
+- `<contextAfterCursor>`: Code context after the cursor
+- `<cursorPosition>`: Current cursor location
+- `<contextBeforeCursor>`: Code context before the cursor
+")
+
+    (defvar mg-minuet-gemini-chat-input-template
+        "{{{:language-and-tab}}}
+<contextBeforeCursor>
+{{{:context-before-cursor}}}<cursorPosition>
+<contextAfterCursor>
+{{{:context-after-cursor}}}")
+
+    (defvar mg-minuet-gemini-fewshots
+        `((:role "user"
+           :content "# language: python
+<contextBeforeCursor>
+def fibonacci(n):
+    <cursorPosition>
+<contextAfterCursor>
+
+fib(5)")
+          ,(cadr minuet-default-fewshots)))
+
     (general-define-key
      :keymaps 'minuet-active-mode-map
      "M-;" #'minuet-previous-suggestion
@@ -196,6 +225,12 @@
      "M-A" #'minuet-accept-suggestion
      "M-a" #'minuet-accept-suggestion-line
      "M-e" #'minuet-dismiss-suggestion)
+
+    (minuet-set-optional-options minuet-gemini-options
+                                 :prompt 'mg-minuet-gemini-prompt :system)
+    (minuet-set-optional-options minuet-gemini-options
+                                 :template 'mg-minuet-gemini-chat-input-template :chat-input)
+    (plist-put minuet-gemini-options :fewshots 'mg-minuet-gemini-fewshots)
 
     (minuet-set-optional-options minuet-gemini-options
                                  :generationConfig
