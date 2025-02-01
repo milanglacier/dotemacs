@@ -34,23 +34,28 @@
       "/code"
       "/commit"
       "/copy"
+      "/copy-context"
       "/diff"
       "/drop"
+      "/editor"
       "/exit"
       "/git"
       "/help"
       "/lint"
+      "/load"
       "/ls"
       "/map"
       "/map-refresh"
       "/model"
       "/models"
+      "/multiline-mode"
       "/paste"
       "/quit"
       "/read-only"
       "/report"
       "/reset"
       "/run"
+      "/save"
       "/settings"
       "/test"
       "/tokens"
@@ -61,7 +66,8 @@
     "the available command prefixes used by aider")
 
 (defvar vtr-aider-available-args
-    '("--watch-files"
+    '("--reasoning-effort"
+      "--watch-files"
       "--model"
       "--opus"
       "--sonnet"
@@ -203,7 +209,7 @@
     (setq vtr*aider-cmd vtr-aider-cmd))
 
 (defun vtr-aider-prompt (prefix prompt &optional session)
-  "Prompt aider with the given PREFIX and PROMPT verbatim.
+    "Prompt aider with the given PREFIX and PROMPT verbatim.
 Override `vtr-aider-prefix' to ensure verbatim input."
     (interactive
      (list (completing-read "the aider command: " vtr-aider-prefixes nil t)
@@ -212,7 +218,7 @@ Override `vtr-aider-prefix' to ensure verbatim input."
     (let* ((prefix (or prefix ""))
            (prompt (or prompt ""))
            (vtr-aider-prefix
-           (if (equal prefix "") "" (concat prefix " "))))
+            (if (equal prefix "") "" (concat prefix " "))))
         (vtr~aider-send-string prompt session)))
 
 (defun vtr-aider-yes (&optional session)
