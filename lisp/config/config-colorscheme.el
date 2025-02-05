@@ -12,6 +12,9 @@
       mg-night-themes
       '(doom-one
         doom-nord-aurora
+        doom-tokyo-night
+        ef-dream
+        ef-autumn
         doom-opera))
 
 (when (display-graphic-p)
