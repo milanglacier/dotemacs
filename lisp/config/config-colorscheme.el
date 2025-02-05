@@ -1,19 +1,16 @@
 ;;; config-colorscheme.el -*- lexical-binding: t; -*-
 
 (straight-use-package 'doom-themes)
-(straight-use-package 'spacemacs-theme)
 (straight-use-package 'ef-themes)
 
 (setq mg-day-themes
       '(doom-solarized-light
-        spacemacs-light
         doom-one-light
         ef-tritanopia-light
         ef-cyprus
         ef-light)
       mg-night-themes
-      '(spacemacs-dark
-        doom-one
+      '(doom-one
         doom-nord-aurora
         doom-opera))
 
