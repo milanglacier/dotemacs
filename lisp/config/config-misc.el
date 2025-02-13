@@ -188,7 +188,7 @@
 
 (use-package editorconfig
     :init
-    (mg-run-hook-once find-file-hook editorconfig-mode)
+    (mg-advise-at-once find-file editorconfig-mode :before)
     ;; don't let editorconfig modify `lisp-indent-offset'
     (setq editorconfig-lisp-use-default-indent t)
 
