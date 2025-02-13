@@ -252,8 +252,6 @@ fib(5)")
     ;; (plist-put minuet-openai-compatible-options :api-key "MISTRAL_API_KEY")
     ;; (plist-put minuet-openai-compatible-options :model "mistral-large-latest")
 
-    (plist-put minuet-gemini-options :model "gemini-2.0-flash-exp")
-
     (plist-put minuet-openai-compatible-options :end-point "https://api.fireworks.ai/inference/v1/chat/completions")
     (plist-put minuet-openai-compatible-options :api-key "FIREWORKS_API_KEY")
     (plist-put minuet-openai-compatible-options :model "accounts/fireworks/models/llama-v3p3-70b-instruct")
