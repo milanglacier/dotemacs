@@ -26,6 +26,8 @@
           company-dabbrev-code-other-buffers nil
           company-dabbrev-ignore-case t
           company-dabbrev-code-ignore-case t
+          ;; provide dabbrev completion inside comments and strings
+          company-dabbrev-code-everywhere t
           company-dabbrev-downcase nil
           company-selection-wrap-around t
           completion-ignore-case t)
