@@ -40,37 +40,6 @@
 
     :config
 
-    (setq company-text-icons-mapping
-          '((array "" font-lock-type-face)
-            (boolean "" font-lock-builtin-face)
-            (class "" font-lock-type-face)
-            (color "" success)
-            (constant "󰏿" font-lock-constant-face)
-            (constructor "" font-lock-function-name-face)
-            (enum-member "" font-lock-builtin-face)
-            (enum "" font-lock-builtin-face)
-            (field "" font-lock-variable-name-face)
-            (file "" font-lock-string-face)
-            (folder "󰉋" font-lock-doc-face)
-            (interface "" font-lock-type-face)
-            (keyword "󰌋" font-lock-keyword-face)
-            (method "ƒ" font-lock-function-name-face)
-            (function "" font-lock-function-name-face)
-            (module "" font-lock-type-face)
-            (numeric "󰎠" font-lock-builtin-face)
-            (operator "󰆕" font-lock-comment-delimiter-face)
-            (property "" font-lock-variable-name-face)
-            (reference "󰈇" font-lock-doc-face)
-            (snippet "" font-lock-string-face)
-            (string "" font-lock-string-face)
-            (struct "" font-lock-variable-name-face)
-            (text "" shadow)
-            (type-parameter "" font-lock-type-face)
-            (unit "" shadow)
-            (value "󰎠" font-lock-builtin-face)
-            (variable "󰀫" font-lock-variable-name-face)
-            (t "" shadow)))
-
     (with-eval-after-load 'company-files
         ;; Fix `company-files' completion for org file:* links
         (add-to-list 'company-files--regexps "file:\\(\\(?:\\.\\{1,2\\}/\\|~/\\|/\\)[^\]\n]*\\)"))
@@ -105,36 +74,7 @@
 (use-package company-box
     :config
     (setq company-box-max-candidates 50
-          company-frontends '(company-tng-frontend company-box-frontend)
-          mg-company-box-icons-alist
-          '((Unknown . "")
-            (Text . "")
-            (Method . "ƒ")
-            (Function . "")
-            (Constructor . "")
-            (Field . "")
-            (Variable . "󰀫")
-            (Class . "")
-            (Interface . "")
-            (Module . "")
-            (Property . "")
-            (Unit . "")
-            (Value . "󰎠")
-            (Enum . "")
-            (Keyword . "󰌋")
-            (Snippet . "")
-            (Color . "")
-            (File . "")
-            (Reference . "󰈇")
-            (Folder . "󰉋")
-            (EnumMember . "")
-            (Constant . "󰏿")
-            (Struct . "")
-            (Event . "")
-            (Operator . "󰆕")
-            (TypeParameter . "")
-            (Template . ""))
-          company-box-icons-alist 'mg-company-box-icons-alist))
+          company-frontends '(company-tng-frontend company-box-frontend)))
 
 (use-package yasnippet
     :init

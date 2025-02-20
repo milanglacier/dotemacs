@@ -2,7 +2,6 @@
 
 (straight-use-package 'doom-modeline)
 (straight-use-package 'which-key)
-(straight-use-package 'nerd-icons)
 
 (set-display-table-slot standard-display-table 'truncation 32)
 (set-display-table-slot standard-display-table 'wrap 32)
@@ -157,6 +156,7 @@ if they are side window.")
     (add-hook 'doom-modeline-mode-hook #'size-indication-mode)
     (add-hook 'doom-modeline-mode-hook #'column-number-mode)
     (setq doom-modeline-bar-width 1
+          doom-modeline-icon nil
           doom-modeline-modal-icon nil
           doom-modeline-github nil
           doom-modeline-mu4e nil

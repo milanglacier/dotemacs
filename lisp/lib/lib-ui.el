@@ -40,55 +40,55 @@ is called."
 
 (defvar mg-header-verses
     '(("Bright star, would I were steadfast as thee art!"
-       " John Keats")
+       "◈ John Keats")
       ("For clattering parrots to launch their fleet at sunrise"
        "For April to ignite the African violet"
-       " Derek Walcott")
+       "◈ Derek Walcott")
       ("In these poinsettia meadows of her tides,—"
        "Adagios of islands, O my Prodigal,"
        "Complete the dark confessions her veins spell."
-       " Hart Crane")
+       "◈ Hart Crane")
       ("帝子降兮北渚，目眇眇兮愁予，"
        "袅袅兮秋风，洞庭波兮木叶下。"
-       " 《湘夫人》")
+       "◈ 《湘夫人》")
       ("美人迈兮音尘阙，隔千里兮共明月。"
        "临风叹兮将焉歇，川路长兮不可越！"
-       " 《月赋》")
+       "◈ 《月赋》")
       ("浴兰汤兮沐芳，华采衣兮若英。"
        "灵连蜷兮既留，烂昭昭兮未央。"
        "蹇将憺兮寿宫，与日月兮齐光。"
-       " 《云中君》"))
+       "◈ 《云中君》"))
     "the verses displayed on the top of `initial-scratch-message'")
 
 (defvar mg-foot-verses
     '(("Whispers antiphonal in the azure swing..."
-       " Hart Crane")
+       "◈ Hart Crane")
       ("In the drumming world that dampens your tired eyes"
        "Behind two clouding lenses, sunrise, sunset,"
        "The quiet ravage of diabetes."
-       " Derek Walcott")
+       "◈ Derek Walcott")
       ("What words"
        "Can strangle this deaf moonlight? For we"
        "Are overtaken."
-       " Hart Crane")
+       "◈ Hart Crane")
       ("搴汀洲兮杜若，将以遗兮远者。"
        "时不可兮骤得，聊逍遥兮容与！"
-       " 《湘夫人》")
+       "◈ 《湘夫人》")
       ("月既没兮露欲晞，岁方晏兮无与归。"
        "佳期可以还，微霜沾人衣。"
-       " 《月赋》")
+       "◈ 《月赋》")
       ("雷填填兮雨冥冥，猨啾啾兮狖夜鸣。"
        "风飒飒兮木萧萧，思公子兮徒离忧。"
-       " 《山鬼》"))
+       "◈ 《山鬼》"))
     "the verses displayed on the bottom of `initial-scratch-message'")
 
 (defvar mg-actions
-    '((" New [T]heme      " . load-theme)
-      (" New [V]erse      " . mg-refresh-verses)
-      (" [S]tartup Time   " . mg-emacs-startup-time)
-      (" Org [A]genda     " . org-agenda-list)
-      (" Recent [F]iles   " . consult-recent-file)
-      (" Recent [P]rojects" . project-switch-project))
+    '(("⦾ New [T]heme      " . load-theme)
+      ("⦾ New [V]erse      " . mg-refresh-verses)
+      ("⦾ [S]tartup Time   " . mg-emacs-startup-time)
+      ("⦾ Org [A]genda     " . org-agenda-list)
+      ("⦾ Recent [F]iles   " . consult-recent-file)
+      ("⦾ Recent [P]rojects" . project-switch-project))
     "the actions to be displayed on the welcome screen")
 
 (defun mg--empty-lines-between-sections ()
@@ -187,9 +187,9 @@ is called."
 (defun mg--verses-add-font-lock ()
     (font-lock-add-keywords
      nil
-     '(("^ *\\([^\"]+\\)$" 1 'mg-verses)
-       ("^ *\\(.+\\)$" 1 'mg-verse-quotes)
-       ("^ *\\(.+\\)\\[" 1 'mg-welcome-screen-action)
+     '(("^ *\\([^\"◈⦾]+\\)$" 1 'mg-verses)
+       ("^ *\\(◈.+\\)$" 1 'mg-verse-quotes)
+       ("^ *\\(⦾.+\\)\\[" 1 'mg-welcome-screen-action)
        ("\\(\\[.*\\]\\)" 1 'mg-welcome-screen-action-key)
        ("\\]\\(.*\\)$" 1 'mg-welcome-screen-action))))
 
@@ -217,10 +217,10 @@ is called."
         (erase-buffer)
         (insert (mg--generate-initial-messages))))
 
-(defvar mg-tab-bar-tab-name-open "")
-(defvar mg-tab-bar-tab-name-close "")
-(defvar mg-tab-bar-group-name-open " ")
-(defvar mg-tab-bar-group-name-close " ")
+(defvar mg-tab-bar-tab-name-open "⌜")
+(defvar mg-tab-bar-tab-name-close "⌟")
+(defvar mg-tab-bar-group-name-open "« ")
+(defvar mg-tab-bar-group-name-close " »")
 
 (defun mg--tab-bar-tab-name-format (tab i)
     "This is a slightly modified version of

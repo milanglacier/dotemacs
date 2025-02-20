@@ -8,7 +8,7 @@
 (straight-use-package 'ox-clip)
 (straight-use-package 'org-download)
 
-(defvar mg-jupyter-want-integration t
+(defvar mg-jupyter-want-integration nil
     "Enable jupyter integration. which entails configuring it as an
 org-babel backend and allowing for direct editing of Jupyter notebooks
 within Emacs.")
@@ -62,7 +62,7 @@ within Emacs.")
           org-priority-faces '((?A . error)
                                (?B . warning)
                                (?C . success))
-          org-startup-indented t
+          org-startup-indented nil ;; should left more space for small screen.
           org-tags-column 0
           ;; Resume when clocking into task with open clock
           org-clock-in-resume t
@@ -107,7 +107,7 @@ within Emacs.")
     (add-hook 'org-tab-first-hook #'mg-org-indent-maybe-h)
     (add-hook 'org-tab-first-hook #'mg-org-yas-expand-maybe-h)
 
-    (add-hook 'org-mode-hook (mg--call-func-respect-blocklist eglot-ensure))
+    ; (add-hook 'org-mode-hook (mg--call-func-respect-blocklist eglot-ensure))
 
     (mg-define-and-bind-local-paren-text-object "/" "/" "/" org-mode-hook)
     (mg-define-and-bind-local-paren-text-object "*" "*" "*" org-mode-hook)
@@ -267,6 +267,21 @@ within Emacs.")
     )
 
 (use-package org-capture
+    :init
+    ;; mobile screen is too small
+    (add-to-list 'display-buffer-alist
+                 '("CAPTURE-"
+                   (display-buffer-in-new-tab)))
+
+    (add-hook 'org-capture-mode-hook
+              ;; completion popup in small screen is annoying
+              (defun mg-disable-company ()
+                  (company-mode -1)))
+
+    (add-hook 'org-capture-mode-hook
+              ;; completion popup in small screen is annoying
+              (defun mg-disable-truncate-lines ()
+                  (toggle-truncate-lines 1)))
     :config
     (setq mg-org-capture-todo-file (file-name-concat "capture" "todo.org")
           mg-org-capture-notes-file (file-name-concat "capture" "notes.org")
@@ -466,8 +481,8 @@ within Emacs.")
     ;; it seems that it uses the language identifer associate with
     ;; this block to query the `org-babel-execute:xxx' function.
     (defalias #'org-babel-execute:r #'org-babel-execute:R)
-    (mg-org-babel-lsp-setup "R")
-    (mg-org-babel-lsp-setup "python")
+    ; (mg-org-babel-lsp-setup "R")
+    ; (mg-org-babel-lsp-setup "python")
     (when mg-jupyter-want-integration
         ;; `org-babel-edit-prep:jupyter-python' (or other jupyter
         ;; kernels) will not be available at now, instead it will be
@@ -528,6 +543,12 @@ within Emacs.")
     (add-to-list 'org-export-backends 're-reveal)
     (delete 'odt org-export-backends))
 
+;; FIXME: I don't know why on Debian I have this issue
+;; On macOS I do't need to manually require org-indent
+;; and it just works.
+(use-package org-indent
+    :after org
+    :demand t)
 
 (use-package evil-org
     :hook (org-mode . evil-org-mode)

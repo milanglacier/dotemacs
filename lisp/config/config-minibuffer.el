@@ -10,7 +10,6 @@
 (straight-use-package 'embark-consult)
 (straight-use-package 'marginalia)
 (straight-use-package 'wgrep)
-(straight-use-package 'nerd-icons-completion)
 
 (use-package vertico
     :init
@@ -84,9 +83,6 @@
 (use-package marginalia
     :init
     (mg-run-hook-once pre-command-hook marginalia-mode))
-
-(use-package nerd-icons-completion
-    :hook (marginalia-mode . nerd-icons-completion-marginalia-setup))
 
 (use-package consult
     :commands (evil-collection-consult-mark evil-collection-consult-jump-list)

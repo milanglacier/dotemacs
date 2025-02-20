@@ -164,7 +164,7 @@
 
 (use-package edit-indiret
     :init
-    (add-hook 'edit-indirect-after-creation-hook #'mg-markdown-src-lsp-setup)
+    ; (add-hook 'edit-indirect-after-creation-hook #'mg-markdown-src-lsp-setup)
     (add-to-list 'display-buffer-alist
                  '("\\*edit-indirect"
                    (display-buffer-at-bottom)
