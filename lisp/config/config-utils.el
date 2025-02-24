@@ -1,6 +1,6 @@
 ;;; config-utils.el -*- lexical-binding: t; -*-
 
-(straight-use-package 'use-package)
+(straight-use-package '(use-package :type built-in))
 (straight-use-package 'general)
 
 (general-create-definer mg-leader

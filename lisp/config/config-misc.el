@@ -15,7 +15,7 @@
 (straight-use-package 'dired-git-info)
 (straight-use-package 'nerd-icons-dired)
 
-(straight-use-package 'editorconfig)
+(straight-use-package '(editorconfig :type built-in))
 
 (use-package hideshow
     :hook (prog-mode . hs-minor-mode))
@@ -190,11 +190,7 @@
     :init
     (mg-advise-at-once find-file editorconfig-mode :before)
     ;; don't let editorconfig modify `lisp-indent-offset'
-    (setq editorconfig-lisp-use-default-indent t)
-
-    :config
-    (add-to-list 'editorconfig-exclude-regexps
-                 "\\.\\(zip\\|\\(doc\\|xls\\|ppt\\)x\\)\\'"))
+    (setq editorconfig-lisp-use-default-indent t))
 
 (mg-leader
     :keymaps 'override
