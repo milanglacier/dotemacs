@@ -6,9 +6,8 @@ has been generated through ~org-export~, from its original org
 format. For the best experience, please consider reading the org
 format file instead.
 
-**NOTE**: This configuration requires Emacs 30 or later. For
-compatibility with earlier versions, please use the `emacs-29-compat`
-branch.
+*NOTE*: This configuration requires Emacs 30 or later. For compatibility
+with earlier versions, please use the ~emacs-29-compat~ branch.
 
 * Features
 ** Blazing fast.
