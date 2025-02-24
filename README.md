@@ -1,50 +1,54 @@
 
 # Table of Contents
 
-1.  [Features](#orgbe69624)
-    1.  [Blazing fast.](#orgd18593a)
-    2.  [Robust](#org54caff1)
-    3.  [Compatability](#org4cd049c)
-    4.  [Feature rich](#org8fc00b1)
-    5.  [Be wild](#org3fd66c7)
-2.  [Showcase](#orgb108adb)
-    1.  [Welcome screen](#org1529b3c)
-    2.  [Code Navigation](#orga8dfc44)
-    3.  [Data Science](#orge89f19b)
-    4.  [Orgmode](#orgcc174c7)
-3.  [Email Setup](#orgfdb956b)
-4.  [TODOs](#org7d815a4)
-    1.  [Report `org-capture` bugs when inserting entries into table to upstream.](#org4b17639)
-    2.  [Utilize the contextual information from previous code block when editing source block within markdown/org.](#org1a5051b)
-    3.  [Lazily load third-party plugins for `evil`.](#org0453706)
-    4.  [Configure `evil-args` to use spaces as argument delimiter for `emacs-lisp-mode`.](#orge64dc27)
-5.  [Prerequisites](#org3c8cce5)
-6.  [External Dependencies](#orga7061b8)
-7.  [Discussion](#org7681250)
+1.  [Features](#orgef503bf)
+    1.  [Blazing fast.](#org52e05bb)
+    2.  [Robust](#org8a50532)
+    3.  [Compatability](#org7bfe6a0)
+    4.  [Feature rich](#org7c20c41)
+    5.  [Be wild](#org73ca09c)
+2.  [Showcase](#org5ecbf31)
+    1.  [Welcome screen](#org5c8adf8)
+    2.  [Code Navigation](#org39122a0)
+    3.  [Data Science](#org8fbdd3a)
+    4.  [Orgmode](#org14526df)
+3.  [Email Setup](#org03eb333)
+4.  [TODOs](#orgbb32cc6)
+    1.  [Report `org-capture` bugs when inserting entries into table to upstream.](#org3b5aeae)
+    2.  [Utilize the contextual information from previous code block when editing source block within markdown/org.](#orgcb06ade)
+    3.  [Lazily load third-party plugins for `evil`.](#org2d5a4df)
+    4.  [Configure `evil-args` to use spaces as argument delimiter for `emacs-lisp-mode`.](#orgb58631b)
+5.  [Prerequisites](#orga74f596)
+6.  [External Dependencies](#org3b833b6)
+7.  [Discussion](#orgd17873d)
 
 If you&rsquo;re currently reading this README file in Markdown format, it
 has been generated through `org-export`, from its original org
 format. For the best experience, please consider reading the org
 format file instead.
 
+****NOTE****: This configuration requires Emacs 30 or later. For
+compatibility with earlier versions, please use the \`emacs-29-compat\`
+branch.
 
-<a id="orgbe69624"></a>
+
+<a id="orgef503bf"></a>
 
 # Features
 
 
-<a id="orgd18593a"></a>
+<a id="org52e05bb"></a>
 
 ## Blazing fast.
 
-With TTY starting in 0.30 seconds on a MacBook Air (M1, 2020), 0.73
+With TTY starting in 0.23 seconds on a MacBook Air (M1, 2020), 0.73
 seconds on a VPS with a 1-core CPU and 1 GB RAM, and 0.21 seconds on
 WSL with Intel i7 CPU and 32 GB RAM, TTY is exceptionally fast. The
-GUI is just as quick, starting in 0.44 seconds on Mac M1 and 0.30
+GUI is just as quick, starting in 0.40 seconds on Mac M1 and 0.30
 seconds on WSLg.
 
 
-<a id="org54caff1"></a>
+<a id="org8a50532"></a>
 
 ## Robust
 
@@ -52,7 +56,7 @@ Package versions are locked and under version control, so no breaking
 changes are expected.
 
 
-<a id="org4cd049c"></a>
+<a id="org7bfe6a0"></a>
 
 ## Compatability
 
@@ -61,7 +65,7 @@ TTY is not compromised, while GUI features, including `xwidget`, are
 also well-configured.
 
 
-<a id="org8fc00b1"></a>
+<a id="org7c20c41"></a>
 
 ## Feature rich
 
@@ -81,7 +85,7 @@ configuration.  Instead, it is &ldquo;heavy&rdquo; and feature rich, including:
 -   Integration with `eglot` and `org-babel` or `markdown-mode` that takes literate programming to the next level.
 
 
-<a id="org3fd66c7"></a>
+<a id="org73ca09c"></a>
 
 ## Be wild
 
@@ -92,12 +96,12 @@ randomized with each launch. Have a fresh experience at every time. Be
 casual and wild!
 
 
-<a id="orgb108adb"></a>
+<a id="org5ecbf31"></a>
 
 # Showcase
 
 
-<a id="org1529b3c"></a>
+<a id="org5c8adf8"></a>
 
 ## Welcome screen
 
@@ -110,7 +114,7 @@ listed, allowing for convenient execution by simply typing the hint
 key.
 
 
-<a id="orga8dfc44"></a>
+<a id="org39122a0"></a>
 
 ## Code Navigation
 
@@ -125,7 +129,7 @@ the definition of the chosen symbol is displayed with the aid of
 `ctags` (the Emacs command is `citre-peek`).
 
 
-<a id="orge89f19b"></a>
+<a id="org8fbdd3a"></a>
 
 ## Data Science
 
@@ -141,7 +145,7 @@ the aichat mode as `exp-code-e` to prompt chatgpt to provide an
 explanation of the code you sent.
 
 
-<a id="orgcc174c7"></a>
+<a id="org14526df"></a>
 
 ## Orgmode
 
@@ -153,7 +157,7 @@ webkit. Preview slides in emacs without the need to open GUI browser
 anymore.
 
 
-<a id="orgfdb956b"></a>
+<a id="org03eb333"></a>
 
 # Email Setup
 
@@ -162,32 +166,32 @@ email setup, please refer to the [email.org](./email.md) file
 located in the current directory.
 
 
-<a id="org7d815a4"></a>
+<a id="orgbb32cc6"></a>
 
 # TODOs
 
 
-<a id="org4b17639"></a>
+<a id="org3b5aeae"></a>
 
 ## Report `org-capture` bugs when inserting entries into table to upstream.
 
 
-<a id="org1a5051b"></a>
+<a id="orgcb06ade"></a>
 
 ## Utilize the contextual information from previous code block when editing source block within markdown/org.
 
 
-<a id="org0453706"></a>
+<a id="org2d5a4df"></a>
 
 ## Lazily load third-party plugins for `evil`.
 
 
-<a id="orge64dc27"></a>
+<a id="orgb58631b"></a>
 
 ## Configure `evil-args` to use spaces as argument delimiter for `emacs-lisp-mode`.
 
 
-<a id="org3c8cce5"></a>
+<a id="orga74f596"></a>
 
 # Prerequisites
 
@@ -204,7 +208,7 @@ located in the current directory.
     install all the language grammars that are currently in use.
 
 
-<a id="orga7061b8"></a>
+<a id="org3b833b6"></a>
 
 # External Dependencies
 
@@ -220,7 +224,7 @@ servers, formatters, and linters. For instance, you would need
 `basedpyright`, `debugpy`, `black`, and `ipython` for python.
 
 
-<a id="org7681250"></a>
+<a id="orgd17873d"></a>
 
 # Discussion
 
