@@ -33,19 +33,18 @@ like plotly.
 
 This is a global minor mode.  If called interactively, toggle the
 `Mg-Refresh-Xwidget-After-Eval-Python mode' mode.  If the prefix
-argument is positive, enable the mode, and if it is zero or
-negative, disable the mode.
+argument is positive, enable the mode, and if it is zero or negative,
+disable the mode.
 
-If called from Lisp, toggle the mode if ARG is `toggle'.  Enable
-the mode if ARG is nil, omitted, or is a positive number.
-Disable the mode if ARG is a negative number.
+If called from Lisp, toggle the mode if ARG is `toggle'.  Enable the
+mode if ARG is nil, omitted, or is a positive number.  Disable the mode
+if ARG is a negative number.
 
 To check whether the minor mode is enabled in the current buffer,
-evaluate `(default-value
-\\='mg-refresh-xwidget-after-eval-python-mode)'.
+evaluate `(default-value \\='mg-refresh-xwidget-after-eval-python-mode)'.
 
-The mode's hook is called both when the mode is enabled and when
-it is disabled.
+The mode's hook is called both when the mode is enabled and when it is
+disabled.
 
 (fn &optional ARG)" t)
 (defvar mg-xwidget-side-window-mode nil "\
@@ -65,19 +64,18 @@ for interactive plotting usage with python/R where you typically want
 xwdiget to display plots at the side window.
 
 This is a global minor mode.  If called interactively, toggle the
-`Mg-Xwidget-Side-Window mode' mode.  If the prefix argument is
-positive, enable the mode, and if it is zero or negative, disable
-the mode.
+`Mg-Xwidget-Side-Window mode' mode.  If the prefix argument is positive,
+enable the mode, and if it is zero or negative, disable the mode.
 
-If called from Lisp, toggle the mode if ARG is `toggle'.  Enable
-the mode if ARG is nil, omitted, or is a positive number.
-Disable the mode if ARG is a negative number.
+If called from Lisp, toggle the mode if ARG is `toggle'.  Enable the
+mode if ARG is nil, omitted, or is a positive number.  Disable the mode
+if ARG is a negative number.
 
 To check whether the minor mode is enabled in the current buffer,
 evaluate `(default-value \\='mg-xwidget-side-window-mode)'.
 
-The mode's hook is called both when the mode is enabled and when
-it is disabled.
+The mode's hook is called both when the mode is enabled and when it is
+disabled.
 
 (fn &optional ARG)" t)
 (defvar mg-xwidget-force-display-mode nil "\
@@ -98,18 +96,18 @@ ensure such behavior. This is helpful for viewing web contents with
 
 This is a global minor mode.  If called interactively, toggle the
 `Mg-Xwidget-Force-Display mode' mode.  If the prefix argument is
-positive, enable the mode, and if it is zero or negative, disable
-the mode.
+positive, enable the mode, and if it is zero or negative, disable the
+mode.
 
-If called from Lisp, toggle the mode if ARG is `toggle'.  Enable
-the mode if ARG is nil, omitted, or is a positive number.
-Disable the mode if ARG is a negative number.
+If called from Lisp, toggle the mode if ARG is `toggle'.  Enable the
+mode if ARG is nil, omitted, or is a positive number.  Disable the mode
+if ARG is a negative number.
 
 To check whether the minor mode is enabled in the current buffer,
 evaluate `(default-value \\='mg-xwidget-force-display-mode)'.
 
-The mode's hook is called both when the mode is enabled and when
-it is disabled.
+The mode's hook is called both when the mode is enabled and when it is
+disabled.
 
 (fn &optional ARG)" t)
 (autoload 'mg--elfeed-delete-window-after-kill-buffer "../lisp/lib/lib-apps" "\
