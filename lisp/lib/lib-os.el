@@ -20,11 +20,6 @@
     ;; Enable the mouse in terminal Emacs
     (xterm-mouse-mode)
     (evil-terminal-cursor-changer-activate)
-    ;; the following keys correspond to touchpad gestures.
-    (general-define-key [mouse-4] #'scroll-down-line
-                        [mouse-6] #'scroll-down-line
-                        [mouse-5] #'scroll-up-line
-                        [mouse-7] #'scroll-up-line)
 
     (xclip-mode 1)
     (message "To synchronize clipboards across remote sessions, enable `global-clipetty-mode'."))
