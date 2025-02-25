@@ -19,6 +19,13 @@
 
     ;; Enable the mouse in terminal Emacs
     (xterm-mouse-mode)
+    ;; For Emacs builds with graphical support, `mwheel` is
+    ;; automatically loaded at startup, even when launched with `emacs
+    ;; -nw`. However, this is not the case for builds without
+    ;; graphical support. To ensure mouse wheel scrolling
+    ;; functionality, we explicitly load the `mwheel` module.
+    (require 'mwheel)
+
     (evil-terminal-cursor-changer-activate)
 
     (xclip-mode 1)
