@@ -247,14 +247,11 @@ fib(5)")
                                   (:category "HARM_CATEGORY_SEXUALLY_EXPLICIT"
                                    :threshold "BLOCK_NONE")])
 
-    ;; (setq minuet-provider 'openai-compatible)
-    ;; (plist-put minuet-openai-compatible-options :end-point "https://api.mistral.ai/v1/chat/completions")
-    ;; (plist-put minuet-openai-compatible-options :api-key "MISTRAL_API_KEY")
-    ;; (plist-put minuet-openai-compatible-options :model "mistral-large-latest")
-
-    (plist-put minuet-openai-compatible-options :end-point "https://api.fireworks.ai/inference/v1/chat/completions")
-    (plist-put minuet-openai-compatible-options :api-key "FIREWORKS_API_KEY")
-    (plist-put minuet-openai-compatible-options :model "accounts/fireworks/models/llama-v3p3-70b-instruct")
+    (plist-put minuet-openai-compatible-options :end-point "https://openrouter.ai/api/v1/chat/completions")
+    (plist-put minuet-openai-compatible-options :api-key "OPENROUTER_API_KEY")
+    (plist-put minuet-openai-compatible-options :model "meta-llama/llama-3.3-70b-instruct")
+    ;; Prioritize throughput for faster completion
+    (minuet-set-optional-options minuet-openai-compatible-options :provider '(:sort "throughput"))
 
     (dolist (provider (list minuet-openai-options
                             minuet-codestral-options
@@ -271,13 +268,13 @@ fib(5)")
     (setq treesit-language-source-alist
           '((bash "https://github.com/tree-sitter/tree-sitter-bash")
             (c "https://github.com/tree-sitter/tree-sitter-c")
-            (cpp "https://github.com/tree-sitter/tree-sitter-cpp" "v0.22.0")
+            (cpp "https://github.com/tree-sitter/tree-sitter-cpp" "v0.23.4")
             (css "https://github.com/tree-sitter/tree-sitter-css")
             (cmake "https://github.com/uyha/tree-sitter-cmake")
             (csharp "https://github.com/tree-sitter/tree-sitter-c-sharp.git")
             (dockerfile "https://github.com/camdencheek/tree-sitter-dockerfile")
             (elisp "https://github.com/Wilfred/tree-sitter-elisp")
-            (go "https://github.com/tree-sitter/tree-sitter-go" "v0.19.1")
+            (go "https://github.com/tree-sitter/tree-sitter-go" "v0.23.4")
             (gomod "https://github.com/camdencheek/tree-sitter-go-mod.git")
             (html "https://github.com/tree-sitter/tree-sitter-html")
             (java "https://github.com/tree-sitter/tree-sitter-java.git")

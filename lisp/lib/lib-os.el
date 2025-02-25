@@ -19,12 +19,14 @@
 
     ;; Enable the mouse in terminal Emacs
     (xterm-mouse-mode)
+    ;; For Emacs builds with graphical support, `mwheel` is
+    ;; automatically loaded at startup, even when launched with `emacs
+    ;; -nw`. However, this is not the case for builds without
+    ;; graphical support. To ensure mouse wheel scrolling
+    ;; functionality, we explicitly load the `mwheel` module.
+    (require 'mwheel)
+
     (evil-terminal-cursor-changer-activate)
-    ;; the following keys correspond to touchpad gestures.
-    (general-define-key [mouse-4] #'scroll-down-line
-                        [mouse-6] #'scroll-down-line
-                        [mouse-5] #'scroll-up-line
-                        [mouse-7] #'scroll-up-line)
 
     (xclip-mode 1)
     (message "To synchronize clipboards across remote sessions, enable `global-clipetty-mode'."))

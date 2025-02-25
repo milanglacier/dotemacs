@@ -6,13 +6,16 @@ has been generated through ~org-export~, from its original org
 format. For the best experience, please consider reading the org
 format file instead.
 
+*NOTE*: This configuration requires Emacs 30 or later. For compatibility
+with earlier versions, please use the ~emacs-29-compat~ branch.
+
 * Features
 ** Blazing fast.
 
-With TTY starting in 0.30 seconds on a MacBook Air (M1, 2020), 0.73
+With TTY starting in 0.23 seconds on a MacBook Air (M1, 2020), 0.73
 seconds on a VPS with a 1-core CPU and 1 GB RAM, and 0.21 seconds on
 WSL with Intel i7 CPU and 32 GB RAM, TTY is exceptionally fast. The
-GUI is just as quick, starting in 0.44 seconds on Mac M1 and 0.30
+GUI is just as quick, starting in 0.40 seconds on Mac M1 and 0.30
 seconds on WSLg.
 
 ** Robust

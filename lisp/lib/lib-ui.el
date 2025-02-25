@@ -222,23 +222,15 @@ is called."
 (defvar mg-tab-bar-group-name-open "« ")
 (defvar mg-tab-bar-group-name-close " »")
 
-(defun mg--tab-bar-tab-name-format (tab i)
-    "This is a slightly modified version of
-`tab-bar-tab-name-format-default', which is the default value of
-`tab-bar-tab-name-format', except that it adds two symbols indicating
-the tab more distinguisably."
-    (let ((current-p (eq (car tab) 'current-tab)))
-        (propertize
-         (concat mg-tab-bar-tab-name-open
-                 (if tab-bar-tab-hints (format "%d " i) "")
-                 (alist-get 'name tab)
-                 (or (and tab-bar-close-button-show
-                          (not (eq tab-bar-close-button-show
-                                   (if current-p 'non-selected 'selected)))
-                          tab-bar-close-button)
-                     "")
-                 mg-tab-bar-tab-name-close)
-         'face (funcall tab-bar-tab-face-function tab))))
+(defun mg--tab-bar-add-custom-boundaries (name _ _)
+    "Add custom separators around tab names in the tab-bar.
+Unlike `tab-bar-separator' which uses identical symbols for both sides,
+this function applies different symbols defined by
+`mg-tab-bar-tab-name-open' and `mg-tab-bar-tab-name-close' as
+boundaries."
+    (concat mg-tab-bar-tab-name-open
+            name
+            mg-tab-bar-tab-name-close))
 
 (defun mg--tab-bar-tab-group-format (tab i &optional current-p)
     "This is a slightly modified version of

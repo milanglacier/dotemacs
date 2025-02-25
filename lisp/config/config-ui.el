@@ -103,13 +103,17 @@ if they are side window.")
           tab-bar-tab-hints t
           tab-bar-new-button-show nil
           tab-bar-separator " "
-          tab-bar-auto-width nil
           ;; We have our own tab-bar UI that includes a variable for
           ;; configuring the separator. Thus, we want to ensure the
           ;; tab bar does not automatically resize, to keep the
           ;; tab-bar ui consistent.
+          tab-bar-auto-width nil
           tab-bar-format '(tab-bar-format-tabs-groups)
-          tab-bar-tab-name-format-function #'mg--tab-bar-tab-name-format
+          ;; remove tab-bar-tab-name-format-close-button from this
+          ;; hook as we don't need the close button
+          tab-bar-tab-name-format-functions '(tab-bar-tab-name-format-hints
+                                              mg--tab-bar-add-custom-boundaries
+                                              tab-bar-tab-name-format-face)
           tab-bar-tab-group-format-function #'mg--tab-bar-tab-group-format)
 
     (general-create-definer mg-tab-map
