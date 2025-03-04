@@ -24,8 +24,8 @@ session.")
 displayed, close the window. If no httpgd buffer exists, ask to create
 it."
     (interactive)
-    (if-let ((httpgd-buf (get-buffer mg-ess-httpgd-xwidget-buffer-name)))
-            (if-let ((httpgd-win (get-buffer-window httpgd-win)))
+    (if-let* ((httpgd-buf (get-buffer mg-ess-httpgd-xwidget-buffer-name)))
+            (if-let* ((httpgd-win (get-buffer-window httpgd-win)))
                     (delete-window httpgd-win)
                 (display-buffer httpgd-buf))
         (call-interactively #'xwidget-webkit-browse-url))
@@ -37,8 +37,8 @@ it."
 buffer is displayed, close the window. If no local html buffer exists,
 ask to create it."
     (interactive)
-    (if-let ((local-html-buf (get-buffer mg-python-local-html-xwidget-buffer-name)))
-            (if-let ((local-html-win (get-buffer-window local-html-buf)))
+    (if-let* ((local-html-buf (get-buffer mg-python-local-html-xwidget-buffer-name)))
+            (if-let* ((local-html-win (get-buffer-window local-html-buf)))
                     (delete-window local-html-win)
                 (display-buffer local-html-buf))
         (call-interactively #'mg-open-html-with-xwidget))
@@ -175,8 +175,8 @@ language of the code block)"
 (defun mg-python-venv-deactivate ()
     "This command deactivates the current python virtual environment."
     (interactive)
-    (when-let ((pyvenv-current-env (and (not (equal (getenv "VIRTUAL_ENV") ""))
-                                        (getenv "VIRTUAL_ENV"))))
+    (when-let* ((pyvenv-current-env (and (not (equal (getenv "VIRTUAL_ENV") ""))
+                                         (getenv "VIRTUAL_ENV"))))
         ;; split the PATH
         (let ((paths (split-string (getenv "PATH") path-separator)))
             ;; remove the path to the current python venv environment

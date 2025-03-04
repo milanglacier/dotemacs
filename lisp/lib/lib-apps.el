@@ -85,7 +85,7 @@ like plotly."
         (apply old-fun args)))
 
 (defun mg-xwidget-force-display (&rest args)
-    (if-let ((session (xwidget-webkit-current-session)))
+    (if-let* ((session (xwidget-webkit-current-session)))
             (display-buffer (xwidget-buffer session)
                             mg-xwidget-force-display-action)))
 
@@ -136,7 +136,7 @@ otherwise open the current visited elfeed entry via `xwidget'.  If
 with a prefix \\[universal-argument] create a new `xwidget' session
 otherwise use the existed one"
     (interactive "P")
-    (if-let ((link-at-point (get-text-property (point) 'shr-url)))
+    (if-let* ((link-at-point (get-text-property (point) 'shr-url)))
             (xwidget-webkit-browse-url link-at-point new-session)
         (xwidget-webkit-browse-url
          (elfeed-entry-link elfeed-show-entry)
@@ -149,7 +149,7 @@ otherwise open the current visited elfeed entry via `eww'.  If
 with a prefix \\[universal-argument] create a new `eww' session
 otherwise use the existed one"
     (interactive "P")
-    (if-let ((link-at-point (get-text-property (point) 'shr-url)))
+    (if-let* ((link-at-point (get-text-property (point) 'shr-url)))
             (eww link-at-point new-session)
         (eww
          (elfeed-entry-link elfeed-show-entry)

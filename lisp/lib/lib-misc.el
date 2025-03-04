@@ -17,7 +17,7 @@
 ;;;###autoload
 (defun mg-project-root-or-default-dir ()
     "If a project root is found, return it. Otherwise return `default-directory'."
-    (if-let ((proj (project-current)))
+    (if-let* ((proj (project-current)))
             (project-root proj)
         default-directory))
 

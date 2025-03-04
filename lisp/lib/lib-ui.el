@@ -121,7 +121,7 @@ is called."
     (let* ((action-strings (mapcar #'car mg-actions))
            (actions (mapcar #'cdr mg-actions))
            (keys (mapcar (lambda (x)
-                             (when-let ((pos (string-search "[" x)))
+                             (when-let* ((pos (string-search "[" x)))
                                  (substring x (1+ pos) (+ 2 pos))))
                          action-strings))
            (keymaps
