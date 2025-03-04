@@ -90,19 +90,19 @@ any valid actions in readtags, e.g., \"-D\", to get pseudo tags."
     (let ((info (citre-readtags-tags-file-info (citre-tags-file-path))))
         (xref-pop-to-location
          (consult--read
-          (consult--async-command
-           #'consult-citre-readtags--builder
-           (consult--async-transform consult-citre-readtags--format info)
-           (consult--async-highlight #'consult-citre-readtags--builder))
+          (consult--process-collection
+                  #'consult-citre-readtags--builder
+              :transform (consult--async-transform (lambda (lines) (consult-citre-readtags--format info lines)))
+              :highlight #'consult-citre-readtags--builder)
           :prompt "Tag: "
           :keymap consult-async-map
           :require-match t
           :category 'consult-citre
-          :initial (consult--async-split-initial initial)
+          :initial initial
           :group #'consult--prefix-group
           :state (consult-xref--preview #'switch-to-buffer)
           :lookup (lambda (&rest args)
-                      (when-let ((tag (apply #'consult--lookup-prop 'consult-citre-tag args)))
+                      (when-let* ((tag (apply #'consult--lookup-prop 'consult-citre-tag args)))
                           (citre-xref--make-object tag)))))))
 
 (defun consult-citre--embark-export-xref (items)

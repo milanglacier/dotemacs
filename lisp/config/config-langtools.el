@@ -320,6 +320,7 @@ fib(5)")
     (add-to-list 'auto-mode-alist '("\\.go\\'" . go-ts-mode))
     (add-to-list 'auto-mode-alist '("/go\\.mod\\'" . go-mod-ts-mode))
     (add-to-list 'auto-mode-alist '("\\.rs\\'" . rust-ts-mode))
+    (add-to-list 'auto-mode-alist '("\\.lua\\'" . lua-ts-mode))
     (add-to-list 'auto-mode-alist '("\\.y[a]?ml\\'" . yaml-ts-mode))
 
     )

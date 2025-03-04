@@ -17,7 +17,7 @@ period (1s currently as hard coded) will move your focus on the eldoc
 window. If the shorter period has gone, calling this command will
 close the eldoc window."
     (interactive)
-    (if-let ((eldoc-win (get-buffer-window "*eldoc*")))
+    (if-let* ((eldoc-win (get-buffer-window "*eldoc*")))
             (delete-window eldoc-win)
         (progn
             (eldoc-doc-buffer t)
@@ -119,7 +119,7 @@ reformatter according to the `major-mode-reformatter-plist'"
     (if (and (eglot-managed-p)
              (eglot--server-capable :documentFormattingProvider))
             (call-interactively #'eglot-format)
-        (when-let ((formatter (plist-get major-mode-reformatter-plist major-mode)))
+        (when-let* ((formatter (plist-get major-mode-reformatter-plist major-mode)))
             (call-interactively formatter))))
 
 ;;;###autoload
