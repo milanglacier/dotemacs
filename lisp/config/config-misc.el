@@ -83,6 +83,8 @@
         :states '(normal insert motion)
         "t" #'vterm)
 
+    (add-hook 'evil-collection-setup-hook #'mg--vterm-override-evil-collection)
+
     :config
 
     (advice-add #'vterm :around #'call-command-at-project-root)
