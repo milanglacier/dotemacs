@@ -112,7 +112,7 @@
     (add-to-list 'eglot-server-programs
                  '(sql-mode . ("sqls")))
 
-    (add-to-list 'eglot-server-programs '((org-mode markdown-mode) "efm-langserver"))
+    (add-to-list 'eglot-server-programs '(markdown-mode "efm-langserver"))
 
     (add-hook
      'eglot-managed-mode-hook #'mg-toggle-citre-eglot-capf)
