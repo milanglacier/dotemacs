@@ -12,5 +12,8 @@
     (let ((completion-styles '(basic partial-completion emacs22)))
         (apply capf-fn args)))
 
+(defalias #'mg-complete-ctags (cape-capf-interactive #'citre-completion-at-point)
+    "complete ctags completions using minibuffer")
+
 (provide 'lib-completion)
 ;;; lib-completion ends here
