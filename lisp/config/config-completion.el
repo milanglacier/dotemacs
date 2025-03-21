@@ -98,7 +98,8 @@
      ;; manually invoke the completion
      "M-i" #'company-manual-begin
      "M-c M-c" #'mg-complete-ctags
-     "M-c M-f" #'cape-file)
+     "M-c M-f" #'cape-file
+     "M-c M-d" #'cape-dabbrev)
 
     (advice-add #'company-capf :around #'mg-company-completion-styles)
 
