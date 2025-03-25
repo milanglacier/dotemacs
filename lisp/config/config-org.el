@@ -107,7 +107,7 @@ within Emacs.")
     (add-hook 'org-tab-first-hook #'mg-org-indent-maybe-h)
     (add-hook 'org-tab-first-hook #'mg-org-yas-expand-maybe-h)
 
-    ; (add-hook 'org-mode-hook (mg--call-func-respect-blocklist eglot-ensure))
+    ;; (add-hook 'org-mode-hook (mg--call-func-respect-blocklist eglot-ensure))
 
     (mg-define-and-bind-local-paren-text-object "/" "/" "/" org-mode-hook)
     (mg-define-and-bind-local-paren-text-object "*" "*" "*" org-mode-hook)

@@ -62,6 +62,8 @@
       "/undo"
       "/voice"
       "/web"
+      "/think-tokens"
+      "/reasoning-effort"
       )
     "the available command prefixes used by aider")
 
@@ -156,7 +158,12 @@
       "--no-suggest-shell-commands"
       "--voice-format"
       "--voice-language"
-      "--multiline")
+      "--multiline"
+      "--reasoning-effort"
+      "--thinking-tokens"
+      "--auto-accept-architect"
+      "--no-auto-accept-architect"
+      )
     "the available command arguments used by aider")
 
 (defvar vtr-aider-cmd "aider" "the command used to start the aider")

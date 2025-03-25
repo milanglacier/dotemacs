@@ -44,5 +44,14 @@
                 (advice-add #'dired-subtree-toggle :after #'mg--dired-subtree-add-nerd-icons)
             (advice-remove #'dired-subtree-toggle #'mg--dired-subtree-add-nerd-icons))))
 
+;;;###autoload
+(defun mg--vterm-override-evil-collection (mode _ &rest _)
+    (when (eq mode 'vterm)
+        (general-define-key :keymaps 'vterm-mode-map
+                            :states 'normal
+                            "i" #'evil-emacs-state)
+        (evil-set-initial-state 'vterm-mode 'emacs)
+        (remove-hook 'evil-collection-setup-hook 'mg--vterm-override-evil-collection)))
+
 (provide 'lib-misc)
 ;;; lib-misc.el ends here
