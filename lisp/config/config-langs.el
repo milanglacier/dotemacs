@@ -85,7 +85,7 @@
     (mg-localleader
         :keymaps 'ess-mode-map
         :states '(normal visual motion insert)
-        "s" #'vtr~radian-send-region-operator
+        "s" #'vtr~radian-source-region-operator
         "r" '(:ignore t :which-key "repl")
         "rs" #'vtr~radian-start
         "rh" #'vtr~radian-hide-window
@@ -125,7 +125,7 @@
     (mg-localleader
         :keymaps 'python-ts-mode-map
         :states '(normal visual insert motion)
-        "s" #'vtr~ipython-send-region-operator
+        "s" #'vtr~ipython-source-region-operator
         "r" '(:ignore t :which-key "REPL")
         "rs" #'vtr~ipython-start
         "rh" #'vtr~ipython-hide-window
@@ -175,7 +175,7 @@
         "r" '(:ignore t :which-key "repl")
         "rs" #'mg-markdown-run-repl
         "rh" #'mg-markdown-hide-window
-        "s" #'mg-markdown-send-region)
+        "s" #'mg-markdown-source-region)
 
     (add-hook 'markdown-mode-hook #'eglot-ensure)
 

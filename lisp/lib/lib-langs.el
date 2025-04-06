@@ -88,6 +88,17 @@ language of the code block)"
         ("python" (vtr~ipython-send-region-operator beg end session))
         (x "No associated REPL found!")))
 
+;;;###autoload (autoload #'mg-markdown-source-region "lib-langs" nil t)
+(evil-define-operator mg-markdown-source-region (beg end session)
+    "Source region to the REPL depending on the context (i.e. the
+language of the code block)"
+    (interactive "<r>P")
+    (pcase (save-excursion (markdown-code-block-lang))
+        ("r" (vtr~radian-source-region-operator beg end session))
+        ("R" (vtr~radian-source-region-operator beg end session))
+        ("python" (vtr~ipython-source-region-operator beg end session))
+        (x "No associated REPL found!")))
+
 (defvar mg-conda-current-env nil
     "The path to the current conda environment.")
 

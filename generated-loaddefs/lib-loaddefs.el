@@ -234,6 +234,7 @@ code block)" t)
 Close the REPL window denpending on the context (i.e. the
 language of the code block)." t)
  (autoload #'mg-markdown-send-region "lib-langs" nil t)
+ (autoload #'mg-markdown-source-region "lib-langs" nil t)
 (autoload 'mg-conda-activate "../lisp/lib/lib-langs" "\
 Activate a conda environment.
 

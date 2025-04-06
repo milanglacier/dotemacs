@@ -44,19 +44,28 @@ by setting the generated variable `vtr*REPL-NAME-end-pattern'.
 :str-process-func the function to process the string before sending it
 to the REPL.  The default is `identity'. You can change the behavior
 at run time by setting the generated variable
-`vtr*REPL-NAME-str-process-func'."
+`vtr*REPL-NAME-str-process-func'.
+
+:source-func the function to source the code content to the REPL. A
+common approach involves writing the input string to a temporary file,
+then returning a string that sources this file. The exact \"sourcing\"
+syntax depends on the target programming language."
 
     (let ((start-func-name (intern (concat "vtr~" repl-name "-start")))
           (send-region-func-name (intern (concat "vtr~" repl-name "-send-region")))
           (send-region-operator-name (intern (concat "vtr~" repl-name "-send-region-operator")))
+          (source-region-func-name (intern (concat "vtr~" repl-name "-source-region")))
+          (source-region-operator-name (intern (concat "vtr~" repl-name "-source-region-operator")))
           (send-string-func-name (intern (concat "vtr~" repl-name "-send-string")))
           (hide-window-func-name (intern (concat "vtr~" repl-name "-hide-window")))
           (bracketed-paste-p (plist-get args :bracketed-paste-p))
           (start-pattern (or (plist-get args :start-pattern) ""))
           (end-pattern (or (plist-get args :end-pattern) "\r"))
           (str-process-func (or (plist-get args :str-process-func) ''identity))
+          (source-func (or (plist-get args :source-func) ''identity))
           (repl-cmd-name (intern (concat "vtr*" repl-name "-cmd")))
           (str-process-func-name (intern (concat "vtr*" repl-name "-str-process-func")))
+          (source-func-name (intern (concat "vtr*" repl-name "-source-func")))
           (bracketed-paste-p-name (intern (concat "vtr*" repl-name "-use-bracketed-paste-mode")))
           (start-pattern-name (intern (concat "vtr*" repl-name "-start-pattern")))
           (end-pattern-name (intern (concat "vtr*" repl-name "-end-pattern"))))
@@ -68,6 +77,9 @@ at run time by setting the generated variable
 
              (defvar ,str-process-func-name ,str-process-func
                  ,(format "The function to process the string before sending it to the %s REPL." repl-name))
+
+             (defvar ,source-func-name ,source-func
+                 ,(format "The function to source the code content for the %s REPL." repl-name))
 
              (defvar ,bracketed-paste-p-name ,bracketed-paste-p
                  ,(format "Whether use bracketed paste mode for sending string to the %s REPL." repl-name))
@@ -107,6 +119,16 @@ with that number." repl-name)
                  (let ((str (buffer-substring-no-properties beg end)))
                      (,send-string-func-name str session)))
 
+             (defun ,source-region-func-name (beg end &optional session)
+                 ,(format
+                   "Source the region delimited by BEG and END to inferior %s.
+With numeric prefix argument, send region to the process associated
+with that number." repl-name)
+                 (interactive "r\nP")
+                 (let* ((str (buffer-substring-no-properties beg end))
+                        (str (funcall ,source-func-name str)))
+                     (,send-string-func-name str session)))
+
              (defun ,send-string-func-name (string &optional session)
                  ,(format
                    "Send the string to inferior %s. When invoked
@@ -135,6 +157,15 @@ that number" send-region-func-name repl-name)
                  (interactive "<r>P")
                  (,send-region-func-name beg end session))
 
+             (evil-define-operator ,source-region-operator-name (beg end session)
+                 ,(format
+                   "A evil operator wrapper around `%s'. With a numeric
+prefix argument, send the region to the %s process associated with
+that number" source-region-func-name repl-name)
+                 :move-point nil
+                 (interactive "<r>P")
+                 (,source-region-func-name beg end session))
+
              (defun ,hide-window-func-name (&optional arg)
                  ,(format
                    "hide the %s window. With numeric prefix argument, hide
@@ -149,14 +180,44 @@ the window with that number as a suffix." repl-name)
 
              )))
 
+(defun vtr--make-tmp-file (str)
+    "Create a temporary file with STR."
+    ;; disable output to message buffer and minibuffer.
+    (let ((inhibit-message t)
+          (message-log-max nil))
+        (make-temp-file "" nil "" str)))
+
+(defun vtr--python-source-func (str)
+    "Create a temporary file with STR and return a Python command to execute it."
+    (let ((file (vtr--make-tmp-file str)))
+        (format "exec(open(\"%s\", \"r\").read())" file)))
+
+(defun vtr--R-source-func (str)
+    "Create a temporary file with STR and return an R command to source it."
+    (let ((file (vtr--make-tmp-file str)))
+        (format "eval(parse(text = readr::read_file(\"%s\")))\n" file)))
+
+(defun vtr--bash-source-func (str)
+    "Create a temporary file with STR and return a Bash command to source it."
+    (let ((file (vtr--make-tmp-file str)))
+        (format "source %s" file)))
+
+(defun vtr--aichat-source-func (str)
+    "Create a temporary file with STR and return a Bash command to source it."
+    (let ((file (vtr--make-tmp-file str)))
+        (format ".file \"%s\"" file)))
+
 ;;;###autoload (autoload #'vtr~aichat-start "vterm-repl" nil t)
-(vtr-create-schema "aichat" "aichat -s" :bracketed-paste-p t)
+(vtr-create-schema "aichat" "aichat -s" :bracketed-paste-p t
+                   :source-func #'vtr--aichat-source-func)
 
 ;;;###autoload (autoload #'vtr~ipython-start "vterm-repl" nil t)
-(vtr-create-schema "ipython" "ipython" :bracketed-paste-p t)
+(vtr-create-schema "ipython" "ipython" :bracketed-paste-p t
+                   :source-func #'vtr--python-source-func)
 
 ;;;###autoload (autoload #'vtr~radian-start "vterm-repl" nil t)
-(vtr-create-schema "radian" "radian" :bracketed-paste-p t :end-pattern "")
+(vtr-create-schema "radian" "radian" :bracketed-paste-p t :end-pattern ""
+                   :source-func #'vtr--R-source-func)
 
 (provide 'vterm-repl)
 ;;; vterm-repl.el ends here
