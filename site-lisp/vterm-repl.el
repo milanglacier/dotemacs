@@ -184,8 +184,11 @@ the window with that number as a suffix." repl-name)
     "Create a temporary file with STR."
     ;; disable output to message buffer and minibuffer.
     (let ((inhibit-message t)
-          (message-log-max nil))
-        (make-temp-file "" nil "" str)))
+          (message-log-max nil)
+          file)
+        (setq file(make-temp-file "" nil "" str))
+        (run-with-idle-timer 1 nil #'delete-file file)
+        file))
 
 (defun vtr--python-source-func (str)
     "Create a temporary file with STR and return a Python command to execute it."
