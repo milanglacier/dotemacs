@@ -35,11 +35,19 @@ setting the generated variable
 
 :start-pattern the first string to send to the REPl before sending the
 region. The default is ''.  You can change the behavior at run time by
-setting the generated variable `vtr*REPL-NAME-start-pattern'.
+setting the generated
+variable`vtr*REPL-NAME-start-pattern'. Additionally, the value can be
+a plist with two attributes: `:single-line' for specifying the string
+in single-line scenarios.`:multi-lines' for defining the string in
+multi-line contexts.
 
 :end-pattern the last string to send to the REPL after sending the
 region. The default is '\\r'.  You can change the behavior at run time
-by setting the generated variable `vtr*REPL-NAME-end-pattern'.
+by setting the generated variable
+`vtr*REPL-NAME-end-pattern'. Additionally the value can be a plist
+with two attributes: `:single-line' for specifying the string in
+single-line scenarios, and `:multi-lines' for defining the string in
+multi-line contexts.
 
 :str-process-func the function to process the string before sending it
 to the REPL.  The default is `identity'. You can change the behavior
@@ -136,17 +144,26 @@ interactively, prompt the user for input in the minibuffer.  With
 numeric prefix argument, send region to the process associated with
 that number." repl-name)
                  (interactive "sinput your command: \nP")
-                 (let ((repl-buffer-name
-                        (if session
-                                (format "*%s*<%d>" ,repl-name session)
-                            (format "*%s*" ,repl-name))))
+                 (let* ((repl-buffer-name
+                         (if session
+                                 (format "*%s*<%d>" ,repl-name session)
+                             (format "*%s*" ,repl-name)))
+                        (multi-lines-p (string-match-p "\n" string))
+                        (start-pattern (if (stringp ,start-pattern-name) ,start-pattern-name
+                                           (if multi-line-p
+                                                   (plist-get ,start-pattern-name :multi-lines)
+                                               (plist-get ,start-pattern-name :single-line))))
+                        (end-pattern (if (stringp ,end-pattern-name) ,end-pattern-name
+                                         (if multi-lines-p
+                                                 (plist-get ,end-pattern-name :multi-lines)
+                                             (plist-get ,end-pattern-name :single-line)))))
                      (with-current-buffer repl-buffer-name
-                         (vterm-send-string ,start-pattern-name)
+                         (vterm-send-string start-pattern)
                          (vterm-send-string string
-                                            (if (string-match-p "\n" string)
+                                            (if multi-lines-p
                                                     ,bracketed-paste-p-name
                                                 nil))
-                         (vterm-send-string ,end-pattern-name))))
+                         (vterm-send-string end-pattern))))
 
              (evil-define-operator ,send-region-operator-name (beg end session)
                  ,(format
@@ -198,7 +215,7 @@ the window with that number as a suffix." repl-name)
 (defun vtr--R-source-func (str)
     "Create a temporary file with STR and return an R command to source it."
     (let ((file (vtr--make-tmp-file str)))
-        (format "eval(parse(text = readr::read_file(\"%s\")))\n" file)))
+        (format "eval(parse(text = readr::read_file(\"%s\")))" file)))
 
 (defun vtr--bash-source-func (str)
     "Create a temporary file with STR and return a Bash command to source it."
@@ -219,7 +236,8 @@ the window with that number as a suffix." repl-name)
                    :source-func #'vtr--python-source-func)
 
 ;;;###autoload (autoload #'vtr~radian-start "vterm-repl" nil t)
-(vtr-create-schema "radian" "radian" :bracketed-paste-p t :end-pattern ""
+(vtr-create-schema "radian" "radian" :bracketed-paste-p t
+                   :end-pattern '(:single-line "\n" :multi-lines "")
                    :source-func #'vtr--R-source-func)
 
 (provide 'vterm-repl)
