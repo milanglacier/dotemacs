@@ -150,7 +150,7 @@ that number." repl-name)
                              (format "*%s*" ,repl-name)))
                         (multi-lines-p (string-match-p "\n" string))
                         (start-pattern (if (stringp ,start-pattern-name) ,start-pattern-name
-                                           (if multi-line-p
+                                           (if multi-lines-p
                                                    (plist-get ,start-pattern-name :multi-lines)
                                                (plist-get ,start-pattern-name :single-line))))
                         (end-pattern (if (stringp ,end-pattern-name) ,end-pattern-name
