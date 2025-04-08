@@ -207,10 +207,12 @@ the window with that number as a suffix." repl-name)
         (run-with-idle-timer 1 nil #'delete-file file)
         file))
 
-(defun vtr--python-source-func (str)
+(defun vtr--ipython-source-func (str)
     "Create a temporary file with STR and return a Python command to execute it."
     (let ((file (vtr--make-tmp-file str)))
-        (format "exec(open(\"%s\", \"r\").read())" file)))
+        ;; The `-i` flag ensures the current environment is inherited
+        ;; when executing the file
+        (format "%%run -i \"%s\"" file)))
 
 (defun vtr--R-source-func (str)
     "Create a temporary file with STR and return an R command to source it."
@@ -233,7 +235,7 @@ the window with that number as a suffix." repl-name)
 
 ;;;###autoload (autoload #'vtr~ipython-start "vterm-repl" nil t)
 (vtr-create-schema "ipython" "ipython" :bracketed-paste-p t
-                   :source-func #'vtr--python-source-func)
+                   :source-func #'vtr--ipython-source-func)
 
 ;;;###autoload (autoload #'vtr~radian-start "vterm-repl" nil t)
 (vtr-create-schema "radian" "radian" :bracketed-paste-p t
