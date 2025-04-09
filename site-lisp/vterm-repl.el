@@ -197,19 +197,20 @@ the window with that number as a suffix." repl-name)
 
              )))
 
-(defun vtr--make-tmp-file (str)
-    "Create a temporary file with STR."
+(defun vtr--make-tmp-file (str &optional keep-file)
+    "Create a temporary file with STR.
+Delete the temp file afterwards unless KEEP-FILE is non-nil."
     ;; disable output to message buffer and minibuffer.
     (let ((inhibit-message t)
           (message-log-max nil)
           file)
-        (setq file(make-temp-file "" nil "" str))
-        (run-with-idle-timer 1 nil #'delete-file file)
+        (setq file(make-temp-file "" nil "_vterm_repl" str))
+        (unless keep-file (run-with-idle-timer 5 nil #'delete-file file))
         file))
 
 (defun vtr--ipython-source-func (str)
     "Create a temporary file with STR and return a Python command to execute it."
-    (let ((file (vtr--make-tmp-file str)))
+    (let ((file (vtr--make-tmp-file str t)))
         ;; The `-i` flag ensures the current environment is inherited
         ;; when executing the file
         (format "%%run -i \"%s\"" file)))
