@@ -97,7 +97,7 @@
     (setq evil-collection-mode-list
           '(arc-mode bm bookmark consult comint compile eldoc daemons
                      debug diff-hl diff-mode dired dired-sidebar
-                     docker doc-view elisp-refs embark eldoc eshell
+                     docker doc-view eat elisp-refs embark eldoc eshell
                      eww elfeed flymake grep help helpful ibuffer
                      imenu macrostep magit-sections magit magic-todos
                      man markdown-mode mu4e org org-roam

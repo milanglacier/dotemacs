@@ -3,6 +3,15 @@
 (straight-use-package 'ws-butler)
 (straight-use-package 'rainbow-delimiters)
 (straight-use-package 'vterm)
+(straight-use-package
+ '(eat :type git
+       :host codeberg
+       :repo "akib/emacs-eat"
+       :files ("*.el" ("term" "term/*.el") "*.texi"
+               "*.ti" ("terminfo/e" "terminfo/e/*")
+               ("terminfo/65" "terminfo/65/*")
+               ("integration" "integration/*")
+               (:exclude ".dir-locals.el" "*-tests.el"))))
 
 ;; ibuffer
 (straight-use-package 'ibuffer-vc)
@@ -63,7 +72,7 @@
     (add-to-list 'project-switch-commands
                  '(project-dired "Dired at root"))
     (add-to-list 'project-switch-commands
-                 '(vterm "vterm"))
+                 '(eat "eat"))
     (add-to-list 'project-switch-commands
                  '(mg-project-magit "magit"))
 
@@ -71,8 +80,38 @@
 
     (general-define-key
      :keymaps 'project-prefix-map
-     "v" #'vterm
+     "v" #'eat
      "m" #'mg-project-magit)
+
+    )
+
+;; NOTE: If the Eat terminal isn't functioning correctly, this might
+;; be a terminfo issue. The terminfo database provided with Eat might
+;; not be compatible with your system. To resolve this, run
+;; `eat-compile-terminfo' and restart Eat.
+
+(use-package eat
+    :init
+    (mg-open-map
+        :keymaps 'override
+        :states '(normal insert motion)
+        "t" #'eat)
+
+    :config
+    (setq eat-kill-buffer-on-exit t)
+
+    (general-define-key
+     :keymaps 'eat-semi-char-mode-map
+     "C-c <escape>" #'eat-self-input)
+
+    (advice-add #'eat :around #'call-command-at-project-root)
+
+    (add-to-list 'display-buffer-alist
+                 `("\\*eat\\*"
+                   (display-buffer-in-side-window)
+                   (window-height . 0.4)
+                   (window-width .0.5)
+                   (slot . ,(alist-get 'eat mg-side-window-slots))))
 
     )
 
