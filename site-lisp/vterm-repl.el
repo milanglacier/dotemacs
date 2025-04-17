@@ -15,7 +15,6 @@
 ;;; Code:
 (require 'vterm)
 
-;;;###autoload
 (defmacro vtr-create-schema (repl-name repl-cmd &rest args)
     "create a REPL schema.
 
@@ -230,15 +229,12 @@ Delete the temp file afterwards unless KEEP-FILE is non-nil."
     (let ((file (vtr--make-tmp-file str)))
         (format ".file \"%s\"" file)))
 
-;;;###autoload (autoload #'vtr~aichat-start "vterm-repl" nil t)
 (vtr-create-schema "aichat" "aichat -s" :bracketed-paste-p t
                    :source-func #'vtr--aichat-source-func)
 
-;;;###autoload (autoload #'vtr~ipython-start "vterm-repl" nil t)
 (vtr-create-schema "ipython" "ipython" :bracketed-paste-p t
                    :source-func #'vtr--ipython-source-func)
 
-;;;###autoload (autoload #'vtr~radian-start "vterm-repl" nil t)
 (vtr-create-schema "radian" "radian" :bracketed-paste-p t
                    :end-pattern '(:single-line "\n" :multi-lines "")
                    :source-func #'vtr--R-source-func)

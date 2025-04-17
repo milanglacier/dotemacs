@@ -2,7 +2,6 @@
 
 (straight-use-package 'ws-butler)
 (straight-use-package 'rainbow-delimiters)
-(straight-use-package 'vterm)
 (straight-use-package
  '(eat :type git
        :host codeberg
@@ -112,38 +111,6 @@
                    (window-height . 0.4)
                    (window-width .0.5)
                    (slot . ,(alist-get 'eat mg-side-window-slots))))
-
-    )
-
-(use-package vterm
-    :init
-    (mg-open-map
-        :keymaps 'override
-        :states '(normal insert motion)
-        "t" #'vterm)
-
-    (add-hook 'evil-collection-setup-hook #'mg--vterm-override-evil-collection)
-
-    :config
-
-    (advice-add #'vterm :around #'call-command-at-project-root)
-
-    (setq vterm-max-scrollback 5000)
-
-    (add-to-list 'display-buffer-alist
-                 `("\\*vterm\\*"
-                   (display-buffer-in-side-window)
-                   (window-height . 0.4)
-                   (window-width .0.5)
-                   (slot . ,(alist-get 'vterm mg-side-window-slots))))
-
-    (general-define-key
-     :keymaps 'vterm-mode-map
-     "C-c <escape>" #'vterm-send-escape)
-
-    (add-hook 'vterm-mode-hook (mg-setq-locally confirm-kill-processes nil))
-    ;; From doomemacs: Prevent premature horizontal scrolling
-    (add-hook 'vterm-mode-hook (mg-setq-locally hscroll-margin 0))
     )
 
 (use-package auto-revert

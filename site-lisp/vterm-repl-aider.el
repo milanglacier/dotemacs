@@ -176,7 +176,6 @@
                     (concat " " vtr-aider-args)
                 "")))
 
-;;;###autoload (autoload #'vtr~aider-start "vterm-repl-aider" nil t)
 (vtr-create-schema "aider"
                    #'vtr-aider-full-command
                    :bracketed-paste-p t
