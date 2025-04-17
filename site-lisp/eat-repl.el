@@ -159,6 +159,11 @@ that number." repl-name)
                                                  (plist-get ,end-pattern-name :multi-lines)
                                              (plist-get ,end-pattern-name :single-line)))))
                      (with-current-buffer repl-buffer-name
+                         (when-let* ((eat-window (get-buffer-window)))
+                             ;; NOTE: This is crucial to ensure the
+                             ;; Eat window scrolls in sync with new
+                             ;; terminal output.
+                             (eat--synchronize-scroll (list eat-window)))
                          (eat--send-string nil start-pattern)
                          (when (and multi-lines-p ,bracketed-paste-p-name)
                              (eat--send-string nil bracketed-paste-start))
