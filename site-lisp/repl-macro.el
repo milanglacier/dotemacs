@@ -129,15 +129,10 @@ switch to the session with that number as a suffix."
                                  (funcall ,repl-cmd-name)
                              ,repl-cmd-name))
                         (vterm-buffer-name eat-buffer-name)
-                        (vterm-shell eat-shell)
-                        (repl-buffer)
-                        (repl-buffer-exist-p
-                         (get-buffer
-                          (if arg (format "*%s*<%d>" ,repl-name arg)
-                              (format "*%s*" ,repl-name)))))
-                     (setq repl-buffer (if (eq repm-backend 'eat)
-                                               (eat nil arg)
-                                           (vterm arg)))))
+                        (vterm-shell eat-shell))
+                     (if (eq repm-backend 'eat)
+                             (eat nil arg)
+                         (vterm arg))))
 
              (defun ,send-region-func-name (beg end &optional session)
                  ,(format
