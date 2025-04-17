@@ -188,6 +188,9 @@
 
     :config
     (setq minuet-provider 'gemini)
+    (setq minuet-request-timeout 2)
+    (setq minuet-auto-suggestion-debounce-delay 0.5)
+    (setq minuet-auto-suggestion-throttle-delay 1.5)
 
     (general-define-key
      :keymaps 'minuet-active-mode-map
