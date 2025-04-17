@@ -16,12 +16,6 @@ Read a tag from minibuffer and jump to the tag.
 (register-definition-prefixes "../site-lisp/consult-citre" '("consult-citre-"))
 
 
-;;; Generated autoloads from ../site-lisp/eat-repl-aider.el
-
- (autoload #'eatr~aider-start "eat-repl-aider" nil t)
-(register-definition-prefixes "../site-lisp/eat-repl-aider" '("eatr-aider-"))
-
-
 ;;; Generated autoloads from ../site-lisp/evil-ts.el
 
 (register-definition-prefixes "../site-lisp/evil-ts" '("evil-ts-"))
@@ -33,6 +27,12 @@ Read a tag from minibuffer and jump to the tag.
  (autoload #'repm~ipython-start "repl-macro" nil t)
  (autoload #'repm~radian-start "repl-macro" nil t)
 (register-definition-prefixes "../site-lisp/repl-macro" '("repm-"))
+
+
+;;; Generated autoloads from ../site-lisp/repl-macro-aider.el
+
+ (autoload #'repm~aider-start "repl-macro-aider" nil t)
+(register-definition-prefixes "../site-lisp/repl-macro-aider" '("repm-aider-"))
 
 
 ;;; Generated autoloads from ../site-lisp/vterm-repl.el

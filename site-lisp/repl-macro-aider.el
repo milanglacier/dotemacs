@@ -1,30 +1,41 @@
-;;; vterm-repl-aider.el --- Aider integration for vterm-repl -*- lexical-binding: t; -*-
+;;; repl-macro-aider.el --- Aider integration for repl-macro -*- lexical-binding: t; -*-
 
 ;; Author: Milan Glacier <dev@milanglacier.com>
 ;; Maintainer: Milan Glacier <dev@milanglacier.com>
 ;; Version: 0.1
-;; Package-Requires: ((emacs "29") (vterm-repl "0.1"))
+;; Package-Requires: ((emacs "29") (repl-macro "0.1"))
 
 ;;; Commentary:
 
-;; This package provides integration between vterm-repl and Aider, a
+;; This package provides integration between repl-macro and Aider, a
 ;; LLM based code assistant.  It extends the functionality of
-;; vterm-repl to work seamlessly with Aider, allowing users to
+;; repl-macro to work seamlessly with Aider, allowing users to
 ;; interact with the AI assistant directly from within Emacs.
 
 ;; Features:
-;; - Creates an Aider REPL session using vterm
+;; - Creates an Aider REPL session using eat
 ;; - Provides functions to start the Aider REPL and send commands
 ;; - Configures Aider-specific settings for optimal interaction
 
 ;; Usage:
-;; M-x vtr~aider-start
+;; M-x repm~aider-start
 
 ;;; Code:
 
-(require 'vterm-repl)
+(require 'repl-macro)
 
-(defvar vtr-aider-prefixes
+(defvar eat-buffer-name)
+(defvar eat-shell)
+(declare-function eat "eat")
+(declare-function eat--send-string "eat")
+(declare-function eat--synchronize-scroll "eat")
+
+(defvar vterm-shell)
+(defvar vterm-buffer-name)
+(declare-function vterm "vterm")
+(declare-function vterm-send-string "vterm")
+
+(defvar repm-aider-prefixes
     '(""
       "/add"
       "/architect"
@@ -67,7 +78,7 @@
       )
     "the available command prefixes used by aider")
 
-(defvar vtr-aider-available-args
+(defvar repm-aider-available-args
     '("--reasoning-effort"
       "--watch-files"
       "--model"
@@ -166,104 +177,104 @@
       )
     "the available command arguments used by aider")
 
-(defvar vtr-aider-cmd "aider" "the command used to start the aider")
-(defvar vtr-aider-args "--watch-files" "the arguments used to start the aider")
+(defvar repm-aider-cmd "aider" "the command used to start the aider")
+(defvar repm-aider-args "--watch-files" "the arguments used to start the aider")
 
-(defun vtr-aider-full-command ()
+(defun repm-aider-full-command ()
     "Return the full aider command with the args"
-    (concat vtr-aider-cmd
-            (if (stringp vtr-aider-args)
-                    (concat " " vtr-aider-args)
+    (concat repm-aider-cmd
+            (if (stringp repm-aider-args)
+                    (concat " " repm-aider-args)
                 "")))
 
-(vtr-create-schema "aider"
-                   #'vtr-aider-full-command
-                   :bracketed-paste-p t
-                   :start-pattern "")
+;;;###autoload (autoload #'repm~aider-start "repl-macro-aider" nil t)
+(repm-create-schema "aider"
+                    #'repm-aider-full-command
+                    :bracketed-paste-p t)
 
-(defvaralias 'vtr-aider-prefix 'vtr*aider-start-pattern)
+(defvaralias 'repm-aider-prefix 'repm*aider-start-pattern)
 
-(defun vtr-aider-set-prefix (prefix)
-    "set the `vtr-aider-prefix' which will be selected from `vtr-aider-prefixes'"
+(defun repm-aider-set-prefix (prefix)
+    "set the `repm-aider-prefix' which will be selected from `repm-aider-prefixes'"
     (interactive
      (list (completing-read "The prefixes passed to aider: "
-                            vtr-aider-prefixes
+                            repm-aider-prefixes
                             ;; require the prefix must be a member of
-                            ;; `vtr-aider-prefixes'
+                            ;; `repm-aider-prefixes'
                             nil t)))
-    (setq vtr-aider-prefix (if (equal prefix "") "" (concat prefix " "))))
+    (setq repm-aider-prefix (if (equal prefix "") "" (concat prefix " "))))
 
 
-(defun vtr-aider-remove-prefix ()
-    "remove the prefix from `vtr-aider-prefix'"
+(defun repm-aider-remove-prefix ()
+    "remove the prefix from `repm-aider-prefix'"
     (interactive)
-    (setq vtr-aider-prefix ""))
+    (setq repm-aider-prefix ""))
 
-(defun vtr-aider-set-args (args)
+(defun repm-aider-set-args (args)
     "set the command line arguments to launcher aider"
     (interactive
      (list (completing-read "The arguments passed to aider: "
-                            vtr-aider-available-args
+                            repm-aider-available-args
                             ;; do not require the argument must be a
-                            ;; member of `vtr-aider-available-args'
+                            ;; member of `repm-aider-available-args'
                             nil nil)))
-    (setq vtr-aider-args args))
+    (setq repm-aider-args args))
 
-(defun vtr-aider-remove-args ()
-    "remove the args from `vtr*aider-cmd'"
+(defun repm-aider-remove-args ()
+    "remove the args from `repm*aider-cmd'"
     (interactive)
-    (setq vtr*aider-cmd vtr-aider-cmd))
+    (setq repm*aider-cmd repm-aider-cmd))
 
-(defun vtr-aider-prompt (prefix prompt &optional session)
+(defun repm-aider-prompt (prefix prompt &optional session)
     "Prompt aider with the given PREFIX and PROMPT verbatim.
-Override `vtr-aider-prefix' to ensure verbatim input."
+Override `repm-aider-prefix' to ensure verbatim input."
     (interactive
-     (list (completing-read "the aider command: " vtr-aider-prefixes nil t)
+     (list (completing-read "the aider command: " repm-aider-prefixes nil t)
            (read-string "enter your prompt: ")
            current-prefix-arg))
     (let* ((prefix (or prefix ""))
            (prompt (or prompt ""))
-           (vtr-aider-prefix
+           (repm-aider-prefix
             (if (equal prefix "") "" (concat prefix " "))))
-        (vtr~aider-send-string prompt session)))
+        (repm~aider-send-string prompt session)))
 
-(defun vtr-aider-yes (&optional session)
+(defun repm-aider-yes (&optional session)
     "Send \"y\" to aider"
     (interactive "P")
-    (vtr-aider-prompt nil "y" session))
+    (repm-aider-prompt nil "y" session))
 
-(defun vtr-aider-no (&optional session)
+(defun repm-aider-no (&optional session)
     "Send \"n\" to aider"
     (interactive "P")
-    (vtr-aider-prompt nil "n" session))
+    (repm-aider-prompt nil "n" session))
 
-(defun vtr-aider-abort (&optional session)
+(defun repm-aider-abort (&optional session)
     "Send C-c to aider"
     (interactive "P")
-    (vtr-aider-prompt nil "\C-c" session))
+    (repm-aider-prompt nil "\C-c" session))
 
-(defun vtr-aider-exit (&optional session)
+(defun repm-aider-exit (&optional session)
     (interactive "P")
-    (vtr-aider-prompt nil "\C-d" session))
+    (repm-aider-prompt nil "\C-d" session))
 
-(defun vtr-aider-paste (&optional session)
+(defun repm-aider-paste (&optional session)
     "Send \"/paste\" to aider"
     (interactive "P")
-    (vtr-aider-prompt nil "/paste" session))
+    (repm-aider-prompt nil "/paste" session))
 
-(defun vtr-aider-ask-mode (&optional session)
+(defun repm-aider-ask-mode (&optional session)
     "Send \"/ask\" to aider"
     (interactive "P")
-    (vtr-aider-prompt nil "/ask" session))
+    (repm-aider-prompt nil "/ask" session))
 
-(defun vtr-aider-arch-mode (&optional session)
+(defun repm-aider-arch-mode (&optional session)
     "Send \"/architect\" to aider"
     (interactive "P")
-    (vtr-aider-prompt nil "/architect" session))
+    (repm-aider-prompt nil "/architect" session))
 
-(defun vtr-aider-code-mode (&optional session)
+(defun repm-aider-code-mode (&optional session)
     "Send \"/code\" to aider"
     (interactive "P")
-    (vtr-aider-prompt nil "/code" session))
+    (repm-aider-prompt nil "/code" session))
 
-(provide 'vterm-repl-aider)
+(provide 'repl-macro-aider)
