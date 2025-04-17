@@ -8,9 +8,9 @@
 ;;; Commentary:
 
 ;; This package provides a set of macros and functions to create and
-;; manage REPL sessions using eat or vterm in Emacs. It allows for
+;; manage REPL sessions using eat or vterm in Emacs.  It allows for
 ;; creating custom REPL schemas with functionalities such as starting,
-;; sending code, and hiding REPL windows. This is useful for
+;; sending code, and hiding REPL windows.  This is useful for
 ;; integrating terminal-based REPLs with Emacs efficiently.
 
 ;;; Code:
@@ -32,15 +32,16 @@
                    (const :tag "vterm" vterm)))
 
 (defmacro repm-create-schema (repl-name repl-cmd &rest args)
-    "create a REPL schema.
+    "Create a REPL schema.
 
-The REPL session will be created via `repm-backend'. The schema
-includes three functions, the function to start the repl, the function
-to send the region and the corresponding operator, and the function to
-hide the REPL window if it exists.
+The REPL session will be created via `repm-backend'.  The schema
+includes three functions: one to start the REPL, one to send the
+region and corresponding Evil operator (for Evil users), and one to
+hide the REPL window if it exists.  A keymap, `repm*REPL-NAME-map', is
+also included for these commands.
 
 REPL-NAME is a string, REPL-CMD is a string, a form evaluated to a
-string, or a function evaluated to a string. ARGS is a plist, the
+string, or a function evaluated to a string.  ARGS is a plist, the
 following properties are supported:
 
 :bracketed-paste-p whether send the string with bracketed paste mode,
@@ -49,29 +50,29 @@ setting the generated variable
 `repm*REPL-NAME-use-bracketed-paste-mode'.
 
 :start-pattern the first string to send to the REPl before sending the
-region. The default is ''.  You can change the behavior at run time by
+region.  The default is ''.  You can change the behavior at run time by
 setting the generated
-variable`repm*REPL-NAME-start-pattern'. Additionally, the value can be
+variable`repm*REPL-NAME-start-pattern'.  Additionally, the value can be
 a plist with two attributes: `:single-line' for specifying the string
 in single-line scenarios.`:multi-lines' for defining the string in
 multi-line contexts.
 
 :end-pattern the last string to send to the REPL after sending the
-region. The default is '\\r'.  You can change the behavior at run time
+region.  The default is '\\r'.  You can change the behavior at run time
 by setting the generated variable
-`repm*REPL-NAME-end-pattern'. Additionally the value can be a plist
+`repm*REPL-NAME-end-pattern'.  Additionally the value can be a plist
 with two attributes: `:single-line' for specifying the string in
 single-line scenarios, and `:multi-lines' for defining the string in
 multi-line contexts.
 
 :str-process-func the function to process the string before sending it
-to the REPL.  The default is `identity'. You can change the behavior
+to the REPL.  The default is `identity'.  You can change the behavior
 at run time by setting the generated variable
 `repm*REPL-NAME-str-process-func'.
 
-:source-func the function to source the code content to the REPL. A
+:source-func the function to source the code content to the REPL.  A
 common approach involves writing the input string to a temporary file,
-then returning a string that sources this file. The exact \"sourcing\"
+then returning a string that sources this file.  The exact \"sourcing\"
 syntax depends on the target programming language."
 
     (let ((start-func-name (intern (concat "repm~" repl-name "-start")))
@@ -81,6 +82,7 @@ syntax depends on the target programming language."
           (source-region-operator-name (intern (concat "repm~" repl-name "-source-region-operator")))
           (send-string-func-name (intern (concat "repm~" repl-name "-send-string")))
           (hide-window-func-name (intern (concat "repm~" repl-name "-hide-window")))
+          (keymap-name (intern (concat "repm*" repl-name "-map")))
           (bracketed-paste-p (plist-get args :bracketed-paste-p))
           (start-pattern (or (plist-get args :start-pattern) ""))
           (end-pattern (or (plist-get args :end-pattern) "\r"))
@@ -225,6 +227,15 @@ the window with that number as a suffix." repl-name)
                              (buf (get-buffer eat-buffer-name))
                              (eat-buffer-window (get-buffer-window buf)))
                      (delete-window eat-buffer-window)))
+
+             (defvar ,keymap-name
+                 (let ((map (make-sparse-keymap)))
+                     (define-key map "s" #',start-func-name)
+                     (define-key map "r" #',send-region-func-name)
+                     (define-key map "e" #',send-string-func-name)
+                     (define-key map "h" #',hide-window-func-name)
+                     map)
+                 ,(format "Keymap for %s REPL commands." repl-name))
 
              )))
 
