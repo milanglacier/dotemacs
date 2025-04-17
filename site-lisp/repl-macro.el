@@ -3,14 +3,15 @@
 ;; Author: Milan Glacier <dev@milanglacier.com>
 ;; Maintainer: Milan Glacier <dev@milanglacier.com>
 ;; Version: 0.1
-;; Package-Requires: ((emacs "29") (eat "0.0"))
+;; Package-Requires: ((emacs "29"))
 
 ;;; Commentary:
+
 ;; This package provides a set of macros and functions to create and
-;; manage REPL sessions using eat in Emacs. It allows for creating
-;; custom REPL schemas with functionalities such as starting, sending
-;; code, and hiding REPL windows. This is useful for integrating
-;; terminal-based REPLs with Emacs efficiently.
+;; manage REPL sessions using eat or vterm in Emacs. It allows for
+;; creating custom REPL schemas with functionalities such as starting,
+;; sending code, and hiding REPL windows. This is useful for
+;; integrating terminal-based REPLs with Emacs efficiently.
 
 ;;; Code:
 
@@ -33,10 +34,10 @@
 (defmacro repm-create-schema (repl-name repl-cmd &rest args)
     "create a REPL schema.
 
-The REPL session will be created via eat. The schema includes three
-functions, the function to start the repl, the function to send the
-region and the corresponding operator, and the function to hide the
-REPL window if it exists.
+The REPL session will be created via `repm-backend'. The schema
+includes three functions, the function to start the repl, the function
+to send the region and the corresponding operator, and the function to
+hide the REPL window if it exists.
 
 REPL-NAME is a string, REPL-CMD is a string, a form evaluated to a
 string, or a function evaluated to a string. ARGS is a plist, the
@@ -234,7 +235,7 @@ Delete the temp file afterwards unless KEEP-FILE is non-nil."
     (let ((inhibit-message t)
           (message-log-max nil)
           file)
-        (setq file(make-temp-file "" nil "_eat_repl" str))
+        (setq file (make-temp-file "" nil "_eat_repl" str))
         (unless keep-file (run-with-idle-timer 5 nil #'delete-file file))
         file))
 
