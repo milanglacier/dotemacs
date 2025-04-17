@@ -179,7 +179,7 @@
 (vtr-create-schema "aider"
                    #'vtr-aider-full-command
                    :bracketed-paste-p t
-                   :start-pattern "/ask ")
+                   :start-pattern "")
 
 (defvaralias 'vtr-aider-prefix 'vtr*aider-start-pattern)
 

@@ -180,7 +180,7 @@
 (eatr-create-schema "aider"
                     #'eatr-aider-full-command
                     :bracketed-paste-p t
-                    :start-pattern "/ask ")
+                    :start-pattern "")
 
 (defvaralias 'eatr-aider-prefix 'eatr*aider-start-pattern)
 
