@@ -1,4 +1,4 @@
-;;; eat-repl.el --- Create and manage REPL sessions using eat -*- lexical-binding: t; -*-
+;;; repl-macro.el --- Create and manage REPL sessions using multiple backends -*- lexical-binding: t; -*-
 
 ;; Author: Milan Glacier <dev@milanglacier.com>
 ;; Maintainer: Milan Glacier <dev@milanglacier.com>
@@ -13,9 +13,24 @@
 ;; terminal-based REPLs with Emacs efficiently.
 
 ;;; Code:
-(require 'eat)
 
-(defmacro eatr-create-schema (repl-name repl-cmd &rest args)
+(defvar eat-buffer-name)
+(defvar eat-shell)
+(declare-function eat "eat")
+(declare-function eat--send-string "eat")
+(declare-function eat--synchronize-scroll "eat")
+
+(defvar vterm-shell)
+(defvar vterm-buffer-name)
+(declare-function vterm "vterm")
+(declare-function vterm-send-string "vterm")
+
+(defcustom repm-backend 'eat
+    "The backend to use for REPL sessions."
+    :type '(choice (const :tag "eat" eat)
+                   (const :tag "vterm" vterm)))
+
+(defmacro repm-create-schema (repl-name repl-cmd &rest args)
     "create a REPL schema.
 
 The REPL session will be created via eat. The schema includes three
@@ -30,12 +45,12 @@ following properties are supported:
 :bracketed-paste-p whether send the string with bracketed paste mode,
 the default value is nil.  You can change the behavior at run time by
 setting the generated variable
-`eatr*REPL-NAME-use-bracketed-paste-mode'.
+`repm*REPL-NAME-use-bracketed-paste-mode'.
 
 :start-pattern the first string to send to the REPl before sending the
 region. The default is ''.  You can change the behavior at run time by
 setting the generated
-variable`eatr*REPL-NAME-start-pattern'. Additionally, the value can be
+variable`repm*REPL-NAME-start-pattern'. Additionally, the value can be
 a plist with two attributes: `:single-line' for specifying the string
 in single-line scenarios.`:multi-lines' for defining the string in
 multi-line contexts.
@@ -43,7 +58,7 @@ multi-line contexts.
 :end-pattern the last string to send to the REPL after sending the
 region. The default is '\\r'.  You can change the behavior at run time
 by setting the generated variable
-`eatr*REPL-NAME-end-pattern'. Additionally the value can be a plist
+`repm*REPL-NAME-end-pattern'. Additionally the value can be a plist
 with two attributes: `:single-line' for specifying the string in
 single-line scenarios, and `:multi-lines' for defining the string in
 multi-line contexts.
@@ -51,31 +66,31 @@ multi-line contexts.
 :str-process-func the function to process the string before sending it
 to the REPL.  The default is `identity'. You can change the behavior
 at run time by setting the generated variable
-`eatr*REPL-NAME-str-process-func'.
+`repm*REPL-NAME-str-process-func'.
 
 :source-func the function to source the code content to the REPL. A
 common approach involves writing the input string to a temporary file,
 then returning a string that sources this file. The exact \"sourcing\"
 syntax depends on the target programming language."
 
-    (let ((start-func-name (intern (concat "eatr~" repl-name "-start")))
-          (send-region-func-name (intern (concat "eatr~" repl-name "-send-region")))
-          (send-region-operator-name (intern (concat "eatr~" repl-name "-send-region-operator")))
-          (source-region-func-name (intern (concat "eatr~" repl-name "-source-region")))
-          (source-region-operator-name (intern (concat "eatr~" repl-name "-source-region-operator")))
-          (send-string-func-name (intern (concat "eatr~" repl-name "-send-string")))
-          (hide-window-func-name (intern (concat "eatr~" repl-name "-hide-window")))
+    (let ((start-func-name (intern (concat "repm~" repl-name "-start")))
+          (send-region-func-name (intern (concat "repm~" repl-name "-send-region")))
+          (send-region-operator-name (intern (concat "repm~" repl-name "-send-region-operator")))
+          (source-region-func-name (intern (concat "repm~" repl-name "-source-region")))
+          (source-region-operator-name (intern (concat "repm~" repl-name "-source-region-operator")))
+          (send-string-func-name (intern (concat "repm~" repl-name "-send-string")))
+          (hide-window-func-name (intern (concat "repm~" repl-name "-hide-window")))
           (bracketed-paste-p (plist-get args :bracketed-paste-p))
           (start-pattern (or (plist-get args :start-pattern) ""))
           (end-pattern (or (plist-get args :end-pattern) "\r"))
           (str-process-func (or (plist-get args :str-process-func) ''identity))
           (source-func (or (plist-get args :source-func) ''identity))
-          (repl-cmd-name (intern (concat "eatr*" repl-name "-cmd")))
-          (str-process-func-name (intern (concat "eatr*" repl-name "-str-process-func")))
-          (source-func-name (intern (concat "eatr*" repl-name "-source-func")))
-          (bracketed-paste-p-name (intern (concat "eatr*" repl-name "-use-bracketed-paste-mode")))
-          (start-pattern-name (intern (concat "eatr*" repl-name "-start-pattern")))
-          (end-pattern-name (intern (concat "eatr*" repl-name "-end-pattern"))))
+          (repl-cmd-name (intern (concat "repm*" repl-name "-cmd")))
+          (str-process-func-name (intern (concat "repm*" repl-name "-str-process-func")))
+          (source-func-name (intern (concat "repm*" repl-name "-source-func")))
+          (bracketed-paste-p-name (intern (concat "repm*" repl-name "-use-bracketed-paste-mode")))
+          (start-pattern-name (intern (concat "repm*" repl-name "-start-pattern")))
+          (end-pattern-name (intern (concat "repm*" repl-name "-end-pattern"))))
 
         `(progn
 
@@ -105,17 +120,21 @@ the buffer selected (or created). With a numeric prefix arg, create or
 switch to the session with that number as a suffix."
                    repl-name repl-name)
                  (interactive "P")
-                 (let ((eat-buffer-name (format "*%s*" ,repl-name))
-                       (eat-shell
-                        (if (functionp ,repl-cmd-name)
-                                (funcall ,repl-cmd-name)
-                            ,repl-cmd-name))
-                       (repl-buffer)
-                       (repl-buffer-exist-p
-                        (get-buffer
-                         (if arg (format "*%s*<%d>" ,repl-name arg)
-                             (format "*%s*" ,repl-name)))))
-                     (setq repl-buffer (eat nil arg))))
+                 (let* ((eat-buffer-name (format "*%s*" ,repl-name))
+                        (eat-shell
+                         (if (functionp ,repl-cmd-name)
+                                 (funcall ,repl-cmd-name)
+                             ,repl-cmd-name))
+                        (vterm-buffer-name eat-buffer-name)
+                        (vterm-shell eat-shell)
+                        (repl-buffer)
+                        (repl-buffer-exist-p
+                         (get-buffer
+                          (if arg (format "*%s*<%d>" ,repl-name arg)
+                              (format "*%s*" ,repl-name)))))
+                     (setq repl-buffer (if (eq repm-backend 'eat)
+                                               (eat nil arg)
+                                           (vterm arg)))))
 
              (defun ,send-region-func-name (beg end &optional session)
                  ,(format
@@ -147,6 +166,9 @@ that number." repl-name)
                          (if session
                                  (format "*%s*<%d>" ,repl-name session)
                              (format "*%s*" ,repl-name)))
+                        (send-string (if (eq repm-backend 'eat)
+                                             (lambda (str) (eat--send-string nil str))
+                                         (lambda (str) (vterm-send-string str))))
                         (multi-lines-p (string-match-p "\n" string))
                         (bracketed-paste-start "\e[200~")
                         (bracketed-paste-end "\e[201~")
@@ -159,18 +181,19 @@ that number." repl-name)
                                                  (plist-get ,end-pattern-name :multi-lines)
                                              (plist-get ,end-pattern-name :single-line)))))
                      (with-current-buffer repl-buffer-name
-                         (when-let* ((eat-window (get-buffer-window)))
+                         (when-let* ((eat-window (get-buffer-window))
+                                     (is-eat (eq repm-backend 'eat)))
                              ;; NOTE: This is crucial to ensure the
                              ;; Eat window scrolls in sync with new
                              ;; terminal output.
                              (eat--synchronize-scroll (list eat-window)))
-                         (eat--send-string nil start-pattern)
+                         (funcall send-string start-pattern)
                          (when (and multi-lines-p ,bracketed-paste-p-name)
-                             (eat--send-string nil bracketed-paste-start))
-                         (eat--send-string nil string)
+                             (funcall send-string bracketed-paste-start))
+                         (funcall send-string string)
                          (when (and multi-lines-p ,bracketed-paste-p-name)
-                             (eat--send-string nil bracketed-paste-end))
-                         (eat--send-string nil end-pattern))))
+                             (funcall send-string bracketed-paste-end))
+                         (funcall send-string end-pattern))))
 
              (evil-define-operator ,send-region-operator-name (beg end session)
                  ,(format
@@ -204,7 +227,7 @@ the window with that number as a suffix." repl-name)
 
              )))
 
-(defun eatr--make-tmp-file (str &optional keep-file)
+(defun repm--make-tmp-file (str &optional keep-file)
     "Create a temporary file with STR.
 Delete the temp file afterwards unless KEEP-FILE is non-nil."
     ;; disable output to message buffer and minibuffer.
@@ -215,40 +238,40 @@ Delete the temp file afterwards unless KEEP-FILE is non-nil."
         (unless keep-file (run-with-idle-timer 5 nil #'delete-file file))
         file))
 
-(defun eatr--ipython-source-func (str)
+(defun repm--ipython-source-func (str)
     "Create a temporary file with STR and return a Python command to execute it."
-    (let ((file (eatr--make-tmp-file str t)))
+    (let ((file (repm--make-tmp-file str t)))
         ;; The `-i` flag ensures the current environment is inherited
         ;; when executing the file
         (format "%%run -i \"%s\"" file)))
 
-(defun eatr--R-source-func (str)
+(defun repm--R-source-func (str)
     "Create a temporary file with STR and return an R command to source it."
-    (let ((file (eatr--make-tmp-file str)))
+    (let ((file (repm--make-tmp-file str)))
         (format "eval(parse(text = readr::read_file(\"%s\")))" file)))
 
-(defun eatr--bash-source-func (str)
+(defun repm--bash-source-func (str)
     "Create a temporary file with STR and return a Bash command to source it."
-    (let ((file (eatr--make-tmp-file str)))
+    (let ((file (repm--make-tmp-file str)))
         (format "source %s" file)))
 
-(defun eatr--aichat-source-func (str)
+(defun repm--aichat-source-func (str)
     "Create a temporary file with STR and return a Bash command to source it."
-    (let ((file (eatr--make-tmp-file str)))
+    (let ((file (repm--make-tmp-file str)))
         (format ".file \"%s\"" file)))
 
-;;;###autoload (autoload #'eatr~aichat-start "eat-repl" nil t)
-(eatr-create-schema "aichat" "aichat -s" :bracketed-paste-p t
-                    :source-func #'eatr--aichat-source-func)
+;;;###autoload (autoload #'repm~aichat-start "repl-macro" nil t)
+(repm-create-schema "aichat" "aichat -s" :bracketed-paste-p t
+                    :source-func #'repm--aichat-source-func)
 
-;;;###autoload (autoload #'eatr~ipython-start "eat-repl" nil t)
-(eatr-create-schema "ipython" "ipython" :bracketed-paste-p t
-                    :source-func #'eatr--ipython-source-func)
+;;;###autoload (autoload #'repm~ipython-start "repl-macro" nil t)
+(repm-create-schema "ipython" "ipython" :bracketed-paste-p t
+                    :source-func #'repm--ipython-source-func)
 
-;;;###autoload (autoload #'eatr~radian-start "eat-repl" nil t)
-(eatr-create-schema "radian" "radian" :bracketed-paste-p t
+;;;###autoload (autoload #'repm~radian-start "repl-macro" nil t)
+(repm-create-schema "radian" "radian" :bracketed-paste-p t
                     :end-pattern '(:single-line "\n" :multi-lines "")
-                    :source-func #'eatr--R-source-func)
+                    :source-func #'repm--R-source-func)
 
-(provide 'eat-repl)
-;;; eat-repl.el ends here
+(provide 'repl-macro)
+;;; repl-macro.el ends here
