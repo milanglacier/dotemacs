@@ -111,7 +111,8 @@
                    (window-height . 0.4)
                    (window-width .0.5)
                    (slot . ,(alist-get 'eat mg-side-window-slots))))
-    )
+
+    (add-hook 'eat-mode-hook (mg-setq-locally hscroll-margin 0)))
 
 (use-package auto-revert
     :init

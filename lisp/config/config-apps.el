@@ -118,10 +118,10 @@
 (mg-chat-map
     :keymaps 'override
     :states '(normal insert motion visual)
-    "s" #'vtr~aichat-start
-    "e" #'vtr~aichat-send-string
-    "r" #'vtr~aichat-source-region-operator
-    "h" #'vtr~aichat-hide-window)
+    "s" #'eatr~aichat-start
+    "e" #'eatr~aichat-send-string
+    "r" #'eatr~aichat-source-region-operator
+    "h" #'eatr~aichat-hide-window)
 
 
 ;; aider (a llm based code assistant) integration
@@ -138,19 +138,19 @@
 (mg-aider-map
     :keymaps 'override
     :states '(normal insert motion visual)
-    "s" #'vtr~aider-start
-    "r" #'vtr~aider-send-region-operator
-    "h" #'vtr~aider-hide-window
-    "e" #'vtr-aider-prompt
-    "g" #'vtr-aider-set-prefix
-    "G" #'vtr-aider-remove-prefix
-    "y" #'vtr-aider-yes
-    "n" #'vtr-aider-no
-    "a" #'vtr-aider-abort
-    "q" #'vtr-aider-exit
-    "ma" #'vtr-aider-ask-mode
-    "mA" #'vtr-aider-arch-mode
-    "mc" #'vtr-aider-code-mode)
+    "s" #'eatr~aider-start
+    "r" #'eatr~aider-send-region-operator
+    "h" #'eatr~aider-hide-window
+    "e" #'eatr-aider-prompt
+    "g" #'eatr-aider-set-prefix
+    "G" #'eatr-aider-remove-prefix
+    "y" #'eatr-aider-yes
+    "n" #'eatr-aider-no
+    "a" #'eatr-aider-abort
+    "q" #'eatr-aider-exit
+    "ma" #'eatr-aider-ask-mode
+    "mA" #'eatr-aider-arch-mode
+    "mc" #'eatr-aider-code-mode)
 
 (provide 'config-apps)
 ;;; config-apps.el ends here

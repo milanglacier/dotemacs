@@ -85,17 +85,17 @@
     (mg-localleader
         :keymaps 'ess-mode-map
         :states '(normal visual motion insert)
-        "s" #'vtr~radian-source-region-operator
+        "s" #'eatr~radian-source-region-operator
         "r" '(:ignore t :which-key "repl")
-        "rs" #'vtr~radian-start
-        "rh" #'vtr~radian-hide-window
-        "re" #'vtr~radian-send-string
+        "rs" #'eatr~radian-start
+        "rh" #'eatr~radian-hide-window
+        "re" #'eatr~radian-send-string
         "v" '(:ignore t :which-key "view")
         "vh" #'mg-ess-toggle-view-httpgd)
 
     (general-define-key
-        :keymaps 'ess-mode-map
-        "C-c r" #'mg-send-region-to-ess)
+     :keymaps 'ess-mode-map
+     "C-c r" #'mg-send-region-to-ess)
 
     (mg-setq-on-hook ess-r-mode-hook company-backends
                      '((company-files company-yasnippet company-capf
@@ -125,18 +125,18 @@
     (mg-localleader
         :keymaps 'python-ts-mode-map
         :states '(normal visual insert motion)
-        "s" #'vtr~ipython-source-region-operator
+        "s" #'eatr~ipython-source-region-operator
         "r" '(:ignore t :which-key "REPL")
-        "rs" #'vtr~ipython-start
-        "rh" #'vtr~ipython-hide-window
-        "re" #'vtr~ipython-send-string
+        "rs" #'eatr~ipython-start
+        "rh" #'eatr~ipython-hide-window
+        "re" #'eatr~ipython-send-string
         "v" '(:ignore t :which-key "view")
         "vh" #'mg-python-toggle-view-local-html
         "'" #'mg-edit-src)
 
     (general-define-key
-        :keymaps 'python-ts-mode-map
-        "C-c '" #'mg-edit-src)
+     :keymaps 'python-ts-mode-map
+     "C-c '" #'mg-edit-src)
 
     (add-to-list 'display-buffer-alist
                  `("^\\*ipython"

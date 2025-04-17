@@ -16,6 +16,20 @@ Read a tag from minibuffer and jump to the tag.
 (register-definition-prefixes "../site-lisp/consult-citre" '("consult-citre-"))
 
 
+;;; Generated autoloads from ../site-lisp/eat-repl.el
+
+ (autoload #'eatr~aichat-start "eat-repl" nil t)
+ (autoload #'eatr~ipython-start "eat-repl" nil t)
+ (autoload #'eatr~radian-start "eat-repl" nil t)
+(register-definition-prefixes "../site-lisp/eat-repl" '("eatr-"))
+
+
+;;; Generated autoloads from ../site-lisp/eat-repl-aider.el
+
+ (autoload #'eatr~aider-start "eat-repl-aider" nil t)
+(register-definition-prefixes "../site-lisp/eat-repl-aider" '("eatr-aider-"))
+
+
 ;;; Generated autoloads from ../site-lisp/evil-ts.el
 
 (register-definition-prefixes "../site-lisp/evil-ts" '("evil-ts-"))

@@ -61,9 +61,9 @@ code block)"
     ;; `markd-code-block-lang' will move point to the begin of the
     ;; code block, so we `save-excursion'
     (pcase (save-excursion (markdown-code-block-lang))
-        ("r" (call-interactively #'vtr~radian-start))
-        ("R" (call-interactively #'vtr~radian-start))
-        ("python" (call-interactively #'vtr~ipython-start))
+        ("r" (call-interactively #'eatr~radian-start))
+        ("R" (call-interactively #'eatr~radian-start))
+        ("python" (call-interactively #'eatr~ipython-start))
         (x "No associated REPL found!")))
 
 ;;;###autoload
@@ -72,9 +72,9 @@ code block)"
 language of the code block)."
     (interactive)
     (pcase (save-excursion (markdown-code-block-lang))
-        ("r" (call-interactively #'vtr~radian-hide-window))
-        ("R" (call-interactively #'#'vtr~radian-hide-window))
-        ("python" (call-interactively #'vtr~ipython-hide-window))
+        ("r" (call-interactively #'eatr~radian-hide-window))
+        ("R" (call-interactively #'#'eatr~radian-hide-window))
+        ("python" (call-interactively #'eatr~ipython-hide-window))
         (x "No associated REPL found!")))
 
 ;;;###autoload (autoload #'mg-markdown-send-region "lib-langs" nil t)
@@ -83,9 +83,9 @@ language of the code block)."
 language of the code block)"
     (interactive "<r>P")
     (pcase (save-excursion (markdown-code-block-lang))
-        ("r" (vtr~radian-send-region-operator beg end session))
-        ("R" (vtr~radian-send-region-operator beg end session))
-        ("python" (vtr~ipython-send-region-operator beg end session))
+        ("r" (eatr~radian-send-region-operator beg end session))
+        ("R" (eatr~radian-send-region-operator beg end session))
+        ("python" (eatr~ipython-send-region-operator beg end session))
         (x "No associated REPL found!")))
 
 ;;;###autoload (autoload #'mg-markdown-source-region "lib-langs" nil t)
@@ -94,9 +94,9 @@ language of the code block)"
 language of the code block)"
     (interactive "<r>P")
     (pcase (save-excursion (markdown-code-block-lang))
-        ("r" (vtr~radian-source-region-operator beg end session))
-        ("R" (vtr~radian-source-region-operator beg end session))
-        ("python" (vtr~ipython-source-region-operator beg end session))
+        ("r" (eatr~radian-source-region-operator beg end session))
+        ("R" (eatr~radian-source-region-operator beg end session))
+        ("python" (eatr~ipython-source-region-operator beg end session))
         (x "No associated REPL found!")))
 
 (defvar mg-conda-current-env nil
