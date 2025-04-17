@@ -247,7 +247,7 @@ Delete the temp file afterwards unless KEEP-FILE is non-nil."
     (let ((inhibit-message t)
           (message-log-max nil)
           file)
-        (setq file (make-temp-file "" nil "_eat_repl" str))
+        (setq file (make-temp-file "" nil "_repl_macro" str))
         (unless keep-file (run-with-idle-timer 5 nil #'delete-file file))
         file))
 
