@@ -26,8 +26,13 @@
 (declare-function vterm "vterm")
 (declare-function vterm-send-string "vterm")
 
+(defgroup repl-macro nil
+    "Group for REPL macro."
+    :group 'tools)
+
 (defcustom repm-backend 'eat
     "The backend to use for REPL sessions."
+    :group 'repl-macro
     :type '(choice (const :tag "eat" eat)
                    (const :tag "vterm" vterm)))
 
