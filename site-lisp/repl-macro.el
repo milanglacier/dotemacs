@@ -269,7 +269,7 @@ Delete the temp file afterwards unless KEEP-FILE is non-nil."
         (format "source %s" file)))
 
 (defun repm--aichat-source-func (str)
-    "Create a temporary file with STR and return a Bash command to source it."
+    "Create a temporary file with STR and return a aichat command to source it."
     (let ((file (repm--make-tmp-file str)))
         (format ".file \"%s\"" file)))
 
