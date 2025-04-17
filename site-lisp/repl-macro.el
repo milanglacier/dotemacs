@@ -251,8 +251,17 @@ Delete the temp file afterwards unless KEEP-FILE is non-nil."
         (unless keep-file (run-with-idle-timer 5 nil #'delete-file file))
         file))
 
-(defun repm--ipython-source-func (str)
+
+(defun repm--python-source-func (str)
     "Create a temporary file with STR and return a Python command to execute it."
+    (let ((file (repm--make-tmp-file str t)))
+        ;; Use 'compile' to ensure proper debugging context when using
+        ;; PDB's `list` command
+        (format "exec(compile(open(\"%s\", \"r\").read(), \"%s\", \"exec\"))"
+                file file)))
+
+(defun repm--ipython-source-func (str)
+    "Create a temporary file with STR and return a iPython command to execute it."
     (let ((file (repm--make-tmp-file str t)))
         ;; The `-i` flag ensures the current environment is inherited
         ;; when executing the file
