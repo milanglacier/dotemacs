@@ -198,23 +198,24 @@ that number." repl-name)
                              (funcall send-string bracketed-paste-end))
                          (funcall send-string end-pattern))))
 
-             (evil-define-operator ,send-region-operator-name (beg end session)
-                 ,(format
-                   "A evil operator wrapper around `%s'. With a numeric
+             (when (require 'evil nil t)
+                 (evil-define-operator ,send-region-operator-name (beg end session)
+                     ,(format
+                       "A evil operator wrapper around `%s'. With a numeric
 prefix argument, send the region to the %s process associated with
 that number" send-region-func-name repl-name)
-                 :move-point nil
-                 (interactive "<r>P")
-                 (,send-region-func-name beg end session))
+                     :move-point nil
+                     (interactive "<r>P")
+                     (,send-region-func-name beg end session))
 
-             (evil-define-operator ,source-region-operator-name (beg end session)
-                 ,(format
-                   "A evil operator wrapper around `%s'. With a numeric
+                 (evil-define-operator ,source-region-operator-name (beg end session)
+                     ,(format
+                       "A evil operator wrapper around `%s'. With a numeric
 prefix argument, send the region to the %s process associated with
 that number" source-region-func-name repl-name)
-                 :move-point nil
-                 (interactive "<r>P")
-                 (,source-region-func-name beg end session))
+                     :move-point nil
+                     (interactive "<r>P")
+                     (,source-region-func-name beg end session)))
 
              (defun ,hide-window-func-name (&optional arg)
                  ,(format
