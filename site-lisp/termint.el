@@ -102,6 +102,9 @@ syntax depends on the target programming language."
 
         `(progn
 
+             (require 'eat nil t)
+             (require 'vterm nil t)
+
              (defvar ,repl-cmd-name ,repl-cmd
                  ,(format "The shell command for the %s REPL." repl-name))
 
