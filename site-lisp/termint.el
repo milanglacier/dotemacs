@@ -7,13 +7,12 @@
 
 ;;; Commentary:
 
-;; Termint works like `comint' but runs within a fully-featured
-;; terminal emulator insteaad.  This package provides a set of macros
-;; and functions to create and manage REPL sessions using eat or
-;; vterm.  It enables the creation of custom REPL commands tailored to
-;; each defined REPL, with features including starting session,
-;; sending code, and hiding REPL windows.  This is useful for
-;; integrating terminal-based REPLs with Emacs efficiently.
+;; This package provides a set of macros and functions to create and
+;; manage REPL sessions running within eat or vterm.  It enables the
+;; creation of custom REPL commands tailored to each defined REPL,
+;; with features including starting session, sending code, and hiding
+;; REPL windows.  This is useful for integrating terminal-based REPLs
+;; with Emacs efficiently.
 
 ;;; Code:
 
