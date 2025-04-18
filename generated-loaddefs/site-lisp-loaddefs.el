@@ -23,9 +23,6 @@ Read a tag from minibuffer and jump to the tag.
 
 ;;; Generated autoloads from ../site-lisp/termint.el
 
- (autoload #'termint-aichat-start "termint" nil t)
- (autoload #'termint-ipython-start "termint" nil t)
- (autoload #'termint-radian-start "termint" nil t)
 (register-definition-prefixes "../site-lisp/termint" '("termint-"))
 
 

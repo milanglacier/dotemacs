@@ -275,18 +275,5 @@ Delete the temp file afterwards unless KEEP-FILE is non-nil."
     (let ((file (termint--make-tmp-file str)))
         (format ".file \"%s\"" file)))
 
-;;;###autoload (autoload #'termint-aichat-start "termint" nil t)
-(termint-define "aichat" "aichat -s" :bracketed-paste-p t
-                :source-func #'termint--aichat-source-func)
-
-;;;###autoload (autoload #'termint-ipython-start "termint" nil t)
-(termint-define "ipython" "ipython" :bracketed-paste-p t
-                :source-func #'termint--ipython-source-func)
-
-;;;###autoload (autoload #'termint-radian-start "termint" nil t)
-(termint-define "radian" "radian" :bracketed-paste-p t
-                :end-pattern '(:single-line "\n" :multi-lines "")
-                :source-func #'termint--R-source-func)
-
 (provide 'termint)
 ;;; termint.el ends here

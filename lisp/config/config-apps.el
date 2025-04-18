@@ -103,6 +103,7 @@
 
 ;; aichat (a LLM based chat REPL) integration
 (use-package termint
+    :commands termint-aichat-start termint-ipython-start termint-radian-start
     :init
     (add-to-list 'display-buffer-alist
                  `("\\*aichat\\*"
@@ -124,6 +125,17 @@
         "e" #'termint-aichat-send-string
         "r" #'termint-aichat-source-region-operator
         "h" #'termint-aichat-hide-window)
+    :config
+
+    (termint-define "aichat" "aichat -s" :bracketed-paste-p t
+                    :source-func #'termint--aichat-source-func)
+
+    (termint-define "ipython" "ipython" :bracketed-paste-p t
+                    :source-func #'termint--ipython-source-func)
+
+    (termint-define "radian" "radian" :bracketed-paste-p t
+                    :end-pattern '(:single-line "\n" :multi-lines "")
+                    :source-func #'termint--R-source-func)
     )
 
 
