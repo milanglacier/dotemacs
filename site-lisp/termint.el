@@ -16,17 +16,6 @@
 
 ;;; Code:
 
-(defvar eat-buffer-name)
-(defvar eat-shell)
-(declare-function eat "eat")
-(declare-function eat--send-string "eat")
-(declare-function eat--synchronize-scroll "eat")
-
-(defvar vterm-shell)
-(defvar vterm-buffer-name)
-(declare-function vterm "vterm")
-(declare-function vterm-send-string "vterm")
-
 (defgroup termint nil
     "Group for termint."
     :group 'tools)
