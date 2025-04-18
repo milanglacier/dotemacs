@@ -118,10 +118,10 @@
 (mg-chat-map
     :keymaps 'override
     :states '(normal insert motion visual)
-    "s" #'repm~aichat-start
-    "e" #'repm~aichat-send-string
-    "r" #'repm~aichat-source-region-operator
-    "h" #'repm~aichat-hide-window)
+    "s" #'termint-aichat-start
+    "e" #'termint-aichat-send-string
+    "r" #'termint-aichat-source-region-operator
+    "h" #'termint-aichat-hide-window)
 
 
 ;; aider (a llm based code assistant) integration
@@ -138,19 +138,19 @@
 (mg-aider-map
     :keymaps 'override
     :states '(normal insert motion visual)
-    "s" #'repm~aider-start
-    "r" #'repm~aider-send-region-operator
-    "h" #'repm~aider-hide-window
-    "e" #'repm-aider-prompt
-    "g" #'repm-aider-set-prefix
-    "G" #'repm-aider-remove-prefix
-    "y" #'repm-aider-yes
-    "n" #'repm-aider-no
-    "a" #'repm-aider-abort
-    "q" #'repm-aider-exit
-    "ma" #'repm-aider-ask-mode
-    "mA" #'repm-aider-arch-mode
-    "mc" #'repm-aider-code-mode)
+    "s" #'termint-aider-start
+    "r" #'termint-aider-send-region-operator
+    "h" #'termint-aider-hide-window
+    "e" #'termint-aider-prompt
+    "g" #'termint-aider-set-prefix
+    "G" #'termint-aider-remove-prefix
+    "y" #'termint-aider-yes
+    "n" #'termint-aider-no
+    "a" #'termint-aider-abort
+    "q" #'termint-aider-exit
+    "ma" #'termint-aider-ask-mode
+    "mA" #'termint-aider-arch-mode
+    "mc" #'termint-aider-code-mode)
 
 (provide 'config-apps)
 ;;; config-apps.el ends here

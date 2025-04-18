@@ -85,11 +85,11 @@
     (mg-localleader
         :keymaps 'ess-mode-map
         :states '(normal visual motion insert)
-        "s" #'repm~radian-source-region-operator
+        "s" #'termint-radian-source-region-operator
         "r" '(:ignore t :which-key "repl")
-        "rs" #'repm~radian-start
-        "rh" #'repm~radian-hide-window
-        "re" #'repm~radian-send-string
+        "rs" #'termint-radian-start
+        "rh" #'termint-radian-hide-window
+        "re" #'termint-radian-send-string
         "v" '(:ignore t :which-key "view")
         "vh" #'mg-ess-toggle-view-httpgd)
 
@@ -125,11 +125,11 @@
     (mg-localleader
         :keymaps 'python-ts-mode-map
         :states '(normal visual insert motion)
-        "s" #'repm~ipython-source-region-operator
+        "s" #'termint-ipython-source-region-operator
         "r" '(:ignore t :which-key "REPL")
-        "rs" #'repm~ipython-start
-        "rh" #'repm~ipython-hide-window
-        "re" #'repm~ipython-send-string
+        "rs" #'termint-ipython-start
+        "rh" #'termint-ipython-hide-window
+        "re" #'termint-ipython-send-string
         "v" '(:ignore t :which-key "view")
         "vh" #'mg-python-toggle-view-local-html
         "'" #'mg-edit-src)

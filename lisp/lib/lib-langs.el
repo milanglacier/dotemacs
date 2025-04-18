@@ -61,9 +61,9 @@ code block)"
     ;; `markd-code-block-lang' will move point to the begin of the
     ;; code block, so we `save-excursion'
     (pcase (save-excursion (markdown-code-block-lang))
-        ("r" (call-interactively #'repm~radian-start))
-        ("R" (call-interactively #'repm~radian-start))
-        ("python" (call-interactively #'repm~ipython-start))
+        ("r" (call-interactively #'termint-radian-start))
+        ("R" (call-interactively #'termint-radian-start))
+        ("python" (call-interactively #'termint-ipython-start))
         (x "No associated REPL found!")))
 
 ;;;###autoload
@@ -72,9 +72,9 @@ code block)"
 language of the code block)."
     (interactive)
     (pcase (save-excursion (markdown-code-block-lang))
-        ("r" (call-interactively #'repm~radian-hide-window))
-        ("R" (call-interactively #'#'repm~radian-hide-window))
-        ("python" (call-interactively #'repm~ipython-hide-window))
+        ("r" (call-interactively #'termint-radian-hide-window))
+        ("R" (call-interactively #'#'termint-radian-hide-window))
+        ("python" (call-interactively #'termint-ipython-hide-window))
         (x "No associated REPL found!")))
 
 ;;;###autoload (autoload #'mg-markdown-send-region "lib-langs" nil t)
@@ -83,9 +83,9 @@ language of the code block)."
 language of the code block)"
     (interactive "<r>P")
     (pcase (save-excursion (markdown-code-block-lang))
-        ("r" (repm~radian-send-region-operator beg end session))
-        ("R" (repm~radian-send-region-operator beg end session))
-        ("python" (repm~ipython-send-region-operator beg end session))
+        ("r" (termint-radian-send-region-operator beg end session))
+        ("R" (termint-radian-send-region-operator beg end session))
+        ("python" (termint-ipython-send-region-operator beg end session))
         (x "No associated REPL found!")))
 
 ;;;###autoload (autoload #'mg-markdown-source-region "lib-langs" nil t)
@@ -94,9 +94,9 @@ language of the code block)"
 language of the code block)"
     (interactive "<r>P")
     (pcase (save-excursion (markdown-code-block-lang))
-        ("r" (repm~radian-source-region-operator beg end session))
-        ("R" (repm~radian-source-region-operator beg end session))
-        ("python" (repm~ipython-source-region-operator beg end session))
+        ("r" (termint-radian-source-region-operator beg end session))
+        ("R" (termint-radian-source-region-operator beg end session))
+        ("python" (termint-ipython-source-region-operator beg end session))
         (x "No associated REPL found!")))
 
 (defvar mg-conda-current-env nil
