@@ -102,55 +102,61 @@
     )
 
 ;; aichat (a LLM based chat REPL) integration
-(add-to-list 'display-buffer-alist
-             `("\\*aichat\\*"
-               (display-buffer-in-side-window display-buffer-reuse-window)
-               (window-width . 0.5)
-               (window-height 0.5)
-               (side . ,(alist-get 'aichat mg-side-window-sides))
-               (slot . ,(alist-get 'aichat mg-side-window-slots))))
+(use-package termint
+    :init
+    (add-to-list 'display-buffer-alist
+                 `("\\*aichat\\*"
+                   (display-buffer-in-side-window display-buffer-reuse-window)
+                   (window-width . 0.5)
+                   (window-height 0.5)
+                   (side . ,(alist-get 'aichat mg-side-window-sides))
+                   (slot . ,(alist-get 'aichat mg-side-window-slots))))
 
-(general-create-definer mg-chat-map
-    :prefix "SPC c"
-    :non-normal-prefix "M-SPC c"
-    :prefix-map 'mg-chat-map)
+    (general-create-definer mg-chat-map
+        :prefix "SPC c"
+        :non-normal-prefix "M-SPC c"
+        :prefix-map 'mg-chat-map)
 
-(mg-chat-map
-    :keymaps 'override
-    :states '(normal insert motion visual)
-    "s" #'termint-aichat-start
-    "e" #'termint-aichat-send-string
-    "r" #'termint-aichat-source-region-operator
-    "h" #'termint-aichat-hide-window)
+    (mg-chat-map
+        :keymaps 'override
+        :states '(normal insert motion visual)
+        "s" #'termint-aichat-start
+        "e" #'termint-aichat-send-string
+        "r" #'termint-aichat-source-region-operator
+        "h" #'termint-aichat-hide-window)
+    )
 
 
 ;; aider (a llm based code assistant) integration
-(add-to-list 'display-buffer-alist
-             `("\\*aider\\*"
-               (display-buffer-in-tab)
-               (tab-name . mg--get-tab-name)))
+(use-package termint
+    :init
+    (add-to-list 'display-buffer-alist
+                 `("\\*aider\\*"
+                   (display-buffer-in-tab)
+                   (tab-name . mg--get-tab-name)))
 
-(general-create-definer mg-aider-map
-    :prefix "SPC a"
-    :non-normal-prefix "M-SPC a"
-    :prefix-map 'mg-aider-map)
+    (general-create-definer mg-aider-map
+        :prefix "SPC a"
+        :non-normal-prefix "M-SPC a"
+        :prefix-map 'mg-aider-map)
 
-(mg-aider-map
-    :keymaps 'override
-    :states '(normal insert motion visual)
-    "s" #'termint-aider-start
-    "r" #'termint-aider-send-region-operator
-    "h" #'termint-aider-hide-window
-    "e" #'termint-aider-prompt
-    "g" #'termint-aider-set-prefix
-    "G" #'termint-aider-remove-prefix
-    "y" #'termint-aider-yes
-    "n" #'termint-aider-no
-    "a" #'termint-aider-abort
-    "q" #'termint-aider-exit
-    "ma" #'termint-aider-ask-mode
-    "mA" #'termint-aider-arch-mode
-    "mc" #'termint-aider-code-mode)
+    (mg-aider-map
+        :keymaps 'override
+        :states '(normal insert motion visual)
+        "s" #'termint-aider-start
+        "r" #'termint-aider-send-region-operator
+        "h" #'termint-aider-hide-window
+        "e" #'termint-aider-prompt
+        "g" #'termint-aider-set-prefix
+        "G" #'termint-aider-remove-prefix
+        "y" #'termint-aider-yes
+        "n" #'termint-aider-no
+        "a" #'termint-aider-abort
+        "q" #'termint-aider-exit
+        "ma" #'termint-aider-ask-mode
+        "mA" #'termint-aider-arch-mode
+        "mc" #'termint-aider-code-mode)
+    )
 
 (provide 'config-apps)
 ;;; config-apps.el ends here
