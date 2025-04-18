@@ -1,4 +1,4 @@
-;;; repl-macro.el --- Create and manage REPL sessions using multiple backends -*- lexical-binding: t; -*-
+;;; termint.el --- Create and manage REPL sessions using multiple backends -*- lexical-binding: t; -*-
 
 ;; Author: Milan Glacier <dev@milanglacier.com>
 ;; Maintainer: Milan Glacier <dev@milanglacier.com>
@@ -26,23 +26,23 @@
 (declare-function vterm "vterm")
 (declare-function vterm-send-string "vterm")
 
-(defgroup repl-macro nil
+(defgroup termint nil
     "Group for REPL macro."
     :group 'tools)
 
-(defcustom repm-backend 'eat
+(defcustom termint-backend 'eat
     "The backend to use for REPL sessions."
-    :group 'repl-macro
+    :group 'termint
     :type '(choice (const :tag "eat" eat)
                    (const :tag "vterm" vterm)))
 
-(defmacro repm-create-schema (repl-name repl-cmd &rest args)
+(defmacro termint-define (repl-name repl-cmd &rest args)
     "Create a REPL schema.
 
-The REPL session will be created via `repm-backend'.  The schema
+The REPL session will be created via `termint-backend'.  The schema
 includes three functions: one to start the REPL, one to send the
 region and corresponding Evil operator (for Evil users), and one to
-hide the REPL window if it exists.  A keymap, `repm*REPL-NAME-map', is
+hide the REPL window if it exists.  A keymap, `termint-REPL-NAME-map', is
 also included for these commands.
 
 REPL-NAME is a string, REPL-CMD is a string, a form evaluated to a
@@ -52,12 +52,12 @@ following properties are supported:
 :bracketed-paste-p whether send the string with bracketed paste mode,
 the default value is nil.  You can change the behavior at run time by
 setting the generated variable
-`repm*REPL-NAME-use-bracketed-paste-mode'.
+`termint-REPL-NAME-use-bracketed-paste-mode'.
 
 :start-pattern the first string to send to the REPl before sending the
 region.  The default is ''.  You can change the behavior at run time by
 setting the generated
-variable`repm*REPL-NAME-start-pattern'.  Additionally, the value can be
+variable`termint-REPL-NAME-start-pattern'.  Additionally, the value can be
 a plist with two attributes: `:single-line' for specifying the string
 in single-line scenarios.`:multi-lines' for defining the string in
 multi-line contexts.
@@ -65,7 +65,7 @@ multi-line contexts.
 :end-pattern the last string to send to the REPL after sending the
 region.  The default is '\\r'.  You can change the behavior at run time
 by setting the generated variable
-`repm*REPL-NAME-end-pattern'.  Additionally the value can be a plist
+`termint-REPL-NAME-end-pattern'.  Additionally the value can be a plist
 with two attributes: `:single-line' for specifying the string in
 single-line scenarios, and `:multi-lines' for defining the string in
 multi-line contexts.
@@ -73,32 +73,32 @@ multi-line contexts.
 :str-process-func the function to process the string before sending it
 to the REPL.  The default is `identity'.  You can change the behavior
 at run time by setting the generated variable
-`repm*REPL-NAME-str-process-func'.
+`termint-REPL-NAME-str-process-func'.
 
 :source-func the function to source the code content to the REPL.  A
 common approach involves writing the input string to a temporary file,
 then returning a string that sources this file.  The exact \"sourcing\"
 syntax depends on the target programming language."
 
-    (let ((start-func-name (intern (concat "repm~" repl-name "-start")))
-          (send-region-func-name (intern (concat "repm~" repl-name "-send-region")))
-          (send-region-operator-name (intern (concat "repm~" repl-name "-send-region-operator")))
-          (source-region-func-name (intern (concat "repm~" repl-name "-source-region")))
-          (source-region-operator-name (intern (concat "repm~" repl-name "-source-region-operator")))
-          (send-string-func-name (intern (concat "repm~" repl-name "-send-string")))
-          (hide-window-func-name (intern (concat "repm~" repl-name "-hide-window")))
-          (keymap-name (intern (concat "repm*" repl-name "-map")))
+    (let ((start-func-name (intern (concat "termint-" repl-name "-start")))
+          (send-region-func-name (intern (concat "termint-" repl-name "-send-region")))
+          (send-region-operator-name (intern (concat "termint-" repl-name "-send-region-operator")))
+          (source-region-func-name (intern (concat "termint-" repl-name "-source-region")))
+          (source-region-operator-name (intern (concat "termint-" repl-name "-source-region-operator")))
+          (send-string-func-name (intern (concat "termint-" repl-name "-send-string")))
+          (hide-window-func-name (intern (concat "termint-" repl-name "-hide-window")))
+          (keymap-name (intern (concat "termint-" repl-name "-map")))
           (bracketed-paste-p (plist-get args :bracketed-paste-p))
           (start-pattern (or (plist-get args :start-pattern) ""))
           (end-pattern (or (plist-get args :end-pattern) "\r"))
           (str-process-func (or (plist-get args :str-process-func) ''identity))
           (source-func (or (plist-get args :source-func) ''identity))
-          (repl-cmd-name (intern (concat "repm*" repl-name "-cmd")))
-          (str-process-func-name (intern (concat "repm*" repl-name "-str-process-func")))
-          (source-func-name (intern (concat "repm*" repl-name "-source-func")))
-          (bracketed-paste-p-name (intern (concat "repm*" repl-name "-use-bracketed-paste-mode")))
-          (start-pattern-name (intern (concat "repm*" repl-name "-start-pattern")))
-          (end-pattern-name (intern (concat "repm*" repl-name "-end-pattern"))))
+          (repl-cmd-name (intern (concat "termint-" repl-name "-cmd")))
+          (str-process-func-name (intern (concat "termint-" repl-name "-str-process-func")))
+          (source-func-name (intern (concat "termint-" repl-name "-source-func")))
+          (bracketed-paste-p-name (intern (concat "termint-" repl-name "-use-bracketed-paste-mode")))
+          (start-pattern-name (intern (concat "termint-" repl-name "-start-pattern")))
+          (end-pattern-name (intern (concat "termint-" repl-name "-end-pattern"))))
 
         `(progn
 
@@ -135,7 +135,7 @@ switch to the session with that number as a suffix."
                              ,repl-cmd-name))
                         (vterm-buffer-name eat-buffer-name)
                         (vterm-shell eat-shell))
-                     (if (eq repm-backend 'eat)
+                     (if (eq termint-backend 'eat)
                              (eat nil arg)
                          (vterm arg))))
 
@@ -169,7 +169,7 @@ that number." repl-name)
                          (if session
                                  (format "*%s*<%d>" ,repl-name session)
                              (format "*%s*" ,repl-name)))
-                        (send-string (if (eq repm-backend 'eat)
+                        (send-string (if (eq termint-backend 'eat)
                                              (lambda (str) (eat--send-string nil str))
                                          (lambda (str) (vterm-send-string str))))
                         (multi-lines-p (string-match-p "\n" string))
@@ -185,7 +185,7 @@ that number." repl-name)
                                              (plist-get ,end-pattern-name :single-line)))))
                      (with-current-buffer repl-buffer-name
                          (when-let* ((eat-window (get-buffer-window))
-                                     (is-eat (eq repm-backend 'eat)))
+                                     (is-eat (eq termint-backend 'eat)))
                              ;; NOTE: This is crucial to ensure the
                              ;; Eat window scrolls in sync with new
                              ;; terminal output.
@@ -240,7 +240,7 @@ the window with that number as a suffix." repl-name)
 
              )))
 
-(defun repm--make-tmp-file (str &optional keep-file)
+(defun termint--make-tmp-file (str &optional keep-file)
     "Create a temporary file with STR.
 Delete the temp file afterwards unless KEEP-FILE is non-nil."
     ;; disable output to message buffer and minibuffer.
@@ -252,48 +252,48 @@ Delete the temp file afterwards unless KEEP-FILE is non-nil."
         file))
 
 
-(defun repm--python-source-func (str)
+(defun termint--python-source-func (str)
     "Create a temporary file with STR and return a Python command to execute it."
-    (let ((file (repm--make-tmp-file str t)))
+    (let ((file (termint--make-tmp-file str t)))
         ;; Use 'compile' to ensure proper debugging context when using
         ;; PDB's `list` command
         (format "exec(compile(open(\"%s\", \"r\").read(), \"%s\", \"exec\"))"
                 file file)))
 
-(defun repm--ipython-source-func (str)
+(defun termint--ipython-source-func (str)
     "Create a temporary file with STR and return a iPython command to execute it."
-    (let ((file (repm--make-tmp-file str t)))
+    (let ((file (termint--make-tmp-file str t)))
         ;; The `-i` flag ensures the current environment is inherited
         ;; when executing the file
         (format "%%run -i \"%s\"" file)))
 
-(defun repm--R-source-func (str)
+(defun termint--R-source-func (str)
     "Create a temporary file with STR and return an R command to source it."
-    (let ((file (repm--make-tmp-file str)))
+    (let ((file (termint--make-tmp-file str)))
         (format "eval(parse(text = readr::read_file(\"%s\")))" file)))
 
-(defun repm--bash-source-func (str)
+(defun termint--bash-source-func (str)
     "Create a temporary file with STR and return a Bash command to source it."
-    (let ((file (repm--make-tmp-file str)))
+    (let ((file (termint--make-tmp-file str)))
         (format "source %s" file)))
 
-(defun repm--aichat-source-func (str)
+(defun termint--aichat-source-func (str)
     "Create a temporary file with STR and return a aichat command to source it."
-    (let ((file (repm--make-tmp-file str)))
+    (let ((file (termint--make-tmp-file str)))
         (format ".file \"%s\"" file)))
 
-;;;###autoload (autoload #'repm~aichat-start "repl-macro" nil t)
-(repm-create-schema "aichat" "aichat -s" :bracketed-paste-p t
-                    :source-func #'repm--aichat-source-func)
+;;;###autoload (autoload #'termint-aichat-start "termint" nil t)
+(termint-define "aichat" "aichat -s" :bracketed-paste-p t
+                :source-func #'termint--aichat-source-func)
 
-;;;###autoload (autoload #'repm~ipython-start "repl-macro" nil t)
-(repm-create-schema "ipython" "ipython" :bracketed-paste-p t
-                    :source-func #'repm--ipython-source-func)
+;;;###autoload (autoload #'termint-ipython-start "termint" nil t)
+(termint-define "ipython" "ipython" :bracketed-paste-p t
+                :source-func #'termint--ipython-source-func)
 
-;;;###autoload (autoload #'repm~radian-start "repl-macro" nil t)
-(repm-create-schema "radian" "radian" :bracketed-paste-p t
-                    :end-pattern '(:single-line "\n" :multi-lines "")
-                    :source-func #'repm--R-source-func)
+;;;###autoload (autoload #'termint-radian-start "termint" nil t)
+(termint-define "radian" "radian" :bracketed-paste-p t
+                :end-pattern '(:single-line "\n" :multi-lines "")
+                :source-func #'termint--R-source-func)
 
-(provide 'repl-macro)
-;;; repl-macro.el ends here
+(provide 'termint)
+;;; termint.el ends here

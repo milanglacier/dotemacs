@@ -21,28 +21,18 @@ Read a tag from minibuffer and jump to the tag.
 (register-definition-prefixes "../site-lisp/evil-ts" '("evil-ts-"))
 
 
-;;; Generated autoloads from ../site-lisp/repl-macro.el
+;;; Generated autoloads from ../site-lisp/termint.el
 
- (autoload #'repm~aichat-start "repl-macro" nil t)
- (autoload #'repm~ipython-start "repl-macro" nil t)
- (autoload #'repm~radian-start "repl-macro" nil t)
-(register-definition-prefixes "../site-lisp/repl-macro" '("repm-"))
-
-
-;;; Generated autoloads from ../site-lisp/repl-macro-aider.el
-
- (autoload #'repm~aider-start "repl-macro-aider" nil t)
-(register-definition-prefixes "../site-lisp/repl-macro-aider" '("repm-aider-"))
+ (autoload #'termint-aichat-start "termint" nil t)
+ (autoload #'termint-ipython-start "termint" nil t)
+ (autoload #'termint-radian-start "termint" nil t)
+(register-definition-prefixes "../site-lisp/termint" '("termint-"))
 
 
-;;; Generated autoloads from ../site-lisp/vterm-repl.el
+;;; Generated autoloads from ../site-lisp/termint-aider.el
 
-(register-definition-prefixes "../site-lisp/vterm-repl" '("vtr-"))
-
-
-;;; Generated autoloads from ../site-lisp/vterm-repl-aider.el
-
-(register-definition-prefixes "../site-lisp/vterm-repl-aider" '("vtr-aider-"))
+ (autoload #'termint-aider-start "termint-aider" nil t)
+(register-definition-prefixes "../site-lisp/termint-aider" '("termint-aider-"))
 
 ;;; End of scraped data
 

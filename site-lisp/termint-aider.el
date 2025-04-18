@@ -1,15 +1,15 @@
-;;; repl-macro-aider.el --- Aider integration for repl-macro -*- lexical-binding: t; -*-
+;;; termint-aider.el --- Aider integration for termint -*- lexical-binding: t; -*-
 
 ;; Author: Milan Glacier <dev@milanglacier.com>
 ;; Maintainer: Milan Glacier <dev@milanglacier.com>
 ;; Version: 0.1
-;; Package-Requires: ((emacs "29") (repl-macro "0.1"))
+;; Package-Requires: ((emacs "29") (termint "0.1"))
 
 ;;; Commentary:
 
-;; This package provides integration between repl-macro and Aider, a
+;; This package provides integration between termint and Aider, a
 ;; LLM based code assistant.  It extends the functionality of
-;; repl-macro to work seamlessly with Aider, allowing users to
+;; termint to work seamlessly with Aider, allowing users to
 ;; interact with the AI assistant directly from within Emacs.
 
 ;; Features:
@@ -18,11 +18,11 @@
 ;; - Configures Aider-specific settings for optimal interaction
 
 ;; Usage:
-;; M-x repm~aider-start
+;; M-x termint-aider-start
 
 ;;; Code:
 
-(require 'repl-macro)
+(require 'termint)
 
 (defvar eat-buffer-name)
 (defvar eat-shell)
@@ -35,7 +35,7 @@
 (declare-function vterm "vterm")
 (declare-function vterm-send-string "vterm")
 
-(defvar repm-aider-prefixes
+(defvar termint-aider-prefixes
     '(""
       "/add"
       "/architect"
@@ -78,7 +78,7 @@
       )
     "the available command prefixes used by aider")
 
-(defvar repm-aider-available-args
+(defvar termint-aider-available-args
     '("--reasoning-effort"
       "--watch-files"
       "--model"
@@ -177,104 +177,99 @@
       )
     "the available command arguments used by aider")
 
-(defvar repm-aider-cmd "aider" "the command used to start the aider")
-(defvar repm-aider-args "--watch-files" "the arguments used to start the aider")
+(defvar termint-aider--cmd "aider" "the command used to start the aider")
+(defvar termint-aider-args "--watch-files" "the arguments used to start the aider")
 
-(defun repm-aider-full-command ()
+(defun termint-aider-full-command ()
     "Return the full aider command with the args"
-    (concat repm-aider-cmd
-            (if (stringp repm-aider-args)
-                    (concat " " repm-aider-args)
+    (concat termint-aider--cmd
+            (if (stringp termint-aider-args)
+                    (concat " " termint-aider-args)
                 "")))
 
-;;;###autoload (autoload #'repm~aider-start "repl-macro-aider" nil t)
-(repm-create-schema "aider"
-                    #'repm-aider-full-command
-                    :bracketed-paste-p t)
+;;;###autoload (autoload #'termint-aider-start "termint-aider" nil t)
+(termint-define "aider"
+                #'termint-aider-full-command
+                :bracketed-paste-p t)
 
-(defvaralias 'repm-aider-prefix 'repm*aider-start-pattern)
+(defvaralias 'termint-aider-prefix 'termint-aider-start-pattern)
 
-(defun repm-aider-set-prefix (prefix)
-    "set the `repm-aider-prefix' which will be selected from `repm-aider-prefixes'"
+(defun termint-aider-set-prefix (prefix)
+    "set the `termint-aider-prefix' which will be selected from `termint-aider-prefixes'"
     (interactive
      (list (completing-read "The prefixes passed to aider: "
-                            repm-aider-prefixes
+                            termint-aider-prefixes
                             ;; require the prefix must be a member of
-                            ;; `repm-aider-prefixes'
+                            ;; `termint-aider-prefixes'
                             nil t)))
-    (setq repm-aider-prefix (if (equal prefix "") "" (concat prefix " "))))
+    (setq termint-aider-prefix (if (equal prefix "") "" (concat prefix " "))))
 
 
-(defun repm-aider-remove-prefix ()
-    "remove the prefix from `repm-aider-prefix'"
+(defun termint-aider-remove-prefix ()
+    "remove the prefix from `termint-aider-prefix'"
     (interactive)
-    (setq repm-aider-prefix ""))
+    (setq termint-aider-prefix ""))
 
-(defun repm-aider-set-args (args)
+(defun termint-aider-set-args (args)
     "set the command line arguments to launcher aider"
     (interactive
      (list (completing-read "The arguments passed to aider: "
-                            repm-aider-available-args
+                            termint-aider-available-args
                             ;; do not require the argument must be a
-                            ;; member of `repm-aider-available-args'
+                            ;; member of `termint-aider-available-args'
                             nil nil)))
-    (setq repm-aider-args args))
+    (setq termint-aider-args args))
 
-(defun repm-aider-remove-args ()
-    "remove the args from `repm*aider-cmd'"
-    (interactive)
-    (setq repm*aider-cmd repm-aider-cmd))
-
-(defun repm-aider-prompt (prefix prompt &optional session)
+(defun termint-aider-prompt (prefix prompt &optional session)
     "Prompt aider with the given PREFIX and PROMPT verbatim.
-Override `repm-aider-prefix' to ensure verbatim input."
+Override `termint-aider-prefix' to ensure verbatim input."
     (interactive
-     (list (completing-read "the aider command: " repm-aider-prefixes nil t)
+     (list (completing-read "the aider command: " termint-aider-prefixes nil t)
            (read-string "enter your prompt: ")
            current-prefix-arg))
     (let* ((prefix (or prefix ""))
            (prompt (or prompt ""))
-           (repm-aider-prefix
+           (termint-aider-prefix
             (if (equal prefix "") "" (concat prefix " "))))
-        (repm~aider-send-string prompt session)))
+        (termint-aider-send-string prompt session)))
 
-(defun repm-aider-yes (&optional session)
+(defun termint-aider-yes (&optional session)
     "Send \"y\" to aider"
     (interactive "P")
-    (repm-aider-prompt nil "y" session))
+    (termint-aider-prompt nil "y" session))
 
-(defun repm-aider-no (&optional session)
+(defun termint-aider-no (&optional session)
     "Send \"n\" to aider"
     (interactive "P")
-    (repm-aider-prompt nil "n" session))
+    (termint-aider-prompt nil "n" session))
 
-(defun repm-aider-abort (&optional session)
+(defun termint-aider-abort (&optional session)
     "Send C-c to aider"
     (interactive "P")
-    (repm-aider-prompt nil "\C-c" session))
+    (termint-aider-prompt nil "\C-c" session))
 
-(defun repm-aider-exit (&optional session)
+(defun termint-aider-exit (&optional session)
     (interactive "P")
-    (repm-aider-prompt nil "\C-d" session))
+    (termint-aider-prompt nil "\C-d" session))
 
-(defun repm-aider-paste (&optional session)
+(defun termint-aider-paste (&optional session)
     "Send \"/paste\" to aider"
     (interactive "P")
-    (repm-aider-prompt nil "/paste" session))
+    (termint-aider-prompt nil "/paste" session))
 
-(defun repm-aider-ask-mode (&optional session)
+(defun termint-aider-ask-mode (&optional session)
     "Send \"/ask\" to aider"
     (interactive "P")
-    (repm-aider-prompt nil "/ask" session))
+    (termint-aider-prompt nil "/ask" session))
 
-(defun repm-aider-arch-mode (&optional session)
+(defun termint-aider-arch-mode (&optional session)
     "Send \"/architect\" to aider"
     (interactive "P")
-    (repm-aider-prompt nil "/architect" session))
+    (termint-aider-prompt nil "/architect" session))
 
-(defun repm-aider-code-mode (&optional session)
+(defun termint-aider-code-mode (&optional session)
     "Send \"/code\" to aider"
     (interactive "P")
-    (repm-aider-prompt nil "/code" session))
+    (termint-aider-prompt nil "/code" session))
 
-(provide 'repl-macro-aider)
+(provide 'termint-aider)
