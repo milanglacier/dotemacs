@@ -1,4 +1,4 @@
-;;; termint.el --- Create and manage REPL sessions using multiple backends -*- lexical-binding: t; -*-
+;;; termint.el --- Run REPLs in a fully-featured terminal emulator -*- lexical-binding: t; -*-
 
 ;; Author: Milan Glacier <dev@milanglacier.com>
 ;; Maintainer: Milan Glacier <dev@milanglacier.com>
@@ -7,9 +7,11 @@
 
 ;;; Commentary:
 
-;; This package provides a set of macros and functions to create and
-;; manage REPL sessions using eat or vterm in Emacs.  It allows for
-;; creating custom REPL schemas with functionalities such as starting,
+;; Termint works like `comint' but runs within a fully-featured
+;; terminal emulator insteaad.  This package provides a set of macros
+;; and functions to create and manage REPL sessions using eat or
+;; vterm.  It enables the creation of custom REPL commands tailored to
+;; each defined REPL, with features including starting session,
 ;; sending code, and hiding REPL windows.  This is useful for
 ;; integrating terminal-based REPLs with Emacs efficiently.
 
@@ -37,7 +39,7 @@
                    (const :tag "vterm" vterm)))
 
 (defmacro termint-define (repl-name repl-cmd &rest args)
-    "Create a REPL schema.
+    "Define a REPL schema.
 
 The REPL session will be created via `termint-backend'.  The schema
 includes three functions: one to start the REPL, one to send the
