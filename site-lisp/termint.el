@@ -29,12 +29,11 @@
 (declare-function vterm-send-string "vterm")
 
 (defgroup termint nil
-    "Group for REPL macro."
+    "Group for termint."
     :group 'tools)
 
 (defcustom termint-backend 'eat
     "The backend to use for REPL sessions."
-    :group 'termint
     :type '(choice (const :tag "eat" eat)
                    (const :tag "vterm" vterm)))
 
@@ -249,7 +248,7 @@ Delete the temp file afterwards unless KEEP-FILE is non-nil."
     (let ((inhibit-message t)
           (message-log-max nil)
           file)
-        (setq file (make-temp-file "" nil "_repl_macro" str))
+        (setq file (make-temp-file "" nil "_termint" str))
         (unless keep-file (run-with-idle-timer 5 nil #'delete-file file))
         file))
 
