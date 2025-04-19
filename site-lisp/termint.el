@@ -26,6 +26,76 @@
                    (const :tag "vterm" vterm)
                    (const :tag "term" term)))
 
+(defvar vterm-buffer-name)
+(defvar vterm-shell)
+(declare-function vterm-send-string "vterm")
+(declare-function vterm "vterm")
+
+(defvar eat-buffer-name)
+(defvar eat-shell)
+(declare-function eat "eat")
+(declare-function eat--send-string "eat")
+(declare-function eat--synchronize-scroll "eat")
+
+(declare-function term-exec "term")
+(declare-function term-mode "term")
+(declare-function term-char-mode "term")
+(declare-function term-send-raw-string "term")
+
+(defun termint--start-term-backend (repl-buffer-name repl-shell arg)
+    "Start REPL-SHELL in REPL-BUFFER-NAME with numeric ARG with term backend."
+    (require 'term)
+    (let ((term-buffer-name
+           (if arg
+                   (format "%s<%d>" repl-buffer-name arg)
+               repl-buffer-name)))
+        (if (get-buffer term-buffer-name)
+                (pop-to-buffer term-buffer-name)
+            (let* ((shell-list (split-string-shell-command repl-shell))
+                   (shell-cmd (car shell-list))
+                   (shell-args (cdr shell-list))
+                   (term-buffer (get-buffer-create term-buffer-name)))
+                (with-current-buffer term-buffer
+                    (term-mode)
+                    (term-exec term-buffer term-buffer-name shell-cmd nil shell-args)
+                    (term-char-mode))
+                (pop-to-buffer term-buffer)))))
+
+(defun termint--start-eat-backend (repl-buffer-name repl-shell arg)
+    "Start REPL-SHELL in REPL-BUFFER-NAME with numeric ARG with eat backend."
+    (require 'eat)
+    (let ((eat-buffer-name repl-buffer-name)
+          (eat-shell repl-shell))
+        (eat nil arg)))
+
+
+(defun termint--start-vterm-backend (repl-buffer-name repl-shell arg)
+    "Start REPL-SHELL in REPL-BUFFER-NAME with numeric ARG with eat backend."
+    (require 'vterm)
+    (let ((vterm-buffer-name repl-buffer-name)
+          (vterm-shell repl-shell))
+        (vterm arg)))
+
+(defun termint--send-string-term-backend (repl-buffer-name str)
+    "Send STR to the process behind REPL-BUFFER-NAME with term backend."
+    (with-current-buffer repl-buffer-name
+        (term-send-raw-string str)))
+
+(defun termint--send-string-eat-backend (repl-buffer-name str)
+    "Send STR to the process behind REPL-BUFFER-NAME with eat backend."
+    (with-current-buffer repl-buffer-name
+        (when-let* ((eat-window (get-buffer-window)))
+            ;; NOTE: This is crucial to ensure the
+            ;; Eat window scrolls in sync with new
+            ;; terminal output.
+            (eat--synchronize-scroll (list eat-window)))
+        (eat--send-string nil str)))
+
+(defun termint--send-string-vterm-backend (repl-buffer-name str)
+    "Send STR to the process behind REPL-BUFFER-NAME with vterm backend."
+    (with-current-buffer repl-buffer-name
+        (vterm-send-string str)))
+
 (defmacro termint-define (repl-name repl-cmd &rest args)
     "Define a REPL schema.
 
@@ -92,10 +162,6 @@ syntax depends on the target programming language."
 
         `(progn
 
-             (require 'eat nil t)
-             (require 'vterm nil t)
-             (require 'term nil t)
-
              (defvar ,repl-cmd-name ,repl-cmd
                  ,(format "The shell command for the %s REPL." repl-name))
 
@@ -125,35 +191,16 @@ switch to the session with that number as a suffix."
                  (let* ((repl-buffer-name (format "*%s*" ,repl-name))
                         (repl-shell (if (functionp ,repl-cmd-name)
                                             (funcall ,repl-cmd-name)
-                                        ,repl-cmd-name))
-                        (eat-buffer-name repl-buffer-name)
-                        (eat-shell repl-shell)
-                        (vterm-buffer-name repl-buffer-name)
-                        (vterm-shell repl-shell)
-                        (term-buffer-name
-                         (if arg
-                                 (format "%s<%d>" repl-buffer-name arg)
-                             repl-buffer-name)))
+                                        ,repl-cmd-name)))
                      (pcase termint-backend
-                         ('eat (eat nil arg))
-                         ('vterm (vterm arg))
+                         ('eat (termint--start-eat-backend repl-buffer-name repl-shell arg))
+                         ('vterm (termint--start-vterm-backend repl-buffer-name repl-shell arg))
                          ('term
-                          (if (get-buffer term-buffer-name)
-                                  (pop-to-buffer term-buffer-name)
-                              (let* ((shell-list (split-string-shell-command repl-shell))
-                                     (shell-cmd (car shell-list))
-                                     (shell-args (cdr shell-list))
-                                     (term-buffer (get-buffer-create term-buffer-name)))
-                                  (with-current-buffer term-buffer
-                                      (term-mode)
-                                      (term-exec term-buffer term-buffer-name shell-cmd nil shell-args)
-                                      (term-char-mode))
-                                  (pop-to-buffer term-buffer)))))))
-
+                          (termint--start-term-backend repl-buffer-name repl-shell arg)))))
 
              (defun ,send-region-func-name (beg end &optional session)
                  ,(format
-                   "Send the region delimited by BEG and END to inferior %s.
+                   "Send the region delimited by BEG and END to %s.
 With numeric prefix argument, send region to the process associated
 with that number." repl-name)
                  (interactive "r\nP")
@@ -162,7 +209,7 @@ with that number." repl-name)
 
              (defun ,source-region-func-name (beg end &optional session)
                  ,(format
-                   "Source the region delimited by BEG and END to inferior %s.
+                   "Source the region delimited by BEG and END to %s.
 With numeric prefix argument, send region to the process associated
 with that number." repl-name)
                  (interactive "r\nP")
@@ -172,10 +219,11 @@ with that number." repl-name)
 
              (defun ,send-string-func-name (string &optional session)
                  ,(format
-                   "Send the string to inferior %s. When invoked
-interactively, prompt the user for input in the minibuffer.  With
-numeric prefix argument, send region to the process associated with
-that number." repl-name)
+                   "Send the string to %s.
+When invoked interactively, prompt for user input in the minibuffer.
+If a numeric prefix argument is provided, send the string to the
+process with that number."
+                   repl-name)
                  (interactive "sinput your command: \nP")
                  (let* ((repl-buffer-name
                          (if session
@@ -183,12 +231,13 @@ that number." repl-name)
                              (format "*%s*" ,repl-name)))
                         (send-string
                          (pcase termint-backend
-                             ('eat (lambda (str) (eat--send-string nil str)))
-                             ('vterm (lambda (str) (vterm-send-string str)))
-                             ('term (lambda (str) (term-send-raw-string str)))))
+                             ('eat #'termint--send-string-eat-backend)
+                             ('vterm #'termint--send-string-vterm-backend)
+                             ('term #'termint--send-string-term-backend)))
                         (multi-lines-p (string-match-p "\n" string))
                         (bracketed-paste-start "\e[200~")
                         (bracketed-paste-end "\e[201~")
+                        (string (funcall ,str-process-func-name string))
                         (start-pattern (if (stringp ,start-pattern-name) ,start-pattern-name
                                            (if multi-lines-p
                                                    (plist-get ,start-pattern-name :multi-lines)
@@ -196,45 +245,37 @@ that number." repl-name)
                         (end-pattern (if (stringp ,end-pattern-name) ,end-pattern-name
                                          (if multi-lines-p
                                                  (plist-get ,end-pattern-name :multi-lines)
-                                             (plist-get ,end-pattern-name :single-line)))))
-                     (with-current-buffer repl-buffer-name
-                         (when-let* ((eat-window (get-buffer-window))
-                                     (is-eat (eq termint-backend 'eat)))
-                             ;; NOTE: This is crucial to ensure the
-                             ;; Eat window scrolls in sync with new
-                             ;; terminal output.
-                             (eat--synchronize-scroll (list eat-window)))
-                         (funcall send-string start-pattern)
-                         (when (and multi-lines-p ,bracketed-paste-p-name)
-                             (funcall send-string bracketed-paste-start))
-                         (funcall send-string string)
-                         (when (and multi-lines-p ,bracketed-paste-p-name)
-                             (funcall send-string bracketed-paste-end))
-                         (funcall send-string end-pattern))))
+                                             (plist-get ,end-pattern-name :single-line))))
+                        (final-string
+                         (if multi-lines-p
+                                 (concat start-pattern bracketed-paste-start string bracketed-paste-end end-pattern)
+                             (concat start-pattern string end-pattern))))
+                     (funcall send-string repl-buffer-name final-string)))
 
              (when (require 'evil nil t)
                  (evil-define-operator ,send-region-operator-name (beg end session)
                      ,(format
-                       "A evil operator wrapper around `%s'. With a numeric
-prefix argument, send the region to the %s process associated with
-that number" send-region-func-name repl-name)
+                       "A evil operator wrapper around `%s'.
+With a numeric prefix argument, send the region to the %s process
+associated with that number" send-region-func-name repl-name)
                      :move-point nil
                      (interactive "<r>P")
                      (,send-region-func-name beg end session))
 
                  (evil-define-operator ,source-region-operator-name (beg end session)
                      ,(format
-                       "A evil operator wrapper around `%s'. With a numeric
-prefix argument, send the region to the %s process associated with
-that number" source-region-func-name repl-name)
+                       "A evil operator wrapper around `%s'.
+With a numeric prefix argument, send the region to the %s process
+associated with that number" source-region-func-name repl-name)
                      :move-point nil
                      (interactive "<r>P")
                      (,source-region-func-name beg end session)))
 
              (defun ,hide-window-func-name (&optional arg)
                  ,(format
-                   "hide the %s window. With numeric prefix argument, hide
-the window with that number as a suffix." repl-name)
+                   "hide the %s window.
+With numeric prefix argument, hide the window with that number as a
+suffix." repl-name)
                  (interactive "P")
                  (when-let* ((eat-buffer-name
                               (if arg (format "*%s*<%d>" ,repl-name arg)
