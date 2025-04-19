@@ -217,7 +217,7 @@
 
     (plist-put minuet-openai-compatible-options :end-point "https://openrouter.ai/api/v1/chat/completions")
     (plist-put minuet-openai-compatible-options :api-key "OPENROUTER_API_KEY")
-    (plist-put minuet-openai-compatible-options :model "qwen/qwen2.5-32b-instruct")
+    (plist-put minuet-openai-compatible-options :model "deepseek/deepseek-chat-v3-0324")
     ;; Prioritize throughput for faster completion
     (minuet-set-optional-options minuet-openai-compatible-options :provider '(:sort "throughput"))
 
@@ -225,7 +225,7 @@
                             minuet-codestral-options
                             minuet-openai-compatible-options
                             minuet-openai-fim-compatible-options))
-        (minuet-set-optional-options provider :max_tokens 256)
+        (minuet-set-optional-options provider :max_tokens 128)
         (minuet-set-optional-options provider :top_p 0.9))
 
     (minuet-set-optional-options minuet-codestral-options :stop ["\n\n"])
