@@ -142,7 +142,7 @@
 
 
 ;; aider (a llm based code assistant) integration
-(use-package termint
+(use-package termint-aider
     :init
     (add-to-list 'display-buffer-alist
                  `("\\*aider\\*"
