@@ -127,6 +127,8 @@
         "h" #'termint-aichat-hide-window)
     :config
 
+    (setq termint-backend 'eat)
+
     (termint-define "aichat" "aichat -s" :bracketed-paste-p t
                     :source-func #'termint--aichat-source-func)
 
