@@ -1,4 +1,4 @@
-;;; termint.el --- Run REPLs in a fully-featured terminal emulator -*- lexical-binding: t; -*-
+;;; termint.el --- Run REPLs in a terminal backend -*- lexical-binding: t; -*-
 
 ;; Author: Milan Glacier <dev@milanglacier.com>
 ;; Maintainer: Milan Glacier <dev@milanglacier.com>
@@ -7,12 +7,12 @@
 
 ;;; Commentary:
 
-;; This package provides a set of macros and functions to create and
-;; manage REPL sessions running within eat or vterm.  It enables the
-;; creation of custom REPL commands tailored to each defined REPL,
-;; with features including starting session, sending code, and hiding
-;; REPL windows.  This is useful for integrating terminal-based REPLs
-;; with Emacs efficiently.
+;; This package offers macros and functions for creating and managing
+;; REPL sessions within a terminal emulator backend (term, eat, or
+;; vterm).  It facilitates the creation of custom REPL commands
+;; tailored to each defined REPL, with features including starting
+;; session, sending code, and hiding REPL windows.  This is useful for
+;; integrating terminal-based REPLs with Emacs efficiently.
 
 ;;; Code:
 
@@ -20,10 +20,11 @@
     "Group for termint."
     :group 'tools)
 
-(defcustom termint-backend 'eat
+(defcustom termint-backend 'term
     "The backend to use for REPL sessions."
     :type '(choice (const :tag "eat" eat)
-                   (const :tag "vterm" vterm)))
+                   (const :tag "vterm" vterm)
+                   (const :tag "term" term)))
 
 (defmacro termint-define (repl-name repl-cmd &rest args)
     "Define a REPL schema.
@@ -93,6 +94,7 @@ syntax depends on the target programming language."
 
              (require 'eat nil t)
              (require 'vterm nil t)
+             (require 'term nil t)
 
              (defvar ,repl-cmd-name ,repl-cmd
                  ,(format "The shell command for the %s REPL." repl-name))
@@ -120,16 +122,34 @@ the buffer selected (or created). With a numeric prefix arg, create or
 switch to the session with that number as a suffix."
                    repl-name repl-name)
                  (interactive "P")
-                 (let* ((eat-buffer-name (format "*%s*" ,repl-name))
-                        (eat-shell
-                         (if (functionp ,repl-cmd-name)
-                                 (funcall ,repl-cmd-name)
-                             ,repl-cmd-name))
-                        (vterm-buffer-name eat-buffer-name)
-                        (vterm-shell eat-shell))
-                     (if (eq termint-backend 'eat)
-                             (eat nil arg)
-                         (vterm arg))))
+                 (let* ((repl-buffer-name (format "*%s*" ,repl-name))
+                        (repl-shell (if (functionp ,repl-cmd-name)
+                                            (funcall ,repl-cmd-name)
+                                        ,repl-cmd-name))
+                        (eat-buffer-name repl-buffer-name)
+                        (eat-shell repl-shell)
+                        (vterm-buffer-name repl-buffer-name)
+                        (vterm-shell repl-shell)
+                        (term-buffer-name
+                         (if arg
+                                 (format "%s<%d>" repl-buffer-name arg)
+                             repl-buffer-name)))
+                     (pcase termint-backend
+                         ('eat (eat nil arg))
+                         ('vterm (vterm arg))
+                         ('term
+                          (if (get-buffer term-buffer-name)
+                                  (pop-to-buffer term-buffer-name)
+                              (let* ((shell-list (split-string-shell-command repl-shell))
+                                     (shell-cmd (car shell-list))
+                                     (shell-args (cdr shell-list))
+                                     (term-buffer (get-buffer-create term-buffer-name)))
+                                  (with-current-buffer term-buffer
+                                      (term-mode)
+                                      (term-exec term-buffer term-buffer-name shell-cmd nil shell-args)
+                                      (term-char-mode))
+                                  (pop-to-buffer term-buffer)))))))
+
 
              (defun ,send-region-func-name (beg end &optional session)
                  ,(format
@@ -161,9 +181,11 @@ that number." repl-name)
                          (if session
                                  (format "*%s*<%d>" ,repl-name session)
                              (format "*%s*" ,repl-name)))
-                        (send-string (if (eq termint-backend 'eat)
-                                             (lambda (str) (eat--send-string nil str))
-                                         (lambda (str) (vterm-send-string str))))
+                        (send-string
+                         (pcase termint-backend
+                             ('eat (lambda (str) (eat--send-string nil str)))
+                             ('vterm (lambda (str) (vterm-send-string str)))
+                             ('term (lambda (str) (term-send-raw-string str)))))
                         (multi-lines-p (string-match-p "\n" string))
                         (bracketed-paste-start "\e[200~")
                         (bracketed-paste-end "\e[201~")
