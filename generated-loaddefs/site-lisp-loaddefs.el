@@ -21,11 +21,6 @@ Read a tag from minibuffer and jump to the tag.
 (register-definition-prefixes "../site-lisp/evil-ts" '("evil-ts-"))
 
 
-;;; Generated autoloads from ../site-lisp/termint.el
-
-(register-definition-prefixes "../site-lisp/termint" '("termint-"))
-
-
 ;;; Generated autoloads from ../site-lisp/termint-aider.el
 
  (autoload #'termint-aider-start "termint-aider" nil t)
