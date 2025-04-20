@@ -115,12 +115,12 @@ setting the generated variable
 `termint-REPL-NAME-use-bracketed-paste-mode'.
 
 :start-pattern the first string to send to the REPl before sending the
-region.  The default is ''.  You can change the behavior at run time by
-setting the generated
-variable`termint-REPL-NAME-start-pattern'.  Additionally, the value can be
-a plist with two attributes: `:single-line' for specifying the string
-in single-line scenarios.`:multi-lines' for defining the string in
-multi-line contexts.
+region.  The default is ''.  You can change the behavior at run time
+by setting the generated variable `termint-REPL-NAME-start-pattern'.
+Additionally, the value can be a plist with two attributes:
+`:single-line' for specifying the string in single-line
+scenarios.`:multi-lines' for defining the string in multi-line
+contexts.
 
 :end-pattern the last string to send to the REPL after sending the
 region.  The default is '\\r'.  You can change the behavior at run time
