@@ -136,11 +136,11 @@
                     :source-syntax ".file {{file}}")
 
     (termint-define "ipython" "ipython" :bracketed-paste-p t
-                    :source-syntax termint--ipython-source-syntax)
+                    :source-syntax termint-ipython-source-syntax-template)
 
     (termint-define "radian" "radian" :bracketed-paste-p t
                     :end-pattern '(:single-line "\n" :multi-lines "")
-                    :source-syntax termint--R-source-syntax)
+                    :source-syntax termint-R-source-syntax-template)
     )
 
 
