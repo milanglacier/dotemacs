@@ -189,10 +189,11 @@
     (add-hook 'go-ts-mode-hook (mg-setq-locally tab-width 4))
     (add-hook 'go-ts-mode-hook #'eglot-ensure)
     (mg-setq-on-hook go-ts-mode-hook evil-ts-function "\\(?:\\(?:function\\|method\\)_declaration\\)")
-    (mg-setq-on-hook go-ts-mode-hook evil-ts-class "struct_type"))
+    (mg-setq-on-hook go-ts-mode-hook evil-ts-class "type_declaration"))
 
 (use-package rust-ts-mode
     :config
+    (mg-setq-on-hook rust-ts-mode-hook evil-ts-class "struct_item")
     (add-hook 'rust-ts-mode-hook #'prettify-symbols-mode)
     (add-hook 'rust-ts-mode-hook #'eglot-ensure))
 
