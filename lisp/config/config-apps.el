@@ -3,7 +3,6 @@
 (straight-use-package 'elfeed)
 (straight-use-package 'elfeed-org)
 (straight-use-package 'pdf-tools)
-(straight-use-package 'pdf-tools)
 
 (straight-use-package '(termint :host github :repo "milanglacier/termint.el"))
 
