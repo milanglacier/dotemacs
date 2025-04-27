@@ -205,14 +205,16 @@
      "]b" #'evil-next-buffer
      "[n" #'mg-previous-SCM-conflict-marker
      "]n" #'mg-next-SCM-conflict-marker
-     "]f" #'treesit-beginning-of-defun
-     "[f" #'treesit-end-of-defun
-     "]s" #'treesit-beginning-of-thing
-     "[s" #'treesit-end-of-thing
-     "]C" #'evil-ts-beginning-of-class
-     "[C" #'evil-ts-end-of-class
-     "]c" #'evil-ts-beginning-of-condition
-     "[c" #'evil-ts-end-of-condition
+     ;; `beginning-of-xxx' commands search backward, hence using `['
+     ;; `end-of-xxx' commands search forward, hence using `]'
+     "[f" #'treesit-beginning-of-defun
+     "]f" #'treesit-end-of-defun
+     "[s" #'treesit-beginning-of-thing
+     "]s" #'treesit-end-of-thing
+     "[C" #'evil-ts-beginning-of-class
+     "]C" #'evil-ts-end-of-class
+     "[c" #'evil-ts-beginning-of-condition
+     "]c" #'evil-ts-end-of-condition
      )
 
 
