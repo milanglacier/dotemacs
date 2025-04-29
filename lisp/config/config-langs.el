@@ -86,6 +86,7 @@
         :keymaps 'ess-mode-map
         :states '(normal visual motion insert)
         "s" #'termint-radian-source-region-operator
+        "S" #'termint-radian-send-region-operator
         "r" '(:ignore t :which-key "repl")
         "rs" #'termint-radian-start
         "rh" #'termint-radian-hide-window
@@ -126,6 +127,7 @@
         :keymaps 'python-ts-mode-map
         :states '(normal visual insert motion)
         "s" #'termint-ipython-source-region-operator
+        "S" #'termint-ipython-send-region-operator
         "r" '(:ignore t :which-key "REPL")
         "rs" #'termint-ipython-start
         "rh" #'termint-ipython-hide-window
@@ -175,7 +177,8 @@
         "r" '(:ignore t :which-key "repl")
         "rs" #'mg-markdown-run-repl
         "rh" #'mg-markdown-hide-window
-        "s" #'mg-markdown-source-region)
+        "s" #'mg-markdown-source-region
+        "S" #'mg-markdown-send-region)
 
     (add-hook 'markdown-mode-hook #'eglot-ensure)
 

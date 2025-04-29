@@ -126,6 +126,7 @@
         "s" #'termint-aichat-start
         "e" #'termint-aichat-send-string
         "r" #'termint-aichat-source-region-operator
+        "R" #'termint-aichat-send-region-operator
         "h" #'termint-aichat-hide-window)
     :config
 
