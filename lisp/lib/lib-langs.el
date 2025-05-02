@@ -100,6 +100,14 @@ language of the code block)"
         (x "No associated REPL found!")))
 
 
+(defvar mg-conda-activate-hook nil
+    "Hook run after activating a conda environment.
+The hook functions are called with one argument: the path to the
+activated environment.")
+
+(defvar mg-conda-deactivate-hook nil
+    "Hook run after deactivating a conda environment.")
+
 ;;;###autoload
 (defun mg-conda-activate (&optional path)
     "Activate a conda environment."
@@ -129,6 +137,7 @@ language of the code block)"
                 (setenv "CONDA_DEFAULT_ENV" (file-name-nondirectory conda-current-env))
                 (setenv "CONDA_PROMPT_MODIFIER" (concat "(" (file-name-nondirectory conda-current-env) ") "))
                 (setenv "CONDA_SHLVL" "1")
+                (run-hook-with-args 'mg-conda-activate-hook conda-current-env)
                 (message "Activating conda environment: %s" path))
         (message "conda not found")))
 
@@ -150,9 +159,18 @@ language of the code block)"
                 (setenv "CONDA_DEFAULT_ENV" nil)
                 (setenv "CONDA_SHLVL" "0")
                 (setenv "CONDA_PROMPT_MODIFIER" nil)
+                (run-hooks 'mg-conda-deactivate-hook)
                 (message "Conda environment deactivated."))
         (message "conda not found")))
 
+
+
+(defvar mg-python-venv-activate-hook nil
+    "Hook run after activating a python virtual environment.
+The hook functions are called with one argument: the path to the activated environment.")
+
+(defvar mg-python-venv-deactivate-hook nil
+    "Hook run after deactivating a python virtual environment.")
 
 ;;;###autoload
 (defun mg-python-venv-activate (&optional path)
@@ -175,7 +193,7 @@ language of the code block)"
         (setenv "PATH" (concat path path-separator (getenv "PATH")))
         (add-to-list 'exec-path path)
         (setenv "VIRTUAL_ENV" pyvenv-current-env)
-
+        (run-hook-with-args 'mg-python-venv-activate-hook pyvenv-current-env)
         (message "Activating python venv: %s" path)))
 
 ;;;###autoload
@@ -191,7 +209,8 @@ language of the code block)"
                   exec-path (delete (concat pyvenv-current-env "/bin") exec-path))
             ;; set the PATH
             (setenv "PATH" (string-join paths path-separator))
-            (setenv "VIRTUAL_ENV" nil))))
+            (setenv "VIRTUAL_ENV" nil)
+            (run-hooks 'mg-python-venv-deactivate-hook))))
 
 
 ;;;###autoload
