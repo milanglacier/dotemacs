@@ -99,8 +99,6 @@ language of the code block)"
         ("python" (termint-ipython-source-region-operator beg end session))
         (x "No associated REPL found!")))
 
-(defvar mg-conda-current-env nil
-    "The path to the current conda environment.")
 
 ;;;###autoload
 (defun mg-conda-activate (&optional path)
@@ -155,8 +153,6 @@ language of the code block)"
                 (message "Conda environment deactivated."))
         (message "conda not found")))
 
-(defvar mg-python-venv-current-env nil
-    "The path to the current python venv environment.")
 
 ;;;###autoload
 (defun mg-python-venv-activate (&optional path)
