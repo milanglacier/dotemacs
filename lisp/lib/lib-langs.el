@@ -214,16 +214,18 @@ The hook functions are called with one argument: the path to the activated envir
 
 
 ;;;###autoload
-(defun mg-poetry-venv-activate (&optional path)
-    "This command activates a poetry virtual environment."
-    (interactive (list
-                  (completing-read
-                   "select a poetry venv"
-                   (condition-case error
-                           (seq-filter (lambda (x) (not (equal x "")))
-                                       (process-lines "poetry" "env" "list" "--full-path"))
-                       (error (error "current project is not a poetry project or poetry is not installed!")))
-                   nil t)))
+(defun mg-poetry-venv-activate (path)
+    "Activate a poetry virtual environment.
+If only one environment exists, activate it directly. Otherwise, prompt for selection."
+    (interactive
+     (let ((envs
+            (condition-case error
+                    (seq-filter (lambda (x) (not (equal x "")))
+                                (process-lines "poetry" "env" "list" "--full-path"))
+                (error (error "current project is not a poetry project or poetry is not installed!")))))
+         (list
+          (if (length= envs 1) (car envs)
+              (completing-read "Select a poetry venv: " envs nil t)))))
     (mg-python-venv-activate (replace-regexp-in-string " (Activated)$" "" path)))
 
 ;;;###autoload
