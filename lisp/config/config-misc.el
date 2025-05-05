@@ -1,6 +1,15 @@
 ;;; config-misc.el -*- lexical-binding: t; -*-
 
-(straight-use-package 'ws-butler)
+;; NOTE: Avoid fetching ws-butler from Savannah NonGNU ELPA upstream
+;; due to unstable network connections to Savannah. Instead, use the
+;; GitHub mirror. See radian-software/straight.el#1189.
+(straight-use-package
+ '(ws-butler :type git
+             :repo "https://github.com/emacsmirror/nongnu_elpa"
+             :branch "elpa/ws-butler"
+             :depth (full single-branch)
+             :local-repo "ws-butler"))
+
 (straight-use-package 'rainbow-delimiters)
 (straight-use-package
  '(eat :type git
