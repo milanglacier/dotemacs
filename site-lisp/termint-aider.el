@@ -1,30 +1,30 @@
-;;; vterm-repl-aider.el --- Aider integration for vterm-repl -*- lexical-binding: t; -*-
+;;; termint-aider.el --- Aider integration for termint -*- lexical-binding: t; -*-
 
 ;; Author: Milan Glacier <dev@milanglacier.com>
 ;; Maintainer: Milan Glacier <dev@milanglacier.com>
 ;; Version: 0.1
-;; Package-Requires: ((emacs "29") (vterm-repl "0.1"))
+;; Package-Requires: ((emacs "29") (termint "0.1"))
 
 ;;; Commentary:
 
-;; This package provides integration between vterm-repl and Aider, a
+;; This package provides integration between termint and Aider, a
 ;; LLM based code assistant.  It extends the functionality of
-;; vterm-repl to work seamlessly with Aider, allowing users to
+;; termint to work seamlessly with Aider, allowing users to
 ;; interact with the AI assistant directly from within Emacs.
 
 ;; Features:
-;; - Creates an Aider REPL session using vterm
+;; - Creates an Aider REPL session using eat
 ;; - Provides functions to start the Aider REPL and send commands
 ;; - Configures Aider-specific settings for optimal interaction
 
 ;; Usage:
-;; M-x vtr~aider-start
+;; M-x termint-aider-start
 
 ;;; Code:
 
-(require 'vterm-repl)
+(require 'termint)
 
-(defvar vtr-aider-prefixes
+(defvar termint-aider-prefixes
     '(""
       "/add"
       "/architect"
@@ -67,7 +67,7 @@
       )
     "the available command prefixes used by aider")
 
-(defvar vtr-aider-available-args
+(defvar termint-aider-available-args
     '("--reasoning-effort"
       "--watch-files"
       "--model"
@@ -166,105 +166,99 @@
       )
     "the available command arguments used by aider")
 
-(defvar vtr-aider-cmd "aider" "the command used to start the aider")
-(defvar vtr-aider-args "--watch-files" "the arguments used to start the aider")
+(defvar termint-aider--cmd "aider" "the command used to start the aider")
+(defvar termint-aider-args "--watch-files" "the arguments used to start the aider")
 
-(defun vtr-aider-full-command ()
+(defun termint-aider-full-command ()
     "Return the full aider command with the args"
-    (concat vtr-aider-cmd
-            (if (stringp vtr-aider-args)
-                    (concat " " vtr-aider-args)
+    (concat termint-aider--cmd
+            (if (stringp termint-aider-args)
+                    (concat " " termint-aider-args)
                 "")))
 
-;;;###autoload (autoload #'vtr~aider-start "vterm-repl-aider" nil t)
-(vtr-create-schema "aider"
-                   #'vtr-aider-full-command
-                   :bracketed-paste-p t
-                   :start-pattern "/ask ")
+;;;###autoload (autoload #'termint-aider-start "termint-aider" nil t)
+(termint-define "aider"
+                #'termint-aider-full-command
+                :bracketed-paste-p t)
 
-(defvaralias 'vtr-aider-prefix 'vtr*aider-start-pattern)
+(defvaralias 'termint-aider-prefix 'termint-aider-start-pattern)
 
-(defun vtr-aider-set-prefix (prefix)
-    "set the `vtr-aider-prefix' which will be selected from `vtr-aider-prefixes'"
+(defun termint-aider-set-prefix (prefix)
+    "set the `termint-aider-prefix' which will be selected from `termint-aider-prefixes'"
     (interactive
      (list (completing-read "The prefixes passed to aider: "
-                            vtr-aider-prefixes
+                            termint-aider-prefixes
                             ;; require the prefix must be a member of
-                            ;; `vtr-aider-prefixes'
+                            ;; `termint-aider-prefixes'
                             nil t)))
-    (setq vtr-aider-prefix (if (equal prefix "") "" (concat prefix " "))))
+    (setq termint-aider-prefix (if (equal prefix "") "" (concat prefix " "))))
 
 
-(defun vtr-aider-remove-prefix ()
-    "remove the prefix from `vtr-aider-prefix'"
+(defun termint-aider-remove-prefix ()
+    "remove the prefix from `termint-aider-prefix'"
     (interactive)
-    (setq vtr-aider-prefix ""))
+    (setq termint-aider-prefix ""))
 
-(defun vtr-aider-set-args (args)
+(defun termint-aider-set-args (args)
     "set the command line arguments to launcher aider"
     (interactive
      (list (completing-read "The arguments passed to aider: "
-                            vtr-aider-available-args
+                            termint-aider-available-args
                             ;; do not require the argument must be a
-                            ;; member of `vtr-aider-available-args'
+                            ;; member of `termint-aider-available-args'
                             nil nil)))
-    (setq vtr-aider-args args))
+    (setq termint-aider-args args))
 
-(defun vtr-aider-remove-args ()
-    "remove the args from `vtr*aider-cmd'"
-    (interactive)
-    (setq vtr*aider-cmd vtr-aider-cmd))
-
-(defun vtr-aider-prompt (prefix prompt &optional session)
+(defun termint-aider-prompt (prefix prompt &optional session)
     "Prompt aider with the given PREFIX and PROMPT verbatim.
-Override `vtr-aider-prefix' to ensure verbatim input."
+Override `termint-aider-prefix' to ensure verbatim input."
     (interactive
-     (list (completing-read "the aider command: " vtr-aider-prefixes nil t)
+     (list (completing-read "the aider command: " termint-aider-prefixes nil t)
            (read-string "enter your prompt: ")
            current-prefix-arg))
     (let* ((prefix (or prefix ""))
            (prompt (or prompt ""))
-           (vtr-aider-prefix
+           (termint-aider-prefix
             (if (equal prefix "") "" (concat prefix " "))))
-        (vtr~aider-send-string prompt session)))
+        (termint-aider-send-string prompt session)))
 
-(defun vtr-aider-yes (&optional session)
+(defun termint-aider-yes (&optional session)
     "Send \"y\" to aider"
     (interactive "P")
-    (vtr-aider-prompt nil "y" session))
+    (termint-aider-prompt nil "y" session))
 
-(defun vtr-aider-no (&optional session)
+(defun termint-aider-no (&optional session)
     "Send \"n\" to aider"
     (interactive "P")
-    (vtr-aider-prompt nil "n" session))
+    (termint-aider-prompt nil "n" session))
 
-(defun vtr-aider-abort (&optional session)
+(defun termint-aider-abort (&optional session)
     "Send C-c to aider"
     (interactive "P")
-    (vtr-aider-prompt nil "\C-c" session))
+    (termint-aider-prompt nil "\C-c" session))
 
-(defun vtr-aider-exit (&optional session)
+(defun termint-aider-exit (&optional session)
     (interactive "P")
-    (vtr-aider-prompt nil "\C-d" session))
+    (termint-aider-prompt nil "\C-d" session))
 
-(defun vtr-aider-paste (&optional session)
+(defun termint-aider-paste (&optional session)
     "Send \"/paste\" to aider"
     (interactive "P")
-    (vtr-aider-prompt nil "/paste" session))
+    (termint-aider-prompt nil "/paste" session))
 
-(defun vtr-aider-ask-mode (&optional session)
+(defun termint-aider-ask-mode (&optional session)
     "Send \"/ask\" to aider"
     (interactive "P")
-    (vtr-aider-prompt nil "/ask" session))
+    (termint-aider-prompt nil "/ask" session))
 
-(defun vtr-aider-arch-mode (&optional session)
+(defun termint-aider-arch-mode (&optional session)
     "Send \"/architect\" to aider"
     (interactive "P")
-    (vtr-aider-prompt nil "/architect" session))
+    (termint-aider-prompt nil "/architect" session))
 
-(defun vtr-aider-code-mode (&optional session)
+(defun termint-aider-code-mode (&optional session)
     "Send \"/code\" to aider"
     (interactive "P")
-    (vtr-aider-prompt nil "/code" session))
+    (termint-aider-prompt nil "/code" session))
 
-(provide 'vterm-repl-aider)
+(provide 'termint-aider)

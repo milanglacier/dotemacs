@@ -85,17 +85,18 @@
     (mg-localleader
         :keymaps 'ess-mode-map
         :states '(normal visual motion insert)
-        "s" #'vtr~radian-send-region-operator
+        "s" #'termint-radian-source-region-operator
+        "S" #'termint-radian-send-region-operator
         "r" '(:ignore t :which-key "repl")
-        "rs" #'vtr~radian-start
-        "rh" #'vtr~radian-hide-window
-        "re" #'vtr~radian-send-string
+        "rs" #'termint-radian-start
+        "rh" #'termint-radian-hide-window
+        "re" #'termint-radian-send-string
         "v" '(:ignore t :which-key "view")
         "vh" #'mg-ess-toggle-view-httpgd)
 
     (general-define-key
-        :keymaps 'ess-mode-map
-        "C-c r" #'mg-send-region-to-ess)
+     :keymaps 'ess-mode-map
+     "C-c r" #'mg-send-region-to-ess)
 
     (mg-setq-on-hook ess-r-mode-hook company-backends
                      '((company-files company-yasnippet company-capf
@@ -125,18 +126,19 @@
     (mg-localleader
         :keymaps 'python-ts-mode-map
         :states '(normal visual insert motion)
-        "s" #'vtr~ipython-send-region-operator
+        "s" #'termint-ipython-source-region-operator
+        "S" #'termint-ipython-send-region-operator
         "r" '(:ignore t :which-key "REPL")
-        "rs" #'vtr~ipython-start
-        "rh" #'vtr~ipython-hide-window
-        "re" #'vtr~ipython-send-string
+        "rs" #'termint-ipython-start
+        "rh" #'termint-ipython-hide-window
+        "re" #'termint-ipython-send-string
         "v" '(:ignore t :which-key "view")
         "vh" #'mg-python-toggle-view-local-html
         "'" #'mg-edit-src)
 
     (general-define-key
-        :keymaps 'python-ts-mode-map
-        "C-c '" #'mg-edit-src)
+     :keymaps 'python-ts-mode-map
+     "C-c '" #'mg-edit-src)
 
     (add-to-list 'display-buffer-alist
                  `("^\\*ipython"
@@ -175,7 +177,8 @@
         "r" '(:ignore t :which-key "repl")
         "rs" #'mg-markdown-run-repl
         "rh" #'mg-markdown-hide-window
-        "s" #'mg-markdown-send-region)
+        "s" #'mg-markdown-source-region
+        "S" #'mg-markdown-send-region)
 
     ;; (add-hook 'markdown-mode-hook #'eglot-ensure)
 
@@ -189,10 +192,11 @@
     (add-hook 'go-ts-mode-hook (mg-setq-locally tab-width 4))
     (add-hook 'go-ts-mode-hook #'eglot-ensure)
     (mg-setq-on-hook go-ts-mode-hook evil-ts-function "\\(?:\\(?:function\\|method\\)_declaration\\)")
-    (mg-setq-on-hook go-ts-mode-hook evil-ts-class "struct_type"))
+    (mg-setq-on-hook go-ts-mode-hook evil-ts-class "type_declaration"))
 
 (use-package rust-ts-mode
     :config
+    (mg-setq-on-hook rust-ts-mode-hook evil-ts-class "struct_item")
     (add-hook 'rust-ts-mode-hook #'prettify-symbols-mode)
     (add-hook 'rust-ts-mode-hook #'eglot-ensure))
 

@@ -1,8 +1,25 @@
 ;;; config-misc.el -*- lexical-binding: t; -*-
 
-(straight-use-package 'ws-butler)
+;; NOTE: Avoid fetching ws-butler from Savannah NonGNU ELPA upstream
+;; due to unstable network connections to Savannah. Instead, use the
+;; GitHub mirror. See radian-software/straight.el#1189.
+(straight-use-package
+ '(ws-butler :type git
+             :repo "https://github.com/emacsmirror/nongnu_elpa"
+             :branch "elpa/ws-butler"
+             :depth (full single-branch)
+             :local-repo "ws-butler"))
+
 (straight-use-package 'rainbow-delimiters)
-(straight-use-package 'vterm)
+(straight-use-package
+ '(eat :type git
+       :host codeberg
+       :repo "akib/emacs-eat"
+       :files ("*.el" ("term" "term/*.el") "*.texi"
+               "*.ti" ("terminfo/e" "terminfo/e/*")
+               ("terminfo/65" "terminfo/65/*")
+               ("integration" "integration/*")
+               (:exclude ".dir-locals.el" "*-tests.el"))))
 
 ;; ibuffer
 (straight-use-package 'ibuffer-vc)
@@ -61,7 +78,7 @@
     (add-to-list 'project-switch-commands
                  '(project-dired "Dired at root"))
     (add-to-list 'project-switch-commands
-                 '(vterm "vterm"))
+                 '(eat "eat"))
     (add-to-list 'project-switch-commands
                  '(mg-project-magit "magit"))
 
@@ -69,41 +86,40 @@
 
     (general-define-key
      :keymaps 'project-prefix-map
-     "v" #'vterm
+     "v" #'eat
      "m" #'mg-project-magit)
 
     )
 
-(use-package vterm
+;; NOTE: If the Eat terminal isn't functioning correctly, this might
+;; be a terminfo issue. The terminfo database provided with Eat might
+;; not be compatible with your system. To resolve this, run
+;; `eat-compile-terminfo' and restart Eat.
+
+(use-package eat
     :init
     (mg-open-map
         :keymaps 'override
         :states '(normal insert motion)
-        "t" #'vterm)
-
-    (add-hook 'evil-collection-setup-hook #'mg--vterm-override-evil-collection)
+        "t" #'eat)
 
     :config
+    (setq eat-kill-buffer-on-exit t)
 
-    (advice-add #'vterm :around #'call-command-at-project-root)
+    (general-define-key
+     :keymaps 'eat-semi-char-mode-map
+     "C-c <escape>" #'eat-self-input)
 
-    (setq vterm-max-scrollback 5000)
+    (advice-add #'eat :around #'call-command-at-project-root)
 
     (add-to-list 'display-buffer-alist
-                 `("\\*vterm\\*"
+                 `("\\*eat\\*"
                    (display-buffer-in-side-window)
                    (window-height . 0.4)
                    (window-width .0.5)
-                   (slot . ,(alist-get 'vterm mg-side-window-slots))))
+                   (slot . ,(alist-get 'eat mg-side-window-slots))))
 
-    (general-define-key
-     :keymaps 'vterm-mode-map
-     "C-c <escape>" #'vterm-send-escape)
-
-    (add-hook 'vterm-mode-hook (mg-setq-locally confirm-kill-processes nil))
-    ;; From doomemacs: Prevent premature horizontal scrolling
-    (add-hook 'vterm-mode-hook (mg-setq-locally hscroll-margin 0))
-    )
+    (add-hook 'eat-mode-hook (mg-setq-locally hscroll-margin 0)))
 
 (use-package auto-revert
     :init

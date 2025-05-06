@@ -188,35 +188,9 @@
 
     :config
     (setq minuet-provider 'gemini)
-
-
-    (defvar mg-minuet-gemini-prompt
-        "You are the backend of an AI-powered code completion engine. Your task is to
-provide code suggestions based on the user's input. The user's code will be
-enclosed in markers:
-
-- `<contextAfterCursor>`: Code context after the cursor
-- `<cursorPosition>`: Current cursor location
-- `<contextBeforeCursor>`: Code context before the cursor
-")
-
-    (defvar mg-minuet-gemini-chat-input-template
-        "{{{:language-and-tab}}}
-<contextBeforeCursor>
-{{{:context-before-cursor}}}<cursorPosition>
-<contextAfterCursor>
-{{{:context-after-cursor}}}")
-
-    (defvar mg-minuet-gemini-fewshots
-        `((:role "user"
-           :content "# language: python
-<contextBeforeCursor>
-def fibonacci(n):
-    <cursorPosition>
-<contextAfterCursor>
-
-fib(5)")
-          ,(cadr minuet-default-fewshots)))
+    (setq minuet-request-timeout 2)
+    (setq minuet-auto-suggestion-debounce-delay 0.5)
+    (setq minuet-auto-suggestion-throttle-delay 1.5)
 
     (general-define-key
      :keymaps 'minuet-active-mode-map
@@ -225,12 +199,6 @@ fib(5)")
      "M-A" #'minuet-accept-suggestion
      "M-a" #'minuet-accept-suggestion-line
      "M-e" #'minuet-dismiss-suggestion)
-
-    (minuet-set-optional-options minuet-gemini-options
-                                 :prompt 'mg-minuet-gemini-prompt :system)
-    (minuet-set-optional-options minuet-gemini-options
-                                 :template 'mg-minuet-gemini-chat-input-template :chat-input)
-    (plist-put minuet-gemini-options :fewshots 'mg-minuet-gemini-fewshots)
 
     (minuet-set-optional-options minuet-gemini-options
                                  :generationConfig
@@ -249,7 +217,7 @@ fib(5)")
 
     (plist-put minuet-openai-compatible-options :end-point "https://openrouter.ai/api/v1/chat/completions")
     (plist-put minuet-openai-compatible-options :api-key "OPENROUTER_API_KEY")
-    (plist-put minuet-openai-compatible-options :model "meta-llama/llama-3.3-70b-instruct")
+    (plist-put minuet-openai-compatible-options :model "deepseek/deepseek-chat-v3-0324")
     ;; Prioritize throughput for faster completion
     (minuet-set-optional-options minuet-openai-compatible-options :provider '(:sort "throughput"))
 
@@ -257,7 +225,7 @@ fib(5)")
                             minuet-codestral-options
                             minuet-openai-compatible-options
                             minuet-openai-fim-compatible-options))
-        (minuet-set-optional-options provider :max_tokens 256)
+        (minuet-set-optional-options provider :max_tokens 128)
         (minuet-set-optional-options provider :top_p 0.9))
 
     (minuet-set-optional-options minuet-codestral-options :stop ["\n\n"])

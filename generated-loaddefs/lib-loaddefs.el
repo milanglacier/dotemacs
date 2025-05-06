@@ -234,6 +234,7 @@ code block)" t)
 Close the REPL window denpending on the context (i.e. the
 language of the code block)." t)
  (autoload #'mg-markdown-send-region "lib-langs" nil t)
+ (autoload #'mg-markdown-source-region "lib-langs" nil t)
 (autoload 'mg-conda-activate "../lisp/lib/lib-langs" "\
 Activate a conda environment.
 
@@ -320,10 +321,6 @@ If a project root is found, return it. Otherwise return `default-directory'.")
 In Dired, visit this file or directory in another window." t)
 (autoload 'mg-ibuffer-vc-setup "../lisp/lib/lib-misc")
 (autoload 'mg--dired-subtree-toggle-nerd-icons "../lisp/lib/lib-misc")
-(autoload 'mg--vterm-override-evil-collection "../lisp/lib/lib-misc" "\
-
-
-(fn MODE _ &rest _)")
 (register-definition-prefixes "../lisp/lib/lib-misc" '("mg--dired-subtree-add-nerd-icons"))
 
 

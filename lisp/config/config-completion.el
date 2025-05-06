@@ -16,7 +16,7 @@
           company-tooltip-align-annotations t
           company-require-match 'never
           company-files-exclusions '(".git/" ".DS_Store")
-          company-global-modes '(not vterm-mode)
+          company-global-modes '(not vterm-mode eat-mode)
           company-frontends '(company-pseudo-tooltip-frontend
                               ;; always show candidates in overlay tooltip
                               company-echo-metadata-frontend)

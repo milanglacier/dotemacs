@@ -15,7 +15,7 @@
 
 ;; set default font
 (add-to-list 'default-frame-alist
-             '(font . "Monofur Nerd Font Mono-16"))
+             '(font . "Monofur Nerd Font Mono-20"))
 
 ;; Set font for text that should be displayed more like prose.
 (set-face-attribute 'variable-pitch nil :family "Bookerly" :height 160)
@@ -49,6 +49,7 @@
 (defvar mg-side-window-slots
     '((helpful . 1) ;; 0 is the default
       (vterm . -1)
+      (eat . -1)
       (eldoc . 1)
       (aichat . 2)
       (python . -1)
@@ -66,6 +67,7 @@ if they are side window.")
 (defvar mg-side-window-sides
     '((helpful . bottom) ;;bottom is the default
       (vterm . bottom)
+      (eat . bottom)
       (eldoc . bottom)
       (aichat . bottom)
       (Rhelp . bottom)

@@ -61,9 +61,9 @@ code block)"
     ;; `markd-code-block-lang' will move point to the begin of the
     ;; code block, so we `save-excursion'
     (pcase (save-excursion (markdown-code-block-lang))
-        ("r" (call-interactively #'vtr~radian-start))
-        ("R" (call-interactively #'vtr~radian-start))
-        ("python" (call-interactively #'vtr~ipython-start))
+        ("r" (call-interactively #'termint-radian-start))
+        ("R" (call-interactively #'termint-radian-start))
+        ("python" (call-interactively #'termint-ipython-start))
         (x "No associated REPL found!")))
 
 ;;;###autoload
@@ -72,9 +72,9 @@ code block)"
 language of the code block)."
     (interactive)
     (pcase (save-excursion (markdown-code-block-lang))
-        ("r" (call-interactively #'vtr~radian-hide-window))
-        ("R" (call-interactively #'#'vtr~radian-hide-window))
-        ("python" (call-interactively #'vtr~ipython-hide-window))
+        ("r" (call-interactively #'termint-radian-hide-window))
+        ("R" (call-interactively #'#'termint-radian-hide-window))
+        ("python" (call-interactively #'termint-ipython-hide-window))
         (x "No associated REPL found!")))
 
 ;;;###autoload (autoload #'mg-markdown-send-region "lib-langs" nil t)
@@ -83,13 +83,30 @@ language of the code block)."
 language of the code block)"
     (interactive "<r>P")
     (pcase (save-excursion (markdown-code-block-lang))
-        ("r" (vtr~radian-send-region-operator beg end session))
-        ("R" (vtr~radian-send-region-operator beg end session))
-        ("python" (vtr~ipython-send-region-operator beg end session))
+        ("r" (termint-radian-send-region-operator beg end session))
+        ("R" (termint-radian-send-region-operator beg end session))
+        ("python" (termint-ipython-send-region-operator beg end session))
         (x "No associated REPL found!")))
 
-(defvar mg-conda-current-env nil
-    "The path to the current conda environment.")
+;;;###autoload (autoload #'mg-markdown-source-region "lib-langs" nil t)
+(evil-define-operator mg-markdown-source-region (beg end session)
+    "Source region to the REPL depending on the context (i.e. the
+language of the code block)"
+    (interactive "<r>P")
+    (pcase (save-excursion (markdown-code-block-lang))
+        ("r" (termint-radian-source-region-operator beg end session))
+        ("R" (termint-radian-source-region-operator beg end session))
+        ("python" (termint-ipython-source-region-operator beg end session))
+        (x "No associated REPL found!")))
+
+
+(defvar mg-conda-activate-hook nil
+    "Hook run after activating a conda environment.
+The hook functions are called with one argument: the path to the
+activated environment.")
+
+(defvar mg-conda-deactivate-hook nil
+    "Hook run after deactivating a conda environment.")
 
 ;;;###autoload
 (defun mg-conda-activate (&optional path)
@@ -120,6 +137,7 @@ language of the code block)"
                 (setenv "CONDA_DEFAULT_ENV" (file-name-nondirectory conda-current-env))
                 (setenv "CONDA_PROMPT_MODIFIER" (concat "(" (file-name-nondirectory conda-current-env) ") "))
                 (setenv "CONDA_SHLVL" "1")
+                (run-hook-with-args 'mg-conda-activate-hook conda-current-env)
                 (message "Activating conda environment: %s" path))
         (message "conda not found")))
 
@@ -141,11 +159,18 @@ language of the code block)"
                 (setenv "CONDA_DEFAULT_ENV" nil)
                 (setenv "CONDA_SHLVL" "0")
                 (setenv "CONDA_PROMPT_MODIFIER" nil)
+                (run-hooks 'mg-conda-deactivate-hook)
                 (message "Conda environment deactivated."))
         (message "conda not found")))
 
-(defvar mg-python-venv-current-env nil
-    "The path to the current python venv environment.")
+
+
+(defvar mg-python-venv-activate-hook nil
+    "Hook run after activating a python virtual environment.
+The hook functions are called with one argument: the path to the activated environment.")
+
+(defvar mg-python-venv-deactivate-hook nil
+    "Hook run after deactivating a python virtual environment.")
 
 ;;;###autoload
 (defun mg-python-venv-activate (&optional path)
@@ -168,7 +193,7 @@ language of the code block)"
         (setenv "PATH" (concat path path-separator (getenv "PATH")))
         (add-to-list 'exec-path path)
         (setenv "VIRTUAL_ENV" pyvenv-current-env)
-
+        (run-hook-with-args 'mg-python-venv-activate-hook pyvenv-current-env)
         (message "Activating python venv: %s" path)))
 
 ;;;###autoload
@@ -184,20 +209,23 @@ language of the code block)"
                   exec-path (delete (concat pyvenv-current-env "/bin") exec-path))
             ;; set the PATH
             (setenv "PATH" (string-join paths path-separator))
-            (setenv "VIRTUAL_ENV" nil))))
+            (setenv "VIRTUAL_ENV" nil)
+            (run-hooks 'mg-python-venv-deactivate-hook))))
 
 
 ;;;###autoload
-(defun mg-poetry-venv-activate (&optional path)
-    "This command activates a poetry virtual environment."
-    (interactive (list
-                  (completing-read
-                   "select a poetry venv"
-                   (condition-case error
-                           (seq-filter (lambda (x) (not (equal x "")))
-                                       (process-lines "poetry" "env" "list" "--full-path"))
-                       (error (error "current project is not a poetry project or poetry is not installed!")))
-                   nil t)))
+(defun mg-poetry-venv-activate (path)
+    "Activate a poetry virtual environment.
+If only one environment exists, activate it directly. Otherwise, prompt for selection."
+    (interactive
+     (let ((envs
+            (condition-case error
+                    (seq-filter (lambda (x) (not (equal x "")))
+                                (process-lines "poetry" "env" "list" "--full-path"))
+                (error (error "current project is not a poetry project or poetry is not installed!")))))
+         (list
+          (if (length= envs 1) (car envs)
+              (completing-read "Select a poetry venv: " envs nil t)))))
     (mg-python-venv-activate (replace-regexp-in-string " (Activated)$" "" path)))
 
 ;;;###autoload
