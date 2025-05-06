@@ -65,13 +65,14 @@ when clocking out, use this function to automatically update the table."
 (defun mg-reload-org-agenda-buffers ()
     "`org-agenda' creates incomplete `org-mode' buffers to boost its startup speed. Reload those buffers
 after `org-agenda' has finalized."
-    (run-with-idle-timer
-     4 nil
-     (lambda ()
-         (dolist (buf org-agenda-new-buffers)
-             (when (buffer-live-p buf)
-                 (with-current-buffer buf
-                     (org-mode)))))))
+    (dolist (buf org-agenda-new-buffers)
+        (run-with-idle-timer
+         1.5 nil
+         (lambda (buffer-to-reload)
+             (when (buffer-live-p buffer-to-reload)
+                 (with-current-buffer buffer-to-reload
+                     (org-mode))))
+         buf))) ;; Pass the buffer as an argument to the lambda
 
 ;; Copied and simplified from doomemacs
 ;;;###autoload
