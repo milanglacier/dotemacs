@@ -59,8 +59,10 @@ must be provided. Can be omitted if FUNC is a symbol.
                                 (symbol-name where) "-" (symbol-name func) "-" "once"))))
         `(advice-add #',func ,where
                      (defun ,advice-once (&rest _)
-                         (funcall #',advice)
-                         (advice-remove #',func #',advice-once)) ,@props)))
+                         (prog1
+                                 (funcall #',advice)
+                             (advice-remove #',func #',advice-once)))
+                     ,@props)))
 
 ;;;###autoload
 (defmacro mg-turn-off-mode (mode)
