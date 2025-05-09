@@ -174,7 +174,7 @@ The hook functions are called with one argument: the path to the activated envir
 
 ;;;###autoload
 (defun mg-python-venv-activate (&optional path)
-    "This command activates a python virtual environment."
+    "Activate a python virtual environment."
     (interactive "Dselect a python venv: ")
 
     (mg-python-venv-deactivate)
@@ -198,7 +198,7 @@ The hook functions are called with one argument: the path to the activated envir
 
 ;;;###autoload
 (defun mg-python-venv-deactivate ()
-    "This command deactivates the current python virtual environment."
+    "Deactivate the current python virtual environment."
     (interactive)
     (when-let* ((pyvenv-current-env (and (not (equal (getenv "VIRTUAL_ENV") ""))
                                          (getenv "VIRTUAL_ENV"))))
@@ -230,7 +230,7 @@ If only one environment exists, activate it directly. Otherwise, prompt for sele
 
 ;;;###autoload
 (defun mg-poetry-venv-deactivate ()
-    "This command deactivates the current poetry virtual environment."
+    "Deactivate the current poetry virtual environment."
     (interactive)
     (mg-python-venv-deactivate))
 
