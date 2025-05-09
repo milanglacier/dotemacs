@@ -120,6 +120,9 @@
     (add-hook 'python-ts-mode-hook #'eglot-ensure)
     (add-hook 'python-ts-mode-hook (mg-setq-locally tab-width 4))
 
+    (add-hook 'mg-python-venv-activate-hook #'mg-eglot-update-python-path)
+    (add-hook 'mg-conda-activate-hook #'mg-eglot-update-python-path)
+
     (mg-define-and-bind-local-paren-text-object " c" "# %%" "# %%" python-ts-mode-hook)
     (mg-define-and-bind-local-paren-text-object "m" "# COMMAND ----------" "# COMMAND ----------" python-ts-mode-hook)
 

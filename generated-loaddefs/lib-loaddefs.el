@@ -242,17 +242,18 @@ Activate a conda environment.
 (autoload 'mg-conda-deactivate "../lisp/lib/lib-langs" "\
 Deactivate all the conda environments, including the base environment." t)
 (autoload 'mg-python-venv-activate "../lisp/lib/lib-langs" "\
-This command activates a python virtual environment.
+Activate a python virtual environment.
 
 (fn &optional PATH)" t)
 (autoload 'mg-python-venv-deactivate "../lisp/lib/lib-langs" "\
-This command deactivates the current python virtual environment." t)
+Deactivate the current python virtual environment." t)
 (autoload 'mg-poetry-venv-activate "../lisp/lib/lib-langs" "\
-This command activates a poetry virtual environment.
+Activate a poetry virtual environment.
+If only one environment exists, activate it directly. Otherwise, prompt for selection.
 
-(fn &optional PATH)" t)
+(fn PATH)" t)
 (autoload 'mg-poetry-venv-deactivate "../lisp/lib/lib-langs" "\
-This command deactivates the current poetry virtual environment." t)
+Deactivate the current poetry virtual environment." t)
  (autoload #'yapf-format-buffer "lib-langs" nil t)
  (autoload #'black-format-buffer "lib-langs" nil t)
  (autoload #'sql-formatter-format-buffer "lib-langs" nil t)

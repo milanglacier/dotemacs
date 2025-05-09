@@ -234,6 +234,50 @@ If only one environment exists, activate it directly. Otherwise, prompt for sele
     (interactive)
     (mg-python-venv-deactivate))
 
+(defmacro mg--setf-nested-plist (place val &rest attributes)
+    "Set a PLIST's nested ATTRIBUTES to VAL.
+Example usage: (mg-setf-nested-plist a-plist \"hello\" :level-1 :level-2)."
+    (if (null attributes)
+            (error "mg-setf-nested-plist requires at least one attribute key"))
+    (let ((access-form place))
+        (dolist (attr attributes)
+            (setq access-form `(plist-get ,access-form ',attr)))
+        `(setf ,access-form ,val)))
+
+(advice-add #'jsonrpc-notify :around
+            (defun mg-json (old-fun &rest args)
+                (setq tompson args)
+                (apply old-fun args)))
+
+(defun mg-eglot-update-python-path (path)
+    "Updates the Python path used by the Eglot server."
+    (when-let* ((current-server (eglot-current-server))
+                (server-info (eglot--server-info current-server))
+                (is-based-pyright (equal (plist-get server-info :name)
+                                         "basedpyright"))
+                (config (copy-tree eglot-workspace-configuration)))
+        ;; HACK: Eglot uses dir-local variables for
+        ;; `eglot-workspace-configuration'.  To programmatically apply
+        ;; a specific configuration, this function temporarily advises
+        ;; `eglot--workspace-configuration-plist` to return a custom
+        ;; settings plist.
+        (mg--setf-nested-plist config
+                               (concat path "/bin/python3")
+                               :python
+                               :pythonPath)
+        (defalias #'mg--eglot-set-workspace-configuration
+            (lambda (&rest _)
+                config))
+        (advice-add #'eglot--workspace-configuration-plist :around #'mg--eglot-set-workspace-configuration)
+        (eglot-signal-didChangeConfiguration current-server)
+        ;; `eglot--workspace-configuration-plist' may be invoked
+        ;; multiple times by Eglot when settings change. The advice is
+        ;; removed via an idle timer to ensure all such invocations
+        ;; use the updated configuration before cleanup.
+        (run-with-idle-timer
+         1 nil
+         #'advice-remove #'eglot--workspace-configuration-plist #'mg--eglot-set-workspace-configuration)))
+
 
 ;;;###autoload (autoload #'yapf-format-buffer "lib-langs" nil t)
 (reformatter-define yapf-format :program "yapf")
