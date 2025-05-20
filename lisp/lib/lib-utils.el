@@ -160,7 +160,7 @@ to activate `eglot' while using `org-mode', but prefer not to enable
     "Calling FUNC only when all the forms associated with FUNC in
 `mg-function-predicate-blocklist' evalutes to nil."
     (let ((func-with-blocklist
-           (intern (format "mg*%s-with-blocklist" (symbol-name func)))))
+           (intern (format "mg-%s-with-blocklist" (symbol-name func)))))
         `(if (fboundp #',func-with-blocklist)
                  #',func-with-blocklist
              (defun ,func-with-blocklist ()
