@@ -3,9 +3,7 @@
 ;;;###autoload
 (defun crm-indicator (args)
     (cons (format "[CRM%s] %s"
-                  (replace-regexp-in-string
-                   "\\`\\[.*?]\\*\\|\\[.*?]\\*\\'" ""
-                   crm-separator)
+                  (string-replace "[ \t]*" "" crm-separator)
                   (car args))
           (cdr args)))
 
