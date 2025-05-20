@@ -7,13 +7,6 @@
                   (car args))
           (cdr args)))
 
-;;;###autoload
-(defun mg-completion-in-region (&rest args)
-    (apply (if vertico-mode
-                   #'consult-completion-in-region
-               #'completion--in-region)
-           args))
-
 ;; copied from doomemacs
 ;;;###autoload (autoload #'mg-evil-delete-in-wgrep "lib-minibuffer" nil t)
 (evil-define-operator mg-evil-delete-in-wgrep (beg end type register yank-handler)

@@ -50,8 +50,6 @@
           ;; in order to use vertico-suspend
           enable-recursive-minibuffers t)
 
-    (setq-default completion-in-region-function #'mg-completion-in-region)
-
     ;; Cleans up path when moving directories with shadowed paths syntax, e.g.
     ;; cleans ~/foo/bar/// to /, and ~/foo/bar/~/ to ~/.
     (add-hook 'rfn-eshadow-update-overlay-hook #'vertico-directory-tidy)
@@ -108,6 +106,8 @@
      [remap switch-to-buffer-other-window] #'consult-buffer-other-window
      [remap switch-to-buffer-other-frame] #'consult-buffer-other-frame
      [remap yank-pop] #'consult-yank-pop)
+
+    (setq-default completion-in-region-function #'consult-completion-in-region)
 
     :config
     (setq consult-narrow-key "<"

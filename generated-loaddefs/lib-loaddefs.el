@@ -299,10 +299,6 @@ Try `dape-continue' and fall back to `dape'." t)
 
 
 (fn ARGS)")
-(autoload 'mg-completion-in-region "../lisp/lib/lib-minibuffer" "\
-
-
-(fn &rest ARGS)")
  (autoload #'mg-evil-delete-in-wgrep "lib-minibuffer" nil t)
 
 
