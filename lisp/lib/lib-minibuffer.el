@@ -7,6 +7,14 @@
                   (car args))
           (cdr args)))
 
+;;;###autoload
+(defun mg-disable-gc ()
+    (setq gc-cons-threshold most-positive-fixnum))
+
+(defun mg-restore-gc ()
+    ;; set gc-cons-threshold back to 64M
+    (setq gc-cons-threshold 67108864))
+
 ;; copied from doomemacs
 ;;;###autoload (autoload #'mg-evil-delete-in-wgrep "lib-minibuffer" nil t)
 (evil-define-operator mg-evil-delete-in-wgrep (beg end type register yank-handler)

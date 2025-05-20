@@ -299,7 +299,9 @@ Try `dape-continue' and fall back to `dape'." t)
 
 
 (fn ARGS)")
+(autoload 'mg-disable-gc "../lisp/lib/lib-minibuffer")
  (autoload #'mg-evil-delete-in-wgrep "lib-minibuffer" nil t)
+(register-definition-prefixes "../lisp/lib/lib-minibuffer" '("mg-restore-gc"))
 
 
 ;;; Generated autoloads from ../lisp/lib/lib-misc.el

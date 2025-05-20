@@ -55,6 +55,9 @@
     (add-hook 'rfn-eshadow-update-overlay-hook #'vertico-directory-tidy)
     (add-hook 'minibuffer-setup-hook #'vertico-repeat-save)
 
+    (add-hook 'minibuffer-setup-hook #'mg-disable-gc)
+    (add-hook 'minibuffer-exit-hook #'mg-restore-gc)
+
     (general-define-key
      :keymaps 'vertico-map
      "DEL" #'vertico-directory-delete-char
