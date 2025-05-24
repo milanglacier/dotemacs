@@ -537,14 +537,16 @@
 
     :config
 
-    ;; Before the alias is created at run time, we can firstly create
-    ;; the alias here. So that even if no kernel spec is available, we
-    ;; can still use lsp within the temporary src buffer.
+    ;; Before the jupyter alias is created at runtime, we can firstly
+    ;; create the alias here. So that even if no kernelspec is
+    ;; available, we can still use lsp within the temporary src
+    ;; buffer.
     (defalias #'org-babel-edit-prep:jupyter-python #'org-babel-edit-prep:python)
 
     ;; `org-babel-edit-prep:jupyter-python' (or other jupyter kernels)
     ;; will not be available at now, instead it will be created as
-    ;; alias at the runtime after the kernel specs are fetched. Since
+    ;; alias at the runtime (an org buffer is loaded) after the
+    ;; kernelspecs are fetched. Since
     ;; `org-babel-edit-prep:jupyter-python' is just an alias of
     ;; `org-babel-edit-prep:jupyter', we can just setup "jupyter"
     ;; language here.

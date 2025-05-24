@@ -155,7 +155,7 @@ Made for `org-tab-first-hook'."
     "Avoid loading Org Babel language definitions when no Jupyter kernelspec is available.
 `ob-jupyter' attempts to find a Jupyter kernel upon loading an
 Org-mode buffer.  If no kernelspec is found, this results in an error,
-which is both time-consuming and disruptive.  This function
+which is both time-consuming and annoying.  This function
 circumvents that by first verifying the availability of a kernelspec.
 Skip loading If none is found."
     (when (executable-find (symbol-value 'jupyter-executable))
