@@ -150,5 +150,16 @@ Made for `org-tab-first-hook'."
     (interactive)
     (mg-toggle-org-settings-wrapper 'org-cycle-hide-drawer-startup))
 
+;;;###autoload
+(defun mg--skip-when-jupyterkernel-spec-is-not-available (orig-fn &rest args)
+    "Avoid loading Org Babel language definitions when no Jupyter kernelspec is available.
+`ob-jupyter' attempts to find a Jupyter kernel upon loading an
+Org-mode buffer.  If no kernelspec is found, this results in an error,
+which is both time-consuming and disruptive.  This function
+circumvents that by first verifying the availability of a kernelspec.
+Skip loading If none is found."
+    (when (executable-find (symbol-value 'jupyter-executable))
+        (apply orig-fn args)))
+
 (provide 'lib-org)
 ;;; lib-org.el ends here

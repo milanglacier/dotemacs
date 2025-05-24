@@ -8,11 +8,6 @@
 (straight-use-package 'ox-clip)
 (straight-use-package 'org-download)
 
-(defvar mg-jupyter-want-integration t
-    "Enable jupyter integration. which entails configuring it as an
-org-babel backend and allowing for direct editing of Jupyter notebooks
-within Emacs.")
-
 (use-package org
     :init
     (setq mg-load-incrementally-packages
@@ -450,17 +445,13 @@ within Emacs.")
                              (R . t)
                              (emacs-lisp . t)
                              (shell . t)
-                             (python . t))))
+                             (python . t)
+                             (jupyter . t))))
 
-        (when mg-jupyter-want-integration
-            (push '(jupyter . t) org-babel-langs))
-
-        (org-babel-do-load-languages 'org-babel-load-languages
-                                     org-babel-langs)
-
-        (when mg-jupyter-want-integration
-            (setf (alist-get "jupyter-python" org-src-lang-modes) 'python-ts))
-        )
+        (org-babel-do-load-languages 'org-babel-load-languages org-babel-langs)
+        (setf (alist-get "jupyter-python" org-src-lang-modes) 'python-ts)
+        (setf (alist-get "jupyter-R" org-src-lang-modes) 'R)
+        (setf (alist-get "jupyter-r" org-src-lang-modes) 'R))
 
     ;; HACK: when you want to use org-babel to execute a code block,
     ;; it seems that it uses the language identifer associate with
@@ -468,14 +459,6 @@ within Emacs.")
     (defalias #'org-babel-execute:r #'org-babel-execute:R)
     (mg-org-babel-lsp-setup "R")
     (mg-org-babel-lsp-setup "python")
-    (when mg-jupyter-want-integration
-        ;; `org-babel-edit-prep:jupyter-python' (or other jupyter
-        ;; kernels) will not be available at now, instead it will be
-        ;; created as alias at the runtime after the kernel specs are
-        ;; fetched. Since `org-babel-execute:jupyter-python' is just
-        ;; an alias of `org-babel-execute:jupyter', we can just advice
-        ;; `org-babel-execute:jupyter' here.
-        (mg-org-babel-lsp-setup "jupyter"))
 
     ;; TODO: update `org-babel-python-command' in accordance to `python-shell-interpreter'
     ;; and `python-shell-interpreter-args'
@@ -549,10 +532,25 @@ within Emacs.")
         (setq org-appear-autosubmarkers t)))
 
 (use-package ob-jupyter
-    :when mg-jupyter-want-integration
     :init
     (push 'zmq mg-load-incrementally-packages)
+
     :config
+
+    ;; Before the alias is created at run time, we can firstly create
+    ;; the alias here. So that even if no kernel spec is available, we
+    ;; can still use lsp within the temporary src buffer.
+    (defalias #'org-babel-edit-prep:jupyter-python #'org-babel-edit-prep:python)
+
+    ;; `org-babel-edit-prep:jupyter-python' (or other jupyter kernels)
+    ;; will not be available at now, instead it will be created as
+    ;; alias at the runtime after the kernel specs are fetched. Since
+    ;; `org-babel-edit-prep:jupyter-python' is just an alias of
+    ;; `org-babel-edit-prep:jupyter', we can just setup "jupyter"
+    ;; language here.
+    (mg-org-babel-lsp-setup "jupyter")
+    (advice-add #'org-babel-jupyter-aliases-from-kernelspecs
+                :around #'mg--skip-when-jupyterkernel-spec-is-not-available)
     (delq :text/html jupyter-org-mime-types))
 
 (use-package org-re-reveal

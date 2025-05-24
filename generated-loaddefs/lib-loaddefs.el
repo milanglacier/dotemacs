@@ -356,6 +356,15 @@ Made for `org-tab-first-hook'.")
 toggle emphasis markers" t)
 (autoload 'mg-org-toggle-org-drawer "../lisp/lib/lib-org" "\
 toggle hide drawer. This function is effective only after org 9.6." t)
+(autoload 'mg--skip-when-jupyterkernel-spec-is-not-available "../lisp/lib/lib-org" "\
+Avoid loading Org Babel language definitions when no Jupyter kernelspec is available.
+`ob-jupyter' attempts to find a Jupyter kernel upon loading an
+Org-mode buffer.  If no kernelspec is found, this results in an error,
+which is both time-consuming and disruptive.  This function
+circumvents that by first verifying the availability of a kernelspec.
+Skip loading If none is found.
+
+(fn ORIG-FN &rest ARGS)")
 (register-definition-prefixes "../lisp/lib/lib-org" '("mg-toggle-org-settings-wrapper"))
 
 
