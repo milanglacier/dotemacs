@@ -148,6 +148,11 @@
      "*" #'notmuch-tree-tag-thread
      "e" #'notmuch-tree-resume-message
      )
+
+    ;; add display email in xwidget to `notmuch-show-part-map'
+    (general-define-key
+     :keymaps 'notmuch-show-part-map
+     "x" #'mg-notmuch-display-email-in-xwidget)
     )
 
 (defun mg-notmuch-hello-ret ()
@@ -209,6 +214,28 @@
     (interactive)
     (let ((current-prefix-arg t))
         (notmuch-show-open-or-close-all)))
+
+(defun mg-notmuch-display-email-in-xwidget ()
+  "Display the HTML email content in xwidget-webkit.
+This function requires the current MIME part to be of type
+text/html. If the content is not HTML, it falls back to calling
+`notmuch-show-view-part'.  Similarly, if xwidget support is
+unavailable in the current Emacs build, it fallbacks to
+`notmuch-show-view-part'."
+    (interactive)
+    (if-let* ((mime-part (ignore-errors (notmuch-show-current-part-handle)))
+              (is-html-mime (equal (caadr mime-part) "text/html"))
+              (has-xwidget (featurep 'xwidget-internal)))
+            (notmuch-show-apply-to-current-part-handle
+             (lambda (handle)
+                 (let ((tempf (make-temp-file "notmuch"
+                                              nil
+                                              ".html"
+                                              (with-current-buffer (car handle)
+                                                  (buffer-string)))))
+                     (xwidget-webkit-browse-url (concat "file://" tempf))
+                     (run-with-idle-timer 3 nil #'delete-file tempf))))
+        (notmuch-show-view-part)))
 
 (provide 'lib-email)
 ;;; lib-email.el ends here
