@@ -385,10 +385,10 @@
     ;; org-agenda will visit all org files listed
     ;; in `org-agenda-files' to generate the org-agenda view.
     ;; avoid too much files inside this directory.
-    (setq  org-agenda-files `(,org-directory
-                              ,@(mapcar
-                                 (lambda (x) (file-name-concat org-directory x))
-                                 '("capture" "work" "roam"))))
+    (setq org-agenda-files `(,org-directory
+                             ,@(mapcar
+                                (lambda (x) (file-name-concat org-directory x))
+                                '("capture" "work" "roam"))))
 
     (advice-add #'org-get-agenda-file-buffer :around #'mg-exclude-org-agenda-buffers-from-recentf)
     (add-hook 'org-agenda-finalize-hook #'mg-reload-org-agenda-buffers)

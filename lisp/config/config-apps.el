@@ -133,14 +133,17 @@
     (setq termint-backend 'eat)
 
     (termint-define "aichat" "aichat -s" :bracketed-paste-p t
-                    :source-syntax ".file {{file}}")
+                    :source-syntax ".file {{file}}"
+                    :show-source-command-hint t)
 
     (termint-define "ipython" "ipython" :bracketed-paste-p t
-                    :source-syntax termint-ipython-source-syntax-template)
+                    :source-syntax termint-ipython-source-syntax-template
+                    :show-source-command-hint t)
 
     (termint-define "radian" "radian" :bracketed-paste-p t
                     :end-pattern '(:single-line "\n" :multi-lines "")
-                    :source-syntax termint-R-source-syntax-template)
+                    :source-syntax termint-R-source-syntax-template
+                    :show-source-command-hint t)
     )
 
 
