@@ -83,7 +83,7 @@
 (require 'config-misc)
 
 ;; I personally HATE custom.el. But I don't think I have a better
-;; place to store some temp file.
+;; place to store temporary data like API keys.
 (when (file-exists-p custom-file)
     (load custom-file nil t))
 
