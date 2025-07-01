@@ -16,6 +16,13 @@ Read a tag from minibuffer and jump to the tag.
 (register-definition-prefixes "../site-lisp/consult-citre" '("consult-citre-"))
 
 
+;;; Generated autoloads from ../site-lisp/edit-inline-string.el
+
+(autoload 'edit-inline-string "../site-lisp/edit-inline-string" "\
+Edit the embedded code within a separate buffer." t)
+(register-definition-prefixes "../site-lisp/edit-inline-string" '("edit-inline-string-"))
+
+
 ;;; Generated autoloads from ../site-lisp/evil-ts.el
 
 (register-definition-prefixes "../site-lisp/evil-ts" '("evil-ts-"))

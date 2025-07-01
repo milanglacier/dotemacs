@@ -298,37 +298,5 @@ Example usage: (mg-setf-nested-plist a-plist \"hello\" :level-1 :level-2)."
                       (config-file-exists (file-exists-p config-file)))
               `("--config" ,config-file)))
 
-(defun mg--edit-src-treesit-get-string-range ()
-    (let ((node (treesit-node-at (point)))
-          (query "((string_content) @str)"))
-        (treesit-query-range node query)))
-
-(defvar mg-edit-src-hook-guess-mode-functions '(mg--edit-src-detect-sql)
-    "Hooks to detect the mode of the temporary buffer for
-edit-src. These functions take one argument which is the content
-of the temp buffer.")
-
-(defun mg--edit-src-detect-sql (content)
-    (cond
-     ((string-match "\\`[ \t\n]*--[ \t]*[sS][qQ][lL]" content) 'sql-mode)
-     ((string-match "\\`[ \t\n]*/\\*.*[sS][qQ][lL].*\\*/" content) 'sql-mode)
-     (t nil)))
-
-;;;###autoload
-(defun mg-edit-src ()
-    "Edit the embedded code within a separate buffer."
-    (interactive)
-    (require 'edit-indirect)
-    (when-let* ((range (mg--edit-src-treesit-get-string-range))
-                (beg (caar range))
-                (end (cdar range))
-                (content (buffer-substring-no-properties beg end))
-                (edit-indirect-guess-mode-function
-                 (lambda (&rest _)
-                     (funcall
-                      (or (run-hook-with-args-until-success 'mg-edit-src-hook-guess-mode-functions content)
-                          'normal-mode)))))
-        (edit-indirect-region beg end t)))
-
 (provide 'lib-langs)
 ;;; lib-langs.el ends here

@@ -137,11 +137,11 @@
         "re" #'termint-ipython-send-string
         "v" '(:ignore t :which-key "view")
         "vh" #'mg-python-toggle-view-local-html
-        "'" #'mg-edit-src)
+        "'" #'edit-inline-string)
 
     (general-define-key
      :keymaps 'python-ts-mode-map
-     "C-c '" #'mg-edit-src)
+     "C-c '" #'edit-inline-string)
 
     (add-to-list 'display-buffer-alist
                  `("^\\*ipython"
