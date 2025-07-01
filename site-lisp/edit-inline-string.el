@@ -1,9 +1,14 @@
 ;;; edit-inline-string.el -*- lexical-binding: t; -*-
 
-;; Version: 0.0.02
+;; Author: Milan Glacier <dev@milanglacier.com>
+;; Maintainer: Milan Glacier <dev@milanglacier.com>
+;; Version: 0.1
 ;; Package-Requires: ((emacs "29") (edit-indirect "0.1.13"))
 
 ;;; Commentary:
+
+;; This package provides a command to edit the contents of a string
+;; literal in a separate, temporary buffer.
 
 ;;; Code:
 
