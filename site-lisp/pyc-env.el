@@ -1,13 +1,18 @@
 ;;; pyc-env.el -*- lexical-binding: t; -*-
 
-;; Version: 0.0.02
+
+;; Author: Milan Glacier <dev@milanglacier.com>
+;; Maintainer: Milan Glacier <dev@milanglacier.com>
+;; Version: 0.1
 ;; Package-Requires: ((emacs "29"))
 
 ;;; Commentary:
-;; This package provides a streamlined interface for managing Python
-;; virtual environments, offering support for `venv`, `conda`, and
-;; `poetry`. It also includes a helper function to update the Python
-;; executable path for Eglot.
+
+;; This package provides virtual environment management for Python,
+;; supporting `venv`, `conda`, and `poetry`. The name `pyc-env` is a
+;; blend of "Python, Conda, and Poetry Environment". It also includes
+;; a helper function to update the Python executable path for Eglot
+;; upon environment activation.
 
 ;;; Code:
 
