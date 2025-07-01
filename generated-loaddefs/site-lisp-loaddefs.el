@@ -28,28 +28,28 @@ Edit the embedded code within a separate buffer." t)
 (register-definition-prefixes "../site-lisp/evil-ts" '("evil-ts-"))
 
 
-;;; Generated autoloads from ../site-lisp/mg-pyvenv.el
+;;; Generated autoloads from ../site-lisp/pyc-env.el
 
-(autoload 'mg-pyvenv-conda-activate "../site-lisp/mg-pyvenv" "\
+(autoload 'pyc-env-conda-activate "../site-lisp/pyc-env" "\
 Activate a conda environment.
 
 (fn &optional PATH)" t)
-(autoload 'mg-pyvenv-conda-deactivate "../site-lisp/mg-pyvenv" "\
+(autoload 'pyc-env-conda-deactivate "../site-lisp/pyc-env" "\
 Deactivate all the conda environments, including the base environment." t)
-(autoload 'mg-pyvenv-venv-activate "../site-lisp/mg-pyvenv" "\
+(autoload 'pyc-env-venv-activate "../site-lisp/pyc-env" "\
 Activate a python virtual environment.
 
 (fn &optional PATH)" t)
-(autoload 'mg-pyvenv-venv-deactivate "../site-lisp/mg-pyvenv" "\
+(autoload 'pyc-env-venv-deactivate "../site-lisp/pyc-env" "\
 Deactivate the current python virtual environment." t)
-(autoload 'mg-pyvenv-poetry-activate "../site-lisp/mg-pyvenv" "\
+(autoload 'pyc-env-poetry-activate "../site-lisp/pyc-env" "\
 Activate a poetry virtual environment.
 If only one environment exists, activate it directly. Otherwise, prompt for selection.
 
 (fn PATH)" t)
-(autoload 'mg-pyvenv-poetry-deactivate "../site-lisp/mg-pyvenv" "\
+(autoload 'pyc-env-poetry-deactivate "../site-lisp/pyc-env" "\
 Deactivate the current poetry virtual environment." t)
-(register-definition-prefixes "../site-lisp/mg-pyvenv" '("mg-pyvenv-"))
+(register-definition-prefixes "../site-lisp/pyc-env" '("pyc-env-"))
 
 
 ;;; Generated autoloads from ../site-lisp/termint-aider.el

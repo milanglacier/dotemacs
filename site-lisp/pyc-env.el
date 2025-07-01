@@ -1,4 +1,4 @@
-;;; mg-pyvenv.el -*- lexical-binding: t; -*-
+;;; pyc-env.el -*- lexical-binding: t; -*-
 
 ;; Version: 0.0.02
 ;; Package-Requires: ((emacs "29"))
@@ -11,19 +11,19 @@
 
 ;;; Code:
 
-(defvar mg-pyvenv-conda-activate-hook '(mg-pyvenv-eglot-update-python-path)
+(defvar pyc-env-conda-activate-hook '(pyc-env-eglot-update-python-path)
     "Hook run after activating a conda environment.
 The hook functions are called with one argument: the path to the
 activated environment.")
 
-(defvar mg-pyvenv-conda-deactivate-hook nil
+(defvar pyc-env-conda-deactivate-hook nil
     "Hook run after deactivating a conda environment.")
 
 ;;;###autoload
-(defun mg-pyvenv-conda-activate (&optional path)
+(defun pyc-env-conda-activate (&optional path)
     "Activate a conda environment."
     (interactive)
-    (mg-pyvenv-conda-deactivate)
+    (pyc-env-conda-deactivate)
 
     (if (executable-find "conda")
             (let ((conda-info (json-parse-string (shell-command-to-string "conda info --json")
@@ -48,12 +48,12 @@ activated environment.")
                 (setenv "CONDA_DEFAULT_ENV" (file-name-nondirectory conda-current-env))
                 (setenv "CONDA_PROMPT_MODIFIER" (concat "(" (file-name-nondirectory conda-current-env) ") "))
                 (setenv "CONDA_SHLVL" "1")
-                (run-hook-with-args 'mg-pyvenv-conda-activate-hook conda-current-env)
+                (run-hook-with-args 'pyc-env-conda-activate-hook conda-current-env)
                 (message "Activating conda environment: %s" path))
         (message "conda not found")))
 
 ;;;###autoload
-(defun mg-pyvenv-conda-deactivate ()
+(defun pyc-env-conda-deactivate ()
     "Deactivate all the conda environments, including the base environment."
     (interactive)
     (if (executable-find "conda")
@@ -70,25 +70,25 @@ activated environment.")
                 (setenv "CONDA_DEFAULT_ENV" nil)
                 (setenv "CONDA_SHLVL" "0")
                 (setenv "CONDA_PROMPT_MODIFIER" nil)
-                (run-hooks 'mg-pyvenv-conda-deactivate-hook)
+                (run-hooks 'pyc-env-conda-deactivate-hook)
                 (message "Conda environment deactivated."))
         (message "conda not found")))
 
 
 
-(defvar mg-pyvenv-venv-activate-hook '(mg-pyvenv-eglot-update-python-path)
+(defvar pyc-env-venv-activate-hook '(pyc-env-eglot-update-python-path)
     "Hook run after activating a python virtual environment.
 The hook functions are called with one argument: the path to the activated environment.")
 
-(defvar mg-pyvenv-venv-deactivate-hook nil
+(defvar pyc-env-venv-deactivate-hook nil
     "Hook run after deactivating a python virtual environment.")
 
 ;;;###autoload
-(defun mg-pyvenv-venv-activate (&optional path)
+(defun pyc-env-venv-activate (&optional path)
     "Activate a python virtual environment."
     (interactive "Dselect a python venv: ")
 
-    (mg-pyvenv-venv-deactivate)
+    (pyc-env-venv-deactivate)
 
     ;; if the path contains trailing "bin" or "bin/", remove it
     (let (pyvenv-current-env)
@@ -104,11 +104,11 @@ The hook functions are called with one argument: the path to the activated envir
         (setenv "PATH" (concat path path-separator (getenv "PATH")))
         (add-to-list 'exec-path path)
         (setenv "VIRTUAL_ENV" pyvenv-current-env)
-        (run-hook-with-args 'mg-pyvenv-venv-activate-hook pyvenv-current-env)
+        (run-hook-with-args 'pyc-env-venv-activate-hook pyvenv-current-env)
         (message "Activating python venv: %s" path)))
 
 ;;;###autoload
-(defun mg-pyvenv-venv-deactivate ()
+(defun pyc-env-venv-deactivate ()
     "Deactivate the current python virtual environment."
     (interactive)
     (when-let* ((pyvenv-current-env (and (not (equal (getenv "VIRTUAL_ENV") ""))
@@ -121,11 +121,11 @@ The hook functions are called with one argument: the path to the activated envir
             ;; set the PATH
             (setenv "PATH" (string-join paths path-separator))
             (setenv "VIRTUAL_ENV" nil)
-            (run-hooks 'mg-pyvenv-venv-deactivate-hook))))
+            (run-hooks 'pyc-env-venv-deactivate-hook))))
 
 
 ;;;###autoload
-(defun mg-pyvenv-poetry-activate (path)
+(defun pyc-env-poetry-activate (path)
     "Activate a poetry virtual environment.
 If only one environment exists, activate it directly. Otherwise, prompt for selection."
     (interactive
@@ -137,44 +137,44 @@ If only one environment exists, activate it directly. Otherwise, prompt for sele
          (list
           (if (length= envs 1) (car envs)
               (completing-read "Select a poetry venv: " envs nil t)))))
-    (mg-pyvenv-venv-activate (replace-regexp-in-string " (Activated)$" "" path)))
+    (pyc-env-venv-activate (replace-regexp-in-string " (Activated)$" "" path)))
 
 ;;;###autoload
-(defun mg-pyvenv-poetry-deactivate ()
+(defun pyc-env-poetry-deactivate ()
     "Deactivate the current poetry virtual environment."
     (interactive)
-    (mg-pyvenv-venv-deactivate))
+    (pyc-env-venv-deactivate))
 
-(defmacro mg-pyvenv--setf-nested-plist (place val &rest attributes)
+(defmacro pyc-env--setf-nested-plist (place val &rest attributes)
     "Set a PLIST's nested ATTRIBUTES to VAL.
-Example usage: (mg-pyvenv-setf-nested-plist a-plist \"hello\" :level-1 :level-2)."
+Example usage: (pyc-env-setf-nested-plist a-plist \"hello\" :level-1 :level-2)."
     (if (null attributes)
-            (error "mg-pyvenv-setf-nested-plist requires at least one attribute key"))
+            (error "pyc-env-setf-nested-plist requires at least one attribute key"))
     (let ((access-form place))
         (dolist (attr attributes)
             (setq access-form `(plist-get ,access-form ',attr)))
         `(setf ,access-form ,val)))
 
-(defun mg-pyvenv-eglot-update-python-path (path)
+(defun pyc-env-eglot-update-python-path (path)
     "Updates the Python path used by the Eglot server."
     (when-let* ((current-server (eglot-current-server))
                 (server-info (eglot--server-info current-server))
                 (is-based-pyright (equal (plist-get server-info :name)
                                          "basedpyright"))
                 (config (copy-tree eglot-workspace-configuration)))
-        (mg-pyvenv--setf-nested-plist config
-                                      (concat path "/bin/python3")
-                                      :python
-                                      :pythonPath)
+        (pyc-env--setf-nested-plist config
+                                    (concat path "/bin/python3")
+                                    :python
+                                    :pythonPath)
         ;; HACK: Eglot uses dir-local variables for
         ;; `eglot-workspace-configuration'.  To programmatically apply
         ;; a specific configuration, this function temporarily advises
         ;; `eglot--workspace-configuration-plist` to return a custom
         ;; settings plist.
-        (defalias #'mg-pyvenv-eglot-set-workspace-configuration
+        (defalias #'pyc-env-eglot-set-workspace-configuration
             (lambda (&rest _)
                 config))
-        (advice-add #'eglot--workspace-configuration-plist :around #'mg-pyvenv-eglot-set-workspace-configuration)
+        (advice-add #'eglot--workspace-configuration-plist :around #'pyc-env-eglot-set-workspace-configuration)
 
         (eglot-signal-didChangeConfiguration current-server)
         ;; `eglot--workspace-configuration-plist' may be invoked
@@ -183,7 +183,7 @@ Example usage: (mg-pyvenv-setf-nested-plist a-plist \"hello\" :level-1 :level-2)
         ;; use the updated configuration before cleanup.
         (run-with-idle-timer
          1 nil
-         #'advice-remove #'eglot--workspace-configuration-plist #'mg-pyvenv-eglot-set-workspace-configuration)))
+         #'advice-remove #'eglot--workspace-configuration-plist #'pyc-env-eglot-set-workspace-configuration)))
 
 
-(provide 'mg-pyvenv)
+(provide 'pyc-env)
