@@ -28,6 +28,30 @@ Edit the embedded code within a separate buffer." t)
 (register-definition-prefixes "../site-lisp/evil-ts" '("evil-ts-"))
 
 
+;;; Generated autoloads from ../site-lisp/mg-pyvenv.el
+
+(autoload 'mg-pyvenv-conda-activate "../site-lisp/mg-pyvenv" "\
+Activate a conda environment.
+
+(fn &optional PATH)" t)
+(autoload 'mg-pyvenv-conda-deactivate "../site-lisp/mg-pyvenv" "\
+Deactivate all the conda environments, including the base environment." t)
+(autoload 'mg-pyvenv-venv-activate "../site-lisp/mg-pyvenv" "\
+Activate a python virtual environment.
+
+(fn &optional PATH)" t)
+(autoload 'mg-pyvenv-venv-deactivate "../site-lisp/mg-pyvenv" "\
+Deactivate the current python virtual environment." t)
+(autoload 'mg-pyvenv-poetry-activate "../site-lisp/mg-pyvenv" "\
+Activate a poetry virtual environment.
+If only one environment exists, activate it directly. Otherwise, prompt for selection.
+
+(fn PATH)" t)
+(autoload 'mg-pyvenv-poetry-deactivate "../site-lisp/mg-pyvenv" "\
+Deactivate the current poetry virtual environment." t)
+(register-definition-prefixes "../site-lisp/mg-pyvenv" '("mg-pyvenv-"))
+
+
 ;;; Generated autoloads from ../site-lisp/termint-aider.el
 
  (autoload #'termint-aider-start "termint-aider" nil t)

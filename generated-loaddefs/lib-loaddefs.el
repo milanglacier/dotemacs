@@ -235,25 +235,6 @@ Close the REPL window denpending on the context (i.e. the
 language of the code block)." t)
  (autoload #'mg-markdown-send-region "lib-langs" nil t)
  (autoload #'mg-markdown-source-region "lib-langs" nil t)
-(autoload 'mg-conda-activate "../lisp/lib/lib-langs" "\
-Activate a conda environment.
-
-(fn &optional PATH)" t)
-(autoload 'mg-conda-deactivate "../lisp/lib/lib-langs" "\
-Deactivate all the conda environments, including the base environment." t)
-(autoload 'mg-python-venv-activate "../lisp/lib/lib-langs" "\
-Activate a python virtual environment.
-
-(fn &optional PATH)" t)
-(autoload 'mg-python-venv-deactivate "../lisp/lib/lib-langs" "\
-Deactivate the current python virtual environment." t)
-(autoload 'mg-poetry-venv-activate "../lisp/lib/lib-langs" "\
-Activate a poetry virtual environment.
-If only one environment exists, activate it directly. Otherwise, prompt for selection.
-
-(fn PATH)" t)
-(autoload 'mg-poetry-venv-deactivate "../lisp/lib/lib-langs" "\
-Deactivate the current poetry virtual environment." t)
  (autoload #'yapf-format-buffer "lib-langs" nil t)
  (autoload #'black-format-buffer "lib-langs" nil t)
  (autoload #'sql-formatter-format-buffer "lib-langs" nil t)
