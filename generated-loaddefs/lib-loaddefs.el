@@ -235,30 +235,9 @@ Close the REPL window denpending on the context (i.e. the
 language of the code block)." t)
  (autoload #'mg-markdown-send-region "lib-langs" nil t)
  (autoload #'mg-markdown-source-region "lib-langs" nil t)
-(autoload 'mg-conda-activate "../lisp/lib/lib-langs" "\
-Activate a conda environment.
-
-(fn &optional PATH)" t)
-(autoload 'mg-conda-deactivate "../lisp/lib/lib-langs" "\
-Deactivate all the conda environments, including the base environment." t)
-(autoload 'mg-python-venv-activate "../lisp/lib/lib-langs" "\
-Activate a python virtual environment.
-
-(fn &optional PATH)" t)
-(autoload 'mg-python-venv-deactivate "../lisp/lib/lib-langs" "\
-Deactivate the current python virtual environment." t)
-(autoload 'mg-poetry-venv-activate "../lisp/lib/lib-langs" "\
-Activate a poetry virtual environment.
-If only one environment exists, activate it directly. Otherwise, prompt for selection.
-
-(fn PATH)" t)
-(autoload 'mg-poetry-venv-deactivate "../lisp/lib/lib-langs" "\
-Deactivate the current poetry virtual environment." t)
  (autoload #'yapf-format-buffer "lib-langs" nil t)
  (autoload #'black-format-buffer "lib-langs" nil t)
  (autoload #'sql-formatter-format-buffer "lib-langs" nil t)
-(autoload 'mg-edit-src "../lisp/lib/lib-langs" "\
-Edit the embedded code within a separate buffer." t)
 (register-definition-prefixes "../lisp/lib/lib-langs" '("mg-"))
 
 
@@ -360,7 +339,7 @@ toggle hide drawer. This function is effective only after org 9.6." t)
 Avoid loading Org Babel language definitions when no Jupyter kernelspec is available.
 `ob-jupyter' attempts to find a Jupyter kernel upon loading an
 Org-mode buffer.  If no kernelspec is found, this results in an error,
-which is both time-consuming and disruptive.  This function
+which is both time-consuming and annoying.  This function
 circumvents that by first verifying the availability of a kernelspec.
 Skip loading If none is found.
 

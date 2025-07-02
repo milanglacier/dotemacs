@@ -16,9 +16,40 @@ Read a tag from minibuffer and jump to the tag.
 (register-definition-prefixes "../site-lisp/consult-citre" '("consult-citre-"))
 
 
+;;; Generated autoloads from ../site-lisp/edit-inline-string.el
+
+(autoload 'edit-inline-string "../site-lisp/edit-inline-string" "\
+Edit the embedded code within a separate buffer." t)
+(register-definition-prefixes "../site-lisp/edit-inline-string" '("edit-inline-string-"))
+
+
 ;;; Generated autoloads from ../site-lisp/evil-ts.el
 
 (register-definition-prefixes "../site-lisp/evil-ts" '("evil-ts-"))
+
+
+;;; Generated autoloads from ../site-lisp/pyc-env.el
+
+(autoload 'pyc-env-conda-activate "../site-lisp/pyc-env" "\
+Activate a conda environment.
+
+(fn &optional PATH)" t)
+(autoload 'pyc-env-conda-deactivate "../site-lisp/pyc-env" "\
+Deactivate all the conda environments, including the base environment." t)
+(autoload 'pyc-env-venv-activate "../site-lisp/pyc-env" "\
+Activate a python virtual environment.
+
+(fn &optional PATH)" t)
+(autoload 'pyc-env-venv-deactivate "../site-lisp/pyc-env" "\
+Deactivate the current python virtual environment." t)
+(autoload 'pyc-env-poetry-activate "../site-lisp/pyc-env" "\
+Activate a poetry virtual environment.
+If only one environment exists, activate it directly. Otherwise, prompt for selection.
+
+(fn PATH)" t)
+(autoload 'pyc-env-poetry-deactivate "../site-lisp/pyc-env" "\
+Deactivate the current poetry virtual environment." t)
+(register-definition-prefixes "../site-lisp/pyc-env" '("pyc-env-"))
 
 
 ;;; Generated autoloads from ../site-lisp/termint-aider.el

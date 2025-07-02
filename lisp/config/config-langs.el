@@ -120,9 +120,6 @@
     ; (add-hook 'python-ts-mode-hook #'eglot-ensure)
     (add-hook 'python-ts-mode-hook (mg-setq-locally tab-width 4))
 
-    (add-hook 'mg-python-venv-activate-hook #'mg-eglot-update-python-path)
-    (add-hook 'mg-conda-activate-hook #'mg-eglot-update-python-path)
-
     (mg-define-and-bind-local-paren-text-object " c" "# %%" "# %%" python-ts-mode-hook)
     (mg-define-and-bind-local-paren-text-object "m" "# COMMAND ----------" "# COMMAND ----------" python-ts-mode-hook)
 
@@ -137,11 +134,11 @@
         "re" #'termint-ipython-send-string
         "v" '(:ignore t :which-key "view")
         "vh" #'mg-python-toggle-view-local-html
-        "'" #'mg-edit-src)
+        "'" #'edit-inline-string)
 
     (general-define-key
      :keymaps 'python-ts-mode-map
-     "C-c '" #'mg-edit-src)
+     "C-c '" #'edit-inline-string)
 
     (add-to-list 'display-buffer-alist
                  `("^\\*ipython"
