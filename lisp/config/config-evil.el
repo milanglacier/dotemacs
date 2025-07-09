@@ -185,7 +185,12 @@
      :states '(motion normal visual)
      ;; vanilla emacs uses `C--' to input negative prefix. In evil
      ;; mode we can directly uses -.
-     "-" #'negative-argument)
+     "-" #'negative-argument
+     ;; In Vim, `C-b` and `C-f` scroll by a full page, while `C-u` and
+     ;; `C-d` scroll by a half page. We want to always scroll by a
+     ;; half page.
+     "C-b" #'evil-scroll-up
+     "C-f" #'evil-scroll-down)
 
     (general-define-key
      :states 'visual
