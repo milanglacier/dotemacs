@@ -254,13 +254,12 @@ notmuch new && mbsync -a && notmuch new
 Outlook enforced oauth2 authentication for outlook email. See this
 [[https://support.microsoft.com/en-us/office/modern-authentication-methods-now-needed-to-continue-syncing-outlook-email-in-non-microsoft-email-apps-c5d65390-9676-4763-b41f-d7986499a90d][news]].
 
-The [[https://github.com/neomutt/neomutt/tree/main/contrib/oauth2][mutt_oauth2.py]] script, sourced from NeoMutt's contributions,
-enables OAuth2 authentication. Earlier versions of this script
-required direct modification—for example, to alter the GPG identity or
-the encryption method for OAuth tokens. However, the most recent
-version streamlines this process by allowing these settings to be
-supplied as command-line arguments, thereby eliminating the need for
-manual edits and enabling the script's direct use.
+The [[https://github.com/neomutt/neomutt/tree/main/contrib/oauth2][mutt_oauth2.py]] script, obtained from NeoMutt's contributions, can
+be used for OAuth2 authentication.  Earlier version of this script
+required manual modification—such as changing the GPG recipient or
+token encryption method—but the latest version now accepts these
+settings as command-line arguments. This eliminates the need for
+direct script modifications, allowing for direct use.
 
 ** Set up app registration in Azure
 
@@ -275,10 +274,10 @@ To set up an app to sync emails, follow these steps:
 
 3. Follow the [[https://github.com/neomutt/neomutt/tree/main/contrib/oauth2#how-to-create-a-microsoft-registration][instruction]] provided by neomutt for your app
    configuration. During the app configuration process, you'll find
-   the specified settings under the =Manage | Authentication= and
-   =Manage | API permissions= sidebars in your app portal. It's crucial
+   the specified settings under the =Manage -> Authentication= and
+   =Manage -> API permissions= sidebars in your app portal. It's crucial
    to enable access for IMAP, SMTP, POP, and other relevant scopes as
-   detailed in the mutt script under the =Manage | API permissions=
+   detailed in the mutt script under the =Manage -> API permissions=
    sidebar.
 
 ** Fetch the authentication token with the mutt script
