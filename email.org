@@ -249,51 +249,18 @@ notmuch new && mbsync -a && notmuch new
 
 * Configure oauth2 support with outlook
 
-** Setup the mutt script for oauth2 authentication
+** Use the mutt script for oauth2 authentication
 
 Outlook enforced oauth2 authentication for outlook email. See this
 [[https://support.microsoft.com/en-us/office/modern-authentication-methods-now-needed-to-continue-syncing-outlook-email-in-non-microsoft-email-apps-c5d65390-9676-4763-b41f-d7986499a90d][news]].
 
-I used the script from [[https://github.com/muttmua/mutt/blob/master/contrib/mutt_oauth2.py][neomutt]] for oauth2 authentication, with some
-modification in the patch below.
-
-#+begin_src diff
-diff --git a/mutt_oauth2.py b/bin/mutt_oauth2.py
-old mode 100644
-new mode 100755
-index c973b98..c296dff
---- a/mutt_oauth2.py
-+++ b/bin/mutt_oauth2.py
-@@ -45,7 +45,7 @@ import readline
- # encryption and decryption pipes you prefer. They should read from standard
- # input and write to standard output. The example values here invoke GPG,
- # although won't work until an appropriate identity appears in the first line.
--ENCRYPTION_PIPE = ['gpg', '--encrypt', '--recipient', 'YOUR_GPG_IDENTITY']
-+ENCRYPTION_PIPE = ['gpg', '--encrypt', '--recipient', '<my@gpg.email.com>']
- DECRYPTION_PIPE = ['gpg', '--decrypt']
-
- registrations = {
-@@ -66,17 +66,17 @@ registrations = {
-         'authorize_endpoint': 'https://login.microsoftonline.com/common/oauth2/v2.0/authorize',
-         'devicecode_endpoint': 'https://login.microsoftonline.com/common/oauth2/v2.0/devicecode',
-         'token_endpoint': 'https://login.microsoftonline.com/common/oauth2/v2.0/token',
--        'redirect_uri': 'https://login.microsoftonline.com/common/oauth2/nativeclient',
-+        'redirect_uri': 'https://login.live.com/oauth20_desktop.srf', # use the redirect url of outlook instead of office365
-         'tenant': 'common',
-         'pop_endpoint': 'outlook.office365.com',
--        'smtp_endpoint': 'smtp.office365.com',
-+        'smtp_endpoint': 'smtp-mail.outlook.com',  # use the SMTP endpoint of outlook instead of office365
-         'sasl_method': 'XOAUTH2',
-         'scope': ('offline_access https://outlook.office.com/IMAP.AccessAsUser.All '
-                   'https://outlook.office.com/POP.AccessAsUser.All '
-                   'https://outlook.office.com/SMTP.Send'),
--        'client_id': '',
--        'client_secret': '',
-+        'client_id': 'my app id, see the next section on how to register your own app',
-+        'client_secret': ' ',
-     },
- }
-#+end_src
+The [[https://github.com/neomutt/neomutt/tree/main/contrib/oauth2][mutt_oauth2.py]] script, sourced from NeoMutt's contributions,
+enables OAuth2 authentication. Earlier versions of this script
+required direct modification—for example, to alter the GPG identity or
+the encryption method for OAuth tokens. However, the most recent
+version streamlines this process by allowing these settings to be
+supplied as command-line arguments, thereby eliminating the need for
+manual edits and enabling the script's direct use.
 
 ** Set up app registration in Azure
 
@@ -317,7 +284,10 @@ To set up an app to sync emails, follow these steps:
 ** Fetch the authentication token with the mutt script
 
 #+begin_src bash
-mutt_oauth2.py --verbose --authorize -t your/path/to/the/oauth/file
+mutt_oauth2.py --authorize --verbose -t "your/path/to/the/oauth/file" \
+        --provider microsoft --client-id "your_azure_client_id" \
+        --encryption-pipe "gpg --recipient your@gpg.id.com --encrypt --always-trust" \
+        --authflow devicecode
 #+end_src
 
 Upon executing the aforementioned command, a wizard will guide you
