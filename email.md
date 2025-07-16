@@ -229,7 +229,7 @@ The post-new hook performs two primary tag management tasks:
 
 ### Example `$HOME/.notmuch-config` File
 
-``` toml
+``` ini
 [database]
 path=Maildir
 hook_dir=.config/notmuch/hooks
