@@ -112,6 +112,12 @@
      :keymaps 'eat-semi-char-mode-map
      "C-c <escape>" #'eat-self-input)
 
+    (general-define-key
+     :keymaps 'eat-semi-char-mode-map
+     ;; paste into eat terminal buffer
+     "C-S-v" #'eat-yank
+     "s-v" #'eat-yank)
+
     (advice-add #'eat :around #'call-command-at-project-root)
 
     (add-to-list 'display-buffer-alist
