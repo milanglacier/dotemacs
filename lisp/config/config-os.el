@@ -32,6 +32,11 @@
      "C-S-c" #'evil-yank
      "C-S-v" #'evil-paste-before))
 
+;; Disable the middle mouse button to prevent accidental clicks.
+(general-define-key
+ :states '(normal motion insert emacs)
+ "<mouse-2>" #'ignore)
+
 (add-hook 'tty-setup-hook #'mg-tty-setup)
 
 (mg-run-hook-once server-after-make-frame-hook mg--server-setup)
