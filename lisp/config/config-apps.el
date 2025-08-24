@@ -105,7 +105,7 @@
 
 ;; aichat (a LLM based chat REPL) integration
 (use-package termint
-    :commands termint-aichat-start termint-ipython-start termint-radian-start
+    :commands termint-aichat-start termint-ipython-start termint-radian-start termint-codex-start
     :init
     (add-to-list 'display-buffer-alist
                  `("\\*aichat\\*"
@@ -125,14 +125,21 @@
         :non-normal-prefix "M-SPC c"
         :prefix-map 'mg-chat-map)
 
+    (general-create-definer mg-codex-map
+        :prefix "SPC z"
+        :non-normal-prefix "M-SPC z"
+        :prefix-map 'mg-codex-map)
+
     (mg-chat-map
         :keymaps 'override
         :states '(normal insert motion visual)
-        "s" #'termint-aichat-start
-        "e" #'termint-aichat-send-string
-        "r" #'termint-aichat-source-region-operator
-        "R" #'termint-aichat-send-region-operator
-        "h" #'termint-aichat-hide-window)
+        "s" #'termint-aichat-start)
+
+    (mg-codex-map
+     :keymaps 'override
+     :states '(normal insert motion visual)
+     "s" #'termint-codex-start)
+
     :config
 
     (setq termint-backend 'eat)
@@ -153,20 +160,21 @@
     (termint-define "codex" "codex" :bracketed-paste-p t
                     :source-syntax "Read the instruction from {{file}}")
 
-    (general-create-definer mg-codex-map
-        :prefix "SPC z"
-        :non-normal-prefix "M-SPC z"
-        :prefix-map 'mg-codex-map)
+    (mg-chat-map
+        :keymaps 'override
+        :states '(normal insert motion visual)
+        "e" #'termint-aichat-send-string
+        "r" #'termint-aichat-source-region-operator
+        "R" #'termint-aichat-send-region-operator
+        "h" #'termint-aichat-hide-window)
 
     (mg-codex-map
      :keymaps 'override
      :states '(normal insert motion visual)
-     "s" #'termint-codex-start
      "r" #'termint-codex-send-region-operator
      "h" #'termint-codex-hide-window
      "e" #'termint-codex-send-string)
     )
-
 
 
 ;; aider (a llm based code assistant) integration
