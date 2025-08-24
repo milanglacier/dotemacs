@@ -115,6 +115,11 @@
                    (side . ,(alist-get 'aichat mg-side-window-sides))
                    (slot . ,(alist-get 'aichat mg-side-window-slots))))
 
+    (add-to-list 'display-buffer-alist
+                 '("\\*codex\\*"
+                   (display-buffer-in-tab)
+                   (tab-name . mg--get-tab-name)))
+
     (general-create-definer mg-chat-map
         :prefix "SPC c"
         :non-normal-prefix "M-SPC c"
@@ -144,7 +149,24 @@
                     :end-pattern '(:single-line "\n" :multi-lines "")
                     :source-syntax termint-R-source-syntax-template
                     :show-source-command-hint t)
+
+    (termint-define "codex" "codex" :bracketed-paste-p t
+                    :source-syntax "Read the instruction from {{file}}")
+
+    (general-create-definer mg-codex-map
+        :prefix "SPC z"
+        :non-normal-prefix "M-SPC z"
+        :prefix-map 'mg-codex-map)
+
+    (mg-codex-map
+     :keymaps 'override
+     :states '(normal insert motion visual)
+     "s" #'termint-codex-start
+     "r" #'termint-codex-send-region-operator
+     "h" #'termint-codex-hide-window
+     "e" #'termint-codex-send-string)
     )
+
 
 
 ;; aider (a llm based code assistant) integration
