@@ -158,7 +158,9 @@
                     :show-source-command-hint t)
 
     (termint-define "codex" "codex" :bracketed-paste-p t
-                    :source-syntax "Read the instruction from {{file}}")
+                    :source-syntax "Read the instruction from {{file}}"
+                    :end-pattern ""
+                    :send-delayed-final-ret t)
 
     (mg-chat-map
         :keymaps 'override
