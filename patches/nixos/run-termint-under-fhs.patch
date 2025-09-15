@@ -1,0 +1,26 @@
+diff --git a/lisp/config/config-apps.el b/lisp/config/config-apps.el
+index 10f141f..73f1f90 100644
+--- a/lisp/config/config-apps.el
++++ b/lisp/config/config-apps.el
+@@ -148,7 +148,7 @@
+                     :source-syntax ".file {{file}}"
+                     :show-source-command-hint t)
+
+-    (termint-define "ipython" "ipython" :bracketed-paste-p t
++    (termint-define "ipython" "fhs ipython" :bracketed-paste-p t
+                     :source-syntax termint-ipython-source-syntax-template
+                     :show-source-command-hint t)
+
+diff --git a/site-lisp/termint-aider.el b/site-lisp/termint-aider.el
+index bf1e456..ade68dc 100644
+--- a/site-lisp/termint-aider.el
++++ b/site-lisp/termint-aider.el
+@@ -166,7 +166,7 @@
+       )
+     "the available command arguments used by aider")
+
+-(defvar termint-aider--cmd "aider" "the command used to start the aider")
++(defvar termint-aider--cmd "fhs aider" "the command used to start the aider")
+ (defvar termint-aider-args "--watch-files" "the arguments used to start the aider")
+
+ (defun termint-aider-full-command ()
