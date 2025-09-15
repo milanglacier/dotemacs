@@ -33,6 +33,7 @@
  ("elisp-refs" . "541a064c3ce27867872cf708354a65d83baf2a6d")
  ("emacs-async" . "ca7f126d41d47b853839c964d248cd258cbfb63b")
  ("emacs-eat" . "c8d54d649872bfe7b2b9f49ae5c2addbf12d3b99")
+ ("emacs-libvterm" . "056ad74653704bc353d8ec8ab52ac75267b7d373")
  ("emacs-reformatter" . "c52e91d5438b9bf16b77b4384822e254f10a6b0a")
  ("emacs-web-server" . "3982c55e9061475038a3ccd61aecb2de3d407cec")
  ("emacs-websocket" . "40c208eaab99999d7c1e4bea883648da24c03be3")
