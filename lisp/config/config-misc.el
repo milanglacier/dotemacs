@@ -11,6 +11,7 @@
              :local-repo "ws-butler"))
 
 (straight-use-package 'rainbow-delimiters)
+(straight-use-package 'vterm)
 (straight-use-package
  '(eat :type git
        :host codeberg
@@ -20,6 +21,8 @@
                ("terminfo/65" "terminfo/65/*")
                ("integration" "integration/*")
                (:exclude ".dir-locals.el" "*-tests.el"))))
+
+(defvar mg-terminal-backend 'eat)
 
 ;; ibuffer
 (straight-use-package 'ibuffer-vc)
@@ -80,7 +83,7 @@
     (add-to-list 'project-switch-commands
                  '(project-dired "Dired at root"))
     (add-to-list 'project-switch-commands
-                 '(eat "eat"))
+                 `(,(if (eq mg-terminal-backend 'eat) #'eat #'vterm) "terminal"))
     (add-to-list 'project-switch-commands
                  '(mg-project-magit "magit"))
 
@@ -88,10 +91,8 @@
 
     (general-define-key
      :keymaps 'project-prefix-map
-     "v" #'eat
-     "m" #'mg-project-magit)
-
-    )
+     "t" (if (eq mg-terminal-backend 'eat) #'eat #'vterm)
+     "m" #'mg-project-magit))
 
 ;; NOTE: If the Eat terminal isn't functioning correctly, this might
 ;; be a terminfo issue. The terminfo database provided with Eat might
@@ -103,7 +104,7 @@
     (mg-open-map
         :keymaps 'override
         :states '(normal insert motion)
-        "t" #'eat)
+        "t" (if (eq mg-terminal-backend 'eat) #'eat #'vterm))
 
     :config
     (setq eat-kill-buffer-on-exit t)
@@ -128,6 +129,32 @@
                    (slot . ,(alist-get 'eat mg-side-window-slots))))
 
     (add-hook 'eat-mode-hook (mg-setq-locally hscroll-margin 0)))
+
+
+(use-package vterm
+    :init
+    (add-hook 'evil-collection-setup-hook #'mg--vterm-override-evil-collection)
+
+    :config
+
+    (advice-add #'vterm :around #'call-command-at-project-root)
+
+    (setq vterm-max-scrollback 5000)
+
+    (add-to-list 'display-buffer-alist
+                 `("\\*vterm\\*"
+                   (display-buffer-in-side-window)
+                   (window-height . 0.4)
+                   (window-width .0.5)
+                   (slot . ,(alist-get 'vterm mg-side-window-slots))))
+
+    (general-define-key
+     :keymaps 'vterm-mode-map
+     "C-c <escape>" #'vterm-send-escape)
+
+    (add-hook 'vterm-mode-hook (mg-setq-locally confirm-kill-processes nil))
+    ;; From doomemacs: Prevent premature horizontal scrolling
+    (add-hook 'vterm-mode-hook (mg-setq-locally hscroll-margin 0)))
 
 (use-package auto-revert
     :init

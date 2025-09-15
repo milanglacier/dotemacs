@@ -142,7 +142,7 @@
 
     :config
 
-    (setq termint-backend 'eat)
+    (setq termint-backend mg-terminal-backend)
 
     (termint-define "aichat" "aichat -s" :bracketed-paste-p t
                     :source-syntax ".file {{file}}"
