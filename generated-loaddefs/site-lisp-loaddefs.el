@@ -16,6 +16,17 @@ Read a tag from minibuffer and jump to the tag.
 (register-definition-prefixes "../site-lisp/consult-citre" '("consult-citre-"))
 
 
+;;; Generated autoloads from ../site-lisp/dashverse.el
+
+(autoload 'startverse-emacs-startup-time "../site-lisp/dashverse" "\
+Measure the startup time until the welcome screen is displayed.
+More accurate than `emacs-init-time'." t)
+(autoload 'startverse--welcome-screen-mode "../site-lisp/dashverse")
+(autoload 'startverse-refresh-verses "../site-lisp/dashverse" "\
+Refresh verses in the scratch buffer." t)
+(register-definition-prefixes "../site-lisp/dashverse" '("startverse-"))
+
+
 ;;; Generated autoloads from ../site-lisp/edit-inline-string.el
 
 (autoload 'edit-inline-string "../site-lisp/edit-inline-string" "\

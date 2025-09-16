@@ -377,9 +377,6 @@ is called.
 Set the default font to a smaller sized font for current buffer.")
 (autoload 'mg--font-set-small-variable-font "../lisp/lib/lib-ui" "\
 Set the default font to a smaller sized font for current buffer.")
-(autoload 'mg--welcome-screen-mode "../lisp/lib/lib-ui")
-(autoload 'mg-refresh-verses "../lisp/lib/lib-ui" "\
-refresh verses in the scratch buffer" t)
 (register-definition-prefixes "../lisp/lib/lib-ui" '("mg-"))
 
 
