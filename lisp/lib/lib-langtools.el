@@ -58,6 +58,16 @@ to next xref location."
              (with-current-buffer "*xref*"
                  (funcall #',func)))))
 
+;;;###autoload
+(defun mg-override-citre-bounds-of-sym-or-op-at-point ()
+    "Override the `citre-bounds-of-sym-or-op-at-point'. The reason is that:
+1. Fix the out of bound error addressed in https://github.com/universal-ctags/citre/pull/191.
+
+2. We don't really need to check whether the point is an operator, and
+the frequent `save-excursion' in `citre-bounds-of-sym-or-op-at-point'
+will impact the auto-completion performance."
+    (bounds-of-thing-at-point 'symbol))
+
 ;; TODO: Utilize the contextual information from previous code blocks
 ;; PLAN:
 ;; 1. Get the contents of previous code blocks

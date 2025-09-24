@@ -254,6 +254,13 @@ window. This macro creates funcs that allow you to move current window
 to next xref location.
 
 (fn FUNC)" nil t)
+(autoload 'mg-override-citre-bounds-of-sym-or-op-at-point "../lisp/lib/lib-langtools" "\
+Override the `citre-bounds-of-sym-or-op-at-point'. The reason is that:
+1. Fix the out of bound error addressed in https://github.com/universal-ctags/citre/pull/191.
+
+2. We don't really need to check whether the point is an operator, and
+the frequent `save-excursion' in `citre-bounds-of-sym-or-op-at-point'
+will impact the auto-completion performance.")
 (autoload 'mg-markdown-src-lsp-setup "../lisp/lib/lib-langtools" "\
 eglot requires the buffer to be a file to be able to attach to
 the lsp. Thus the indirect buffer created by `edit-indirect' needs to

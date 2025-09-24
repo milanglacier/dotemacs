@@ -24,6 +24,7 @@
     (add-hook 'markdown-mode-hook (mg-setq-locally citre-enable-imenu-integration nil))
 
     :config
+    (defalias #'citre-bounds-of-sym-or-op-at-point #'mg-override-citre-bounds-of-sym-or-op-at-point)
 
     (general-define-key
      :keymaps 'citre-mode-map
