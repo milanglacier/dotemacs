@@ -28,6 +28,8 @@
           company-dabbrev-code-ignore-case t
           ;; provide dabbrev completion inside comments and strings
           company-dabbrev-code-everywhere t
+          ;; respect `completion-styles' for dabbrev completion
+          company-dabbrev-code-completion-styles t
           company-dabbrev-downcase nil
           company-selection-wrap-around t
           completion-ignore-case t)
