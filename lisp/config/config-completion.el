@@ -22,8 +22,8 @@
                               company-echo-metadata-frontend)
           company-backends '((company-files company-yasnippet company-capf :separate company-dabbrev-code))
           company-auto-commit nil
-          company-dabbrev-other-buffers nil
-          company-dabbrev-code-other-buffers nil
+          company-dabbrev-other-buffers t
+          company-dabbrev-code-other-buffers t
           company-dabbrev-ignore-case t
           company-dabbrev-code-ignore-case t
           ;; provide dabbrev completion inside comments and strings
