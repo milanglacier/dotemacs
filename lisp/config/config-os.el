@@ -5,6 +5,9 @@
 (straight-use-package 'clipetty)
 (straight-use-package 'evil-terminal-cursor-changer)
 
+(when IS-LINUX
+    (setq x-alt-keysym 'meta))
+
 (when IS-MAC
     ;; Use spotlight search backend as a default for M-x locate (and helm/ivy
     ;; variants thereof), since it requires no additional setup.
