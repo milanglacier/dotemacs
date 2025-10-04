@@ -106,7 +106,7 @@
  ("sql-indent" . "0e93fb4878aa3788084ce44b8e8ec8919af708a4")
  ("straight.el" . "0ad6fd8f37bd918c72989df18c76a68649f0a372")
  ("tablist" . "fcd37147121fabdf003a70279cf86fbe08cfac6f")
- ("termint.el" . "7064689e6fdcdee1821a50b9dbf1aa09caf8b8ba")
+ ("termint.el" . "7f908bfe9bbaeb624b44285bebff6b52e0ccebcc")
  ("themes" . "376cf4bdd7d296a3da94aa9a6c68761e7c38a252")
  ("transient" . "c9aa876b4cc679b19c736acc5951f6e640bcbbf2")
  ("vertico" . "4a11453e9de3d92b566bf0aa032da96b5b2e6770")
