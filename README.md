@@ -1,4 +1,4 @@
-If you\'re currently reading this README file in Markdown format, it has
+If you're currently reading this README file in Markdown format, it has
 been generated through `org-export`, from its original org format. For
 the best experience, please consider reading the org format file
 instead.
@@ -30,25 +30,25 @@ well-configured.
 
 ## Feature rich
 
-A blazing fast startup speed doesn\'t mean it is a lite and minimal
-configuration. Instead, it is \"heavy\" and feature rich, including:
+A blazing fast startup speed doesn't mean it is a lite and minimal
+configuration. Instead, it is "heavy" and feature rich, including:
 
--   A modern minibuffer completion experience powered by
-    `vertico+consult+orderless+embark+marginalia` family bucket.
+- A modern minibuffer completion experience powered by
+  `vertico+consult+orderless+embark+marginalia` family bucket.
 
--   Modal editing ecosystem everywhere, powered by `evil` and many other
-    extensions.
+- Modal editing ecosystem everywhere, powered by `evil` and many other
+  extensions.
 
--   A keybinding scheme centered around leader and localleader keys,
-    powered by `general` and `which-key`.
+- A keybinding scheme centered around leader and localleader keys,
+  powered by `general` and `which-key`.
 
--   In-buffer autocompletion frontend based on `company`
+- In-buffer autocompletion frontend based on `company`
 
--   Code completion and navigation based on `eglot` (LSP) and `citre`
-    (Ctags).
+- Code completion and navigation based on `eglot` (LSP) and `citre`
+  (Ctags).
 
--   Integration with `eglot` and `org-babel` or `markdown-mode` that
-    takes literate programming to the next level.
+- Integration with `eglot` and `org-babel` or `markdown-mode` that takes
+  literate programming to the next level.
 
 ## Be wild
 
@@ -120,33 +120,41 @@ in the current directory.
 
 # Prerequisites
 
--   This configuration is designed for Emacs 29 or newer versions.
--   Your Emacs must be built with Treesitter support for this
-    configuration to work effectively. If you are using a widely used
-    package manager, and said manager has updated Emacs to version 29 or
-    later, it\'s highly probable that Treesitter is already built into
-    the Emacs version provided via the package manager. We advise
-    verifying the package specifications for exact details if you choose
-    to leverage a package manager-built Emacs.
--   A separate installation is required for Treesitter grammar. You can
-    execute the command `M-x mg-treesit-install-all-language-grammar` to
-    install all the language grammars that are currently in use.
+- This configuration is designed for Emacs 29 or newer versions.
+- Your Emacs must be built with Treesitter support for this
+  configuration to work effectively. If you are using a widely used
+  package manager, and said manager has updated Emacs to version 29 or
+  later, it's highly probable that Treesitter is already built into the
+  Emacs version provided via the package manager. We advise verifying
+  the package specifications for exact details if you choose to leverage
+  a package manager-built Emacs.
+- A separate installation is required for Treesitter grammar. You can
+  execute the command `M-x mg-treesit-install-all-language-grammar` to
+  install all the language grammars that are currently in use.
 
 # External Dependencies
 
 This configuration requires the following core dependencies:
 
--   A C compiler for building the treesitter grammar
--   universal-ctags
--   ripgrep
+- A C compiler for building the treesitter grammar
+- universal-ctags
+- ripgrep
 
 There are also additional language-specific dependencies only required
 when working with specific languages. These typically include language
 servers, formatters, and linters. For instance, you would need
 `basedpyright`, `debugpy`, `black`, and `ipython` for python.
 
+# Nix Users
+
+When updating packages with `straight` (for example via `M-x
+straight-pull-all`), run `nix run .#build` afterwards to rebuild any
+packages that ship dynamic modules. `straight` may clear the build
+directory during updates, which can remove previously built module
+artifacts; rebuilding ensures those modules are available again.
+
 # Discussion
 
--   It is recommended to use the mailing list
-    `~northyear/.emacs.d-devel@lists.sr.ht`.
--   Alternatively, you are also welcome to open a Github issue.
+- It is recommended to use the mailing list
+  `~northyear/.emacs.d-devel@lists.sr.ht`.
+- Alternatively, you are also welcome to open a Github issue.

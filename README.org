@@ -139,6 +139,14 @@ when working with specific languages. These typically include language
 servers, formatters, and linters. For instance, you would need
 ~basedpyright~, ~debugpy~, ~black~, and ~ipython~ for python.
 
+* Nix Users
+
+When updating packages with ~straight~ (for example via ~M-x
+straight-pull-all~), run ~nix run .#build~ afterwards to rebuild any
+packages that ship dynamic modules.  ~straight~ may clear the build
+directory during updates, which can remove previously built module
+artifacts; rebuilding ensures those modules are available again.
+
 * Discussion
 
 - It is recommended to use the mailing list ~~northyear/.emacs.d-devel@lists.sr.ht~.
