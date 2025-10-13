@@ -60,11 +60,35 @@
             '';
           };
 
+          buildPdfTools = pkgs.writeShellApplication {
+            name = "milanglacier-build-pdftools";
+            runtimeInputs = [ ];
+            text = ''
+              set -euo pipefail
+
+              # Ensure we are in the repo root; nix runs from CWD.
+              if ! cd straight/build/pdf-tools/build; then
+              echo "Error: directory straight/build/pdf-tools/build not found relative to current directory." >&2
+              exit 1
+              fi
+
+              # Check if ./server/autobuild is executable
+              if [ ! -x "./server/autobuild" ]; then
+                echo "Error: ./server/autobuild is not executable." >&2
+                exit 1
+              fi
+
+              # Run autobuild
+              ./server/autobuild -i "$(cd .. && pwd)" --os nixos
+            '';
+          };
+
           build = pkgs.writeShellApplication {
             name = "milanglacier-build-all";
             text = ''
               set -euo pipefail
               "${buildVterm}/bin/milanglacier-build-vterm" "$@"
+              "${buildPdfTools}/bin/milanglacier-build-pdftools" "$@"
             '';
           };
         in
@@ -72,6 +96,11 @@
           build-vterm = {
             type = "app";
             program = "${buildVterm}/bin/milanglacier-build-vterm";
+          };
+
+          build-pdftools = {
+            type = "app";
+            program = "${buildPdfTools}/bin/milanglacier-build-pdftools";
           };
 
           build = {
