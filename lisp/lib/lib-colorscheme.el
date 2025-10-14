@@ -17,8 +17,8 @@
         (setq mg-selected-theme theme)
         (load-theme theme t)))
 
-(defvar mg-day-to-night-o-clock 23 "The time to switch from day to night themes")
-(defvar mg-night-to-day-o-clock 7 "The time to switch from night to day themes")
+(defvar mg-day-to-night-o-clock 19 "The time to switch from day to night themes")
+(defvar mg-night-to-day-o-clock 8 "The time to switch from night to day themes")
 
 (defun mg--calculate-time-to-switch-theme (transit-direction)
     "Calculate the time remaining until the next theme switch, based
