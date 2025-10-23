@@ -32,17 +32,26 @@
             [
               cmake
               libtool
+              # We use the `libvterm-neovim` fork because the upstream
+              # `libvterm` hardcodes certain GNU programs with a "g" prefix.
+              # This assumes a Homebrew-style packaging convention and is not
+              # suitable for nix.
               libvterm-neovim
               gnumake
             ]
             ++ lib.optional stdenv.isLinux gcc
             ++ lib.optional stdenv.isDarwin clang;
+          cc = if pkgs.stdenv.isLinux then pkgs.gcc else pkgs.clang;
 
           buildVterm = pkgs.writeShellApplication {
             name = "milanglacier-build-vterm";
             inherit runtimeInputs;
             text = ''
-              set -euo pipefail
+              export CC="${cc}/bin/cc"
+
+              export CMAKE_PREFIX_PATH="$${CMAKE_PREFIX_PATH:-${pkgs.cmake}}"
+
+              export CMAKE_PREFIX_PATH="${pkgs.libvterm-neovim}:$CMAKE_PREFIX_PATH"
 
               # Ensure we are in the repo root; nix runs from CWD.
               if ! cd straight/build/vterm; then
