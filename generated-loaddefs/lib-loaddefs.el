@@ -14,8 +14,8 @@ open local file (html) using xwidget,
 prefix with C-u to open the url with a new xwidget session
 
 (fn URL NEW-SESSION)" t)
- (autoload #'mg-google-search-eww "lib-apps" nil t)
- (autoload #'mg-google-search-xwidget "lib-apps" nil t)
+ (autoload #'mg-web-search-eww "lib-apps" nil t)
+ (autoload #'mg-web-search-xwidget "lib-apps" nil t)
 (defvar mg-refresh-xwidget-after-eval-python-mode nil "\
 Non-nil if Mg-Refresh-Xwidget-After-Eval-Python mode is enabled.
 See the `mg-refresh-xwidget-after-eval-python-mode' command

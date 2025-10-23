@@ -8,8 +8,8 @@
 
 (use-package eww
     :init
-    ;; use google as default engine to search keyword.
-    (setq eww-search-prefix "http://www.google.com/search?q=")
+    ;; use DuckDuckGo as default engine to search keyword.
+    (setq eww-search-prefix "https://duckduckgo.com/?q=")
 
     :config
     (mg-localleader
@@ -17,7 +17,7 @@
         :keymaps 'eww-mode-map
         "y" #'eww-copy-page-url
         ;; get the url of current visiting page
-        "g" #'mg-google-search-eww))
+        "g" #'mg-web-search-eww))
 
 (use-package xwidget
     :init
@@ -59,8 +59,8 @@
     (mg-localleader
         :keymaps 'elfeed-show-mode-map
         :states '(normal motion visual)
-        "g" #'mg-google-search-eww
-        "G" #'mg-google-search-xwidget)
+        "g" #'mg-web-search-eww
+        "G" #'mg-web-search-xwidget)
 
 
     ;; `elfeed-kill-buffer' only kills the buffer, but won't delete

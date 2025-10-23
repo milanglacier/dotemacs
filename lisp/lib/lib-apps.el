@@ -9,14 +9,14 @@ prefix with C-u to open the url with a new xwidget session"
                       (expand-file-name url)))
     (xwidget-webkit-browse-url url new-session))
 
-(defun mg-google-search-wrapper (browser-func)
-    "search goole keywords with browser specified by `browser-func'"
+(defun mg-web-search-wrapper (browser-func)
+    "Search DuckDuckGo keywords with browser specified by `browser-func'."
     (lambda (keyword &optional new-session)
         (interactive
          ;; copied and adapted from `browse-url-interactive-arg'
          (list
           (read-string
-           "google search: "
+           "DuckDuckGo search: "
            ;; short circuiting
            ;; or/and returns the value itself (not t and nil)
            (or (and transient-mark-mode mark-active
@@ -25,23 +25,21 @@ prefix with C-u to open the url with a new xwidget session"
                      (buffer-substring-no-properties
                       (region-beginning) (region-end))))
                (current-word)))))
-        ;; referenced from
-        ;; URL `https://github.com/manateelazycat/blink-search/blob/master/backend/search_google_suggest.py'
         ;; space is illegal in an url
         (let* ((keyword (replace-regexp-in-string " " "%20" keyword))
                ;; url is expected to not have Chinese. Should properly encode it.
-               (url (url-encode-url (concat "http://www.google.com/search?q=" keyword))))
+               (url (url-encode-url (concat "https://duckduckgo.com/?q=" keyword))))
             (funcall browser-func url new-session))))
 
-;;;###autoload (autoload #'mg-google-search-eww "lib-apps" nil t)
-(defalias #'mg-google-search-eww (mg-google-search-wrapper #'eww)
-    "Search google keywords by `eww'.
+;;;###autoload (autoload #'mg-web-search-eww "lib-apps" nil t)
+(defalias #'mg-web-search-eww (mg-web-search-wrapper #'eww)
+    "Search DuckDuckGo keywords by `eww'.
 If region is active, use the region as keyword of initial input, otherwise use `current-word'.")
 
-;;;###autoload (autoload #'mg-google-search-xwidget "lib-apps" nil t)
-(defalias #'mg-google-search-xwidget
-    (mg-google-search-wrapper #'xwidget-webkit-browse-url)
-    "Search google keywords by `xwidget-webkit-browse-url'.
+;;;###autoload (autoload #'mg-web-search-xwidget "lib-apps" nil t)
+(defalias #'mg-web-search-xwidget
+    (mg-web-search-wrapper #'xwidget-webkit-browse-url)
+    "Search DuckDuckGo keywords by `xwidget-webkit-browse-url'.
 If region is active, use the region as keyword of initial input, otherwise use `current-word'.")
 
 (defun mg-refresh-xwidget-after-eval-python (&rest _)
