@@ -22,7 +22,7 @@
         );
     in
     {
-      devShells = forAllSystems (
+      apps = forAllSystems (
         system:
         let
           pkgs = import nixpkgs { inherit system; };
@@ -91,49 +91,21 @@
               "${buildPdfTools}/bin/milanglacier-build-pdftools" "$@"
             '';
           };
-
-          interactiveShell = pkgs.mkShell {
-            name = "milanglacier-emacs-build";
-            packages = runtimeInputs ++ [
-              buildVterm
-              buildPdfTools
-              build
-            ];
-            shellHook = ''
-              echo "Available commands:"
-              echo "  milanglacier-build-vterm"
-              echo "  milanglacier-build-pdftools"
-              echo "  milanglacier-build-all"
-            '';
-          };
-
-          mkRunShell =
-            { commandName, script }:
-            let
-              command = "${script}/bin/${commandName}";
-            in
-            pkgs.mkShell {
-              name = "milanglacier-emacs-${commandName}";
-              shellHook = ''
-                set -euo pipefail
-                ${command}
-                exit $?
-              '';
-            };
         in
         {
-          default = interactiveShell;
-          build = mkRunShell {
-            commandName = "milanglacier-build-all";
-            script = build;
+          build-vterm = {
+            type = "app";
+            program = "${buildVterm}/bin/milanglacier-build-vterm";
           };
-          "build-vterm" = mkRunShell {
-            commandName = "milanglacier-build-vterm";
-            script = buildVterm;
+
+          build-pdftools = {
+            type = "app";
+            program = "${buildPdfTools}/bin/milanglacier-build-pdftools";
           };
-          "build-pdftools" = mkRunShell {
-            commandName = "milanglacier-build-pdftools";
-            script = buildPdfTools;
+
+          build = {
+            type = "app";
+            program = "${build}/bin/milanglacier-build-all";
           };
         }
       );
