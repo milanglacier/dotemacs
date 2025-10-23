@@ -136,9 +136,9 @@
         "s" #'termint-aichat-start)
 
     (mg-codex-map
-     :keymaps 'override
-     :states '(normal insert motion visual)
-     "s" #'termint-codex-start)
+        :keymaps 'override
+        :states '(normal insert motion visual)
+        "s" #'termint-codex-start)
 
     :config
 
@@ -171,11 +171,11 @@
         "h" #'termint-aichat-hide-window)
 
     (mg-codex-map
-     :keymaps 'override
-     :states '(normal insert motion visual)
-     "r" #'termint-codex-send-region-operator
-     "h" #'termint-codex-hide-window
-     "e" #'termint-codex-send-string)
+        :keymaps 'override
+        :states '(normal insert motion visual)
+        "r" #'termint-codex-send-region-operator
+        "h" #'termint-codex-hide-window
+        "e" #'termint-codex-send-string)
     )
 
 
