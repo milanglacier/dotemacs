@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: multiline string single quote
+# key: mss
+# --
+'''
+$0
+'''
