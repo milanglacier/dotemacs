@@ -31,7 +31,12 @@
 
 (use-package evil-escape
     :init
-    (setq evil-escape-key-sequence "jk"))
+    (setq evil-escape-key-sequence "jk")
+    :config
+    ;; Disable evil-escape in Magit buffers, where the `jk` key
+    ;; sequence is often used for scrolling and can trigger an
+    ;; unintended exit.
+    (add-hook 'magit-mode-hook (mg-setq-locally evil-escape-inhibit t)))
 
 (use-package evil-embrace
     :commands (embrace-add-pair embrace-add-pair-regexp)
