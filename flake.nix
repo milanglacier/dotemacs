@@ -22,7 +22,7 @@
         );
     in
     {
-      apps = forAllSystems (
+      packages = forAllSystems (
         system:
         let
           pkgs = import nixpkgs { inherit system; };
@@ -39,8 +39,8 @@
               libvterm-neovim
               gnumake
             ]
-            ++ lib.optional stdenv.isLinux gcc
-            ++ lib.optional stdenv.isDarwin clang;
+            ++ lib.optional pkgs.stdenv.isLinux pkgs.gcc
+            ++ lib.optional pkgs.stdenv.isDarwin pkgs.clang;
           cc = if pkgs.stdenv.isLinux then pkgs.gcc else pkgs.clang;
 
           buildVterm = pkgs.writeShellApplication {
@@ -48,22 +48,14 @@
             inherit runtimeInputs;
             text = ''
               export CC="${cc}/bin/cc"
-
               export CMAKE_PREFIX_PATH="$${CMAKE_PREFIX_PATH:-${pkgs.cmake}}"
-
               export CMAKE_PREFIX_PATH="${pkgs.libvterm-neovim}:$CMAKE_PREFIX_PATH"
-
-              # Ensure we are in the repo root; nix runs from CWD.
               if ! cd straight/build/vterm; then
-              echo "Error: directory straight/builds/vterm not found relative to current directory." >&2
-              exit 1
+                echo "Error: directory straight/builds/vterm not found relative to current directory." >&2
+                exit 1
               fi
-
-              # Create build directory (portable via CMake helper)
               cmake -E make_directory build
               cd build
-
-              # Configure and build
               cmake ..
               make
             '';
@@ -74,20 +66,14 @@
             runtimeInputs = [ ];
             text = ''
               set -euo pipefail
-
-              # Ensure we are in the repo root; nix runs from CWD.
               if ! cd straight/build/pdf-tools/build; then
-              echo "Error: directory straight/build/pdf-tools/build not found relative to current directory." >&2
-              exit 1
+                echo "Error: directory straight/build/pdf-tools/build not found relative to current directory." >&2
+                exit 1
               fi
-
-              # Check if ./server/autobuild is executable
               if [ ! -x "./server/autobuild" ]; then
                 echo "Error: ./server/autobuild is not executable." >&2
                 exit 1
               fi
-
-              # Run autobuild
               ./server/autobuild -i "$(cd .. && pwd)" --os nixos
             '';
           };
@@ -102,20 +88,10 @@
           };
         in
         {
-          build-vterm = {
-            type = "app";
-            program = "${buildVterm}/bin/milanglacier-build-vterm";
-          };
-
-          build-pdftools = {
-            type = "app";
-            program = "${buildPdfTools}/bin/milanglacier-build-pdftools";
-          };
-
-          build = {
-            type = "app";
-            program = "${build}/bin/milanglacier-build-all";
-          };
+          build = build;
+          build-vterm = buildVterm;
+          build-pdftools = buildPdfTools;
+          default = build;
         }
       );
     };
