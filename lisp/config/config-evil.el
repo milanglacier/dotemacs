@@ -100,7 +100,7 @@
 (use-package evil-collection
     :init
     (setq evil-collection-mode-list
-          '(arc-mode bm bookmark consult comint compile eldoc daemons
+          '(arc-mode bm bookmark consult comint compile eldoc ediff daemons
                      debug diff-hl diff-mode dired dired-sidebar
                      docker doc-view eat elisp-refs embark eldoc eshell
                      eww elfeed flymake grep help helpful ibuffer
