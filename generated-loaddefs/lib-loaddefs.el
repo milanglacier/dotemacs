@@ -355,6 +355,19 @@ circumvents that by first verifying the availability of a kernelspec.
 Skip loading If none is found.
 
 (fn ORIG-FN &rest ARGS)")
+(autoload 'mg-set-next-org-todo-time "../lisp/lib/lib-org" "\
+Set the timestamp for the next `org-todo' invocation.  Normally,
+`org-todo' uses the current time to log state changes.  When this
+function is activated, the subsequent `org-todo' call will use the
+provided timestamp instead.
+
+This mechanism works by advising `org-todo' to temporarily shadow
+`org-current-effective-time', `org-today', and `org-timestamp-to-now'
+via `cl-letf' so that any time-based calculations for that invocation
+are relative to the provided timestamp. The advice automatically
+removes itself after execution.
+
+(fn TIME-STRING)" t)
 (register-definition-prefixes "../lisp/lib/lib-org" '("mg-toggle-org-settings-wrapper"))
 
 

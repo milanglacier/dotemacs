@@ -161,5 +161,45 @@ Skip loading If none is found."
     (when (executable-find (symbol-value 'jupyter-executable))
         (apply orig-fn args)))
 
+;;;###autoload
+(defun mg-set-next-org-todo-time (time-string)
+    "Set the timestamp for the next `org-todo' invocation.  Normally,
+`org-todo' uses the current time to log state changes.  When this
+function is activated, the subsequent `org-todo' call will use the
+provided timestamp instead.
+
+This mechanism works by advising `org-todo' to temporarily shadow
+`org-current-effective-time', `org-today', and `org-timestamp-to-now'
+via `cl-letf' so that any time-based calculations for that invocation
+are relative to the provided timestamp. The advice automatically
+removes itself after execution."
+    (interactive
+     (list (org-read-date nil nil nil "Time for next org-todo: ")))
+    (let* ((time (cond
+                  ((stringp time-string)
+                   (org-time-string-to-time time-string))
+                  ((and (consp time-string)
+                        (numberp (car time-string)))
+                   time-string)
+                  (t
+                   (current-time))))
+           (advice
+            (lambda (orig-fn &rest args)
+                (cl-letf (((symbol-function 'org-current-effective-time)
+                           (lambda (&optional _ignored) time))
+                          ((symbol-function 'org-today)
+                           (lambda ()
+                               (time-to-days time)))
+                          ((symbol-function 'org-timestamp-to-now)
+                           (lambda (timestamp-string &optional seconds)
+                               (let ((fdiff (if seconds #'float-time #'time-to-days)))
+                                   (- (funcall fdiff (org-time-string-to-time timestamp-string))
+                                      (funcall fdiff time))))))
+                    (unwind-protect
+                            (apply orig-fn args)
+                        (advice-remove 'org-todo 'override-todo-timestamp-once))))))
+        (advice-add 'org-todo :around advice
+                    '((name . override-todo-timestamp-once)))))
+
 (provide 'lib-org)
 ;;; lib-org.el ends here
