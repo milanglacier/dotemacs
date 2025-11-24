@@ -17,7 +17,7 @@
 ;; 2. A list of customizable, quick-access actions in the middle.
 ;; 3. Another randomly selected verse at the bottom.
 ;;
-;; To use, simply activate `startverse--welcome-screen-mode' in your
+;; To use, simply activate `dashverse--welcome-screen-mode' in your
 ;; init file.
 
 ;;; Code:
@@ -26,7 +26,7 @@
 (require 'subr-x)
 (require 'general)
 
-(defvar startverse-header-verses
+(defvar dashverse-header-verses
     '(("Bright star, would I were steadfast as thee art!"
        " John Keats")
       ("For clattering parrots to launch their fleet at sunrise"
@@ -48,7 +48,7 @@
        " 《云中君》"))
     "The verses displayed on the top of `initial-scratch-message'.")
 
-(defvar startverse-foot-verses
+(defvar dashverse-foot-verses
     '(("Whispers antiphonal in the azure swing..."
        " Hart Crane")
       ("In the drumming world that dampens your tired eyes"
@@ -70,31 +70,31 @@
        " 《山鬼》"))
     "The verses displayed on the bottom of `initial-scratch-message'.")
 
-(defvar startverse-actions
+(defvar dashverse-actions
     '((" New [T]heme      " . load-theme)
-      (" New [V]erse      " . startverse-refresh-verses)
-      (" [S]tartup Time   " . startverse-emacs-startup-time)
+      (" New [V]erse      " . dashverse-refresh-verses)
+      (" [S]tartup Time   " . dashverse-emacs-startup-time)
       (" Org [A]genda     " . org-agenda-list)
       (" Recent [F]iles   " . consult-recent-file)
       (" Recent [P]rojects" . project-switch-project))
     "The actions to be displayed on the welcome screen.")
 
-(defvar startverse--welcome-screen-setup-time nil
+(defvar dashverse--welcome-screen-setup-time nil
     "Timestamp recorded after the welcome buffer finishes rendering.")
 
-(defun startverse--empty-lines-between-sections ()
+(defun dashverse--empty-lines-between-sections ()
     (let ((height (window-height)))
         (cond ((< height 40) 3)
               ((< height 50) 8)
               (t 10))))
 
-(defun startverse--top-lines-padding (content-length)
+(defun dashverse--top-lines-padding (content-length)
     (let* ((height (window-height))
            (paddings (ceiling (* (- height content-length) 0.5)))
            (paddings (max 0 paddings)))
         (make-string paddings ?\n)))
 
-(defun startverse--right-margin-when-centering-margin ()
+(defun dashverse--right-margin-when-centering-margin ()
     "The absolute symmetry is in fact less aesthetically pleasing than
 a slight leftward skew."
     (let ((width (window-width)))
@@ -103,17 +103,17 @@ a slight leftward skew."
               (t (- width 15)))))
 
 ;;;###autoload
-(defun startverse-emacs-startup-time ()
+(defun dashverse-emacs-startup-time ()
     "Measure the startup time until the welcome screen is displayed.
 More accurate than `emacs-init-time'."
     (interactive)
     (message (format "%f seconds"
-                     (max (float-time (time-subtract startverse--welcome-screen-setup-time before-init-time))
+                     (max (float-time (time-subtract dashverse--welcome-screen-setup-time before-init-time))
                           (float-time (time-subtract after-init-time before-init-time))))))
 
-(defun startverse--welcome-screen-set-keymap ()
-    (let* ((action-strings (mapcar #'car startverse-actions))
-           (actions (mapcar #'cdr startverse-actions))
+(defun dashverse--welcome-screen-set-keymap ()
+    (let* ((action-strings (mapcar #'car dashverse-actions))
+           (actions (mapcar #'cdr dashverse-actions))
            (keys (mapcar (lambda (x)
                              (when-let* ((pos (string-search "[" x)))
                                  (substring x (1+ pos) (+ 2 pos))))
@@ -125,33 +125,33 @@ More accurate than `emacs-init-time'."
                      append `(,(downcase key) ,action))))
         (apply #'general-define-key :keymaps 'local :states '(normal emacs) keymaps)))
 
-(defface startverse-verses
+(defface dashverse-verses
     '((((background light)) :foreground "#ed80b5" :slant italic)
       (((background dark)) :foreground "#a070b5" :slant italic))
     "Faces used for welcome screen verses.")
 
-(defface startverse-verse-quotes
+(defface dashverse-verse-quotes
     '((((background light)) :foreground "#e8ae92")
       (((background dark)) :foreground "#ad7f2a"))
     "Faces used for the quotations on the welcome screen.")
 
-(defface startverse-welcome-screen-action
+(defface dashverse-welcome-screen-action
     '((((background light)) :foreground "#0398fc")
       (((background dark)) :foreground "#73915e"))
     "Faces used for the welcome screen actions.")
 
-(defface startverse-welcome-screen-action-key
+(defface dashverse-welcome-screen-action-key
     '((((background light)) :foreground "#6b82e2")
       (((background dark)) :foreground "#cfe8a3"))
     "Faces applied to the action key hints on the welcome screen.")
 
-(defun startverse--generate-initial-messages ()
-    (let* ((head-verse (nth (random (length startverse-header-verses))
-                            startverse-header-verses))
-           (foot-verse (nth (random (length startverse-foot-verses))
-                            startverse-foot-verses))
-           (action-strings (mapcar #'car startverse-actions))
-           (n-lines-between-section (startverse--empty-lines-between-sections))
+(defun dashverse--generate-initial-messages ()
+    (let* ((head-verse (nth (random (length dashverse-header-verses))
+                            dashverse-header-verses))
+           (foot-verse (nth (random (length dashverse-foot-verses))
+                            dashverse-foot-verses))
+           (action-strings (mapcar #'car dashverse-actions))
+           (n-lines-between-section (dashverse--empty-lines-between-sections))
            ;; Require one additional \n inserted at the end of other sections.
            (lines-between-sections
             (make-string (1+ n-lines-between-section) ?\n))
@@ -159,10 +159,10 @@ More accurate than `emacs-init-time'."
                               (length foot-verse)
                               (length action-strings)
                               (* 2 n-lines-between-section)))
-           (top-paddings (startverse--top-lines-padding content-length)))
-        (setq head-verse (mapconcat #'startverse--center-a-line head-verse "\n"))
-        (setq action-strings (mapconcat #'startverse--center-a-line action-strings "\n"))
-        (setq foot-verse (mapconcat #'startverse--center-a-line foot-verse "\n"))
+           (top-paddings (dashverse--top-lines-padding content-length)))
+        (setq head-verse (mapconcat #'dashverse--center-a-line head-verse "\n"))
+        (setq action-strings (mapconcat #'dashverse--center-a-line action-strings "\n"))
+        (setq foot-verse (mapconcat #'dashverse--center-a-line foot-verse "\n"))
         (concat top-paddings
                 head-verse
                 lines-between-sections
@@ -170,46 +170,46 @@ More accurate than `emacs-init-time'."
                 lines-between-sections
                 foot-verse)))
 
-(defun startverse--center-a-line (x)
+(defun dashverse--center-a-line (x)
     "Center one line of verse or action string."
     (let ((spaces-to-be-inserted
-           (/ (- (startverse--right-margin-when-centering-margin) (string-width x))
+           (/ (- (dashverse--right-margin-when-centering-margin) (string-width x))
               2)))
         (concat (make-string spaces-to-be-inserted ?\ )
                 x)))
 
-(defun startverse--verses-add-font-lock ()
+(defun dashverse--verses-add-font-lock ()
     (font-lock-add-keywords
      nil
-     '(("^ *\\([^\"]+\\)$" 1 'startverse-verses)
-       ("^ *\\(.+\\)$" 1 'startverse-verse-quotes)
-       ("^ *\\(.+\\)\\[" 1 'startverse-welcome-screen-action)
-       ("\\(\\[.*\\]\\)" 1 'startverse-welcome-screen-action-key)
-       ("\\]\\(.*\\)$" 1 'startverse-welcome-screen-action))))
+     '(("^ *\\([^\"]+\\)$" 1 'dashverse-verses)
+       ("^ *\\(.+\\)$" 1 'dashverse-verse-quotes)
+       ("^ *\\(.+\\)\\[" 1 'dashverse-welcome-screen-action)
+       ("\\(\\[.*\\]\\)" 1 'dashverse-welcome-screen-action-key)
+       ("\\]\\(.*\\)$" 1 'dashverse-welcome-screen-action))))
 
 ;;;###autoload
-(defun startverse--welcome-screen-mode ()
+(defun dashverse--welcome-screen-mode ()
     (setq initial-scratch-message nil)
-    (add-hook 'emacs-startup-hook #'startverse--set-welcome-screen-buffer)
+    (add-hook 'emacs-startup-hook #'dashverse--set-welcome-screen-buffer)
     ;; When running emacs in server mode, cannot get the window
     ;; height/width at startup.
-    (add-hook 'server-after-make-frame-hook #'startverse-refresh-verses))
+    (add-hook 'server-after-make-frame-hook #'dashverse-refresh-verses))
 
-(defun startverse--set-welcome-screen-buffer ()
+(defun dashverse--set-welcome-screen-buffer ()
     (with-current-buffer "*scratch*"
-        (insert (startverse--generate-initial-messages))
-        (startverse--verses-add-font-lock)
+        (insert (dashverse--generate-initial-messages))
+        (dashverse--verses-add-font-lock)
         (setq-local mode-line-format nil)
-        (startverse--welcome-screen-set-keymap))
-    (setq startverse--welcome-screen-setup-time (current-time)))
+        (dashverse--welcome-screen-set-keymap))
+    (setq dashverse--welcome-screen-setup-time (current-time)))
 
 ;;;###autoload
-(defun startverse-refresh-verses ()
+(defun dashverse-refresh-verses ()
     "Refresh verses in the scratch buffer."
     (interactive)
     (with-current-buffer "*scratch*"
         (erase-buffer)
-        (insert (startverse--generate-initial-messages))))
+        (insert (dashverse--generate-initial-messages))))
 
 (provide 'dashverse)
 ;;; dashverse.el ends here
