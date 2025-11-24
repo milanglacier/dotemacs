@@ -17,14 +17,31 @@
 ;; 2. A list of customizable, quick-access actions in the middle.
 ;; 3. Another randomly selected verse at the bottom.
 ;;
-;; To use, simply activate `dashverse--welcome-screen-mode' in your
+;; To use, simply activate `dashverse-mode' in your
 ;; init file.
 
 ;;; Code:
 
 (require 'cl-lib)
 (require 'subr-x)
-(require 'general)
+
+(defvar dashverse-mode-map (make-sparse-keymap)
+    "Keymap for `dashverse-mode'.")
+
+;;;###autoload
+(define-minor-mode dashverse-mode
+    "Minor mode used on the dashverse welcome screen.
+
+Its keymap is installed via `emulation-mode-map-alists' so that it
+takes precedence over Evil and other minor modes."
+    :lighter ""
+    :keymap dashverse-mode-map
+    (when dashverse-mode
+        (setq initial-scratch-message nil)
+        (add-hook 'emacs-startup-hook #'dashverse--set-welcome-screen-buffer)
+        ;; When running emacs in server mode, cannot get the window
+        ;; height/width at startup.
+        (add-hook 'server-after-make-frame-hook #'dashverse-refresh-verses)))
 
 (defvar dashverse-header-verses
     '(("Bright star, would I were steadfast as thee art!"
@@ -117,13 +134,15 @@ More accurate than `emacs-init-time'."
            (keys (mapcar (lambda (x)
                              (when-let* ((pos (string-search "[" x)))
                                  (substring x (1+ pos) (+ 2 pos))))
-                         action-strings))
-           (keymaps
-            (cl-loop for key in keys
-                     for action in actions
-                     if key
-                     append `(,(downcase key) ,action))))
-        (apply #'general-define-key :keymaps 'local :states '(normal emacs) keymaps)))
+                         action-strings)))
+        (cl-loop for key in keys
+                 for action in actions
+                 when key
+                 do (define-key dashverse-mode-map (kbd (downcase key)) action)))
+    (with-eval-after-load 'evil
+        ;; override evil with dashverse-mode-map
+        (evil-make-intercept-map dashverse-mode-map)
+        (evil-normalize-keymaps)))
 
 (defface dashverse-verses
     '((((background light)) :foreground "#ed80b5" :slant italic)
@@ -187,19 +206,12 @@ More accurate than `emacs-init-time'."
        ("\\(\\[.*\\]\\)" 1 'dashverse-welcome-screen-action-key)
        ("\\]\\(.*\\)$" 1 'dashverse-welcome-screen-action))))
 
-;;;###autoload
-(defun dashverse--welcome-screen-mode ()
-    (setq initial-scratch-message nil)
-    (add-hook 'emacs-startup-hook #'dashverse--set-welcome-screen-buffer)
-    ;; When running emacs in server mode, cannot get the window
-    ;; height/width at startup.
-    (add-hook 'server-after-make-frame-hook #'dashverse-refresh-verses))
-
 (defun dashverse--set-welcome-screen-buffer ()
     (with-current-buffer "*scratch*"
         (insert (dashverse--generate-initial-messages))
         (dashverse--verses-add-font-lock)
         (setq-local mode-line-format nil)
+        (dashverse-mode 1)
         (dashverse--welcome-screen-set-keymap))
     (setq dashverse--welcome-screen-setup-time (current-time)))
 

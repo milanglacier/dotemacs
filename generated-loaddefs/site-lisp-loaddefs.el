@@ -18,10 +18,32 @@ Read a tag from minibuffer and jump to the tag.
 
 ;;; Generated autoloads from ../site-lisp/dashverse.el
 
+(autoload 'dashverse-mode "../site-lisp/dashverse" "\
+Minor mode used on the dashverse welcome screen.
+
+Its keymap is installed via `emulation-mode-map-alists' so that it
+takes precedence over Evil and other minor modes.
+
+This is a minor mode.  If called interactively, toggle the `Dashverse
+mode' mode.  If the prefix argument is positive, enable the mode, and if
+it is zero or negative, disable the mode.
+
+If called from Lisp, toggle the mode if ARG is `toggle'.  Enable the
+mode if ARG is nil, omitted, or is a positive number.  Disable the mode
+if ARG is a negative number.
+
+To check whether the minor mode is enabled in the current buffer,
+evaluate the variable `dashverse-mode'.
+
+The mode's hook is called both when the mode is enabled and when it is
+disabled.
+
+\\{dashverse-mode-map}
+
+(fn &optional ARG)" t)
 (autoload 'dashverse-emacs-startup-time "../site-lisp/dashverse" "\
 Measure the startup time until the welcome screen is displayed.
 More accurate than `emacs-init-time'." t)
-(autoload 'dashverse--welcome-screen-mode "../site-lisp/dashverse")
 (autoload 'dashverse-refresh-verses "../site-lisp/dashverse" "\
 Refresh verses in the scratch buffer." t)
 (register-definition-prefixes "../site-lisp/dashverse" '("dashverse-"))
