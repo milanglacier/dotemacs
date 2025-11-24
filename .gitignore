@@ -23,3 +23,5 @@ lsp-bridge
 .aider*
 ELPA
 .env
+# the artifact produced by `nix build`
+result
