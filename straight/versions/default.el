@@ -79,7 +79,7 @@
  ("let-alist" . "35a1dae3c540705433a510c13c8af80206b29b5f")
  ("llama" . "e4803de8ab85991b6a944430bb4f543ea338636d")
  ("macrostep" . "d0928626b4711dcf9f8f90439d23701118724199")
- ("magit" . "ccb7443f232cea9072ebc13da1a1d46efcbecc25")
+ ("magit" . "fa5906621a2e1fabdb43bfbc0b6b87dd08104fba")
  ("marginalia" . "d38041df2c2d175040bbdb1df6e4cc75a75ca4f8")
  ("markdown-mode" . "b524618c3ed28906a7522482727f121428ce7e2e")
  ("melpa" . "3280d652d017a16eedcd87b2788b6db49dcc17ee")
