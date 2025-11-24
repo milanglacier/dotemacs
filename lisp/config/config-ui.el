@@ -190,7 +190,7 @@ if they are side window.")
 ;; Configure and launch my custom startup dashboard
 (use-package dashverse
     :init
-    (startverse--welcome-screen-mode))
+    (dashverse--welcome-screen-mode))
 
 (provide 'config-ui)
 ;;; config-ui.el ends here
