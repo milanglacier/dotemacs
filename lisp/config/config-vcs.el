@@ -11,6 +11,12 @@
 
 (use-package magit
     :init
+    ;; NOTE: Prevent the `magit-autorevert' library from loading, as
+    ;; it may significantly impact startup speed (see GitHub issue
+    ;; magit#5484 for details). Since `global-auto-revert-mode' is
+    ;; already enabled, `magit-auto-revert-mode' is not needed anyway.
+    (setq magit-auto-revert-mode nil)
+
     (mg-git-map
         :states '(normal insert visual insert)
         :keymaps 'override
