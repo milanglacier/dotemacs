@@ -83,7 +83,7 @@
  ("marginalia" . "d38041df2c2d175040bbdb1df6e4cc75a75ca4f8")
  ("markdown-mode" . "92802fae9ebbc8c2e4c281c06dcdbd74b8bca80e")
  ("melpa" . "83bfae0e6c0de8435359368192f7a73723197a77")
- ("minuet-ai.el" . "2047854b0299402b533cb74750df67ce60fd27af")
+ ("minuet-ai.el" . "664e00eac67f5761bdbee8a80cb39bf2a5fca21d")
  ("modus-themes" . "64735b7df0c16344b26a10d631f5fc15e93e50da")
  ("nerd-icons-completion" . "d09ea987ed3d2cc64137234f27851594050e2b64")
  ("nerd-icons-dired" . "3265d6c4b552eae457d50d423adb10494113d70b")
