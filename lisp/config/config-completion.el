@@ -98,14 +98,20 @@
      :keymaps 'company-mode-map
      :states 'insert
      ;; manually invoke the completion
-     "M-i" #'company-manual-begin
-     "M-c M-c" #'mg-complete-ctags
-     "M-c M-f" #'cape-file
-     "M-c M-d" #'cape-dabbrev)
+     "M-i" #'company-manual-begin)
 
     (advice-add #'company-capf :around #'mg-company-completion-styles)
 
     (yas-global-mode))
+
+(use-package cape
+    :init
+    (general-define-key
+     :states 'insert
+     ;; manually invoke the completion
+     "M-c M-c" #'mg-complete-ctags
+     "M-c M-f" #'cape-file
+     "M-c M-d" #'cape-dabbrev))
 
 (use-package company-box
     :config
