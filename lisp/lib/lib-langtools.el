@@ -42,7 +42,6 @@ period, revert the action."
     (when (get-buffer-window "*eldoc*")
         (select-window (get-buffer-window "*eldoc*"))))
 
-;;;###autoload
 (defmacro mg-xref-move-in-original-src-macro (func)
     "There can only be one xref buffer. That is, if you find
 references of other symbol the previous one will be overwritten. The
@@ -57,6 +56,15 @@ to next xref location."
              (interactive)
              (with-current-buffer "*xref*"
                  (funcall #',func)))))
+
+;;;###autoload (autoload #'mg-xref-next-line "lib-langtools" nil t)
+(mg-xref-move-in-original-src-macro xref-next-line)
+;;;###autoload (autoload #'mg-xref-prev-line "lib-langtools" nil t)
+(mg-xref-move-in-original-src-macro xref-prev-line)
+;;;###autoload (autoload #'mg-xref-next-group "lib-langtools" nil t)
+(mg-xref-move-in-original-src-macro xref-prev-group)
+;;;###autoload (autoload #'mg-xref-prev-group "lib-langtools" nil t)
+(mg-xref-move-in-original-src-macro xref-next-group)
 
 ;;;###autoload
 (defun mg-override-citre-bounds-of-sym-or-op-at-point ()
@@ -89,26 +97,27 @@ be associated with a real file."
         (when (derived-mode-p mode)
             (eglot-ensure))))
 
-;;; copied from Centaur Emacs
+;; Adopted from Centaur Emacs
 ;;;###autoload
-(defmacro mg-org-babel-lsp-setup (lang)
+(defun mg-org-babel-lsp-setup (lang)
     "Support LANG in org source code block."
     (let* ((edit-pre (intern (format "org-babel-edit-prep:%s" lang)))
            (mg-setup (intern (format "mg-lsp-setup-for--%s" (symbol-name edit-pre)))))
-        `(progn
-             (defun ,mg-setup (info)
-                 (setq buffer-file-name
-                       (or (->> info caddr (alist-get :file))
-                           (file-name-concat default-directory "org-babel-src.tmp")))
-                 (dolist (mode mg-code-block-lsp-major-mode)
-                     (when (derived-mode-p mode)
-                         (eglot-ensure))))
+        (progn
+            (defalias
+                mg-setup
+                (lambda (info)
+                    (setq buffer-file-name
+                          (or (->> info caddr (alist-get :file))
+                              (file-name-concat default-directory "org-babel-src.tmp")))
+                    (dolist (mode mg-code-block-lsp-major-mode)
+                        (when (derived-mode-p mode)
+                            (eglot-ensure)))))
 
-             (if (fboundp #',edit-pre)
-                     (advice-add #',edit-pre :after #',mg-setup)
-                 (progn
-                     (defun ,edit-pre (info)
-                         (,mg-setup info)))))))
+            (if (fboundp edit-pre)
+                    (advice-add edit-pre :after mg-setup)
+                (progn
+                    (defalias edit-pre (lambda (info) (funcall mg-setup info))))))))
 
 ;;;###autoload
 (defun mg-treesit-install-all-language-grammar ()

@@ -152,11 +152,11 @@
      "] d" #'flymake-goto-next-error
      "[ d" #'flymake-goto-prev-error
      ;; jump to next/prev location containing the references.
-     "[ r" (mg-xref-move-in-original-src-macro xref-prev-line)
-     "] r" (mg-xref-move-in-original-src-macro xref-next-line)
-     ;; jump to next/prev file containing the references.
-     "[ R" (mg-xref-move-in-original-src-macro xref-prev-group)
-     "] R" (mg-xref-move-in-original-src-macro xref-next-group)
+     "[ r" #'mg-xref-prev-line
+     "] r" #'mg-xref-next-line
+     ;; ;; jump to next/prev file containing the references.
+     "[ R" #'mg-xref-prev-group
+     "] R" #'mg-xref-next-group
      "K" #'mg-eldoc-buffer-dwim
      "gd" #'xref-find-definitions
      "gr" #'xref-find-references)

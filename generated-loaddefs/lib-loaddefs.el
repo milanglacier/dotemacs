@@ -245,15 +245,10 @@ language of the code block)." t)
 
 (autoload 'mg-toggle-citre-eglot-capf "../lisp/lib/lib-langtools")
  (autoload #'mg-eldoc-buffer-dwim "lib-langtools" nil t)
-(autoload 'mg-xref-move-in-original-src-macro "../lisp/lib/lib-langtools" "\
-There can only be one xref buffer. That is, if you find
-references of other symbol the previous one will be overwritten. The
-official `xref-next-line' `xref-next-group' only allows you to move
-the location in the src buffer when your point is in the xref buffer
-window. This macro creates funcs that allow you to move current window
-to next xref location.
-
-(fn FUNC)" nil t)
+ (autoload #'mg-xref-next-line "lib-langtools" nil t)
+ (autoload #'mg-xref-prev-line "lib-langtools" nil t)
+ (autoload #'mg-xref-next-group "lib-langtools" nil t)
+ (autoload #'mg-xref-prev-group "lib-langtools" nil t)
 (autoload 'mg-override-citre-bounds-of-sym-or-op-at-point "../lisp/lib/lib-langtools" "\
 Override the `citre-bounds-of-sym-or-op-at-point'. The reason is that:
 1. Fix the out of bound error addressed in https://github.com/universal-ctags/citre/pull/191.
@@ -268,7 +263,7 @@ be associated with a real file.")
 (autoload 'mg-org-babel-lsp-setup "../lisp/lib/lib-langtools" "\
 Support LANG in org source code block.
 
-(fn LANG)" nil t)
+(fn LANG)")
 (autoload 'mg-treesit-install-all-language-grammar "../lisp/lib/lib-langtools" nil t)
 (autoload 'mg-formatter "../lisp/lib/lib-langtools" "\
 If current LSP has a formatter, use it. Otherwise, use the
