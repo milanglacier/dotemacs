@@ -185,7 +185,13 @@
     (general-define-key
      :states 'insert
      "M-y" #'minuet-complete-with-minibuffer
-     "M-'" #'minuet-next-suggestion)
+     "M-'" #'minuet-next-suggestion
+     ;; Define Minuet completion keymaps prefixed with <A-c>,
+     ;; following my convention for manually invoked completions. This
+     ;; avoids issues with <A-'> and <A-;> being blocked by remote
+     ;; desktop applications on iOS.
+     "M-c '" #'minuet-previous-suggestion
+     "M-c ;" #'minuet-next-suggestion)
 
     :config
     (setq minuet-provider 'gemini)
