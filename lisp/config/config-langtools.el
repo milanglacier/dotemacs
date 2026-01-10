@@ -108,7 +108,10 @@
 
     :config
     (add-to-list 'eglot-server-programs
-                 '(python-ts-mode . ("basedpyright-langserver" "--stdio")))
+                 ;; Use the LSP multiplexer created by Joao for
+                 ;; multiple LSPs support for python (basedpyright +
+                 ;; ruff)
+                 '(python-ts-mode . ("rass" "basedruff")))
 
     (add-to-list 'eglot-server-programs
                  '(sql-mode . ("sqls")))
