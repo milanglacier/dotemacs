@@ -99,13 +99,14 @@
           ;; distracting than helpful.
           eglot-ignored-server-capabilities '(:inlayHintProvider)
           eglot-workspace-configuration
-          '(:basedpyright.analysis (:useLibraryCodeForTypes t :diagnosticMode "workspace" :autoSearchPaths t)
-            ;; NOTE: I was thinking `python.analysis' should be a
-            ;; hierarchical structure like { "python": { "analysis": {
-            ;; xxx } }.  But examining the `eglot-event' buffer
-            ;; suggests me that `python.analysis' should be a whole
-            ;; component.
+          '(:basedpyright.analysis
+            (:useLibraryCodeForTypes t :diagnosticMode "openFilesOnly"
+             :autoSearchPaths t :autoImportCompletions :json-false)
             :r (:lsp (:diagnostics t)))
+          ;; See https://github.com/joaotavora/eglot/issues/1464 for
+          ;; why we need to use the less intuitive flatten structure
+          ;; `:basedpyright.analysis` instead of the hierarchical
+          ;; structure `:basedpyright (:analysis)`.
           read-process-output-max (* 1024 1024)
           eglot-sync-connect 0)
 
