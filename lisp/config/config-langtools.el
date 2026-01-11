@@ -95,6 +95,9 @@
     :init
     (setq eglot-stay-out-of '(company)
           eglot-autoshutdown t
+          ;; Disable inlay hints by default, as they often prove more
+          ;; distracting than helpful.
+          eglot-ignored-server-capabilities '(:inlayHintProvider)
           eglot-workspace-configuration
           '(:basedpyright.analysis (:useLibraryCodeForTypes t :diagnosticMode "workspace" :autoSearchPaths t)
             ;; NOTE: I was thinking `python.analysis' should be a
