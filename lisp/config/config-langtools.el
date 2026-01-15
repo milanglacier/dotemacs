@@ -97,7 +97,7 @@
           eglot-autoshutdown t
           ;; Disable inlay hints by default, as they often prove more
           ;; distracting than helpful.
-          eglot-ignored-server-capabilities '(:inlayHintProvider)
+          eglot-ignored-server-capabilities '(:inlayHintProvider :documentHighlightProvider)
           eglot-workspace-configuration
           '(:basedpyright.analysis
             (:useLibraryCodeForTypes t :diagnosticMode "openFilesOnly"
