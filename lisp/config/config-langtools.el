@@ -102,6 +102,8 @@
           '(:basedpyright.analysis
             (:useLibraryCodeForTypes t :diagnosticMode "openFilesOnly"
              :autoSearchPaths t :autoImportCompletions :json-false)
+            :ty (:diagnosticMode "openFilesOnly"
+                 :completions (:autoImport :json-false))
             :r (:lsp (:diagnostics t)))
           ;; See https://github.com/joaotavora/eglot/issues/1464 for
           ;; why we need to use the less intuitive flatten structure
@@ -113,9 +115,9 @@
     :config
     (add-to-list 'eglot-server-programs
                  ;; Use the LSP multiplexer created by Joao for
-                 ;; multiple LSPs support for python (basedpyright +
+                 ;; multiple LSPs support for python (ty +
                  ;; ruff)
-                 '(python-ts-mode . ("rass" "basedruff")))
+                 '(python-ts-mode . ("rass" "python")))
 
     (add-to-list 'eglot-server-programs
                  '(sql-mode . ("sqls")))
