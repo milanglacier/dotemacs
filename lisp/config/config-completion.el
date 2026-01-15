@@ -32,6 +32,10 @@
           company-dabbrev-code-completion-styles t
           company-dabbrev-downcase nil
           company-selection-wrap-around t
+          ;; Prevent excessively long type signatures from occupying
+          ;; too much screen width during completion display, e.g.,
+          ;; with Python+ty.
+          company-tooltip-maximum-width 80
           completion-ignore-case t)
 
     (mg-run-hook-once evil-insert-state-entry-hook global-company-mode)
