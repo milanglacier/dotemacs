@@ -114,10 +114,15 @@
 
     :config
     (add-to-list 'eglot-server-programs
+                 ;; The reason I prefer Pyrefly over ty (both are
+                 ;; Python language servers implemented in Rust) is
+                 ;; that, at the current stage, Pyrefly offers better
+                 ;; code completion, particularly within
+                 ;; pandas-related libraries.
+
                  ;; Use the LSP multiplexer created by Joao for
-                 ;; multiple LSPs support for python (ty +
-                 ;; ruff)
-                 '(python-ts-mode . ("rass" "python")))
+                 ;; multiple LSPs support for python (pyrefly + ruff).
+                 '(python-ts-mode . ("rass" "--" "pyrefly" "lsp" "--" "ruff" "server")))
 
     (add-to-list 'eglot-server-programs
                  '(sql-mode . ("sqls")))
