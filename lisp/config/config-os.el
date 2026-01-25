@@ -32,8 +32,8 @@
 
 (when IS-LINUX
     (general-define-key
-     "C-S-c" #'evil-yank
-     "C-S-v" #'evil-paste-before))
+     "C-S-c" #'kill-ring-save ;; copy
+     "C-S-v" #'yank)) ;; paste
 
 ;; Disable the middle mouse button to prevent accidental clicks.
 (general-define-key
