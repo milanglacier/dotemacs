@@ -65,6 +65,12 @@
 (load mg-autoloads-file nil t) ;; don't show message
 (load mg-site-lisp-autoloads-file nil t)
 
+;; Useful for analyzing startup performance.  Helps identify which
+;; packages significantly delay initialization.
+;; (straight-use-package 'benchmark-init)
+;; (benchmark-init/activate)
+;; (benchmark-init/show-durations-tabulated)
+
 (require 'config-utils)
 (require 'config-basics)
 (require 'config-ui)
