@@ -10,6 +10,15 @@
 
 ;;;###autoload
 (defun mg-tty-setup ()
+    ;; See https://emacs-china.org/t/emacs-tui-emoji-terminal/31053/12
+    ;; TTY Emacs may encounter rendering problems in buffers
+    ;; containing emojis (specifically ZWJ sequences): "ghosting,"
+    ;; hidden lines, or the cursor jumping to the wrong place on the
+    ;; screen.  The workaround is to disable auto-composition mode.
+    ;; While this cannot gurantee the correct display of
+    ;; muli-character emojis it ensures that other lines and
+    ;; characters render without issues.
+    (setq-default auto-composition-mode nil)
 
     ;; Some terminals offer two different cursors: a "visible" static cursor and a
     ;; "very visible" blinking one. By default, Emacs uses the very visible cursor
