@@ -164,6 +164,7 @@ if they are side window.")
     (add-hook 'doom-modeline-mode-hook #'column-number-mode)
     (setq doom-modeline-bar-width 1
           doom-modeline-modal-icon nil
+          doom-modeline-modal-use-evil-tag t
           doom-modeline-github nil
           doom-modeline-mu4e nil
           doom-modeline-persp-name nil
