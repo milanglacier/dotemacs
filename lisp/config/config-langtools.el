@@ -221,6 +221,7 @@
      "M-a" #'minuet-accept-suggestion-line
      "M-e" #'minuet-dismiss-suggestion)
 
+    (plist-put minuet-gemini-options :model "gemini-3.1-flash-lite-preview")
     (minuet-set-optional-options minuet-gemini-options
                                  :generationConfig
                                  '(:maxOutputTokens 256
