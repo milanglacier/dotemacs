@@ -39,6 +39,13 @@ Edit the embedded code within a separate buffer." t)
 (register-definition-prefixes "../site-lisp/evil-ts" '("evil-ts-"))
 
 
+;;; Generated autoloads from ../site-lisp/pandoc-preview.el
+
+(autoload 'mg-pandoc-preview-buffer "../site-lisp/pandoc-preview" "\
+Preview the current file as HTML using pandoc." t)
+(register-definition-prefixes "../site-lisp/pandoc-preview" '("mg-pandoc-preview-"))
+
+
 ;;; Generated autoloads from ../site-lisp/pyc-env.el
 
 (autoload 'pyc-env-conda-activate "../site-lisp/pyc-env" "\
