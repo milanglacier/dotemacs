@@ -174,6 +174,8 @@
     (mg-localleader
         :states '(normal insert visual motion)
         :keymaps 'markdown-mode-map
+        "m" '(:ignore t :which-key "markup")
+        "mp" #'mg-pandoc-preview-buffer
         "r" '(:ignore t :which-key "repl")
         "rs" #'mg-markdown-run-repl
         "rh" #'mg-markdown-hide-window

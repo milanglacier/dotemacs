@@ -1,5 +1,7 @@
 ;;; config-org.el -*- lexical-binding: t; -*-
 
+(require 'pandoc-preview)
+
 (straight-use-package '(org :type built-in))
 (straight-use-package '(evil-org-mode :host github :repo "doomelpa/evil-org-mode"))
 (straight-use-package 'org-appear)
@@ -222,6 +224,9 @@
         "ls" #'org-store-link
         "lS" #'org-insert-last-stored-link
         "lt" #'org-toggle-link-display
+
+        "m" '(:ignore t :which-key "markup")
+        "mp" #'mg-pandoc-preview-buffer
 
         "p" '(:ignore t :which-key "priority")
         "pd" #'org-priority-down
