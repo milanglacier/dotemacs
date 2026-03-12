@@ -8,9 +8,14 @@
 (defvar mg-pandoc-preview-args nil
     "Additional arguments passed to pandoc.")
 
-(defvar mg-pandoc-preview-template-file
+(defcustom mg-pandoc-preview-template-file
     (file-name-concat user-emacs-directory "assets" "pandoc-preview-template.html")
-    "HTML template used by `mg-pandoc-preview-buffer'.")
+    "HTML template used by `mg-pandoc-preview-buffer'.
+
+Set this to nil to let pandoc use its default template."
+    :type '(choice
+            (file :tag "Template file")
+            (const :tag "Use pandoc default template" nil)))
 
 (defvar mg-pandoc-preview-enabled-modes '(markdown-mode org-mode)
     "Major modes supported by `mg-pandoc-preview-buffer'.")
@@ -27,9 +32,9 @@
     (append
      (list mg-pandoc-preview-command
            "--to=html5"
-           "--standalone"
-           "--template"
-           mg-pandoc-preview-template-file)
+           "--standalone")
+     (when mg-pandoc-preview-template-file
+         (list "--template" mg-pandoc-preview-template-file))
      mg-pandoc-preview-args
      (list filename "-o" temp-file)))
 
@@ -78,7 +83,8 @@
           (user-error "Not on a file buffer"))
          ((not (executable-find mg-pandoc-preview-command))
           (user-error "Pandoc is not installed"))
-         ((not (file-readable-p mg-pandoc-preview-template-file))
+         ((and mg-pandoc-preview-template-file
+               (not (file-readable-p mg-pandoc-preview-template-file)))
           (user-error "Pandoc preview template is missing: %s"
                       mg-pandoc-preview-template-file))
          (t
