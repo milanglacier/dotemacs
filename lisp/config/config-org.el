@@ -1,7 +1,5 @@
 ;;; config-org.el -*- lexical-binding: t; -*-
 
-(require 'pandoc-preview)
-
 (straight-use-package '(org :type built-in))
 (straight-use-package '(evil-org-mode :host github :repo "doomelpa/evil-org-mode"))
 (straight-use-package 'org-appear)
