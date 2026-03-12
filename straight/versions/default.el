@@ -23,7 +23,7 @@
  ("dired-rsync" . "24ceb60b168c591d7e2d9440a7f1895880681f48")
  ("dired-sidebar" . "3bc8927ed4d14a017eefc75d5af65022343e2ac1")
  ("diredfl" . "fe72d2e42ee18bf6228bba9d7086de4098f18a70")
- ("doom-modeline" . "febde435ae62b36466154c0d41649e7b4ee5685e")
+ ("doom-modeline" . "4a145ea1a1b23d8c2cc760b3002d475d6f680ad9")
  ("edit-indirect" . "82a28d8a85277cfe453af464603ea330eae41c05")
  ("ef-themes" . "c3b27eb726e571a6fde96da44f9c4f959028552e")
  ("el-get" . "b966060fd99c2bdf1aae76be190f2e26473cb298")
