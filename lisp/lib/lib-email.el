@@ -153,7 +153,7 @@
     (general-define-key
      :keymaps 'notmuch-show-part-map
      "x" #'mg-notmuch-display-email-in-xwidget
-     "y" #'mg-notmuch-yank-shr-url)
+     "y" #'shr-maybe-probe-and-copy-url)
     )
 
 (defun mg-notmuch-hello-ret ()
@@ -237,16 +237,6 @@ unavailable in the current Emacs build, it fallbacks to
                      (xwidget-webkit-browse-url (concat "file://" tempf))
                      (run-with-idle-timer 3 nil #'delete-file tempf))))
         (notmuch-show-view-part)))
-
-(defun mg-notmuch-yank-shr-url ()
-    "Copy the `shr-url' text property at point to the kill ring and clipboard."
-    (interactive)
-    (if-let* ((url (get-text-property (point) 'shr-url))
-              (url (format "%s" url)))
-            (progn
-                (kill-new url)
-                (message "Copied URL: %s" url))
-        (user-error "No shr-url at point")))
 
 (provide 'lib-email)
 ;;; lib-email.el ends here
