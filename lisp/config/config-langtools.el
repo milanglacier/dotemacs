@@ -243,14 +243,17 @@
     ;; Prioritize throughput for faster completion
     (minuet-set-optional-options minuet-openai-compatible-options :provider '(:sort "throughput"))
 
-    (dolist (provider (list minuet-openai-options
-                            minuet-codestral-options
+    (dolist (provider (list minuet-codestral-options
                             minuet-openai-compatible-options
                             minuet-openai-fim-compatible-options))
         (minuet-set-optional-options provider :max_tokens 128)
         (minuet-set-optional-options provider :top_p 0.9))
 
     (minuet-set-optional-options minuet-codestral-options :stop ["\n\n"])
+
+    (plist-put minuet-openai-options :model "gpt-5.4-nano")
+    (minuet-set-optional-options minuet-openai-options :max_completion_tokens 128)
+    (minuet-set-optional-options minuet-openai-options :reasoning_effort "none")
     )
 
 (use-package treesit
