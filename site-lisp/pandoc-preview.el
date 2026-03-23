@@ -34,7 +34,7 @@ Set this to nil to let pandoc use its default template."
            "--to=html5"
            "--standalone")
      (when mg-pandoc-preview-template-file
-         (list "--template" mg-pandoc-preview-template-file))
+         (list "--template" (expand-file-name mg-pandoc-preview-template-file)))
      mg-pandoc-preview-args
      (list filename "-o" temp-file)))
 
