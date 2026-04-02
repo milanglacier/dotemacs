@@ -208,7 +208,7 @@
      "M-c ;" #'minuet-next-suggestion)
 
     :config
-    (setq minuet-provider 'gemini)
+    (setq minuet-provider 'openai-compatible)
     (setq minuet-request-timeout 2)
     (setq minuet-auto-suggestion-debounce-delay 0.5)
     (setq minuet-auto-suggestion-throttle-delay 1.5)
@@ -237,11 +237,12 @@
                                   (:category "HARM_CATEGORY_SEXUALLY_EXPLICIT"
                                    :threshold "BLOCK_NONE")])
 
-    (plist-put minuet-openai-compatible-options :end-point "https://openrouter.ai/api/v1/chat/completions")
-    (plist-put minuet-openai-compatible-options :api-key "OPENROUTER_API_KEY")
-    (plist-put minuet-openai-compatible-options :model "moonshotai/kimi-k2")
+    (plist-put minuet-openai-compatible-options :end-point "https://api.fireworks.ai/inference/v1/chat/completions")
+    (plist-put minuet-openai-compatible-options :api-key "FIREWORKS_API_KEY")
+    (plist-put minuet-openai-compatible-options :model "accounts/fireworks/routers/kimi-k2p5-turbo")
+    (minuet-set-optional-options minuet-openai-compatible-options :reasoning_effort "none")
     ;; Prioritize throughput for faster completion
-    (minuet-set-optional-options minuet-openai-compatible-options :provider '(:sort "throughput"))
+    ;; (minuet-set-optional-options minuet-openai-compatible-options :provider '(:sort "throughput"))
 
     (dolist (provider (list minuet-codestral-options
                             minuet-openai-compatible-options
