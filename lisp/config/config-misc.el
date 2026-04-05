@@ -27,7 +27,7 @@
                ("integration" "integration/*")
                (:exclude ".dir-locals.el" "*-tests.el"))))
 
-(defvar mg-terminal-backend 'eat
+(defvar mg-terminal-backend 'vterm
     "The terminal backend to use, can be either `eat' or `vterm'")
 
 ;; ibuffer
