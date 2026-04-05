@@ -35,6 +35,8 @@
           magit-define-global-key-bindings nil)
 
     :config
+    (remove-hook 'git-commit-setup-hook #'git-commit-setup-capf)
+
     (add-to-list 'display-buffer-alist
                  '("magit:" ;; the main magit dashboard
                    ;; If a magit window exists, use it instead of
