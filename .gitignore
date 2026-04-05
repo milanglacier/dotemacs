@@ -25,3 +25,4 @@ ELPA
 .env
 # the artifact produced by `nix build`
 result
+/.codex
