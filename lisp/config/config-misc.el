@@ -11,7 +11,12 @@
              :local-repo "ws-butler"))
 
 (straight-use-package 'rainbow-delimiters)
-(straight-use-package 'vterm)
+;; Use my own fork until
+;; https://github.com/akermu/emacs-libvterm/pull/798 is merged into
+;; upstream.
+(straight-use-package
+ '(vterm :type git
+         :repo "milanglacier/emacs-libvterm"))
 (straight-use-package
  '(eat :type git
        :host codeberg
