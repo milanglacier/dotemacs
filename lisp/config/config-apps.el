@@ -178,37 +178,5 @@
         "e" #'termint-codex-send-string)
     )
 
-
-;; aider (a llm based code assistant) integration
-(use-package termint-aider
-    :init
-    (add-to-list 'display-buffer-alist
-                 `("\\*aider\\*"
-                   (display-buffer-in-tab)
-                   (tab-name . mg--get-tab-name)))
-
-    (general-create-definer mg-aider-map
-        :prefix "SPC a"
-        :non-normal-prefix "M-SPC a"
-        :prefix-map 'mg-aider-map)
-
-    (mg-aider-map
-        :keymaps 'override
-        :states '(normal insert motion visual)
-        "s" #'termint-aider-start
-        "r" #'termint-aider-send-region-operator
-        "h" #'termint-aider-hide-window
-        "e" #'termint-aider-prompt
-        "g" #'termint-aider-set-prefix
-        "G" #'termint-aider-remove-prefix
-        "y" #'termint-aider-yes
-        "n" #'termint-aider-no
-        "a" #'termint-aider-abort
-        "q" #'termint-aider-exit
-        "ma" #'termint-aider-ask-mode
-        "mA" #'termint-aider-arch-mode
-        "mc" #'termint-aider-code-mode)
-    )
-
 (provide 'config-apps)
 ;;; config-apps.el ends here
