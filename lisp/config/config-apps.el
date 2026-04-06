@@ -105,7 +105,8 @@
 
 ;; aichat (a LLM based chat REPL) integration
 (use-package termint
-    :commands termint-aichat-start termint-ipython-start termint-radian-start termint-codex-start
+    :commands
+    termint-aichat-start termint-ipython-start termint-radian-start termint-codex-start termint-opencode-start
     :init
     (add-to-list 'display-buffer-alist
                  `("\\*aichat\\*"
@@ -130,6 +131,11 @@
         :non-normal-prefix "M-SPC z"
         :prefix-map 'mg-codex-map)
 
+    (general-create-definer mg-opencode-map
+        :prefix "SPC a"
+        :non-normal-prefix "M-SPC a"
+        :prefix-map 'mg-opencode-map)
+
     (mg-chat-map
         :keymaps 'override
         :states '(normal insert motion visual)
@@ -139,6 +145,11 @@
         :keymaps 'override
         :states '(normal insert motion visual)
         "s" #'termint-codex-start)
+
+    (mg-opencode-map
+        :keymaps 'override
+        :states '(normal insert motion visual)
+        "s" #'termint-opencode-start)
 
     :config
 
@@ -162,6 +173,11 @@
                     :end-pattern ""
                     :send-delayed-final-ret t)
 
+    (termint-define "opencode" "opencode" :bracketed-paste-p t
+                    :source-syntax "Read the instruction from {{file}}"
+                    :end-pattern ""
+                    :send-delayed-final-ret t)
+
     (mg-chat-map
         :keymaps 'override
         :states '(normal insert motion visual)
@@ -176,6 +192,14 @@
         "r" #'termint-codex-send-region-operator
         "h" #'termint-codex-hide-window
         "e" #'termint-codex-send-string)
+
+    (mg-opencode-map
+        :keymaps 'override
+        :states '(normal insert motion visual)
+        "r" #'termint-opencode-send-region-operator
+        "h" #'termint-opencode-hide-window
+        "e" #'termint-opencode-send-string)
+
     )
 
 (provide 'config-apps)
