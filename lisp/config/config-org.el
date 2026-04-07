@@ -7,6 +7,7 @@
 (straight-use-package 'org-re-reveal)
 (straight-use-package 'ox-clip)
 (straight-use-package 'org-download)
+(straight-use-package 'org-roam)
 
 (use-package org
     :init
@@ -572,6 +573,54 @@
           (if IS-MAC
                   "screencapture -i %s"
               org-download-screenshot-method)))
+
+(use-package org-roam
+    :after org
+    :init
+    (setq org-roam-directory (file-truename (file-name-concat org-directory "roam"))
+          org-roam-db-location (expand-file-name "org-roam.db" org-roam-directory)
+          org-roam-completion-everywhere t
+          org-roam-node-display-template
+          (concat "${title:*} "
+                  (propertize "${tags:20}" 'face 'org-tag))
+          org-roam-capture-templates
+          '(("d" "default" plain "%?"
+             :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
+                                "#+title: ${title}\n")
+             :unnarrowed t))
+          org-roam-dailies-directory "daily/"
+          org-roam-dailies-capture-templates
+          '(("d" "default" entry "* %?"
+             :target (file+head "%<%Y-%m-%d>.org"
+                                "#+title: %<%Y-%m-%d>\n")
+             :unnarrowed t)))
+
+    :config
+    (org-roam-db-autosync-mode)
+
+    (mg-open-map
+        :states '(normal motion visual insert)
+        :keymaps 'override
+        "r" #'org-roam-node-find
+        "R" #'org-roam-dailies-goto-today)
+
+    (mg-localleader
+        :states '(normal insert motion visual)
+        :keymaps 'org-mode-map
+        "r" '(:ignore t :which-key "roam")
+        "rb" #'org-roam-buffer-toggle
+        "rc" #'org-roam-capture
+        "rd" #'org-roam-dailies-goto-today
+        "rD" #'org-roam-dailies-capture-today
+        "rf" #'org-roam-node-find
+        "ri" #'org-roam-node-insert)
+
+    (add-to-list 'display-buffer-alist
+                 '("\\*org-roam\\*"
+                   (display-buffer-in-direction)
+                   (direction . right)
+                   (window-width . 0.33)
+                   (window-height . fit-window-to-buffer))))
 
 (provide 'config-org)
 ;;; config-org.el ends here
