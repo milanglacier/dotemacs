@@ -16,7 +16,7 @@
            mg-load-incrementally-packages
            '(org-macs org-compat org-faces org-entities
                       org-list org-pcomplete org-src org-footnote org-macro ob org org-agenda
-                      org-capture)))
+                      org-capture org-roam)))
 
     (mg-open-map
         :states '(normal motion visual insert)
@@ -575,7 +575,8 @@
               org-download-screenshot-method)))
 
 (use-package org-roam
-    :init
+    :after org
+    :preface
     (setq org-roam-directory (expand-file-name (file-name-concat org-directory "roam"))
           org-roam-db-location (expand-file-name "org-roam.db" org-roam-directory)
           org-roam-completion-everywhere t
