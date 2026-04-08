@@ -577,7 +577,7 @@
 (use-package org-roam
     :after org
     :init
-    (setq org-roam-directory (file-truename (file-name-concat org-directory "roam"))
+    (setq org-roam-directory (expand-file-name (file-name-concat org-directory "roam"))
           org-roam-db-location (expand-file-name "org-roam.db" org-roam-directory)
           org-roam-completion-everywhere t
           org-roam-node-display-template
