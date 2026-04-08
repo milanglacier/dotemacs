@@ -187,6 +187,18 @@ if they are side window.")
           which-key-popup-type 'minibuffer)
     )
 
+(use-package window
+    :init
+    (mg-leader
+        :keymaps 'override
+        :states '(normal insert visual)
+        ;; Ensure the next command opens any new buffer in the current
+        ;; window. This is especially useful in org-mode, where you
+        ;; may want to temporarily override the default behavior of
+        ;; following links, which typically opens them in a new
+        ;; window.
+        ";" #'same-window-prefix))
+
 ;; Configure and launch my custom startup dashboard
 (use-package dashverse
     :init
