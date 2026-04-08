@@ -575,6 +575,7 @@
               org-download-screenshot-method)))
 
 (use-package org-roam
+    :demand t
     :after org
     :preface
     (setq org-roam-directory (expand-file-name (file-name-concat org-directory "roam"))
