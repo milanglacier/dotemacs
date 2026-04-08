@@ -575,7 +575,6 @@
               org-download-screenshot-method)))
 
 (use-package org-roam
-    :after org
     :init
     (setq org-roam-directory (expand-file-name (file-name-concat org-directory "roam"))
           org-roam-db-location (expand-file-name "org-roam.db" org-roam-directory)
