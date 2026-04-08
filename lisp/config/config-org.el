@@ -594,23 +594,22 @@
                                 "#+title: %<%Y-%m-%d>\n")
              :unnarrowed t)))
 
-    :config
-    (org-roam-db-autosync-mode)
-
     (mg-open-map
         :states '(normal motion visual insert)
         :keymaps 'override
-        "r" #'org-roam-node-find
-        "R" #'org-roam-dailies-goto-today)
+        "r" '(:ignore t :which-key "roam")
+        "rf" #'org-roam-node-find
+        "rc" #'org-roam-capture
+        "rd" #'org-roam-dailies-capture-today)
+
+    :config
+    (org-roam-db-autosync-mode)
 
     (mg-localleader
         :states '(normal insert motion visual)
         :keymaps 'org-mode-map
         "r" '(:ignore t :which-key "roam")
         "rb" #'org-roam-buffer-toggle
-        "rc" #'org-roam-capture
-        "rd" #'org-roam-dailies-goto-today
-        "rD" #'org-roam-dailies-capture-today
         "rf" #'org-roam-node-find
         "ri" #'org-roam-node-insert)
 
