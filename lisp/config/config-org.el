@@ -602,7 +602,8 @@
         "r" '(:ignore t :which-key "roam")
         "rf" #'org-roam-node-find
         "rc" #'org-roam-capture
-        "rd" #'org-roam-dailies-capture-today)
+        "rt" #'org-roam-dailies-capture-today
+        "rd" #'org-roam-dailies-goto-date)
 
     :config
     (org-roam-db-autosync-mode)
