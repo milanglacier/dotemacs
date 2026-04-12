@@ -159,7 +159,7 @@
                     :source-syntax ".file {{file}}"
                     :show-source-command-hint t)
 
-    (termint-define "ipython" "ipython" :bracketed-paste-p t
+    (termint-define "ipython" #'termint-ipython-cmd-function :bracketed-paste-p t
                     :source-syntax termint-ipython-source-syntax-template
                     :show-source-command-hint t)
 
