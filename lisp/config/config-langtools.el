@@ -272,7 +272,7 @@
      :keymaps 'minuet-duet-active-mode-map
      "M-a" #'minuet-duet-apply
      "M-e" #'minuet-duet-dismiss)
-    (setq minuet-duet-cursor-position-marker "")
+
     (minuet-set-optional-options minuet-duet-gemini-options
                                  :generationConfig
                                  '(:thinkingConfig (:thinkingLevel "minimal")))
