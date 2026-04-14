@@ -257,6 +257,31 @@
     (minuet-set-optional-options minuet-openai-options :reasoning_effort "none")
     )
 
+(use-package minuet-duet
+    :init
+    (general-define-key
+     :states 'insert
+     "M-z z" #'minuet-duet-predict)
+    (mg-leader
+        :keymaps 'override
+        :states '(normal emacs)
+        "m z" #'minuet-duet-predict)
+
+    :config
+    (general-define-key
+     :keymaps 'minuet-duet-active-mode-map
+     "M-a" #'minuet-duet-apply
+     "M-e" #'minuet-duet-dismiss)
+    (setq minuet-duet-cursor-position-marker "")
+    (minuet-set-optional-options minuet-duet-gemini-options
+                                 :generationConfig
+                                 '(:thinkingConfig (:thinkingLevel "minimal")))
+    (minuet-set-optional-options minuet-duet-openai-compatible-options
+                                 :reasoning_effort "minimal")
+    (minuet-set-optional-options minuet-duet-openai-compatible-options
+                                 :provider '(:sort "throughput"))
+    )
+
 (use-package treesit
     :init
     (setq treesit-language-source-alist
