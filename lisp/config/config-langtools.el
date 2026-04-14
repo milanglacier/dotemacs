@@ -276,10 +276,12 @@
     (minuet-set-optional-options minuet-duet-gemini-options
                                  :generationConfig
                                  '(:thinkingConfig (:thinkingLevel "minimal")))
+
+    (plist-put minuet-duet-openai-compatible-options :end-point "https://api.fireworks.ai/inference/v1/chat/completions")
+    (plist-put minuet-duet-openai-compatible-options :api-key "FIREWORKS_API_KEY")
+    (plist-put minuet-duet-openai-compatible-options :model "accounts/fireworks/routers/kimi-k2p5-turbo")
     (minuet-set-optional-options minuet-duet-openai-compatible-options
                                  :reasoning_effort "minimal")
-    (minuet-set-optional-options minuet-duet-openai-compatible-options
-                                 :provider '(:sort "throughput"))
     )
 
 (use-package treesit
