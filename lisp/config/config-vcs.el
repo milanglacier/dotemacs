@@ -18,7 +18,7 @@
     (setq magit-auto-revert-mode nil)
 
     (mg-git-map
-        :states '(normal insert visual insert)
+        :states '(normal insert visual emacs)
         :keymaps 'override
         "" '(:ignore t :which-key "git")
         "g" #'magit
