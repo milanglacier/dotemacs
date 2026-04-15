@@ -265,7 +265,10 @@
     (mg-leader
         :keymaps 'override
         :states '(normal emacs)
-        "m z" #'minuet-duet-predict)
+        "m" '(:ignore t :which-key "misc/minuet")
+        "m z" #'minuet-duet-predict
+        "m a" #'minuet-duet-apply
+        "m e" #'minuet-duet-dismiss)
 
     :config
     (general-define-key
