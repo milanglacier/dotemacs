@@ -26,3 +26,4 @@ ELPA
 # the artifact produced by `nix build`
 result
 /.codex
+/nix-generated.el
