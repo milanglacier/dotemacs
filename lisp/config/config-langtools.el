@@ -268,7 +268,7 @@
         "m" '(:ignore t :which-key "misc/minuet")
         "m z" #'minuet-duet-predict
         "m a" #'minuet-duet-apply
-        "m e" #'minuet-duet-dismiss)
+        "m x" #'minuet-duet-dismiss)
 
     :config
     (general-define-key
