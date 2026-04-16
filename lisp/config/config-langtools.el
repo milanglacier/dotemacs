@@ -284,7 +284,7 @@
     (plist-put minuet-duet-openai-compatible-options :api-key "FIREWORKS_API_KEY")
     (plist-put minuet-duet-openai-compatible-options :model "accounts/fireworks/routers/kimi-k2p5-turbo")
     (minuet-set-optional-options minuet-duet-openai-compatible-options
-                                 :reasoning_effort "minimal")
+                                 :reasoning_effort "none")
     )
 
 (use-package treesit
