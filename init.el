@@ -46,7 +46,7 @@
       ;; the check. Make sure you know what you are doing here when
       ;; setting this option.
       debug-on-error t
-      loading-prefer-newer t)
+      load-prefer-newer t)
 
 ;; bootstrap straight.el, copied from
 ;; URL: `https://github.com/radian-software/straight.el#getting-started'
