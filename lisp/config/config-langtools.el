@@ -8,7 +8,6 @@
 (straight-use-package 'reformatter)
 (straight-use-package 'dape)
 
-;; AI Code Completion
 (straight-use-package '(minuet :host github :repo "milanglacier/minuet-ai.el"))
 
 (use-package citre
@@ -192,9 +191,8 @@
      :keymaps 'comint-mode-map
      "C-a" #'comint-bol))
 
-
+;; LLM based inline completion
 (use-package minuet
-    ;; AI completion tool
     :init
     (general-define-key
      :states 'insert
@@ -257,6 +255,7 @@
     (minuet-set-optional-options minuet-openai-options :reasoning_effort "none")
     )
 
+;; LLM based Next Edit Prediction
 (use-package minuet-duet
     :init
     (general-define-key
