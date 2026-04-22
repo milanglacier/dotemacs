@@ -48,16 +48,23 @@
             inherit runtimeInputs;
             text = ''
               export CC="${cc}/bin/cc"
-              export CMAKE_PREFIX_PATH="$${CMAKE_PREFIX_PATH:-${pkgs.cmake}}"
+              export CMAKE_PREFIX_PATH="''${CMAKE_PREFIX_PATH:-${pkgs.cmake}}"
               export CMAKE_PREFIX_PATH="${pkgs.libvterm-neovim}:$CMAKE_PREFIX_PATH"
               if ! cd straight/build/vterm; then
                 echo "Error: directory straight/builds/vterm not found relative to current directory." >&2
                 exit 1
               fi
               cmake -E make_directory build
-              cd build
-              cmake ..
-              make
+              # CMake caches absolute Nix store paths for the compiler and
+              # libvterm. Those paths can disappear after nixpkgs updates or
+              # garbage collection, so force a fresh configure for each run.
+              cmake -E rm -f build/CMakeCache.txt
+              cmake -E rm -rf build/CMakeFiles
+              cmake -S . -B build \
+                -DCMAKE_C_COMPILER="$CC" \
+                -DCMAKE_PREFIX_PATH="$CMAKE_PREFIX_PATH" \
+                -DUSE_SYSTEM_LIBVTERM=ON
+              cmake --build build
             '';
           };
 
