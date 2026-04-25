@@ -19,8 +19,7 @@
          :repo "milanglacier/emacs-libvterm"))
 (straight-use-package
  '(eat :type git
-       :host codeberg
-       :repo "akib/emacs-eat"
+       :repo "https://github.com/milanglacier/emacs-eat"
        :files ("*.el" ("term" "term/*.el") "*.texi"
                "*.ti" ("terminfo/e" "terminfo/e/*")
                ("terminfo/65" "terminfo/65/*")
