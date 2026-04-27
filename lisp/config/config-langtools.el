@@ -235,10 +235,10 @@
                                   (:category "HARM_CATEGORY_SEXUALLY_EXPLICIT"
                                    :threshold "BLOCK_NONE")])
 
-    (plist-put minuet-openai-compatible-options :end-point "https://api.fireworks.ai/inference/v1/chat/completions")
-    (plist-put minuet-openai-compatible-options :api-key "FIREWORKS_API_KEY")
-    (plist-put minuet-openai-compatible-options :model "accounts/fireworks/routers/kimi-k2p5-turbo")
-    (minuet-set-optional-options minuet-openai-compatible-options :reasoning_effort "none")
+    (plist-put minuet-openai-compatible-options :end-point "https://opencode.ai/zen/go/v1/chat/completions")
+    (plist-put minuet-openai-compatible-options :api-key "OPENCODE_API_KEY")
+    (plist-put minuet-openai-compatible-options :model "deepseek-v4-flash")
+    (minuet-set-optional-options minuet-openai-compatible-options :thinking '(:type "disabled"))
     ;; Prioritize throughput for faster completion
     ;; (minuet-set-optional-options minuet-openai-compatible-options :provider '(:sort "throughput"))
 
@@ -270,6 +270,7 @@
         "m x" #'minuet-duet-dismiss)
 
     :config
+    (setq minuet-duet-provider 'openai)
     (general-define-key
      :keymaps 'minuet-duet-active-mode-map
      "M-a" #'minuet-duet-apply
