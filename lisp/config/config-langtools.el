@@ -270,7 +270,7 @@
         "m x" #'minuet-duet-dismiss)
 
     :config
-    (setq minuet-duet-provider 'openai)
+    (setq minuet-duet-provider 'gemini)
     (general-define-key
      :keymaps 'minuet-duet-active-mode-map
      "M-a" #'minuet-duet-apply
