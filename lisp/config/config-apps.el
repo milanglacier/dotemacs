@@ -106,7 +106,7 @@
 ;; aichat (a LLM based chat REPL) integration
 (use-package termint
     :commands
-    termint-aichat-start termint-ipython-start termint-radian-start termint-codex-start termint-opencode-start
+    termint-aichat-start termint-ipython-start termint-radian-start termint-codex-start termint-pi-start
     :init
     (add-to-list 'display-buffer-alist
                  `("\\*aichat\\*"
@@ -121,6 +121,11 @@
                    (display-buffer-in-tab)
                    (tab-name . mg--get-tab-name)))
 
+    (add-to-list 'display-buffer-alist
+                 '("\\*pi\\*"
+                   (display-buffer-in-tab)
+                   (tab-name . mg--get-tab-name)))
+
     (general-create-definer mg-chat-map
         :prefix "SPC c"
         :non-normal-prefix "M-SPC c"
@@ -131,10 +136,10 @@
         :non-normal-prefix "M-SPC z"
         :prefix-map 'mg-codex-map)
 
-    (general-create-definer mg-opencode-map
+    (general-create-definer mg-pi-map
         :prefix "SPC a"
         :non-normal-prefix "M-SPC a"
-        :prefix-map 'mg-opencode-map)
+        :prefix-map 'mg-pi-map)
 
     (mg-chat-map
         :keymaps 'override
@@ -146,10 +151,10 @@
         :states '(normal insert motion visual)
         "s" #'termint-codex-start)
 
-    (mg-opencode-map
+    (mg-pi-map
         :keymaps 'override
         :states '(normal insert motion visual)
-        "s" #'termint-opencode-start)
+        "s" #'termint-pi-start)
 
     :config
 
@@ -173,7 +178,7 @@
                     :end-pattern ""
                     :send-delayed-final-ret t)
 
-    (termint-define "opencode" "opencode" :bracketed-paste-p t
+    (termint-define "pi" "pi" :bracketed-paste-p t
                     :source-syntax "Read the instruction from {{file}}"
                     :end-pattern ""
                     :send-delayed-final-ret t)
@@ -193,13 +198,12 @@
         "h" #'termint-codex-hide-window
         "e" #'termint-codex-send-string)
 
-    (mg-opencode-map
+    (mg-pi-map
         :keymaps 'override
         :states '(normal insert motion visual)
-        "r" #'termint-opencode-send-region-operator
-        "h" #'termint-opencode-hide-window
-        "e" #'termint-opencode-send-string)
-
+        "r" #'termint-pi-send-region-operator
+        "h" #'termint-pi-hide-window
+        "e" #'termint-pi-send-string)
     )
 
 (provide 'config-apps)
