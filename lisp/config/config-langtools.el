@@ -219,7 +219,7 @@
      "M-a" #'minuet-accept-suggestion-line
      "M-e" #'minuet-dismiss-suggestion)
 
-    (plist-put minuet-gemini-options :model "gemini-3.1-flash-lite-preview")
+    (plist-put minuet-gemini-options :model "gemini-3.1-flash-lite")
     (minuet-set-optional-options minuet-gemini-options
                                  :generationConfig
                                  '(:maxOutputTokens 256
@@ -280,7 +280,7 @@
                                  :generationConfig
                                  '(:thinkingConfig (:thinkingLevel "minimal")))
 
-    (plist-put minuet-duet-openai-compatible-options :model "google/gemini-3.1-flash-lite-preview")
+    (plist-put minuet-duet-openai-compatible-options :model "google/gemini-3.1-flash-lite")
     (minuet-set-optional-options minuet-duet-openai-compatible-options
                                  :reasoning_effort "none")
     )
