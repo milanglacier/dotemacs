@@ -116,7 +116,7 @@
 
     (general-define-key
      :keymaps 'eat-semi-char-mode-map
-     "C-c C-q" #'mg-eat-send-escape)
+     "C-c q" #'mg-eat-send-escape)
 
     (general-define-key
      :keymaps 'eat-semi-char-mode-map
@@ -155,7 +155,7 @@
 
     (general-define-key
      :keymaps 'vterm-mode-map
-     "C-c C-q" #'vterm-send-escape)
+     "C-c q" #'vterm-send-escape)
 
     (add-hook 'vterm-mode-hook (mg-setq-locally confirm-kill-processes nil))
     ;; From doomemacs: Prevent premature horizontal scrolling
