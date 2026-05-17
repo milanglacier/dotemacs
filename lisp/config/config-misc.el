@@ -116,7 +116,7 @@
 
     (general-define-key
      :keymaps 'eat-semi-char-mode-map
-     "C-c C-q" #'eat-self-input)
+     "C-c C-q" #'mg-eat-send-escape)
 
     (general-define-key
      :keymaps 'eat-semi-char-mode-map

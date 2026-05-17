@@ -53,5 +53,10 @@
         (evil-set-initial-state 'vterm-mode 'emacs)
         (remove-hook 'evil-collection-setup-hook 'mg--vterm-override-evil-collection)))
 
+;;;###autoload
+(defun mg-eat-send-escape ()
+    (interactive)
+    (eat--send-string nil (kbd "ESC")))
+
 (provide 'lib-misc)
 ;;; lib-misc.el ends here
