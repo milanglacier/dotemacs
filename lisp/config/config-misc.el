@@ -185,7 +185,7 @@
     (advice-add #'ghostel :around #'call-command-at-project-root)
 
     (add-to-list 'display-buffer-alist
-                 `("\\*ghostel\\*"
+                 `("\\*ghostel"
                    (display-buffer-in-side-window)
                    (window-height . 0.4)
                    (window-width .0.5)
