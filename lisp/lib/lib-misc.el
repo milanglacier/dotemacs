@@ -58,5 +58,10 @@
     (interactive)
     (eat--send-string nil (kbd "ESC")))
 
+;;;###autoload
+(defun mg-ghostl-send-escape ()
+    (interactive)
+    (ghostel-send-string (kbd "ESC")))
+
 (provide 'lib-misc)
 ;;; lib-misc.el ends here

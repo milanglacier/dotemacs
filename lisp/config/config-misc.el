@@ -26,8 +26,10 @@
                ("integration" "integration/*")
                (:exclude ".dir-locals.el" "*-tests.el"))))
 
-(defvar mg-terminal-backend 'vterm
-    "The terminal backend to use, can be either `eat' or `vterm'")
+(straight-use-package 'ghostel)
+
+(defvar mg-terminal-backend 'ghostel
+    "The terminal backend to use, can be either `eat', `vterm' or `ghostel'.")
 
 ;; ibuffer
 (straight-use-package 'ibuffer-vc)
@@ -109,7 +111,11 @@
     (mg-open-map
         :keymaps 'override
         :states '(normal insert motion)
-        "t" (if (eq mg-terminal-backend 'eat) #'eat #'vterm))
+        "t" (cond
+             ((eq mg-terminal-backend 'eat) #'eat)
+             ((eq mg-terminal-backend 'vterm) #'vterm)
+             ((eq mg-terminal-backend 'ghostel) #'ghostel)))
+
 
     :config
     (setq eat-kill-buffer-on-exit t)
@@ -160,6 +166,32 @@
     (add-hook 'vterm-mode-hook (mg-setq-locally confirm-kill-processes nil))
     ;; From doomemacs: Prevent premature horizontal scrolling
     (add-hook 'vterm-mode-hook (mg-setq-locally hscroll-margin 0)))
+
+(use-package ghostel
+    :config
+    (evil-set-initial-state 'ghostel-mode 'emacs)
+    (setq ghostel-kill-buffer-on-exit t)
+
+    (general-define-key
+     :keymaps 'ghostel-semi-char-mode-map
+     "C-c q" #'ghostel-send-escape
+     "C-S-v" #'ghostel-paste)
+
+    (general-define-key
+     :keymaps 'ghostel-mode-map
+     :states '(normal visual)
+     "i" #'evil-emacs-state)
+
+    (advice-add #'ghostel :around #'call-command-at-project-root)
+
+    (add-to-list 'display-buffer-alist
+                 `("\\*ghostel\\*"
+                   (display-buffer-in-side-window)
+                   (window-height . 0.4)
+                   (window-width .0.5)
+                   (slot . ,(alist-get 'ghostel mg-side-window-slots))))
+
+    (add-hook 'ghostel-mode-hook (mg-setq-locally hscroll-margin 0)))
 
 (use-package auto-revert
     :init
