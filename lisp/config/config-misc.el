@@ -174,7 +174,7 @@
 
     (general-define-key
      :keymaps 'ghostel-semi-char-mode-map
-     "C-c q" #'ghostel-send-escape
+     "C-c q" #'mg-ghostel-send-escape
      "C-S-v" #'ghostel-paste)
 
     (general-define-key

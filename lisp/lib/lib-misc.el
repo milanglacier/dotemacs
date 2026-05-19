@@ -59,7 +59,7 @@
     (eat--send-string nil (kbd "ESC")))
 
 ;;;###autoload
-(defun mg-ghostl-send-escape ()
+(defun mg-ghostel-send-escape ()
     (interactive)
     (ghostel-send-string (kbd "ESC")))
 

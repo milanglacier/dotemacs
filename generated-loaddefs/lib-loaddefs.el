@@ -306,7 +306,7 @@ In Dired, visit this file or directory in another window." t)
 
 (fn MODE _ &rest _)")
 (autoload 'mg-eat-send-escape "../lisp/lib/lib-misc" nil t)
-(autoload 'mg-ghostl-send-escape "../lisp/lib/lib-misc" nil t)
+(autoload 'mg-ghostel-send-escape "../lisp/lib/lib-misc" nil t)
 (register-definition-prefixes "../lisp/lib/lib-misc" '("mg--dired-subtree-add-nerd-icons"))
 
 
