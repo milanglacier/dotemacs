@@ -211,6 +211,10 @@
     (setq minuet-auto-suggestion-debounce-delay 0.5)
     (setq minuet-auto-suggestion-throttle-delay 1.5)
 
+    (add-hook 'prog-mode-hook #'minuet-duet-history-mode)
+    (add-hook 'markdown-mode-hook #'minuet-duet-history-mode)
+    (add-hook 'org-mode-hook #'minuet-duet-history-mode)
+
     (general-define-key
      :keymaps 'minuet-active-mode-map
      "M-;" #'minuet-previous-suggestion
@@ -250,7 +254,6 @@
 
     (minuet-set-optional-options minuet-codestral-options :stop ["\n\n"])
 
-    (plist-put minuet-openai-options :model "gpt-5.4-nano")
     (minuet-set-optional-options minuet-openai-options :max_completion_tokens 128)
     (minuet-set-optional-options minuet-openai-options :reasoning_effort "none")
     )
