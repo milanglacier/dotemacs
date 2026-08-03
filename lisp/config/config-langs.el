@@ -104,6 +104,22 @@
                                       :separate company-dabbrev-code)))
 
     (add-hook 'ess-r-mode-hook (mg-setq-locally eglot-stay-out-of '(company imenu)))
+
+    ;; NOTE: R's `languageserver' advertises on-type formatting for
+    ;; "\n" and ")]}", so typing those characters and RET causes eglot to
+    ;; dispatch a *synchronous* `textDocument/onTypeFormatting' request
+    ;; for every keystroke. Because the server's poll loop sleeps 0.1s
+    ;; between reads, each RET blocks Emacs for approximately 125ms and
+    ;; each `)' for around 150ms. This setting is buffer-local rather
+    ;; than global because other servers respond much faster; we only
+    ;; disable this capability for r-language-server. Manual formatting
+    ;; (`eglot-format-buffer') is preferred instead.
+    (add-hook 'ess-r-mode-hook
+              (mg-setq-locally eglot-ignored-server-capabilities
+                               '(:inlayHintProvider
+                                 :documentHighlightProvider
+                                 :documentOnTypeFormattingProvider)))
+
     (add-hook 'ess-r-mode-hook #'eglot-ensure)
     (add-hook 'ess-r-mode-hook (mg-setq-locally tab-width 4))
     (when (and (display-graphic-p)
