@@ -65,10 +65,16 @@
 
 
 ;;;###autoload
-(defun mg-evil-escape-compat-with-ghostel ()
-    "Leave speculative Evil insertions local while a terminal key is pending."
-    (and (bound-and-true-p evil-escape-mode)
-         (eq this-command #'ghostel--self-insert)))
+(defun mg-evil-escape-skip-insert-in-ghostel ()
+    "Return nil in ghostel buffers so evil-escape does not insert the first
+key of its escape sequence (e.g. `jk') on its own.
+
+evil-escape inserts the first key while it waits to see whether the
+second key follows, and removes it again afterwards.  In a ghostel
+buffer this temporary insertion would be sent to the shell, where it
+could not be removed again.  Returning nil prevents the insertion, and
+evil-escape still recognizes the full sequence on its own."
+    (not (derived-mode-p 'ghostel-mode)))
 
 (provide 'lib-misc)
 ;;; lib-misc.el ends here

@@ -307,8 +307,15 @@ In Dired, visit this file or directory in another window." t)
 (fn MODE _ &rest _)")
 (autoload 'mg-eat-send-escape "../lisp/lib/lib-misc" nil t)
 (autoload 'mg-ghostel-send-escape "../lisp/lib/lib-misc" nil t)
-(autoload 'mg-evil-escape-compat-with-ghostel "../lisp/lib/lib-misc" "\
-Leave speculative Evil insertions local while a terminal key is pending.")
+(autoload 'mg-evil-escape-skip-insert-in-ghostel "../lisp/lib/lib-misc" "\
+Return nil in ghostel buffers so evil-escape does not insert the first
+key of its escape sequence (e.g. `jk') on its own.
+
+evil-escape inserts the first key while it waits to see whether the
+second key follows, and removes it again afterwards.  In a ghostel
+buffer this temporary insertion would be sent to the shell, where it
+could not be removed again.  Returning nil prevents the insertion, and
+evil-escape still recognizes the full sequence on its own.")
 (register-definition-prefixes "../lisp/lib/lib-misc" '("mg--dired-subtree-add-nerd-icons"))
 
 

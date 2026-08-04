@@ -170,8 +170,8 @@
 (use-package ghostel
     :config
 
-    (add-hook 'ghostel-inhibit-input-forwarding-functions
-              #'mg-evil-escape-compat-with-ghostel)
+    (advice-add #'evil-escape--insert :before-while
+                #'mg-evil-escape-skip-insert-in-ghostel)
 
     (evil-set-initial-state 'ghostel-mode 'emacs)
     (setq ghostel-kill-buffer-on-exit t)
