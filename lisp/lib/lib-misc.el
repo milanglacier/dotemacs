@@ -63,5 +63,12 @@
     (interactive)
     (ghostel-send-string (kbd "ESC")))
 
+
+;;;###autoload
+(defun mg-evil-escape-compact-with-ghostel ()
+    "Leave speculative Evil insertions local while a terminal key is pending."
+    (and (bound-and-true-p evil-escape-mode)
+         (eq this-command #'ghostel--self-insert)))
+
 (provide 'lib-misc)
 ;;; lib-misc.el ends here

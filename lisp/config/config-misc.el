@@ -169,6 +169,10 @@
 
 (use-package ghostel
     :config
+
+    (add-hook 'ghostel-inhibit-input-forwarding-functions
+              #'mg-evil-escape-compact-with-ghostel)
+
     (evil-set-initial-state 'ghostel-mode 'emacs)
     (setq ghostel-kill-buffer-on-exit t)
 
