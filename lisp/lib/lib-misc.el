@@ -65,7 +65,7 @@
 
 
 ;;;###autoload
-(defun mg-evil-escape-compact-with-ghostel ()
+(defun mg-evil-escape-compat-with-ghostel ()
     "Leave speculative Evil insertions local while a terminal key is pending."
     (and (bound-and-true-p evil-escape-mode)
          (eq this-command #'ghostel--self-insert)))

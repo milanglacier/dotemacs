@@ -307,7 +307,7 @@ In Dired, visit this file or directory in another window." t)
 (fn MODE _ &rest _)")
 (autoload 'mg-eat-send-escape "../lisp/lib/lib-misc" nil t)
 (autoload 'mg-ghostel-send-escape "../lisp/lib/lib-misc" nil t)
-(autoload 'mg-evil-escape-compact-with-ghostel "../lisp/lib/lib-misc" "\
+(autoload 'mg-evil-escape-compat-with-ghostel "../lisp/lib/lib-misc" "\
 Leave speculative Evil insertions local while a terminal key is pending.")
 (register-definition-prefixes "../lisp/lib/lib-misc" '("mg--dired-subtree-add-nerd-icons"))
 
