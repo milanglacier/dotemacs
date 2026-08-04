@@ -211,10 +211,6 @@
     (setq minuet-auto-suggestion-debounce-delay 0.5)
     (setq minuet-auto-suggestion-throttle-delay 1.5)
 
-    (add-hook 'prog-mode-hook #'minuet-duet-history-mode)
-    (add-hook 'markdown-mode-hook #'minuet-duet-history-mode)
-    (add-hook 'org-mode-hook #'minuet-duet-history-mode)
-
     (general-define-key
      :keymaps 'minuet-active-mode-map
      "M-;" #'minuet-previous-suggestion
@@ -273,6 +269,11 @@
         "m x" #'minuet-duet-dismiss)
 
     :config
+
+    (add-hook 'prog-mode-hook #'minuet-duet-history-mode)
+    (add-hook 'markdown-mode-hook #'minuet-duet-history-mode)
+    (add-hook 'org-mode-hook #'minuet-duet-history-mode)
+
     (setq minuet-duet-provider 'gemini)
     (general-define-key
      :keymaps 'minuet-duet-active-mode-map
