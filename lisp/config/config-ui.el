@@ -51,6 +51,7 @@
     '((helpful . 1) ;; 0 is the default
       (vterm . -1)
       (eat . -1)
+      (ghostel . -1)
       (eldoc . 1)
       (aichat . 2)
       (python . -1)
@@ -68,6 +69,7 @@ if they are side window.")
 (defvar mg-side-window-sides
     '((helpful . bottom) ;;bottom is the default
       (vterm . bottom)
+      (ghostel . bottom)
       (eat . bottom)
       (eldoc . bottom)
       (aichat . bottom)
