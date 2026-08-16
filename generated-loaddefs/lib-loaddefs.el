@@ -271,6 +271,8 @@ reformatter according to the `major-mode-reformatter-plist'" t)
 (autoload 'mg-dape-start-or-continue "../lisp/lib/lib-langtools" "\
 Try `dape-continue' and fall back to `dape'." t)
 (autoload 'mg--dape-keymap-setup "../lisp/lib/lib-langtools")
+(autoload 'mg-minuet-duet-only-in-evil-normal-p "../lisp/lib/lib-langtools" "\
+Return non-nil to block duet prediction outside evil normal state.")
 (register-definition-prefixes "../lisp/lib/lib-langtools" '("major-mode-reformatter-plist" "mg-"))
 
 

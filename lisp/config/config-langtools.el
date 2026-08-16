@@ -269,6 +269,8 @@
         "m x" #'minuet-duet-dismiss)
 
     :config
+    ;; Only trigger duet auto-prediction when in Evil state
+    (add-hook 'minuet-duet-auto-block-predicates #'mg-minuet-duet-only-in-evil-normal-p)
 
     (add-hook 'prog-mode-hook #'minuet-duet-history-mode)
     (add-hook 'markdown-mode-hook #'minuet-duet-history-mode)

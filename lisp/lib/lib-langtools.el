@@ -172,5 +172,12 @@ reformatter according to the `major-mode-reformatter-plist'"
      "<S-f11>" #'dape-step-out)
     )
 
+;;;###autoload
+(defun mg-minuet-duet-only-in-evil-normal-p ()
+    "Return non-nil to block duet prediction outside evil normal state."
+    (not (and (bound-and-true-p evil-local-mode)
+              (evil-normal-state-p))))
+
+
 (provide 'lib-langtools)
 ;;; lib-langtools.el ends here
