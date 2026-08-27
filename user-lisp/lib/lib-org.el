@@ -20,14 +20,17 @@
 
 ;;;###autoload
 (defun mg-org-agenda-visited-all-directories ()
-    "Org agenda need to visted all files listed in `org-agenda-files'
-to create the view, which is expensive. By default I will only list a
-small portion of files to be searched.  This function searches all the
-files in the org-directory to create the org-agenda view"
+    "Create an agenda from matching files under `org-directory'."
     (interactive)
-    (let* ((directories (seq-filter #'file-directory-p
-                                    (directory-files-recursively org-directory "\\`" t)))
-           (org-agenda-files directories))
+    (let ((org-agenda-files
+           (directory-files-recursively
+            org-directory
+            org-agenda-file-regexp
+            nil
+            (lambda (directory)
+                (not (member (file-name-nondirectory
+                              (directory-file-name directory))
+                             '(".git" "node_modules")))))))
         (call-interactively #'org-agenda)))
 
 ;;;###autoload
