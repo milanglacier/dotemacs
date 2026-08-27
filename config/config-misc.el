@@ -187,6 +187,7 @@
      "i" #'evil-emacs-state)
 
     (advice-add #'ghostel :around #'call-command-at-project-root)
+    (advice-add #'ghostel-exec :around #'call-command-at-project-root)
 
     (add-to-list 'display-buffer-alist
                  `("\\*ghostel"
