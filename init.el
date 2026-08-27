@@ -12,6 +12,15 @@
          (expand-file-name ".user-lisp-autoloads.el" user-lisp-directory))
     (prepare-user-lisp))
 
+;; Emacs normally loads the autoload cache in `user-lisp-directory' before it
+;; runs this file, but it skips that step in batch mode, where `--batch' implies
+;; `-q' and Emacs reads that as the user wanting none of their own Lisp.
+;; Without the call below, `emacs --batch -l init.el' fails on the first
+;; function that lives in `user-lisp'.  We only load the cache here; rebuilding
+;; it would recompile that whole directory, which no batch job should be doing.
+(unless init-file-user
+    (prepare-user-lisp t))
+
 (setq use-package-expand-minimally t
       ;; use-package is a macro. Don't let the macro expands into
       ;; codes with too much of irrelevant checks.
