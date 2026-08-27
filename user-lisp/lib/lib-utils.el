@@ -1,25 +1,6 @@
 ;;; lib-utils.el -*- lexical-binding: t; -*-
 
 ;;;###autoload
-(defun mg-update-all-autoloads (&optional autoloads-dir autoloads-file)
-    "Update all autoloads in the AUTOLOADS-DIR into the AUTOLOADS-FILE.
-If AUTOLOADS-DIR is nil, use `mg-autoloads-dir'. If AUTOLOADS-FILE is
-nil, use `mg-autoloads-file'."
-    (interactive)
-    (let ((autoloads-dir (or autoloads-dir mg-lib-dir))
-          (autoloads-file (or autoloads-file mg-autoloads-file)))
-        (when (not (file-exists-p autoloads-file))
-            (with-current-buffer (find-file-noselect
-                                  autoloads-file)
-                (save-buffer)))
-        (loaddefs-generate autoloads-dir autoloads-file nil nil nil t)))
-
-;;;###autoload
-(defun mg-update-site-lisp-autoloads ()
-    (interactive)
-    (mg-update-all-autoloads mg-site-lisp-dirs mg-site-lisp-autoloads-file))
-
-;;;###autoload
 (defmacro mg-run-hook-once (hooks func &rest args)
     "a wrapper to run a function (can be named or lambda) on a hook or
 a list of hooks only once.  When HOOKS is a list, only run FUNC once

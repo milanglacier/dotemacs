@@ -2,6 +2,12 @@
 
 (setq package-enable-at-startup nil)
 
+;; Checking every file in user-lisp significantly slows Emacs startup,
+;; adding about 35 ms here.  Run `M-x prepare-user-lisp' after changing
+;; autoload cookies, adding functions that should be autoloaded, or renaming
+;; or deleting a Lisp file there.
+(setq user-lisp-auto-scrape nil)
+
 ;; increase gc threshold to speedup starting up
 (setq gc-cons-percentage 0.6)
 (setq gc-cons-threshold most-positive-fixnum)

@@ -27,3 +27,6 @@ ELPA
 result
 /.codex
 /nix-generated.el
+# Emacs generates these for files in user-lisp.
+/user-lisp/**/*.elc
+/user-lisp/.user-lisp-autoloads.el

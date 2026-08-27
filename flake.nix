@@ -39,9 +39,9 @@
               libvterm-neovim
               gnumake
             ]
-            ++ lib.optional pkgs.stdenv.isLinux pkgs.gcc
+            ++ lib.optional pkgs.stdenv.hostPlatform.isLinux pkgs.gcc
             ++ lib.optional pkgs.stdenv.isDarwin pkgs.clang;
-          cc = if pkgs.stdenv.isLinux then pkgs.gcc else pkgs.clang;
+          cc = if pkgs.stdenv.hostPlatform.isLinux then pkgs.gcc else pkgs.clang;
 
           buildVterm = pkgs.writeShellApplication {
             name = "milanglacier-build-vterm";

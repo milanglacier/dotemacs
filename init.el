@@ -4,26 +4,13 @@
 (setq gc-cons-percentage 0.6)
 (setq gc-cons-threshold most-positive-fixnum)
 
-(defvar mg-config-dir (file-name-concat user-emacs-directory "lisp" "config")
-    "the directory of my configuration.")
-(defvar mg-lib-dir (file-name-concat user-emacs-directory "lisp" "lib")
-    "the directory of my library functions")
-(defvar mg-site-lisp-dir (file-name-concat user-emacs-directory "site-lisp")
-    "the root directory of third-party lisp files.")
-(defvar mg-site-lisp-dirs `(,mg-site-lisp-dir)
-    "the directories of third-party lisp files.")
-
-(defvar mg-autoloads-file (file-name-concat user-emacs-directory "generated-loaddefs" "lib-loaddefs.el")
-    "the file of my generated autoload definitions")
-
-(defvar mg-site-lisp-autoloads-file
-    (file-name-concat user-emacs-directory "generated-loaddefs" "site-lisp-loaddefs.el")
-    "the file of third-party autoloaded functions.")
-
-(push mg-config-dir load-path)
-(push mg-lib-dir load-path)
-(dolist (dir mg-site-lisp-dirs) (push dir load-path))
+(push (file-name-concat user-emacs-directory "config") load-path)
 (setq custom-file (file-name-concat user-emacs-directory "custom.el"))
+
+;; Generate the native autoload cache on the first startup.
+(unless (file-exists-p
+         (expand-file-name ".user-lisp-autoloads.el" user-lisp-directory))
+    (prepare-user-lisp))
 
 (setq use-package-expand-minimally t
       ;; use-package is a macro. Don't let the macro expands into
@@ -62,9 +49,6 @@
             (goto-char (point-max))
             (eval-print-last-sexp)))
     (load bootstrap-file nil 'nomessage))
-
-(load mg-autoloads-file nil t) ;; don't show message
-(load mg-site-lisp-autoloads-file nil t)
 
 ;; Useful for analyzing startup performance.  Helps identify which
 ;; packages significantly delay initialization.
