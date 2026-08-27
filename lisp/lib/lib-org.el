@@ -25,15 +25,9 @@ to create the view, which is expensive. By default I will only list a
 small portion of files to be searched.  This function searches all the
 files in the org-directory to create the org-agenda view"
     (interactive)
-    (let* ((default-directory org-directory)
-           (directories-string (shell-command-to-string "find * -type d -print0"))
-           ;; the literal null character will cause git to wrongly
-           ;; consider this file as a binary file. Use the `kbd' to
-           ;; get the internal representation of the null character
-           (directories (split-string directories-string (kbd "^@") nil))
-           (org-agenda-files (mapcar (lambda (x)
-                                         (file-name-concat org-directory x))
-                                     directories)))
+    (let* ((directories (seq-filter #'file-directory-p
+                                    (directory-files-recursively org-directory "\\`" t)))
+           (org-agenda-files directories))
         (call-interactively #'org-agenda)))
 
 ;;;###autoload
