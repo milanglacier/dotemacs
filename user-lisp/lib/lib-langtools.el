@@ -121,8 +121,16 @@ be associated with a real file."
 
 ;;;###autoload
 (defun mg-treesit-install-all-language-grammar ()
+    "Install grammars for the modes enabled by `treesit-enabled-modes'.
+Mode hooks do not run."
     (interactive)
-    (mapc #'treesit-install-language-grammar (mapcar #'car treesit-language-source-alist)))
+    (dolist (mode (if (eq treesit-enabled-modes t)
+                         (delete-dups
+                          (mapcar #'cdr treesit-major-mode-remap-alist))
+                     treesit-enabled-modes))
+        (with-temp-buffer
+            (delay-mode-hooks
+                (funcall mode)))))
 
 (defvar major-mode-reformatter-plist
     '(python-ts-mode black-format-buffer
