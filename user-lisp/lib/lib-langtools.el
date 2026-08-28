@@ -121,13 +121,10 @@ be associated with a real file."
 
 ;;;###autoload
 (defun mg-treesit-install-all-language-grammar ()
-    "Install grammars for the modes enabled by `treesit-enabled-modes'.
+    "Install grammars for the modes in `major-mode-remap-alist'.
 Mode hooks do not run."
     (interactive)
-    (dolist (mode (if (eq treesit-enabled-modes t)
-                         (delete-dups
-                          (mapcar #'cdr treesit-major-mode-remap-alist))
-                     treesit-enabled-modes))
+    (dolist (mode (delete-dups (mapcar #'cdr major-mode-remap-alist)))
         (with-temp-buffer
             (delay-mode-hooks
                 (funcall mode)))))

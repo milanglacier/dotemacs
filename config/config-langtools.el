@@ -293,27 +293,39 @@
 
 (use-package treesit
     :init
-    (setopt treesit-auto-install-grammar 'always
-            treesit-enabled-modes
-            '(c-ts-mode
-              c++-ts-mode
-              c-or-c++-ts-mode
-              cmake-ts-mode
-              toml-ts-mode
-              css-ts-mode
-              js-ts-mode
-              java-ts-mode
-              json-ts-mode
-              python-ts-mode
-              bash-ts-mode
-              typescript-ts-mode
-              rust-ts-mode
-              go-ts-mode
-              dockerfile-ts-mode
-              go-mod-ts-mode
-              lua-ts-mode
-              yaml-ts-mode)
-            treesit-font-lock-level 4)
+    ;; `setopt' is heavier than `setq'.  In particular,
+    ;; `treesit-enabled-modes' has a costly custom setter that updates
+    ;; `major-mode-remap-alist', so avoid running it during startup.
+    (setq treesit-auto-install-grammar 'always
+          major-mode-remap-alist
+          '((c-mode          . c-ts-mode)
+            (c++-mode        . c++-ts-mode)
+            (c-or-c++-mode   . c-or-c++-ts-mode)
+            (cmake-mode      . cmake-ts-mode)
+            (conf-toml-mode  . toml-ts-mode)
+            (css-mode        . css-ts-mode)
+            (js-mode         . js-ts-mode)
+            (javascript-mode . js-ts-mode)
+            (java-mode       . java-ts-mode)
+            (js-json-mode    . json-ts-mode)
+            (python-mode     . python-ts-mode)
+            (sh-mode         . bash-ts-mode)
+            (typescript-mode . typescript-ts-mode)
+            (rust-mode       . rust-ts-mode)
+            (go-mode         . go-ts-mode)
+            (dockerfile-mode . dockerfile-ts-mode)
+            (go-mod-mode     . go-mod-ts-mode)
+            (lua-mode        . lua-ts-mode)
+            (yaml-mode       . yaml-ts-mode))
+          treesit-font-lock-level 4)
+
+    (add-to-list 'auto-mode-alist '("CMakeLists\\'" . cmake-ts-mode))
+    (add-to-list 'auto-mode-alist '("Dockerfile\\'" . dockerfile-ts-mode))
+    (add-to-list 'auto-mode-alist '("\\.go\\'" . go-ts-mode))
+    (add-to-list 'auto-mode-alist '("/go\\.mod\\'" . go-mod-ts-mode))
+    (add-to-list 'auto-mode-alist '("\\.rs\\'" . rust-ts-mode))
+    (add-to-list 'auto-mode-alist '("\\.lua\\'" . lua-ts-mode))
+    (add-to-list 'auto-mode-alist '("\\.y[a]?ml\\'" . yaml-ts-mode))
 
     )
 
