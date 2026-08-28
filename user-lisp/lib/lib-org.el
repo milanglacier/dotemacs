@@ -18,6 +18,12 @@
 ;; TODO: I don't find a way to disable this behavior yet. Ask for the
 ;; mailing-list.
 
+(defconst mg-org-agenda-skipped-directories
+    '(".git" "node_modules" "archive" ".agents")
+    "Directory names `mg-org-agenda-visited-all-directories' does not descend into.
+`archive' holds finished work, and `.agents' holds agent tooling whose test
+fixtures contain Org files that are not journal entries.")
+
 ;;;###autoload
 (defun mg-org-agenda-visited-all-directories ()
     "Create an agenda from matching files under `org-directory'."
@@ -30,7 +36,7 @@
             (lambda (directory)
                 (not (member (file-name-nondirectory
                               (directory-file-name directory))
-                             '(".git" "node_modules")))))))
+                             mg-org-agenda-skipped-directories))))))
         (call-interactively #'org-agenda)))
 
 ;;;###autoload
