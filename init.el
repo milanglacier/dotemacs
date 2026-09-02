@@ -70,7 +70,7 @@
 (require 'config-ui)
 (require 'config-colorscheme)
 (require 'config-evil)
-(require 'config-completion)
+(require 'config-completion-company)
 (require 'config-minibuffer)
 (require 'config-vcs)
 (require 'config-elisp)

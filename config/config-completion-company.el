@@ -1,4 +1,4 @@
-;;; config-completion.el -*- lexical-binding: t; -*-
+;;; config-completion-company.el -*- lexical-binding: t; -*-
 
 (straight-use-package 'company)
 (straight-use-package 'company-box)
@@ -155,5 +155,5 @@
     :init
     (setq yas-verbosity 2))
 
-(provide 'config-completion)
-;;; config-completion.el ends here
+(provide 'config-completion-company)
+;;; config-completion-company.el ends here

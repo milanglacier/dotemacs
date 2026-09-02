@@ -1,4 +1,4 @@
-;;; lib-completion.el -*- lexical-binding: t; -*-
+;;; lib-completion-company.el -*- lexical-binding: t; -*-
 
 ;;;###autoload
 (defun mg-company-abort ()
@@ -15,5 +15,5 @@
 (defalias #'mg-complete-ctags (cape-capf-interactive #'citre-completion-at-point)
     "complete ctags completions using minibuffer")
 
-(provide 'lib-completion)
-;;; lib-completion ends here
+(provide 'lib-completion-company)
+;;; lib-completion-company ends here
