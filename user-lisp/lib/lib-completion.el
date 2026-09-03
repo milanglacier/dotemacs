@@ -31,14 +31,5 @@ completion, this serves the same purpose as
     (seq-filter (lambda (buf) (< (buffer-size buf) (* 1024 1024)))
                 (cape-same-mode-buffers)))
 
-;;;###autoload
-(defun mg-corfu-reset-filter (cmd)
-    "Return CMD only while a candidate is inserted as a preview.
-Used as the `:filter' of a menu item so the key otherwise falls
-through to its usual binding."
-    (when (and (>= corfu--index 0)
-               (eq corfu-preview-current 'insert))
-        cmd))
-
 (provide 'lib-completion)
 ;;; lib-completion.el ends here

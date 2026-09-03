@@ -78,12 +78,7 @@
      "C-e" #'corfu-quit
      ;; use C-y to enter yasnippet expansion
      ;; without input of additional character.
-     "C-y" #'corfu-insert
-     ;; Once TAB has inserted a candidate as a preview, backspace
-     ;; drops the whole preview and restores the original input,
-     ;; instead of deleting one character of the candidate.
-     "DEL" '(menu-item "Reset completion" corfu-reset :filter mg-corfu-reset-filter)
-     "<backspace>" '(menu-item "Reset completion" corfu-reset :filter mg-corfu-reset-filter))
+     "C-y" #'corfu-insert)
 
     (general-define-key
      :keymaps 'corfu-mode-map
