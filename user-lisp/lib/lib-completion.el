@@ -24,10 +24,8 @@
 
 ;;;###autoload
 (defun mg-cape-dabbrev-buffers ()
-    "Return the buffers with the same major mode that are smaller than 1MB.
-Scanning a huge buffer for dabbrev candidates would stall auto
-completion, this serves the same purpose as
-`company-dabbrev-code-time-limit'."
+    "Return buffers with the same major mode that are smaller than 1MB.
+Larger buffers are skipped to keep completion responsive."
     (seq-filter (lambda (buf) (< (buffer-size buf) (* 1024 1024)))
                 (cape-same-mode-buffers)))
 
