@@ -6,6 +6,8 @@
 
 (straight-use-package 'yasnippet)
 
+(setq mg-completion-ui 'company)
+
 (use-package company
 
     :init

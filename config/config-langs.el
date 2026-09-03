@@ -98,10 +98,12 @@
      :keymaps 'ess-mode-map
      "C-c r" #'mg-send-region-to-ess)
 
-    (mg-setq-on-hook ess-r-mode-hook company-backends
-                     '((company-files company-yasnippet company-capf
-                                      company-R-args company-R-objects
-                                      :separate company-dabbrev-code)))
+    ;; Corfu completes R buffers with eglot, snippets and citre instead.
+    (when (eq mg-completion-ui 'company)
+        (mg-setq-on-hook ess-r-mode-hook company-backends
+                         '((company-files company-yasnippet company-capf
+                                          company-R-args company-R-objects
+                                          :separate company-dabbrev-code))))
 
     (add-hook 'ess-r-mode-hook (mg-setq-locally eglot-stay-out-of '(company imenu)))
 

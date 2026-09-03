@@ -3,12 +3,22 @@
 (defalias #'mg-eglot-citre-capf
     (cape-capf-super #'eglot-completion-at-point #'citre-completion-at-point))
 
+(defalias #'mg-yas-eglot-citre-capf
+    (cape-capf-super #'yasnippet-capf #'eglot-completion-at-point #'citre-completion-at-point))
+
 ;;;###autoload
 (defun mg-toggle-citre-eglot-capf ()
     (if (eglot-managed-p)
             (add-to-list 'completion-at-point-functions #'mg-eglot-citre-capf)
         (setq-local completion-at-point-functions
                     (delq #'mg-eglot-citre-capf completion-at-point-functions))))
+
+;;;###autoload
+(defun mg-toggle-yas-eglot-citre-capf ()
+    (if (eglot-managed-p)
+            (add-to-list 'completion-at-point-functions #'mg-yas-eglot-citre-capf)
+        (setq-local completion-at-point-functions
+                    (delq #'mg-yas-eglot-citre-capf completion-at-point-functions))))
 
 (defun mg-eldoc-buffer-dwim-fallback ()
     "When eldoc buffer window is not opened, display the eldoc

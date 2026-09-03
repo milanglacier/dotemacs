@@ -65,12 +65,18 @@
 ;; (benchmark-init/activate)
 ;; (benchmark-init/show-durations-tabulated)
 
+
+;; Set to `company' or `corfu' by the completion config loaded below,
+;; so that other config files can adapt to the completion frontend in
+;; use.
+(defvar mg-completion-ui nil)
+
 (require 'config-utils)
 (require 'config-basics)
 (require 'config-ui)
 (require 'config-colorscheme)
 (require 'config-evil)
-(require 'config-completion-company)
+(require 'config-completion-corfu)
 (require 'config-minibuffer)
 (require 'config-vcs)
 (require 'config-elisp)

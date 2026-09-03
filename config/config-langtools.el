@@ -128,8 +128,11 @@
 
     (add-to-list 'eglot-server-programs '(markdown-mode "efm-langserver"))
 
-    (add-hook
-     'eglot-managed-mode-hook #'mg-toggle-citre-eglot-capf)
+    (cond ((eq mg-completion-ui 'company)
+           (add-hook 'eglot-managed-mode-hook #'mg-toggle-citre-eglot-capf))
+          ;; Corfu also merges snippet candidates into the eglot ones.
+          ((eq mg-completion-ui 'corfu)
+           (add-hook 'eglot-managed-mode-hook #'mg-toggle-yas-eglot-citre-capf)))
 
     ;; NOTE: THIS IS REALLY IMPORTANT!
     ;; when you register evil keymaps for a minor mode keymap you MUST

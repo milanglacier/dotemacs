@@ -165,8 +165,9 @@
 
     :config
     (add-hook 'org-msg-edit-mode-hook (mg-turn-off-mode diff-hl-mode))
-    (mg-setq-on-hook org-msg-edit-mode-hook company-backends
-                     `(notmuch-company ,@company-backends))
+    (when (eq mg-completion-ui 'company)
+        (mg-setq-on-hook org-msg-edit-mode-hook company-backends
+                         `(notmuch-company ,@company-backends)))
     )
 
 (provide 'config-email)
