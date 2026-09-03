@@ -132,6 +132,12 @@
            (add-hook 'eglot-managed-mode-hook #'mg-toggle-citre-eglot-capf))
           ;; Corfu also merges snippet candidates into the eglot ones.
           ((eq mg-completion-ui 'corfu)
+           ;; Keep the order provided by completion sources. This
+           ;; is especially important for `mg-yas-eglot-citre-capf',
+           ;; where the desired order is yas -> eglot -> citre, and
+           ;; eglot candidates keep their own sorting.
+           (add-hook 'eglot-managed-mode-hook
+                     (mg-setq-locally corfu-sort-function nil))
            (add-hook 'eglot-managed-mode-hook #'mg-toggle-yas-eglot-citre-capf)))
 
     ;; NOTE: THIS IS REALLY IMPORTANT!

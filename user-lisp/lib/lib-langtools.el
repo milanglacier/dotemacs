@@ -4,7 +4,15 @@
     (cape-capf-super #'eglot-completion-at-point #'citre-completion-at-point))
 
 (defalias #'mg-yas-eglot-citre-capf
-    (cape-capf-super #'yasnippet-capf #'eglot-completion-at-point #'citre-completion-at-point))
+    ;; Citre can return the same completion text for tags at different
+    ;; locations or duplicate an Eglot candidate.  Candidate metadata is
+    ;; stored in text properties, which `delete-dups' ignores.  It keeps
+    ;; the first match, preserving Yasnippet -> Eglot -> Citre priority.
+    (cape-capf-sort
+     (cape-capf-super #'yasnippet-capf
+                      #'eglot-completion-at-point
+                      #'citre-completion-at-point)
+     #'delete-dups))
 
 ;;;###autoload
 (defun mg-toggle-citre-eglot-capf ()
