@@ -51,6 +51,8 @@
           ;; `company-tng-mode'.
           evil-collection-corfu-key-themes '(default tab-n-go magic-return))
 
+    ;; Fallback sources: the t in a buffer-local hook value means
+    ;; "run the global list here", so these still apply.
     (setq-default completion-at-point-functions
                   (list #'cape-file #'yasnippet-capf #'cape-dabbrev))
 
