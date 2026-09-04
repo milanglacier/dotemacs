@@ -42,7 +42,8 @@ configuration. Instead, it is \"heavy\" and feature rich, including:
 - A keybinding scheme centered around leader and localleader keys,
   powered by `general` and `which-key`.
 
-- In-buffer autocompletion frontend based on `company`
+- In-buffer autocompletion frontend based on `corfu`, with `company`
+  still supported as an alternative
 
 - Code completion and navigation based on `eglot` (LSP) and `citre`
   (Ctags).
