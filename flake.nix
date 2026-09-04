@@ -89,7 +89,6 @@
             name = "milanglacier-build-all";
             text = ''
               set -euo pipefail
-              "${buildVterm}/bin/milanglacier-build-vterm" "$@"
               "${buildPdfTools}/bin/milanglacier-build-pdftools" "$@"
             '';
           };
