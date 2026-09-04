@@ -126,6 +126,22 @@ located in the current directory.
   execute the command ~M-x mg-treesit-install-all-language-grammar~ to
   install all the language grammars that are currently in use.
 
+* Setup
+
+Emacs 31 normally scans ~user-lisp~ for autoload changes at startup and
+rebuilds the autoloads as needed.  To speed up startup, this
+configuration disables that automatic scan.  On a fresh clone, run
+this once:
+
+#+begin_src sh
+make setup
+#+end_src
+
+This installs the Git hooks that build the autoloads and keep them
+current after Git updates.  You can also rebuild the autoloads
+manually with ~make build~.  Use ~make setup_force~ to replace existing
+hooks while keeping backups.
+
 * External Dependencies
 
 This configuration requires the following core dependencies:

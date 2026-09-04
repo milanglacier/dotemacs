@@ -1,4 +1,4 @@
-If you're currently reading this README file in Markdown format, it has
+If you\'re currently reading this README file in Markdown format, it has
 been generated through `org-export`, from its original org format. For
 the best experience, please consider reading the org format file
 instead.
@@ -13,9 +13,9 @@ branch.
 
 With TTY starting in 0.23 seconds on a MacBook Air (M1, 2020), 0.73
 seconds on a VPS with a 1-core CPU and 1 GB RAM, and 0.21 seconds on WSL
-with Intel i7 CPU and 32 GB RAM, TTY is exceptionally fast. The GUI is
-just as quick, starting in 0.40 seconds on Mac M1 and 0.30 seconds on
-WSLg.
+with Intel i7-1185G7 CPU and 32 GB RAM, TTY is exceptionally fast. The
+GUI is just as quick, starting in 0.40 seconds on Mac M1 and 0.30
+seconds on WSLg.
 
 ## Robust
 
@@ -30,8 +30,8 @@ well-configured.
 
 ## Feature rich
 
-A blazing fast startup speed doesn't mean it is a lite and minimal
-configuration. Instead, it is "heavy" and feature rich, including:
+A blazing fast startup speed doesn\'t mean it is a lite and minimal
+configuration. Instead, it is \"heavy\" and feature rich, including:
 
 - A modern minibuffer completion experience powered by
   `vertico+consult+orderless+embark+marginalia` family bucket.
@@ -124,13 +124,29 @@ in the current directory.
 - Your Emacs must be built with Treesitter support for this
   configuration to work effectively. If you are using a widely used
   package manager, and said manager has updated Emacs to version 29 or
-  later, it's highly probable that Treesitter is already built into the
+  later, it\'s highly probable that Treesitter is already built into the
   Emacs version provided via the package manager. We advise verifying
   the package specifications for exact details if you choose to leverage
   a package manager-built Emacs.
 - A separate installation is required for Treesitter grammar. You can
   execute the command `M-x mg-treesit-install-all-language-grammar` to
   install all the language grammars that are currently in use.
+
+# Setup
+
+Emacs 31 normally scans `user-lisp` for autoload changes at startup and
+rebuilds the autoloads as needed. To speed up startup, this
+configuration disables that automatic scan. On a fresh clone, run this
+once:
+
+``` {.bash org-language="sh"}
+make setup
+```
+
+This installs the Git hooks that build the autoloads and keep them
+current after Git updates. You can also rebuild the autoloads manually
+with `make build`. Use `make setup_force` to replace existing hooks
+while keeping backups.
 
 # External Dependencies
 
@@ -147,9 +163,9 @@ servers, formatters, and linters. For instance, you would need
 
 # Nix Users
 
-When updating packages with `straight` (for example via `M-x
-straight-pull-all`), run `nix run .#build` afterwards to rebuild any
-packages that ship dynamic modules. `straight` may clear the build
+When updating packages with `straight` (for example via
+`M-x straight-pull-all`), run `nix run .#build` afterwards to rebuild
+any packages that ship dynamic modules. `straight` may clear the build
 directory during updates, which can remove previously built module
 artifacts; rebuilding ensures those modules are available again.
 
