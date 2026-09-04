@@ -67,6 +67,7 @@
 
     (corfu-popupinfo-mode)
     (corfu-echo-mode)
+    (advice-add #'corfu-echo--show :around #'mg-corfu-echo--one-line)
 
     (add-to-list 'corfu-margin-formatters #'nerd-icons-corfu-formatter)
 

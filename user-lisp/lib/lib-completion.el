@@ -1,5 +1,16 @@
 ;;; lib-completion.el -*- lexical-binding: t; -*-
 
+;;; Corfu
+
+;;;###autoload
+(defun mg-corfu-echo--one-line (orig-fn &rest args)
+    "Show Corfu echo messages on one screen line."
+    (when-let* ((message-truncate-lines t)
+                (msg (car args))
+                (newline (string-search "\n" msg)))
+        (setcar args (substring msg 0 newline)))
+    (apply orig-fn args))
+
 ;;; Cape
 
 (defalias #'mg-eglot-citre-capf
