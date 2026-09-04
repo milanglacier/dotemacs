@@ -1,0 +1,52 @@
+#!/bin/sh
+
+set -eu
+
+force=false
+if [ "${1-}" = "--force" ]; then
+    force=true
+    shift
+fi
+
+if [ "$#" -ne 0 ]; then
+    printf 'Usage: %s [--force]\n' "$0" >&2
+    exit 2
+fi
+
+path_exists() {
+    [ -e "$1" ] || [ -L "$1" ]
+}
+
+script_directory=$(CDPATH='' cd "$(dirname "$0")" && pwd -P)
+repository=$(dirname "$script_directory")
+cd "$repository"
+
+hooks_directory=$(git rev-parse --git-path hooks)
+hook_script="$script_directory/build-user-lisp"
+mkdir -p "$hooks_directory"
+
+for hook_name in post-applypatch post-checkout post-commit post-merge post-rewrite; do
+    hook_path="$hooks_directory/$hook_name"
+
+    if [ -L "$hook_path" ] && [ "$(readlink "$hook_path")" = "$hook_script" ]; then
+        continue
+    fi
+
+    if path_exists "$hook_path"; then
+        if [ "$force" = false ]; then
+            continue
+        fi
+
+        backup_path="$hook_path.backup"
+        backup_number=0
+        while path_exists "$backup_path"; do
+            backup_number=$((backup_number + 1))
+            backup_path="$hook_path.backup.$backup_number"
+        done
+        mv "$hook_path" "$backup_path"
+        printf 'Backed up %s as %s.\n' "$hook_path" "$backup_path"
+    fi
+
+    ln -s "$hook_script" "$hook_path"
+    printf 'Linked %s.\n' "$hook_path"
+done

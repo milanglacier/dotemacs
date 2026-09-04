@@ -1,0 +1,7 @@
+#!/bin/sh
+
+set -eu
+
+repository=$(git rev-parse --show-toplevel)
+exec "${EMACS:-emacs}" --batch -Q --init-directory="$repository" \
+    --eval '(prepare-user-lisp nil nil t)'
