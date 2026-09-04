@@ -3,9 +3,9 @@ been generated through `org-export`, from its original org format. For
 the best experience, please consider reading the org format file
 instead.
 
-**NOTE**: This configuration requires Emacs 30 or later. For
-compatibility with earlier versions, please use the `emacs-29-compat`
-branch.
+**NOTE**: This configuration requires Emacs 31 or later. For
+compatibility with Emacs 30, please use the `emacs-30-compact` tag. For
+Emacs 29, please use the `emacs-29-compact` tag.
 
 # Features
 
@@ -121,7 +121,7 @@ in the current directory.
 
 # Prerequisites
 
-- This configuration is designed for Emacs 29 or newer versions.
+- This configuration is designed for Emacs 31 or newer.
 - Your Emacs must be built with Treesitter support for this
   configuration to work effectively. If you are using a widely used
   package manager, and said manager has updated Emacs to version 29 or
