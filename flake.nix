@@ -68,6 +68,50 @@
             '';
           };
 
+          mupdf = pkgs.mupdf-headless;
+          readerModuleSuffix = if pkgs.stdenv.isDarwin then "dylib" else "so";
+          readerLdFlags =
+            (if pkgs.stdenv.isDarwin then "-dynamiclib" else "-shared -lpthread")
+            + " -L${mupdf.out}/lib -lmupdf -Wl,-rpath,${mupdf.out}/lib";
+
+          buildReader = pkgs.writeShellApplication {
+            name = "milanglacier-build-reader";
+            runtimeInputs = [
+              pkgs.gnumake
+              cc
+            ];
+            text = ''
+              if ! cd straight/repos/emacs-reader; then
+                echo "Error: directory straight/repos/emacs-reader not found relative to current directory." >&2
+                exit 1
+              fi
+              export CFLAGS="-I${mupdf.dev}/include"
+              # Disable pkg-config and Homebrew detection and pass the mupdf
+              # lib from the Nix store directly. Also pass LDFLAGS because the
+              # upstream Makefile deliberately ignores the environment variable
+              # LDFLAGS. Pass -rpath so the program knows where to find the
+              # shared mupdf library (in nix store).
+              make \
+                CC="${cc}/bin/cc" \
+                USE_PKGCONFIG=no \
+                BREW_PREFIX="${mupdf.dev}" \
+                LDFLAGS="${readerLdFlags}" \
+                "render-core.${readerModuleSuffix}"
+              rm -f render/*.o
+
+              # Because we disabled Straight's startup modification checks for
+              # faster startup, Straight cannot know that the shared library
+              # has been built. We therefore manually symlink the built library
+              # into Straight's build directory, which is the exact path added
+              # to Emacs's load-path.
+              if [ -d ../../build/reader ]; then
+                ln -sf \
+                  "$(pwd)/render-core.${readerModuleSuffix}" \
+                  "../../build/reader/render-core.${readerModuleSuffix}"
+              fi
+            '';
+          };
+
           buildPdfTools = pkgs.writeShellApplication {
             name = "milanglacier-build-pdftools";
             runtimeInputs = [ ];
@@ -89,7 +133,7 @@
             name = "milanglacier-build-all";
             text = ''
               set -euo pipefail
-              "${buildPdfTools}/bin/milanglacier-build-pdftools" "$@"
+              "${buildReader}/bin/milanglacier-build-reader" "$@"
             '';
           };
         in
@@ -97,6 +141,7 @@
           build = build;
           build-vterm = buildVterm;
           build-pdftools = buildPdfTools;
+          build-reader = buildReader;
           default = build;
         }
       );

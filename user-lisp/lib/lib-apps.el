@@ -159,5 +159,28 @@ otherwise use the existed one"
         (pdf-view-midnight-minor-mode)
         (pdf-view-dark-minor-mode)))
 
+;;;###autoload
+(defun mg--reader-dark-mode-maybe ()
+    "Enable `reader-dark-mode' on dark frames."
+    ;; NOTE: Unlike pdf-tools' midnight mode, dark mode does not take
+    ;; effect when enabled right here in the mode hook. It only works
+    ;; once the buffer is actually displayed in a window.
+    (when (eq (frame-parameter nil 'background-mode) 'dark)
+        ;; Depth 90 so this runs after the reader's own hook that
+        ;; creates the per-window state.
+        (add-hook 'window-configuration-change-hook
+                  #'mg--reader-enable-dark-mode 90 t)))
+
+(defun mg--reader-enable-dark-mode ()
+    (when (reader-current-doc-overlay)
+        (remove-hook 'window-configuration-change-hook
+                     #'mg--reader-enable-dark-mode t)
+        ;; NOTE: `reader-dark-mode' has thread races in the native
+        ;; module. See
+        ;; URL `https://codeberg.org/MonadicSheep/emacs-reader/issues/193)'
+        ;; The remaining race can still hang Emacs, just very rarely,
+        ;; so the real fix must land upstream.
+        (reader-dark-mode 1)))
+
 (provide 'lib-apps)
 ;;; lib-apps.el ends here

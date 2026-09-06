@@ -2,7 +2,12 @@
 
 (straight-use-package 'elfeed)
 (straight-use-package 'elfeed-org)
-(straight-use-package 'pdf-tools)
+;; (straight-use-package 'pdf-tools)
+
+;; The dynamic module (render-core.so) is built by nix, not by
+;; straight; see flake.nix.
+(straight-use-package '(reader :type git :host codeberg :repo "MonadicSheep/emacs-reader"
+                               :files (:defaults "render-core.so" "render-core.dylib")))
 
 (straight-use-package '(termint :host github :repo "milanglacier/termint.el"))
 
@@ -80,6 +85,7 @@
     (elfeed-org))
 
 (use-package pdf-tools
+    :disabled t
     :mode ("\\.pdf\\'" . pdf-view-mode)
     :init
     (setq pdf-view-display-size 'fit-page
@@ -100,6 +106,60 @@
     (add-hook 'pdf-outline-buffer-mode-hook #'mg--font-set-small-variable-font)
     (add-hook 'pdf-view-mode-hook (mg-setq-locally evil-normal-state-cursor nil))
     (add-hook 'pdf-view-mode-hook #'mg--pdf-midnight-mode-maybe)
+
+    )
+
+(use-package reader
+    :init
+    (setq reader-default-fit 'reader-fit-to-height)
+
+    :config
+    ;; evil-collection has no integration for emacs-reader, so mirror
+    ;; its pdf-tools bindings for the commands emacs-reader provides.
+    (general-define-key
+     :states 'normal
+     :keymaps 'reader-mode-map
+     "j" #'reader-scroll-down-or-next-page
+     "k" #'reader-scroll-up-or-prev-page
+     "<down>" #'reader-scroll-down-or-next-page
+     "<up>" #'reader-scroll-up-or-prev-page
+     "C-f" #'reader-scroll-down-screen-or-next-page
+     "C-b" #'reader-scroll-up-screen-or-prev-page
+     "C-j" #'reader-scroll-down-screen-or-next-page
+     "C-k" #'reader-scroll-up-screen-or-prev-page
+     "gg" #'reader-first-page
+     "G" #'reader-last-page
+     "zi" #'reader-enlarge-size
+     "zo" #'reader-shrink-size
+     "z0" #'reader-reset-size
+     "+" #'reader-enlarge-size
+     "-" #'reader-shrink-size
+     "h" #'reader-scroll-left
+     "l" #'reader-scroll-right
+     "^" #'reader-scroll-left-most
+     "$" #'reader-scroll-right-most
+     "H" #'reader-fit-to-height
+     "W" #'reader-fit-to-width
+     "zd" #'reader-dark-mode
+     "o" #'reader-outline-show
+     "Q" #'kill-current-buffer)
+
+    (general-define-key
+     :states 'normal
+     :keymaps 'reader-outline-mode-map
+     "RET" #'reader-outline-visit-page
+     "o" #'reader-outline-select-doc-window
+     "q" #'quit-window)
+
+    (add-to-list 'display-buffer-alist
+                 `("\\*Outline of "
+                   (display-buffer-in-side-window display-buffer-reuse-window)
+                   (side . ,(alist-get 'pdf-outline mg-side-window-sides))
+                   (window-width . 0.3)))
+
+    (add-hook 'reader-outline-mode-hook #'mg--font-set-small-variable-font)
+    (add-hook 'reader-mode-hook (mg-setq-locally evil-normal-state-cursor nil))
+    (add-hook 'reader-mode-hook #'mg--reader-dark-mode-maybe)
 
     )
 
