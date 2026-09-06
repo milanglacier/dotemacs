@@ -133,6 +133,7 @@
      "zo" #'reader-shrink-size
      "z0" #'reader-reset-size
      "+" #'reader-enlarge-size
+     "=" #'reader-enlarge-size
      "-" #'reader-shrink-size
      "h" #'reader-scroll-left
      "l" #'reader-scroll-right
