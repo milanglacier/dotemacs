@@ -1,8 +1,12 @@
 ;;; config-os.el -*- lexical-binding: t; -*-
 
-(straight-use-package 'xclip)
-;; synchronize clipboards across remote sessions
-(straight-use-package 'clipetty)
+;; Copy to the system clipboard via OSC 52 (works over SSH and in tmux).
+;; Reading it (getSelection) stays off: terminals that refuse OSC 52 reads
+;; would stall every `p' for `xterm-query-timeout'.  Paste with the
+;; terminal's own paste key instead.
+(setq xterm-extra-capabilities '(modifyOtherKeys reportBackground setSelection)
+      xterm-tmux-extra-capabilities '(modifyOtherKeys setSelection))
+
 (straight-use-package 'evil-terminal-cursor-changer)
 
 (when IS-LINUX

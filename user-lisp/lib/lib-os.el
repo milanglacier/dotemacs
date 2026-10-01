@@ -35,10 +35,7 @@
     ;; functionality, we explicitly load the `mwheel` module.
     (require 'mwheel)
 
-    (evil-terminal-cursor-changer-activate)
-
-    (xclip-mode 1)
-    (message "To synchronize clipboards across remote sessions, enable `global-clipetty-mode'."))
+    (evil-terminal-cursor-changer-activate))
 
 ;;;###autoload
 (defun mg--server-setup ()
