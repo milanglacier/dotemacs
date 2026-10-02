@@ -1,12 +1,5 @@
 ;;; config-os.el -*- lexical-binding: t; -*-
 
-;; Copy to the system clipboard via OSC 52 (works over SSH and in tmux).
-;; Reading it (getSelection) stays off: terminals that refuse OSC 52 reads
-;; would stall every `p' for `xterm-query-timeout'.  Paste with the
-;; terminal's own paste key instead.
-(setq xterm-extra-capabilities '(modifyOtherKeys reportBackground setSelection)
-      xterm-tmux-extra-capabilities '(modifyOtherKeys setSelection))
-
 (straight-use-package 'evil-terminal-cursor-changer)
 
 (when IS-LINUX
@@ -43,6 +36,16 @@
 (general-define-key
  :states '(normal motion insert emacs)
  "<mouse-2>" #'ignore)
+
+
+;; Copy to the system clipboard via OSC 52 (works over SSH and in
+;; tmux).  Reading from the clipboard (getSelection) is disabled: most
+;; terminal emulators reject clipboard reads by default, or require
+;; explicit user confirmation, so each paste operation would cause
+;; Emacs to hang for `xterm-query-timeout'.  Instead, paste with the
+;; terminal's own paste shortcut (e.g. ctrl+shift+v, cmd+v).
+(setq xterm-extra-capabilities '(modifyOtherKeys reportBackground setSelection)
+      xterm-tmux-extra-capabilities '(modifyOtherKeys))
 
 (add-hook 'tty-setup-hook #'mg-tty-setup)
 
