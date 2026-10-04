@@ -1,6 +1,11 @@
 {
   description = "Provides build scripts for Emacs packages that require dynamic modules.";
 
+  # Keep the nixpkgs revision in flake.lock the same as the one used by the
+  # system-wide config (nixos's flake.lock). The modules built here are loaded
+  # into the system's Emacs process, which can load only one glibc. If this
+  # flake uses a newer nixpkgs, its libraries may require a newer glibc than
+  # Emacs provides, and loading the module fails.
   inputs.nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
 
   outputs =
