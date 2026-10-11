@@ -160,7 +160,7 @@
 
     (add-hook 'reader-outline-mode-hook #'mg--font-set-small-variable-font)
     (add-hook 'reader-mode-hook (mg-setq-locally evil-normal-state-cursor nil))
-    ;; (add-hook 'reader-mode-hook #'mg--reader-dark-mode-maybe)
+    (add-hook 'reader-mode-hook #'mg--reader-dark-mode-maybe)
 
     )
 
