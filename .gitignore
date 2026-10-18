@@ -32,3 +32,4 @@ result
 # Emacs generates these for files in user-lisp.
 /user-lisp/**/*.elc
 /user-lisp/.user-lisp-autoloads.el
+elpa
