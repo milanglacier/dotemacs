@@ -2,20 +2,23 @@
 
 (straight-use-package 'doom-themes)
 (straight-use-package 'ef-themes)
+(straight-use-package '(eink-themes :host github :repo "milanglacier/eink.el"))
 
 (setq mg-day-themes
       '(doom-solarized-light
         doom-one-light
         ef-tritanopia-light
         ef-cyprus
-        ef-light)
+        ef-light
+        eink-light)
       mg-night-themes
       '(doom-one
         doom-nord-aurora
         doom-tokyo-night
         ef-dream
         ef-autumn
-        doom-opera))
+        doom-opera
+        eink-dark))
 
 (when (display-graphic-p)
     (push 'modus-vivendi mg-night-themes)
