@@ -1,7 +1,7 @@
 ;;; config-ui.el -*- lexical-binding: t; -*-
 
 (straight-use-package 'doom-modeline)
-(straight-use-package 'which-key)
+(straight-use-package '(which-key :type built-in))
 (straight-use-package 'nerd-icons)
 
 (set-display-table-slot standard-display-table 'truncation 32)
